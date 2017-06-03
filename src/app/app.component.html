@@ -1,3 +1,2 @@
-<h1>
-  {{title}}
-</h1>
+<toolbar *ngIf="(user | async).id" [user]="user | async" class="gc-toolbar"></toolbar>
+<router-outlet></router-outlet>

@@ -3,6 +3,4 @@ export class User {
   email: string;
   name: string;
   profileImage: string;
-  lastSignInAt: string;
-  updatedAt: string;
 }
