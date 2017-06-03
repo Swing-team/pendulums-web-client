@@ -7,9 +7,7 @@ const initialState: User = {
   id: null,
   email: null,
   name: null,
-  profileImage: null,
-  lastSignInAt: null,
-  updatedAt: null
+  profileImage: null
 };
 
 export default function reducer(state = initialState, action: Action) {

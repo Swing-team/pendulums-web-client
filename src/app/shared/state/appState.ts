@@ -7,7 +7,7 @@ import userReducer from './user/user.reducer';
 import {User} from './user/user.model';
 
 export interface AppState {
-  admin: User;
+  user: User;
 }
 
 // uncomment the storeLogger import and this line

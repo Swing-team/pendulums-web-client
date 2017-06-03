@@ -14,7 +14,7 @@ export class AuthenticationService {
 
   signIn(authUser): Promise<any> {
     return this.http
-      .post(this.config.apiEndpoint + '/admin/auth/signin', JSON.stringify(authUser), {headers: this.headers})
+      .post(this.config.apiEndpoint + '/auth/signin', JSON.stringify(authUser),{withCredentials: true})
       .toPromise()
       .then(() => console.log('login successful'))
       .catch(this.handleError);
@@ -22,7 +22,7 @@ export class AuthenticationService {
 
   signOut(): Promise<any> {
     return this.http
-      .get(this.config.apiEndpoint + '/admin/auth/signout', {headers: this.headers})
+      .get(this.config.apiEndpoint + '/auth/signout', {headers: this.headers})
       .toPromise()
       .then(response => response)
       .catch(this.handleError);
