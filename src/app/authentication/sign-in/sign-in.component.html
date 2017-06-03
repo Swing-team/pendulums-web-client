@@ -1,0 +1,59 @@
+<section class="hero is-fullheight is-success is-bold">
+  <div class="hero-body">
+    <div class="container has-text-centered">
+      <div class="ps-auth-back column is-4 is-offset-4">
+        <form (ngSubmit)="signIn()" #signinForm="ngForm" novalidate>
+          <div class="is-centered">
+            <div dir="auto">
+              <div class="field">
+                <h3 class="title is-4 ps-has-primary-color ">
+                  Pendulum Time Tracking
+                </h3>
+              </div>
+              <div [style.visibility]="errorMessage ? 'unset' : 'hidden'" class="notification has-text-centered">
+                <span class="icon">
+                <i class="icon-error"></i>
+                </span>
+                <span class="is-info">{{errorMessage}}</span>
+              </div>
+              <div class="field">
+                <p class="control">
+                  <input [(ngModel)]="authUser.email" name="email" class="input"
+                         placeholder="Email" type="email">
+                </p>
+              </div>
+              <div class="field">
+                <p class="control">
+                  <input [(ngModel)]="authUser.password" name="password" class="input"
+                         placeholder="Password" type="password">
+                </p>
+              </div>
+              <div class="field">
+                <p class="control">
+                  <button class="button is-primary is-fullwidth" type="submit" [disabled]="submitted">Sign in</button>
+                </p>
+              </div>
+              <div class="field">
+                <p class="control">
+                  <button class="button ps-is-google-login is-fullwidth" [disabled]="submitted">Sign in with google
+                  </button>
+                </p>
+              </div>
+              <br>
+              <div class="field">
+                <a routerLink="/forgotPassword" class="ps-has-primary-color ps-has-underline">
+                  Forgot your password?
+                </a>
+              </div>
+              <br>
+              <div class="field">
+                <p class="ps-has-primary-color">You don’t have an account?</p>
+                <p class="ps-has-primary-color ps-has-underline"><a routerLink="/signUp">Create one</a></p>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
