@@ -30,9 +30,9 @@ export class SignInComponent {
           this.submitted = false;
           console.log('error is: ', error);
           if (error.status === 400) {
-            this.errorMessage = '';
+            this.errorMessage = 'Email or password miss match';
           } else {
-            this.errorMessage = ' ';
+            this.errorMessage = 'Server communication error';
           }
         });
     } else {
