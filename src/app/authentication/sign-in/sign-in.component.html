@@ -10,7 +10,7 @@
                   Pendulum Time Tracking
                 </h3>
               </div>
-              <div [style.visibility]="errorMessage ? 'unset' : 'hidden'" class="notification has-text-centered">
+              <div [style.visibility]="errorMessage ? 'unset' : 'hidden'" class="notification ps-login-error has-text-centered">
                 <span class="icon">
                 <i class="icon-error"></i>
                 </span>
@@ -19,12 +19,14 @@
               <div class="field">
                 <p class="control">
                   <input [(ngModel)]="authUser.email" name="email" class="input"
+                         [ngClass]="{'ps-error': errorMessage }"
                          placeholder="Email" type="email">
                 </p>
               </div>
               <div class="field">
                 <p class="control">
                   <input [(ngModel)]="authUser.password" name="password" class="input"
+                         [ngClass]="{'ps-error': errorMessage }"
                          placeholder="Password" type="password">
                 </p>
               </div>

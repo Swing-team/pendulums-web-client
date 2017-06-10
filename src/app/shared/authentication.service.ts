@@ -1,4 +1,4 @@
-import { Inject, Injectable }    from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { Headers, Http } from '@angular/http';
 
 import 'rxjs/add/operator/toPromise';
@@ -14,7 +14,7 @@ export class AuthenticationService {
 
   signIn(authUser): Promise<any> {
     return this.http
-      .post(this.config.apiEndpoint + '/auth/signin', JSON.stringify(authUser),{withCredentials: true})
+      .post(this.config.apiEndpoint + '/auth/signin', JSON.stringify(authUser), {withCredentials: true})
       .toPromise()
       .then(() => console.log('login successful'))
       .catch(this.handleError);
