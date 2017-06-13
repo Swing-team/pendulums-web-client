@@ -11,13 +11,43 @@ const EMAIL_REGEX = /^(?=.{8,64}$)[\w!#$%&'*+/=?`{|}~^-]+(?:\.[\w!#$%&'*+/=?`{|}
 })
 
 export class SignUpComponent {
-  private authUser = {email: null, password: null};
+  private errorMessage: string;
+  private newUser = {email: null, password: null};
   private submitted = false;
 
   constructor(
     private authService: AuthenticationService,
-    private router: Router,
   ) {}
 
-  signUp() {};
+  signUp() {
+    this.submitted = true;
+    this.errorMessage = null;
+    if (this.validation(this.newUser)) {
+      this.authService.signUp(this.newUser)
+        .catch(error => {
+          this.submitted = false;
+          console.log('error is: ', error);
+          if (error.status === 400) {
+            this.errorMessage = 'Email or password miss match';
+          } else {
+            this.errorMessage = 'Server communication error';
+          }
+        });
+    } else {
+      this.submitted = false;
+    }
+  };
+  validation(newUser): boolean {
+    if (!EMAIL_REGEX.test(newUser.email)) {
+      this.errorMessage = 'please enter valid email address';
+      return false;
+    }
+    if (!newUser.password
+      || newUser.password.length < 6
+      || newUser.password.length > 12) {
+      this.errorMessage = 'please choose password with 6 to 12 characters ';
+      return false;
+    }
+    return true;
+  }
 }

@@ -1,6 +1,10 @@
 import {Component} from '@angular/core';
 import {AuthenticationService} from '../../shared/authentication.service';
 import {Router} from '@angular/router';
+import {Store} from '@ngrx/store';
+import {AppState} from '../../shared/state/appState';
+import {UserService} from '../../shared/user.service';
+import {UserActions} from '../../shared/state/user/user.actions';
 
 const EMAIL_REGEX = /^(?=.{8,64}$)[\w!#$%&'*+/=?`{|}~^-]+(?:\.[\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,6}$/;
 
@@ -18,6 +22,9 @@ export class SignInComponent {
   constructor(
     private authService: AuthenticationService,
     private router: Router,
+    private userService: UserService,
+    private userActions: UserActions,
+    private store: Store<AppState>
   ) {}
 
   signIn() {
@@ -25,7 +32,17 @@ export class SignInComponent {
     this.errorMessage = null;
     if (this.validation(this.authUser)) {
       this.authService.signIn(this.authUser)
-        .then(() => this.router.navigate(['dashboard']))
+        .then(() => {
+          this.userService.getSummary()
+            .then((user) => {
+              this.router.navigate(['dashboard']);
+              this.store.dispatch(this.userActions.loadUser(user));
+            })
+            .catch(error => {
+              console.log('error is: ', error);
+            });
+          this.router.navigate(['dashboard']);
+        })
         .catch(error => {
           this.submitted = false;
           console.log('error is: ', error);
@@ -38,18 +55,17 @@ export class SignInComponent {
     } else {
       this.submitted = false;
     }
-
   };
 
   validation(authUser): boolean {
     if (!EMAIL_REGEX.test(authUser.email)) {
-      this.errorMessage = '';
+      this.errorMessage = 'please enter valid email address';
       return false;
     }
     if (!authUser.password
       || authUser.password.length < 6
       || authUser.password.length > 12) {
-      this.errorMessage = '';
+      this.errorMessage = 'please choose password with 6 to 12 characters ';
       return false;
     }
     return true;

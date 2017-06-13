@@ -1,2 +1,2 @@
-<toolbar *ngIf="(user | async).id" [user]="user | async" class="gc-toolbar"></toolbar>
+<toolbar *ngIf="(user | async).id" [user]="user | async" (onSignOutClicked)="signOut()" class="gc-toolbar"></toolbar>
 <router-outlet></router-outlet>

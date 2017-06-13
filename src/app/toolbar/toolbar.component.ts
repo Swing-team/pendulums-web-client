@@ -10,13 +10,13 @@ import {APP_CONFIG} from '../app.config';
 
 export class ToolbarComponent {
   @Input() user: Observable<any>;
-  @Output() onSignoutClicked = new EventEmitter();
+  @Output() onSignOutClicked = new EventEmitter();
 
   constructor (
     @Inject(APP_CONFIG) private config
   ) {}
 
   signOut() {
-    this.onSignoutClicked.emit();
+    this.onSignOutClicked.emit();
   }
 }

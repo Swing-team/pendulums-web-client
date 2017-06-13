@@ -12,20 +12,41 @@ const EMAIL_REGEX = /^(?=.{8,64}$)[\w!#$%&'*+/=?`{|}~^-]+(?:\.[\w!#$%&'*+/=?`{|}
 })
 
 export class ForgotPasswordComponent {
-  private authUser = {email: null, password: null};
+  private errorMessage: string;
+  private User = {email: null};
   private submitted = false;
 
   constructor(
     private authService: AuthenticationService,
-    private router: Router,
     private location: Location
   ) {}
 
-  ressetRequest() {
+  resetRequest() {
     this.submitted = true;
+    this.errorMessage = null;
+    if (this.validation(this.User)) {
+      this.authService.forgotPassword(this.User)
+        .catch(error => {
+          this.submitted = false;
+          console.log('error is: ', error);
+          if (error.status === 400) {
+            this.errorMessage = 'Email not found';
+          } else {
+            this.errorMessage = 'Server communication error';
+          }
+        });
+    } else {
+      this.submitted = false;
+    }
   };
-
   goBack(): void {
     this.location.back();
+  }
+  validation(User): boolean {
+    if (!EMAIL_REGEX.test(User.email)) {
+      this.errorMessage = 'please enter valid email address';
+      return false;
+    }
+    return true;
   }
 }
