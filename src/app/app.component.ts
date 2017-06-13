@@ -5,6 +5,7 @@ import {Store} from '@ngrx/store';
 import {AppState} from './shared/state/appState';
 import {UserActions} from './shared/state/user/user.actions';
 import {Router} from '@angular/router';
+import {AuthenticationService} from './shared/authentication.service';
 
 @Component({
   selector: 'app-root',
@@ -14,7 +15,8 @@ import {Router} from '@angular/router';
 export class AppComponent implements OnInit {
   private user: Observable<any>;
 
-  constructor(private router: Router,
+  constructor(private authService: AuthenticationService,
+              private router: Router,
               private userService: UserService,
               private userActions: UserActions,
               private store: Store<AppState>) {
@@ -29,6 +31,14 @@ export class AppComponent implements OnInit {
       })
       .catch(error => {
         console.log('error is: ', error);
+      });
+  }
+
+  signOut() {
+    this.authService.signOut()
+      .then(() => {
+        this.store.dispatch(this.userActions.clearUser());
+        this.router.navigate(['signIn']);
       });
   }
 }

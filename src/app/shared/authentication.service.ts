@@ -16,18 +16,37 @@ export class AuthenticationService {
     return this.http
       .post(this.config.apiEndpoint + '/auth/signin', JSON.stringify(authUser), {withCredentials: true})
       .toPromise()
-      .then(() => console.log('login successful'))
+      .then(() => console.log('signIn successful'))
       .catch(this.handleError);
   }
-
+  signUp(newUser): Promise<any> {
+    return this.http
+      .post(this.config.apiEndpoint + '/auth/signup', JSON.stringify(newUser), {withCredentials: true})
+      .toPromise()
+      .then(() => console.log('signup request email has been sent'))
+      .catch(this.handleError);
+  }
+  forgotPassword(UserEmail): Promise<any> {
+    return this.http
+      .post(this.config.apiEndpoint + '/auth/recover-account', JSON.stringify(UserEmail), {withCredentials: true})
+      .toPromise()
+      .then(() => console.log('password reset request has been sent'))
+      .catch(this.handleError);
+  }
+  resetPassword(paswordForm): Promise<any> {
+    return this.http
+      .put(this.config.apiEndpoint + '/auth/reset-password', JSON.stringify(paswordForm), {withCredentials: true})
+      .toPromise()
+      .then(() => console.log('password has been sent'))
+      .catch(this.handleError);
+  }
   signOut(): Promise<any> {
     return this.http
-      .get(this.config.apiEndpoint + '/auth/signout', {headers: this.headers})
+      .get(this.config.apiEndpoint + '/auth/signout', {withCredentials: true})
       .toPromise()
       .then(response => response)
       .catch(this.handleError);
   }
-
   private handleError(error: any): Promise<any> {
     console.error('An error occurred', error);
     return Promise.reject(error);
