@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
-import { Headers, Http } from '@angular/http';
+import { Http } from '@angular/http';
 
 import 'rxjs/add/operator/toPromise';
 
@@ -8,8 +8,6 @@ import { APP_CONFIG } from '../app.config';
 
 @Injectable()
 export class UserService {
-  private headers = new Headers({'Content-Type': 'application/json'});
-
   constructor(
     private http: Http,
     @Inject(APP_CONFIG) private config
@@ -17,7 +15,7 @@ export class UserService {
 
   getSummary(): Promise<any> {
     return this.http
-      .get(this.config.apiEndpoint + '/user/summary', { withCredentials: true})
+      .get(this.config.apiEndpoint + '/user/summary', this.config.httpOptions)
       .toPromise()
       .then(response => response.json().user as User)
       .catch(this.handleError);
