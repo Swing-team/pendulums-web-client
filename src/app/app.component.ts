@@ -1,11 +1,13 @@
-import {Component, OnInit} from '@angular/core';
-import {UserService} from './shared/user.service';
-import {Observable} from 'rxjs/Observable';
-import {Store} from '@ngrx/store';
-import {AppState} from './shared/state/appState';
-import {UserActions} from './shared/state/user/user.actions';
-import {Router} from '@angular/router';
-import {AuthenticationService} from './shared/authentication.service';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { Observable } from 'rxjs/Observable';
+import { Store } from '@ngrx/store';
+
+import { AppState } from './shared/state/appState';
+import { UserActions } from './shared/state/user/user.actions';
+
+import { AuthenticationService } from './shared/authentication.service';
+import { UserService } from './shared/user.service';
 
 @Component({
   selector: 'app-root',
@@ -15,19 +17,21 @@ import {AuthenticationService} from './shared/authentication.service';
 export class AppComponent implements OnInit {
   private user: Observable<any>;
 
-  constructor(private authService: AuthenticationService,
-              private router: Router,
-              private userService: UserService,
-              private userActions: UserActions,
-              private store: Store<AppState>) {
+  constructor(
+    private authService: AuthenticationService,
+    private router: Router,
+    private userService: UserService,
+    private userActions: UserActions,
+    private store: Store<AppState>
+  ) {
     this.user = store.select('user');
   }
 
   ngOnInit(): void {
     this.userService.getSummary()
       .then((user) => {
-        this.router.navigate(['dashboard']);
         this.store.dispatch(this.userActions.loadUser(user));
+        this.router.navigate(['dashboard']);
       })
       .catch(error => {
         console.log('error is: ', error);
