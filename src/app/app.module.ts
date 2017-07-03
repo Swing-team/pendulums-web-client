@@ -14,21 +14,17 @@ import { UserActions } from './shared/state/user/user.actions';
 
 // configs
 import { APP_CONFIG, CONFIG } from './app.config';
-
-// components
-import { AppComponent } from './app.component';
-import { ToolbarComponent } from './toolbar/toolbar.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
-
-// services
-import { AuthenticationService } from './shared/authentication.service';
-import { UserService } from './shared/user.service';
+import {AuthenticationService} from './shared/authentication.service';
+import {AuthenticationModule} from './authentication/authentication.module';
+import {ToolbarComponent} from './toolbar/toolbar.component';
+import {UserActions} from './shared/state/user/user.actions';
+import {UserService} from './shared/user.service';
+import {DashboardModule} from './dashboard/dashboard.module';
 
 @NgModule({
   declarations: [
     AppComponent,
     ToolbarComponent,
-    DashboardComponent
   ],
   imports: [
     BrowserModule,
@@ -36,6 +32,7 @@ import { UserService } from './shared/user.service';
     AppRoutingModule,
     StoreModule.provideStore(reducers),
     AuthenticationModule,
+    DashboardModule
   ],
   providers: [
     { provide: APP_CONFIG, useValue: CONFIG },

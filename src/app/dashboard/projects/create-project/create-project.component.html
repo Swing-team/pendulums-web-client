@@ -1,0 +1,107 @@
+<p class="has-primary-text" (click)='modalActivation()'>+</p>
+<div class="modal" [class.is-active]="modalIsActive">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <section class="modal-card-body">
+      <button class="button is-pulled-right is-small is-danger ps-header-delete-button" (click)="cancel()">
+        <span class="icon is-small">
+          <i class="delete ps-none-background"></i>
+        </span>
+      </button>
+      <form (ngSubmit)="createProject()" #createProjectForm="ngForm" novalidate>
+        <div class="is-centered">
+          <div dir="auto">
+            <div class="columns is-gapless">
+              <div class="column is-2">
+                <div class="column" style="padding: unset">
+                  <a (click)="projectImageElem.click()">
+                    <figure class="image is-96x96">
+                      <input #projectImageElem type="file" name="projectImage" style="display:none" (change)="getFiles($event)" accept="image/">
+                      <img [src]="previewImage ? previewImage : 'http://bulma.io/images/placeholders/128x128.png'">
+                    </figure>
+                  </a>
+                </div>
+                <div style="display: none;">
+                  <img #canvasPreviewImageElem [src]="canvasPreviewImage" style="max-width: unset;" (load)="resizeImage()">
+                  <canvas #projectImageCanvasElem></canvas>
+                </div>
+              </div>
+              <div class="column">
+                <div class="field">
+                  <p class="control">
+                    <input [(ngModel)]="project.name" name="name" class="ps-header-input"
+                           placeholder="untitled project..." type="text">
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="columns is-gapless">
+              <div class="column ">
+                <div class="field">
+                  <p class="control">
+                    <input [(ngModel)]="user.email" name="Email" class="input ps-body-input"
+                           placeholder="Enter email address ..." type="text">
+                  </p>
+                </div>
+              </div>
+              <div class="column is-4">
+                <div class="field">
+                  <p class="control">
+                    <span class="select is-fullwidth">
+                      <select class="ps-body-input" [(ngModel)]="user.role" name="Role">
+                        <option *ngFor="let c of roles" [ngValue]="c"  [selected]="c == 'team member'">{{c}}</option>
+                      </select>
+                    </span>
+                  </p>
+                </div>
+              </div>
+              <div class="column is-2">
+                <div class="field">
+                  <p class="control">
+                    <button class="button is-primary is-fullwidth ps-none-radius" type="button" [disabled]="userSubmitted" (click)="invite()">invite
+                    </button>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="columns is-gapless is-multiline is-mobile">
+              <div *ngFor='let invited of project.invitedUsers;trackBy:let i = index' class="column is-12 columns is-gapless">
+                <div class="column is-1">
+                  <div class="field">
+                    <svg width="50" height="30" [identiconHash]="invited.hash">
+                      Fallback text for browsers not supporting inline svg
+                    </svg>
+                  </div>
+                </div>
+                <div class="column ps-body-textBox">
+                  <div class="field">
+                    <div>{{invited.email}}</div>
+                  </div>
+                </div>
+                <div class="column is-4 ps-body-textBox">
+                  <div class="field">
+                    <div>{{invited.role}}</div>
+                  </div>
+                </div>
+                <div class="column is-2">
+                  <div class="field">
+                    <p class="control">
+                      <button class="button ps-is-google-login is-fullwidth ps-none-radius" type="button" (click)="delete(i)">delete
+                      </button>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="ps-submit-button">
+              <p class="control">
+                <button class="button is-primary is-fullwidth ps-none-radius" type="submit" [disabled]="formSubmitted">Create
+                </button>
+              </p>
+            </div>
+          </div>
+        </div>
+      </form>
+    </section>
+  </div>
+</div>
