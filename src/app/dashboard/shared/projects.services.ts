@@ -16,7 +16,9 @@ export class ProjectServices {
     return this.http
       .post(this.config.apiEndpoint + '/projects', project, {withCredentials: true})
       .toPromise()
-      .then(response => response)
+      .then((response) => {
+      console.log(response);
+      })
       .catch(this.handleError);
   }
   private handleError(error: any): Promise<any> {
