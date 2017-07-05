@@ -1,9 +1,9 @@
 import {Component} from '@angular/core';
-import {AuthenticationService} from '../../shared/authentication.service';
+import {AuthenticationService} from '../../core/authentication.service';
 import {Router} from '@angular/router';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../shared/state/appState';
-import {UserService} from '../../shared/user.service';
+import {UserService} from '../../core/user.service';
 import {UserActions} from '../../shared/state/user/user.actions';
 
 const EMAIL_REGEX = /^(?=.{8,64}$)[\w!#$%&'*+/=?`{|}~^-]+(?:\.[\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,6}$/;

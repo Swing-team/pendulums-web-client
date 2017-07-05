@@ -3,7 +3,7 @@ import {Router} from '@angular/router';
 import {Project} from '../../shared/project.model';
 import * as _ from 'lodash';
 import {Md5} from 'ts-md5/dist/md5';
-import {ProjectServices} from '../../shared/projects.services';
+import {ProjectService} from '../../shared/projects.service';
 
 const EMAIL_REGEX = /^(?=.{8,64}$)[\w!#$%&'*+/=?`{|}~^-]+(?:\.[\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,6}$/;
 
@@ -28,7 +28,7 @@ export class CreateProjectComponent {
   md5: any;
 
   constructor( private router: Router,
-               private projectServices: ProjectServices) {
+               private projectServices: ProjectService) {
     this.md5 = new Md5();
   }
   modalActivation() {

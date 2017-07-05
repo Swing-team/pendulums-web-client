@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Inject, Input, Output} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
-import {APP_CONFIG} from '../app.config';
+import {APP_CONFIG} from '../../app.config';
 
 @Component({
   selector: 'toolbar',

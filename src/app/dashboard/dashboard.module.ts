@@ -1,27 +1,23 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import {AppRoutingModule} from '../app-routing.module';
-import {CreateProjectComponent} from './projects/create-project/create-project.component';
-import {DashboardComponent} from './dashboard.component';
+import { NgModule }               from '@angular/core';
+import { AppRoutingModule }       from '../app-routing.module';
+import { SharedModule }           from '../shared/shared.module';
 
-// TODO: mahsa 03 Jul 2017: move to shared module
-import { IdenticonHashDirective } from '../shared/identicon-hash.directive';
-import {ProjectServices} from './shared/projects.services';
+import { CreateProjectComponent } from './projects/create-project/create-project.component';
+import { DashboardComponent }     from './dashboard.component';
+
+import { ProjectService }         from './shared/projects.service';
 
 @NgModule({
   imports: [
     AppRoutingModule,
-    CommonModule,
-    FormsModule,
+    SharedModule,
   ],
   declarations: [
     CreateProjectComponent,
-    DashboardComponent,
-    IdenticonHashDirective
+    DashboardComponent
   ],
   providers: [
-    ProjectServices
+    ProjectService
   ],
 })
 
