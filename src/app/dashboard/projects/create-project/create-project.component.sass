@@ -1,0 +1,76 @@
+@import "../../../../sass/variables"
+
+.ps-header-input
+  border: none
+  font-size: 30px
+  box-shadow: none
+  @media (max-width: 480px)
+    font-size: 20px
+
+.ps-body-input
+  box-shadow: none
+  border-radius: unset
+  border: none
+
+.ps-left-border
+  border-left: 1px solid $primary-light
+
+.ps-body-button
+  font-size: 25px
+  transition: background-color 200ms ease-in
+  border-radius: 100%
+  &:hover
+    background-color: #dddddd
+    cursor: pointer
+
+.ps-inviting-user
+  border-bottom: 1px solid $primary-light
+
+.ps-invited-user-item
+  border-bottom: 1px solid #dedfcb
+  span
+    line-height: 36px
+  .ps-invited-user-email
+    word-break: break-all
+    padding-left: 10px
+  .ps-invited-user-role
+    padding-left: 10px
+
+.ps-body-textBox
+  padding: 5px
+
+.ps-line-height
+  line-height: 36px
+
+.ps-header-delete-button
+  position: absolute
+  top: 0
+  right: 0
+  border-radius: 0 0 0 10px
+  z-index: 5
+
+.ps-none-background
+  background-color: unset
+
+.ps-none-radius
+  border-radius: unset !important
+
+.ps-submit-button
+  position: absolute
+  bottom: 0
+  width: 100%
+  margin-left: -20px
+  @media (max-width: 480px)
+    margin-left: -10px
+
+.ps-modal-card
+  @media (max-width: 480px)
+    margin: unset
+    max-height: unset
+    height: 100%
+
+.ps-modal-body
+  padding-bottom: 50px
+  @media (max-width: 480px)
+    padding: 10px
+    font-size: 0.87rem

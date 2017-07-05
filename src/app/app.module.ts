@@ -7,6 +7,7 @@ import { StoreModule } from '@ngrx/store';
 // app modules
 import { AppRoutingModule } from './app-routing.module';
 import { AuthenticationModule } from './authentication/authentication.module';
+import { DashboardModule } from './dashboard/dashboard.module';
 
 // state store things
 import reducers from './shared/state/appState';
@@ -18,7 +19,6 @@ import { APP_CONFIG, CONFIG } from './app.config';
 // components
 import { AppComponent } from './app.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
 
 // services
 import { AuthenticationService } from './shared/authentication.service';
@@ -28,7 +28,6 @@ import { UserService } from './shared/user.service';
   declarations: [
     AppComponent,
     ToolbarComponent,
-    DashboardComponent
   ],
   imports: [
     BrowserModule,
@@ -36,6 +35,7 @@ import { UserService } from './shared/user.service';
     AppRoutingModule,
     StoreModule.provideStore(reducers),
     AuthenticationModule,
+    DashboardModule
   ],
   providers: [
     { provide: APP_CONFIG, useValue: CONFIG },
