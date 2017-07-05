@@ -6,7 +6,7 @@ import 'rxjs/add/operator/toPromise';
 import { APP_CONFIG } from '../../app.config';
 
 @Injectable()
-export class ProjectServices {
+export class ProjectService {
   private headers = new Headers({'Content-Type': 'application/json'});
 
   constructor(

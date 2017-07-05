@@ -1,19 +1,34 @@
-@import "../../sass/variables.sass"
-@import "../../../node_modules/bulma/sass/utilities/variables"
+@import "../../../sass/variables"
+@import "../../../../node_modules/bulma/sass/utilities/variables"
 
-.ps-nav-left-item
-  background-color: $primary-light
-  border-top-right-radius: 20px
-  width: auto
-  padding: 0 50px
-  margin-left: -5px
+.ps-nav-app-name
+  font-size: 1.2em
+  color: $primary-light
 
 .ps-nav-right-item
   background-color: $primary-light
   border-top-left-radius: 20px
   width: auto
-  padding: 0 50px
-  margin-right: -5px
+  padding: 0 20px
+  margin: 0 -5px 0 0
+  color: $paper
+  input
+    background-color: transparent
+    color: $paper
+    border: none
+    outline: none
+    box-shadow: none
+  span select
+    background-color: transparent
+    border: none
+    outline: none
+    color: $paper
+    option
+      padding: 10px 5px !important
+    option:hover
+      background-color: $primary
+  .select::after
+    border-color: $paper
 
 .ps-toolbar-profile-image
   border-radius: 100%
@@ -23,6 +38,9 @@
   border: 2px solid $primary-light
   z-index: 2
   box-shadow: 1px 0 3px #777777 !important
+
+.ps-nav-logo
+  max-height: 48px
 
 .ps-toolbar-play
   border-radius: 100%

@@ -6,8 +6,8 @@ import { Store } from '@ngrx/store';
 import { AppState } from './shared/state/appState';
 import { UserActions } from './shared/state/user/user.actions';
 
-import { AuthenticationService } from './shared/authentication.service';
-import { UserService } from './shared/user.service';
+import { AuthenticationService } from './core/authentication.service';
+import { UserService } from './core/user.service';
 
 @Component({
   selector: 'app-root',
