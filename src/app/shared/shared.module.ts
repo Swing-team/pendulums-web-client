@@ -4,11 +4,15 @@ import { FormsModule }            from '@angular/forms';
 import { HttpModule }             from '@angular/http';
 
 import { IdenticonHashDirective } from './identicon-hash.directive';
-import { SwingSelectComponent }     from './swing-select/swing-select.component';
+import {ObjectKeysPipe}           from './object-keys.pipe';
 
 @NgModule({
   imports:      [ CommonModule ],
   declarations: [
+    IdenticonHashDirective,
+    ObjectKeysPipe
+  ],
+  exports:      [
     IdenticonHashDirective,
     SwingSelectComponent
   ],
@@ -16,8 +20,7 @@ import { SwingSelectComponent }     from './swing-select/swing-select.component'
     CommonModule,
     FormsModule,
     HttpModule,
-    IdenticonHashDirective,
-    SwingSelectComponent
+    ObjectKeysPipe
   ]
 })
 export class SharedModule { }

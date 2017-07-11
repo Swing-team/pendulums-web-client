@@ -10,7 +10,7 @@ import { UserService }                  from './user.service';
 import { AuthenticationService }        from './authentication.service';
 
 import { ToolbarComponent }             from './toolbar/toolbar.component';
-import { SharedModule }                 from '../shared/shared.module';
+import {ProjectsActions}                from '../shared/state/project/projects.actions';
 
 @NgModule({
   imports:      [
@@ -24,6 +24,7 @@ import { SharedModule }                 from '../shared/shared.module';
     UserService,
     AuthenticationService,
     UserActions,
+    ProjectsActions
   ]
 })
 export class CoreModule {
