@@ -1,0 +1,26 @@
+<p class="has-primary-text" (click)='settingsModalActivation()'>Edit project settings</p>
+<div class="modal" [class.is-active]="modalIsActive">
+  <div class="modal-background"></div>
+  <div class="modal-card ps-modal-card">
+    <section class="modal-card-body ps-modal-body">
+    <button class="button is-pulled-right is-small is-danger ps-header-delete-button"
+            (click)="closeSettingsModal()">
+        <span class="icon is-small">
+          <i class="delete ps-none-background"></i>
+        </span>
+    </button>
+    <div class="tabs is-small">
+      <ul>
+        <li class={{tabs[0]}} (click)="setSelectedTab(0)"><a>Settings</a></li>
+        <li class={{tabs[1]}} (click)="setSelectedTab(1)"><a>Members</a></li>
+        <li class={{tabs[2]}} (click)="setSelectedTab(2)"><a>Pending invitations</a></li>
+        <li (click)="setSelectedTab(3)"><a class="dangerousAction">DANGEROUS ACTIONS</a></li>
+      </ul>
+    </div>
+      <project-details *ngIf="tabs[0] === 'is-active'"></project-details>
+      <project-members *ngIf="tabs[1] === 'is-active'"></project-members>
+      <project-pending-invitations *ngIf="tabs[2] === 'is-active'"></project-pending-invitations>
+      <dangerous-actions *ngIf="tabs[3] === 'is-active'"></dangerous-actions>
+    </section>
+  </div>
+</div>
