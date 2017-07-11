@@ -1,0 +1,19 @@
+<div class="ps-select">
+  <div class="ps-select-label" (click)="toggleIsExpanded()">
+    {{
+    (selectedItem || selectedItem === 0) ? (
+        itemTextAttribute ?
+          selectedItem[itemTextAttribute]
+        : selectedItem
+      )
+      : label
+    }}
+  </div>
+
+  <ul class="ps-select-items-list" [ngClass]="{'ps-show-items': isExpanded}">
+    <li *ngFor="let item of items; trackBy: let i = index" (click)="itemClicked(i, item)"
+        [ngClass]="{'ps-selected-item': selectedItemIndex === i}">
+      {{itemTextAttribute ? item[itemTextAttribute] : item}}
+    </li>
+  </ul>
+</div>

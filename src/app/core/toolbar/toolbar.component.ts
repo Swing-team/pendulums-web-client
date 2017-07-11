@@ -16,6 +16,11 @@ export class ToolbarComponent {
     @Inject(APP_CONFIG) private config
   ) {}
 
+  projectSelected(event) {
+    console.log(event.index);
+    console.log(event.selectedItem);
+  }
+
   signOut() {
     this.onSignOutClicked.emit();
   }

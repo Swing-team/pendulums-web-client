@@ -1,5 +1,4 @@
 import { NgModule, Optional, SkipSelf } from '@angular/core';
-import { CommonModule }                 from '@angular/common';
 import { StoreModule }                  from '@ngrx/store';
 
 import { APP_CONFIG, CONFIG }           from '../app.config';
@@ -11,10 +10,11 @@ import { UserService }                  from './user.service';
 import { AuthenticationService }        from './authentication.service';
 
 import { ToolbarComponent }             from './toolbar/toolbar.component';
+import { SharedModule }                 from '../shared/shared.module';
 
 @NgModule({
   imports:      [
-    CommonModule,
+    SharedModule,
     StoreModule.provideStore(reducers),
   ],
   declarations: [ ToolbarComponent ],
