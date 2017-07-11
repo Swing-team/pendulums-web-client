@@ -1,0 +1,6 @@
+<div class="tile is-ancestor">
+  <div class="tile is-vertical is-8"
+       *ngFor='let project of (projects | async).entities | objectKeys'>
+    {{project.id}}
+  </div>
+</div>

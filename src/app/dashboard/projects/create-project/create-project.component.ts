@@ -1,6 +1,6 @@
 import {Component, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
-import {Project} from '../../shared/project.model';
+import {Project} from '../../../shared/state/project/project.model';
 import * as _ from 'lodash';
 import {Md5} from 'ts-md5/dist/md5';
 import {ProjectService} from '../../shared/projects.service';
@@ -46,8 +46,9 @@ export class CreateProjectComponent {
       formData.append('image', this.projectImageCanvasElem.nativeElement.mozGetAsFile('projectImage.png'));
 
       this.projectServices.create(formData).then(() => {
-        console.log('فرم با موفقیت ثبت شد');
+        console.log('project added successfully');
         this.project = new Project();
+        this.modalIsActive = false;
       })
         .catch(error => {
           this.formSubmitted = false;
