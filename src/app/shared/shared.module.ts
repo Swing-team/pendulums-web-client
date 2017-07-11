@@ -4,15 +4,20 @@ import { FormsModule }            from '@angular/forms';
 import { HttpModule }             from '@angular/http';
 
 import { IdenticonHashDirective } from './identicon-hash.directive';
+import {ObjectKeysPipe}           from './object-keys.pipe';
 
 @NgModule({
   imports:      [ CommonModule ],
-  declarations: [ IdenticonHashDirective ],
+  declarations: [
+    IdenticonHashDirective,
+    ObjectKeysPipe
+  ],
   exports:      [
     IdenticonHashDirective,
     CommonModule,
     FormsModule,
-    HttpModule
+    HttpModule,
+    ObjectKeysPipe
   ]
 })
 export class SharedModule { }

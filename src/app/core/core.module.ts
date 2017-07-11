@@ -11,6 +11,7 @@ import { UserService }                  from './user.service';
 import { AuthenticationService }        from './authentication.service';
 
 import { ToolbarComponent }             from './toolbar/toolbar.component';
+import {ProjectsActions}                from '../shared/state/project/projects.actions';
 
 @NgModule({
   imports:      [
@@ -24,6 +25,7 @@ import { ToolbarComponent }             from './toolbar/toolbar.component';
     UserService,
     AuthenticationService,
     UserActions,
+    ProjectsActions
   ]
 })
 export class CoreModule {

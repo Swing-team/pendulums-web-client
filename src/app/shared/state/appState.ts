@@ -4,10 +4,13 @@ import {compose} from '@ngrx/core/compose';
 import { combineReducers } from '@ngrx/store';
 
 import userReducer from './user/user.reducer';
+import projectsReducer from './project/projects.reducer';
 import {User} from './user/user.model';
+import {Projects} from './project/projects.model';
 
 export interface AppState {
   user: User;
+  projects: Projects;
 }
 
 // uncomment the storeLogger import and this line
@@ -19,4 +22,5 @@ export interface AppState {
 
 export default compose(combineReducers)({
   user: userReducer,
+  projects: projectsReducer
 });

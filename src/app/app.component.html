@@ -1,2 +1,4 @@
 <toolbar *ngIf="(user | async).id" [user]="user | async" (onSignOutClicked)="signOut()"></toolbar>
+<div class="has-text-centered">
 <router-outlet></router-outlet>
+</div>
