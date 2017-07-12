@@ -10,7 +10,8 @@
     <div class="ps-nav-right-item columns is-mobile">
       <input class="input is-small" placeholder="Task name" type="text">
       <span>/</span>
-      <swing-select [items]="['test1', 'test2', 'woefijwoeifjowiejfoweijf']"
+      <swing-select [items]="projects.entities | objectKeys"
+                    [itemTextAttribute]="'name'"
                     (onItemClicked)="projectSelected($event)"
                     [label]="'Select Project'"
                     class="ps-toolbar-select"></swing-select>

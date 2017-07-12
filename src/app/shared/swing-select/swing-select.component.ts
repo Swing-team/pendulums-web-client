@@ -27,7 +27,7 @@ export class SwingSelectComponent {
 
   itemClicked(index, selectedItem) {
     this.selectedItemIndex = index;
-    this.selectedItem = selectedItem
+    this.selectedItem = selectedItem;
     this.toggleIsExpanded();
     this.onItemClicked.emit({index, selectedItem});
   }
