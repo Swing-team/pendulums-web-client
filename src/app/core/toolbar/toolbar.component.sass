@@ -1,6 +1,10 @@
 @import "../../../sass/variables"
 @import "../../../../node_modules/bulma/sass/utilities/variables"
 
+.nav
+  @media (max-width: $ps-mobile)
+    justify-content: center
+
 .ps-nav-app-name
   font-size: 1.2em
   color: $primary-light
@@ -12,26 +16,19 @@
   padding: 0 20px
   margin: 0 -5px 0 0
   color: $paper
-  input
+  .input
     background-color: transparent
     color: $paper
     border: none
     outline: none
     box-shadow: none
+    @media (max-width: $ps-mobile)
+      max-width: 100px
   .ps-toolbar-select
     display: inline-flex
-    width: 100%
-    max-width: 100%
+    width: 120px
+    min-width: 120px
     margin-left: 16px
-
-.ps-toolbar-profile-image
-  border-radius: 100%
-  max-height: 40px
-  min-height: 40px
-  margin-left: 0.75rem
-  border: 2px solid $primary-light
-  z-index: 2
-  box-shadow: 1px 0 3px #777777 !important
 
 .ps-nav-logo
   max-height: 48px
@@ -46,26 +43,5 @@
   text-align: center
   font-size: 30px
   line-height: 35px
-
-.ps-title-bar
-  width: 200px
-  background-color: $primary-light
-  height: 35px
-  margin-top: 9px
-  border-radius: 2px
-  @media (max-width: $tablet)
-    width: 150px
-
-.ps-title-bar-button
-  width: 25px
-  background-color: $primary-light
-  height: 25px
-  margin-top: 15px
-  color: $paper
-  padding: 1px
-
-.ps-title-bar-button-left
-  border-radius: 2px 0 0 2px
-
-.ps-title-bar-button-right
-  border-radius: 0 2px 2px 0
+  @media (max-width: $ps-mobile)
+    margin-right: 0

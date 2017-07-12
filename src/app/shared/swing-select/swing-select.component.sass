@@ -32,6 +32,7 @@
     padding-right: 2.5em
     cursor: pointer
     line-height: 2.25em
+    text-overflow: ellipsis
   .ps-select-items-list
     display: none
     position: absolute
@@ -45,9 +46,10 @@
     li
       display: block
       color: #333333
-      font-size:
       padding: 5px 10px
       text-align: left
+      overflow: hidden
+      text-overflow: ellipsis
       &:hover
         background-color: lighten($primary-light, 10)
         color: $paper
