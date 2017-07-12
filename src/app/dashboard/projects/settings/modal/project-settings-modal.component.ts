@@ -50,5 +50,6 @@ export class ProjectSettingsModalComponent {
 
   closeSettingsModal() {
     this.modalIsActive = false;
+    this.setSelectedTab(0);
   }
 }
