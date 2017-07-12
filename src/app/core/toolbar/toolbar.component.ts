@@ -1,6 +1,6 @@
-import {Component, EventEmitter, Inject, Input, Output} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-import {APP_CONFIG} from '../../app.config';
+import {Component, Inject, Input} from '@angular/core';
+import {Observable}               from 'rxjs/Observable';
+import {APP_CONFIG}               from '../../app.config';
 
 @Component({
   selector: 'toolbar',
@@ -9,8 +9,7 @@ import {APP_CONFIG} from '../../app.config';
 })
 
 export class ToolbarComponent {
-  @Input() user: Observable<any>;
-  @Output() onSignOutClicked = new EventEmitter();
+  @Input() projects: Observable<any>;
 
   constructor (
     @Inject(APP_CONFIG) private config
@@ -19,9 +18,5 @@ export class ToolbarComponent {
   projectSelected(event) {
     console.log(event.index);
     console.log(event.selectedItem);
-  }
-
-  signOut() {
-    this.onSignOutClicked.emit();
   }
 }
