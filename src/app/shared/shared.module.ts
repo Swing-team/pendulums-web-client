@@ -6,6 +6,7 @@ import { HttpModule }             from '@angular/http';
 import { IdenticonHashDirective } from './identicon-hash.directive';
 
 import { SwingSelectComponent }   from './swing-select/swing-select.component';
+import { SwingSwitchComponent } from './swing-switch/swing-switch.component';
 
 import { ObjectKeysPipe }         from './object-keys.pipe';
 
@@ -13,6 +14,7 @@ import { ObjectKeysPipe }         from './object-keys.pipe';
   imports:      [ CommonModule ],
   declarations: [
     IdenticonHashDirective,
+    SwingSwitchComponent,
     SwingSelectComponent,
     ObjectKeysPipe
   ],
@@ -22,7 +24,8 @@ import { ObjectKeysPipe }         from './object-keys.pipe';
     HttpModule,
     IdenticonHashDirective,
     ObjectKeysPipe,
-    SwingSelectComponent
+    SwingSelectComponent,
+    SwingSwitchComponent
   ]
 })
 export class SharedModule { }
