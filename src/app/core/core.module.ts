@@ -1,20 +1,21 @@
 import { NgModule, Optional, SkipSelf } from '@angular/core';
-import { CommonModule }                 from '@angular/common';
 import { StoreModule }                  from '@ngrx/store';
 
 import { APP_CONFIG, CONFIG }           from '../app.config';
 
 import reducers                         from '../shared/state/appState';
 import { UserActions }                  from '../shared/state/user/user.actions';
+import { ProjectsActions }              from '../shared/state/project/projects.actions';
 
 import { UserService }                  from './user.service';
 import { AuthenticationService }        from './authentication.service';
 
 import { ToolbarComponent }             from './toolbar/toolbar.component';
+import { SharedModule }                 from '../shared/shared.module';
 
 @NgModule({
   imports:      [
-    CommonModule,
+    SharedModule,
     StoreModule.provideStore(reducers),
   ],
   declarations: [ ToolbarComponent ],
@@ -24,6 +25,7 @@ import { ToolbarComponent }             from './toolbar/toolbar.component';
     UserService,
     AuthenticationService,
     UserActions,
+    ProjectsActions
   ]
 })
 export class CoreModule {

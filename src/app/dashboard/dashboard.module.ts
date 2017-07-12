@@ -8,6 +8,7 @@ import { ProjectDetailsComponent } from './projects/settings/details/project-det
 import { ProjectMembersComponent } from './projects/settings/members/project-members.component';
 import { ProjectPendingInvitationsComponent } from './projects/settings/pending-invitations/project-pending-invitations.component';
 import { DangerousActionsComponent } from './projects/settings/dangerous-actions/project-dangerous-actions.component';
+import {ListOfProjectComponent} from './projects/list-project/list-of-project.component';
 import { DashboardComponent }     from './dashboard.component';
 
 import { ProjectService }         from './shared/projects.service';
@@ -24,6 +25,7 @@ import { ProjectService }         from './shared/projects.service';
     ProjectMembersComponent,
     ProjectPendingInvitationsComponent,
     DangerousActionsComponent,
+    ListOfProjectComponent,
     DashboardComponent
   ],
   providers: [

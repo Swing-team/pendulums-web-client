@@ -1,0 +1,54 @@
+@import "../../../sass/variables"
+
+=arrow()
+  border: 1px solid $paper
+  border-right: 0
+  border-top: 0
+  content: " "
+  display: block
+  height: 0.5em
+  pointer-events: none
+  position: absolute
+  transform: rotate(-45deg)
+  width: 0.5em
+
+.ps-select
+  display: inline-block
+  height: 2.25em
+  max-width: 100%
+  width: 100%
+  position: relative
+  vertical-align: top
+  cursor: pointer
+  font-size: 0.75rem
+  outline: none
+  &:after
+    +arrow()
+    margin-top: -0.375em
+    right: 1.125em
+    top: 50%
+    z-index: 4
+  .ps-select-label
+    padding-right: 2.5em
+    cursor: pointer
+    line-height: 2.25em
+  .ps-select-items-list
+    display: none
+    position: absolute
+    top: 2.25em
+    background-color: $paper
+    z-index: 9999
+    width: 100%
+    box-shadow: 0 0 5px #777777
+    &.ps-show-items
+      display: block
+    li
+      display: block
+      color: #333333
+      font-size:
+      padding: 5px 10px
+      text-align: left
+      &:hover
+        background-color: lighten($primary-light, 10)
+        color: $paper
+

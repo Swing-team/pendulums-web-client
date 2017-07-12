@@ -5,6 +5,7 @@ import {Store} from '@ngrx/store';
 import {AppState} from '../../shared/state/appState';
 import {UserService} from '../../core/user.service';
 import {UserActions} from '../../shared/state/user/user.actions';
+import {ProjectsActions} from '../../shared/state/project/projects.actions';
 
 const EMAIL_REGEX = /^(?=.{8,64}$)[\w!#$%&'*+/=?`{|}~^-]+(?:\.[\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,6}$/;
 
@@ -24,6 +25,7 @@ export class SignInComponent {
     private router: Router,
     private userService: UserService,
     private userActions: UserActions,
+    private projectsActions: ProjectsActions,
     private store: Store<AppState>
   ) {}
 
@@ -37,6 +39,7 @@ export class SignInComponent {
             .then((user) => {
               this.router.navigate(['dashboard']);
               this.store.dispatch(this.userActions.loadUser(user));
+              this.store.dispatch(this.projectsActions.loadProjects(user.projects));
             })
             .catch(error => {
               console.log('error is: ', error);

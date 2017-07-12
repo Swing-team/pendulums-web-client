@@ -6,33 +6,17 @@
     </div>
   </div>
 
-  <!--<div class="nav-left">
-    <div class="nav-item">
-      <img class="ps-toolbar-profile-image" (click)="signOut()"
-           src="{{(user.profileImage ? config.imagesEndpoint + '/profile/' + user.profileImage : '../../assets/images/images.png')}}" >
-      <div class="ps-nav-left-item is-hidden-mobile">{{user.name}}</div>
+  <div class="nav-item">
+    <div class="ps-nav-right-item columns is-mobile">
+      <input class="input is-small" placeholder="Task name" type="text">
+      <span>/</span>
+      <swing-select [items]="['test1', 'test2']"
+                    (onItemClicked)="projectSelected($event)"
+                    [label]="'Select Project'"
+                    class="ps-toolbar-select"></swing-select>
     </div>
-  </div>-->
-
-  <!--<div class="ps-title-bar-button ps-title-bar-button-right is-hidden-mobile">
-    <i class="icon-settings"></i>
-  </div>-->
-
-  <div class="nav-right">
-    <div class="nav-item">
-      <div class="ps-nav-right-item columns is-hidden-mobile">
-        <input class="input is-small" placeholder="Task name" type="text">
-        <span>/</span>
-        <span class="select is-small">
-          <select title="Project">
-            <option>Select dropdown</option>
-            <option>With options</option>
-          </select>
-        </span>
-      </div>
-      <div class="ps-toolbar-play">
-        ▶️
-      </div>
+    <div class="ps-toolbar-play">
+      ▶️
     </div>
   </div>
 </nav>
