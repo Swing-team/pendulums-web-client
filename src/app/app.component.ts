@@ -17,6 +17,7 @@ import {ProjectsActions} from './shared/state/project/projects.actions';
 })
 export class AppComponent implements OnInit {
   private user: Observable<any>;
+  private projects: Observable<any>;
 
   constructor(
     private authService: AuthenticationService,
@@ -27,6 +28,7 @@ export class AppComponent implements OnInit {
     private store: Store<AppState>
   ) {
     this.user = store.select('user');
+    this.projects = store.select('projects');
   }
 
   ngOnInit(): void {
