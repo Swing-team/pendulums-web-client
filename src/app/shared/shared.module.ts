@@ -4,12 +4,18 @@ import { FormsModule }            from '@angular/forms';
 import { HttpModule }             from '@angular/http';
 
 import { IdenticonHashDirective } from './identicon-hash.directive';
-import {ObjectKeysPipe}           from './object-keys.pipe';
+
+import { SwingSelectComponent }   from './swing-select/swing-select.component';
+import { SwingSwitchComponent } from './swing-switch/swing-switch.component';
+
+import { ObjectKeysPipe }         from './object-keys.pipe';
 
 @NgModule({
   imports:      [ CommonModule ],
   declarations: [
     IdenticonHashDirective,
+    SwingSwitchComponent,
+    SwingSelectComponent,
     ObjectKeysPipe
   ],
   exports:      [
@@ -20,7 +26,10 @@ import {ObjectKeysPipe}           from './object-keys.pipe';
     CommonModule,
     FormsModule,
     HttpModule,
-    ObjectKeysPipe
+    IdenticonHashDirective,
+    ObjectKeysPipe,
+    SwingSelectComponent,
+    SwingSwitchComponent
   ]
 })
 export class SharedModule { }
