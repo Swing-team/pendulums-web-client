@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {Project} from '../../../shared/project.model';
+import {Project} from '../../../../shared/state/project/project.model';
 
 @Component({
   selector: 'project-settings-modal',

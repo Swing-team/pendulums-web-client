@@ -17,7 +17,7 @@
         <li (click)="setSelectedTab(3)"><a class="dangerousAction">DANGEROUS ACTIONS</a></li>
       </ul>
     </div>
-      <project-details *ngIf="tabs[0] === 'is-active'"></project-details>
+      <project-details *ngIf="tabs[0] === 'is-active'" [project]="project"></project-details>
       <project-members *ngIf="tabs[1] === 'is-active'"></project-members>
       <project-pending-invitations *ngIf="tabs[2] === 'is-active'"></project-pending-invitations>
       <dangerous-actions *ngIf="tabs[3] === 'is-active'"></dangerous-actions>
