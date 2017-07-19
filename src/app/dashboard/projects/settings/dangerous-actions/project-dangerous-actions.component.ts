@@ -1,4 +1,5 @@
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
+import {Project} from '../../../../shared/state/project/project.model';
 
 @Component({
   selector: 'dangerous-actions',
@@ -7,6 +8,9 @@ import {Component} from '@angular/core';
 })
 
 export class DangerousActionsComponent {
-  constructor() {}
+  @Input() project: Project;
+
+  constructor() {
+  }
 }
 
