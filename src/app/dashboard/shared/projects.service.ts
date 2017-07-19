@@ -4,6 +4,7 @@ import { Headers, Http } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
 import { APP_CONFIG } from '../../app.config';
+import {Project} from '../../shared/state/project/project.model';
 
 @Injectable()
 export class ProjectService {
@@ -12,13 +13,11 @@ export class ProjectService {
   constructor(
     private http: Http, @Inject(APP_CONFIG) private config) { }
 
-  create(project): Promise<any> {
+  create(project): Promise<Project> {
     return this.http
       .post(this.config.apiEndpoint + '/projects', project, {withCredentials: true})
       .toPromise()
-      .then((response) => {
-      console.log(response);
-      })
+      .then(response => response.json() as Project)
       .catch(this.handleError);
   }
   private handleError(error: any): Promise<any> {
