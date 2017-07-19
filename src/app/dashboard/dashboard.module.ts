@@ -7,6 +7,7 @@ import {ListOfProjectComponent} from './projects/list-project/list-of-project.co
 import { DashboardComponent }     from './dashboard.component';
 
 import { ProjectService }         from './shared/projects.service';
+import {ProjectItemComponent} from './projects/list-project/project-item/project-item.component';
 
 @NgModule({
   imports: [
@@ -16,6 +17,7 @@ import { ProjectService }         from './shared/projects.service';
   declarations: [
     CreateProjectComponent,
     ListOfProjectComponent,
+    ProjectItemComponent,
     DashboardComponent
   ],
   providers: [
