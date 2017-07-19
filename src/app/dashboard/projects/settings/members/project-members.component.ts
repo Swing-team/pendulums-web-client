@@ -1,4 +1,5 @@
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
+import {Project} from '../../../../shared/state/project/project.model';
 
 @Component({
   selector: 'project-members',
@@ -7,5 +8,8 @@ import {Component} from '@angular/core';
 })
 
 export class ProjectMembersComponent {
-  constructor() {}
+  @Input() project: Project;
+
+  constructor() {
+  }
 }
