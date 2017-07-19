@@ -4,6 +4,9 @@ import {Project} from '../../../shared/state/project/project.model';
 import * as _ from 'lodash';
 import {Md5} from 'ts-md5/dist/md5';
 import {ProjectService} from '../../shared/projects.service';
+import {Store} from '@ngrx/store';
+import {AppState} from '../../../shared/state/appState';
+import {ProjectsActions} from '../../../shared/state/project/projects.actions';
 
 const EMAIL_REGEX = /^(?=.{8,64}$)[\w!#$%&'*+/=?`{|}~^-]+(?:\.[\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,6}$/;
 
@@ -28,7 +31,9 @@ export class CreateProjectComponent {
   md5: any;
 
   constructor( private router: Router,
-               private projectServices: ProjectService) {
+               private projectServices: ProjectService,
+               private store: Store<AppState>,
+               private projectsActions: ProjectsActions) {
     this.md5 = new Md5();
   }
   modalActivation() {
@@ -45,7 +50,8 @@ export class CreateProjectComponent {
       formData.append('project', JSON.stringify(this.project));
       formData.append('image', this.projectImageCanvasElem.nativeElement.mozGetAsFile('projectImage.png'));
 
-      this.projectServices.create(formData).then(() => {
+      this.projectServices.create(formData).then((project) => {
+        this.store.dispatch(this.projectsActions.addProject(project));
         console.log('project added successfully');
         this.project = new Project();
         this.modalIsActive = false;
@@ -68,7 +74,6 @@ export class CreateProjectComponent {
       this.user.hash = Md5.hashStr(this.user.email);
       this.project.invitedUsers.push(_.cloneDeep(this.user));
       this.user = {email: null, role: this.roles[0], hash: null};
-      console.log('users', this.project.invitedUsers);
     }
     this.userSubmitted = false;
   }
