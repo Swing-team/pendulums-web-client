@@ -36,9 +36,9 @@ export class AuthenticationService {
       .catch(this.handleError);
   }
 
-  resetPassword(paswordForm): Promise<any> {
+  resetPassword(passwordForm): Promise<any> {
     return this.http
-      .put(this.config.apiEndpoint + '/auth/reset-password', JSON.stringify(paswordForm), this.config.httpOptions)
+      .put(this.config.apiEndpoint + '/auth/reset-password', JSON.stringify(passwordForm), this.config.httpOptions)
       .toPromise()
       .then(() => console.log('successfully changed the password'))
       .catch(this.handleError);

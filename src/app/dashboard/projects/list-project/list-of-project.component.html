@@ -1,6 +1,11 @@
-<div class="tile is-ancestor">
-  <div class="tile is-vertical is-8"
-       *ngFor='let project of (projects | async).entities | objectKeys'>
-    {{project.id}}
+<div class="columns is-multiline">
+  <div class="column is-4">
+    <create-project> ... </create-project>
   </div>
+<ng-container *ngFor='let project of ((projects | async).entities | objectKeys);trackBy:let i = index' >
+  <div class="column is-4 ">
+    <project-item [project]="project" [index]="i"> </project-item>
+  </div>
+</ng-container>
 </div>
+

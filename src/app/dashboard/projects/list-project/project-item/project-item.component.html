@@ -1,0 +1,62 @@
+<div class="columns is-gapless is-mobile ps-project-item">
+  <figure class="image ps-project-image-container"
+    [ngStyle]="{'background-image': project.image ? 'url(' + config.imagesEndpoint + '/projects/' + project.image + ')' :
+         'url(http://bulma.io/images/placeholders/640x480.png)'}">
+    <div class="ps-image-caption">
+      <span class="is-pulled-left">
+        <i class="icon-settings ps-color-pink"></i>
+      </span>
+      <span class="is-pulled-right">
+        <i class="icon-statistic ps-color-pink"></i>
+      </span>
+    </div>
+  </figure>
+  <div class="column is-7 ps-project-footer-container">
+    <p class="has-text-left ps-title">
+      <span class="subtitle is-4">
+        {{project.name}}
+      </span>
+      <span class="is-pulled-right ps-item-card-button">
+        <i>►</i>
+      </span>
+    </p>
+    <div>
+      <p class="has-text-left ps-text-padding ps-item-font-size-1">
+        <span>Owned by: </span>
+        <span class="ps-color-paper">
+        {{project.owner.name ? project.owner.name : project.owner.email}}
+      </span>
+      </p>
+    </div>
+    <div class="ps-title">
+      <table class="table ps-item-table">
+        <tbody>
+        <tr *ngFor="let activity of activities |slice:0:2">
+          <td>{{activity.name}}</td>
+          <td class="has-text-right">
+            <i class="icon-error"></i>
+          </td>
+          <td>{{activity.hour}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="ps-project-footer is-full">
+      <div class="has-text-left ps-member-image-container">
+        <span *ngFor="let member of project.teamMembers|slice:0:4">
+          <img class="ps-member-image"
+               src="{{member.image? config.imagesEndpoint + '/profile/' + member.image :
+                      'http://bulma.io/images/placeholders/640x480.png'}}" >
+        </span>
+      </div>
+      <span class="is-pulled-left">
+        12 $/h
+      </span>
+      <span class="is-pulled-right">
+        <i class=" icon-trainers-list">
+          {{project.teamMembers.length}}
+        </i>
+      </span>
+    </div>
+  </div>
+</div>
