@@ -12,14 +12,21 @@ import { AuthenticationService }        from './authentication.service';
 
 import { ToolbarComponent }             from './toolbar/toolbar.component';
 import { SharedModule }                 from '../shared/shared.module';
+import {SideMenuComponent}              from './side-menu/side-menu.component';
 
 @NgModule({
   imports:      [
     SharedModule,
     StoreModule.provideStore(reducers),
   ],
-  declarations: [ ToolbarComponent ],
-  exports:      [ ToolbarComponent ],
+  declarations: [
+    ToolbarComponent,
+    SideMenuComponent
+  ],
+  exports:      [
+    ToolbarComponent,
+    SideMenuComponent
+  ],
   providers:    [
     { provide: APP_CONFIG, useValue: CONFIG },
     UserService,
