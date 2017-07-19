@@ -1,4 +1,7 @@
 <toolbar *ngIf="(user | async).id" [projects]="projects | async"></toolbar>
-<div class="has-text-centered">
-<router-outlet></router-outlet>
+<div class="columns">
+  <side-menu *ngIf="(user | async).id"></side-menu>
+  <div class="column has-text-centered">
+    <router-outlet></router-outlet>
+  </div>
 </div>
