@@ -1,0 +1,47 @@
+<div dir="auto" class="ps-container">
+  <div class="columns is-gapless is-mobile ps-inviting-user">
+    <div class="column">
+      <div class="field">
+        <p class="control">
+          <input [(ngModel)]="user.email" name="Email" class="input ps-body-input"
+                 placeholder="Enter email address ..." type="text">
+        </p>
+      </div>
+    </div>
+    <div class="column is-5">
+      <div class="field">
+        <p class="control">
+                    <span class="select is-fullwidth">
+                      <select class="ps-body-input ps-left-border"
+                              [(ngModel)]="user.role" name="Role">
+                        <option *ngFor="let c of roles" [ngValue]="c"
+                                [selected]="c == 'team member'">{{c}}</option>
+                      </select>
+                    </span>
+        </p>
+      </div>
+    </div>
+    <div class="column is-1 ps-line-height">
+      <div class="field">
+        <p class="control has-text-centered">
+          <i class="icon-mail has-text-success ps-body-button" (click)="invite()"></i>
+        </p>
+      </div>
+    </div>
+  </div>
+  <div *ngFor='let invited of project.invitedUsers;trackBy:let i = index'
+       class="columns is-gapless is-mobile ps-invited-user-item">
+    <svg width="36" height="36" [identiconHash]="invited.hash">
+      Fallback text for browsers not supporting inline svg
+    </svg>
+    <span class="column ps-invited-user-email">
+                {{invited.email}}
+              </span>
+    <span class="column is-5 ps-invited-user-role">
+                {{invited.role}}
+              </span>
+    <span class="column is-1">
+                <i class="icon-trash has-text-danger ps-body-button" (click)="delete(i)"></i>
+              </span>
+  </div>
+</div>

@@ -1,0 +1,42 @@
+<form (ngSubmit)="updateProject()" #test="ngForm" novalidate>
+  <div dir="auto" class="ps-container">
+    <div class="ps-image-container">
+      <div style="padding: unset">
+        <a (click)="projectImageElem.click()">
+          <figure class="image is-1by1">
+            <input #projectImageElem type="file" name="projectImage" style="display:none" (change)="getFiles($event)"
+                   accept="image/">
+            <img [src]="previewImage ? previewImage : 'http://bulma.io/images/placeholders/128x128.png'">
+          </figure>
+        </a>
+      </div>
+      <div style="display: none;">
+        <img #canvasPreviewImageElem [src]="canvasPreviewImage" style="max-width: unset;" (load)="resizeImage()">
+        <canvas #projectImageCanvasElem></canvas>
+      </div>
+    </div>
+    <div>
+      <div class="field">
+        <p class="control">
+          <input [(ngModel)]="project.name" name="name" class="input ps-header-input"
+                 placeholder="untitled project..." type="text">
+        </p>
+      </div>
+    </div>
+    <!--<div class="ps-checkbox-container">-->
+    <!--<span class="ps-text-gray-small">Members can see other members</span>-->
+    <!--<swing-switch [defaultValue]="false"></swing-switch>-->
+    <!--</div>-->
+    <!--<div class="ps-checkbox-container">-->
+    <!--<span class="ps-text-gray-small">Members can edit their activities</span>-->
+    <!--<swing-switch [defaultValue]="false"></swing-switch>-->
+    <!--</div>-->
+
+    <p class="control">
+      <button class="button is-primary ps-update-project-button"
+              type="submit" [disabled]="formSubmitted">
+        Update project
+      </button>
+    </p>
+  </div>
+</form>
