@@ -48,10 +48,12 @@ export class CreateProjectComponent {
       delete this.project['image'];
       const formData = new FormData();
       formData.append('project', JSON.stringify(this.project));
+      // FIXME: arminghm 19 Jul 2017 mozGetAsFile() method is deprecated
       formData.append('image', this.projectImageCanvasElem.nativeElement.mozGetAsFile('projectImage.png'));
 
-      this.projectServices.create(formData).then((project) => {
-        this.store.dispatch(this.projectsActions.addProject(project));
+      console.log('image: ' , this.projectImageCanvasElem.nativeElement.mozGetAsFile('projectImage.png'));
+
+      this.projectServices.create(formData).then(() => {
         console.log('project added successfully');
         this.project = new Project();
         this.modalIsActive = false;
@@ -109,6 +111,7 @@ export class CreateProjectComponent {
     return true;
   }
   resizeImage() {
+    // FIXME: arminghm 19 Jul 2017 Resized jpeg images has larger size than nonResized jpeg
     const MAX_WIDTH = 500;
     const MAX_HEIGHT = 500;
     let context = this.projectImageCanvasElem.nativeElement.getContext('2d');
