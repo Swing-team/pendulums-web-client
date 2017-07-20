@@ -1,3 +1,4 @@
-app works
-<create-project> ... </create-project>
-<project-settings-modal> ... </project-settings-modal>
+<div class="container ps-dashboard-padding">
+<list-of-project [projects]="((projects | async).entities | objectKeys)"></list-of-project>
+</div>
+
