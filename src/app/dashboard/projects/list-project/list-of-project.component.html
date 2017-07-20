@@ -1,11 +1,8 @@
 <div class="columns is-multiline">
-  <div class="column is-4">
-    <create-project> ... </create-project>
+  <div class="column is-4-widescreen is-4-desktop is-6-tablet">
+    <create-project></create-project>
   </div>
-<ng-container *ngFor='let project of ((projects | async).entities | objectKeys);trackBy:let i = index' >
-  <div class="column is-4 ">
-    <project-item [project]="project" [index]="i"> </project-item>
+  <div *ngFor='let project of projects; trackBy: let i = index' class="column is-4-widescreen is-6-desktop is-6-tablet">
+    <project-item [project]="project"> </project-item>
   </div>
-</ng-container>
 </div>
-
