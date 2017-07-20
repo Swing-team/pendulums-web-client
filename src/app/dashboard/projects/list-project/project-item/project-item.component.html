@@ -1,42 +1,47 @@
-<div class="columns is-gapless is-mobile ps-project-item">
+<div class="columns is-gapless is-mobile ps-project-item"
+     [ngClass]="{'ps-back-pink': project.id.charCodeAt(project.id.length - 1) % 3 == 0,
+      'ps-back-lawnGreen': project.id.charCodeAt(project.id.length - 1) % 3 == 1,
+       'ps-back-yellow': project.id.charCodeAt(project.id.length - 1) % 3 == 2}">
   <figure class="image ps-project-image-container"
     [ngStyle]="{'background-image': project.image ? 'url(' + config.imagesEndpoint + '/projects/' + project.image + ')' :
          'url(http://bulma.io/images/placeholders/640x480.png)'}">
     <div class="ps-image-caption">
       <span class="is-pulled-left">
-        <i class="icon-settings ps-color-pink"></i>
+        <i class="icon-settings ps-picture-icon"></i>
       </span>
       <span class="is-pulled-right">
-        <i class="icon-statistic ps-color-pink"></i>
+        <i class="icon-statistic ps-picture-icon"></i>
       </span>
     </div>
   </figure>
-  <div class="column is-7 ps-project-footer-container">
-    <p class="has-text-left ps-title">
-      <span class="subtitle is-4">
-        {{project.name}}
+  <div class="column ps-project-footer-container">
+    <div class="has-text-left ps-title" [ngClass]="{'ps-task-input-container': startTask}">
+      <span class="subtitle is-inline-block">
+        <p *ngIf="!startTask">{{project.name}}</p>
+        <input [(ngModel)]="taskName" class="input ps-task-input"
+               placeholder="Task Name" type="text" *ngIf="startTask">
       </span>
-      <span class="is-pulled-right ps-item-card-button">
-        <i>►</i>
+      <span class="is-pulled-right is-inline-block ps-item-card-button" (click)="toggleTimer()">
+        <i>{{startTask ? '■' : '►'}}</i>
       </span>
-    </p>
+    </div>
     <div>
-      <p class="has-text-left ps-text-padding ps-item-font-size-1">
+      <div class="has-text-left ps-text-padding ps-item-font-size-1 ps-project-header-ellipsis">
         <span>Owned by: </span>
-        <span class="ps-color-paper">
-        {{project.owner.name ? project.owner.name : project.owner.email}}
-      </span>
-      </p>
+        <span class="ps-owner-name">
+          <b>{{project.owner.name ? project.owner.name : project.owner.email}}</b>
+        </span>
+      </div>
     </div>
     <div class="ps-title">
       <table class="table ps-item-table">
         <tbody>
         <tr *ngFor="let activity of activities |slice:0:2">
           <td>{{activity.name}}</td>
-          <td class="has-text-right">
+          <td class="row-narrow has-text-right">
             <i class="icon-error"></i>
+            {{activity.hour}}
           </td>
-          <td>{{activity.hour}}</td>
         </tr>
         </tbody>
       </table>
