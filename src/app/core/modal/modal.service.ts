@@ -41,8 +41,6 @@ export class ModalService {
 
   close() {
     // cleanup
-    console.log(this.contentComponentRef)
-
     this.contentComponentRef.destroy();
     this.modalComponentRef.destroy();
   }
