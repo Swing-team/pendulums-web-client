@@ -49,6 +49,6 @@ export class ModalService {
 interface ModalConfig {
   component: any;
   containerRef: ViewContainerRef;
-  inputs?:  Array<any>;
-  outputs?: Array<any>;
+  inputs?:  Object;
+  outputs?: Object;
 }

@@ -3,6 +3,9 @@ import {Project} from '../../../../shared/state/project/project.model';
 import {ProjectService} from '../../../shared/projects.service';
 import {cloneDeep} from 'lodash';
 import {APP_CONFIG} from '../../../../app.config';
+import {AppState} from '../../../../shared/state/appState';
+import {Store} from '@ngrx/store';
+import {ProjectsActions} from '../../../../shared/state/project/projects.actions';
 
 @Component({
   selector: 'project-details',
@@ -18,39 +21,34 @@ export class ProjectDetailsComponent implements OnInit {
   previewImage: String;
   canvasPreviewImage: string;
 
-  constructor(private projectServices: ProjectService, @Inject(APP_CONFIG) private config) {
+  constructor(private projectServices: ProjectService,
+              @Inject(APP_CONFIG) private config,
+              private store: Store<AppState>,
+              private projectsAction: ProjectsActions) {
   }
 
   ngOnInit(): void {
     this.clonedProject = cloneDeep(this.project);
-    this.previewImage = this.config.imagesEndpoint + '/projects/' + this.project.image;
+    this.previewImage = this.config.imagesEndpoint + '/projects/' + this.clonedProject.image;
   }
 
   updateProject() {
     const formData = new FormData();
-    let nameIsDirty = false;
-    let imageIsDirty = false;
-    if (this.clonedProject.name !== this.project.name) {
-      formData.append('project', JSON.stringify({name: this.project.name}));
-      nameIsDirty = true;
-    }
 
-    if (this.clonedProject.image !== this.previewImage) {
-      formData.append('image', this.projectImageCanvasElem.nativeElement.mozGetAsFile('projectImage.png'));
-      imageIsDirty = true;
-    }
-
-    if (nameIsDirty || imageIsDirty) {
-      this.projectServices.update(formData, this.project._id).then((response) => {
+    formData.append('project', JSON.stringify({name: this.clonedProject.name}));
+    formData.append('image', this.projectImageCanvasElem.nativeElement.mozGetAsFile('projectImage.png'));
+    this.projectServices.update(formData, this.project.id)
+      .then((response) => {
         // TODO: arminghm 19 Jul 2017 show a success message
+        this.clonedProject.image = response[0].image;
+        this.store.dispatch(this.projectsAction.updateProject(this.clonedProject))
         this.formSubmitted = false;
       })
-        .catch(error => {
-          this.formSubmitted = false;
-          // TODO: arminghm 19 Jul 2017 show a error message
-          console.log('error is: ', error);
-        });
-    }
+      .catch(error => {
+        this.formSubmitted = false;
+        // TODO: arminghm 19 Jul 2017 show a error message
+        console.log('error is: ', error);
+      });
   }
 
   getFiles(fileInput: any) {

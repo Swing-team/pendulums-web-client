@@ -8,8 +8,7 @@
       {{user.email}}
     </i>
     <span class="ps-user-role">
-      <!--{{getUserRole()}}-->
-      Owner
+      {{getUserRole()}}
     </span>
   </div>
   <div *ngFor='let member of project.teamMembers;trackBy:let i = index' class="ps-section-members-container">

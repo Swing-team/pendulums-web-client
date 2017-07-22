@@ -1,7 +1,7 @@
-import { Action }           from '@ngrx/store';
+import {Action}           from '@ngrx/store';
 
-import { ProjectsActions }  from './projects.actions';
-import { Projects }         from './projects.model';
+import {ProjectsActions}  from './projects.actions';
+import {Projects}         from './projects.model';
 
 const initialState: Projects = {
   entities: {}
@@ -36,6 +36,29 @@ export default function reducer(state = initialState, action: Action) {
     case ProjectsActions.REMOVE_PROJECT: {
       const newState = JSON.parse(JSON.stringify(state));
       delete newState.entities[action.payload.id];
+      return newState;
+    }
+
+    case ProjectsActions.ADD_INVITED_USER: {
+      const newState = JSON.parse(JSON.stringify(state));
+      const updateProject = newState.entities[action.payload.projectId];
+      updateProject.invitedUsers.push(action.payload.invitedUser);
+      return newState;
+    }
+    case ProjectsActions.UPDATE_PROJECT: {
+      const newState = JSON.parse(JSON.stringify(state));
+      newState.entities[action.payload.id] = action.payload;
+      return newState;
+    }
+    case ProjectsActions.REMOVE_INVITED_USER: {
+      const newState = JSON.parse(JSON.stringify(state));
+      let invitedUserIndexToRemove;
+      newState.entities[action.payload.projectId].invitedUsers.map((invitedUser, index) => {
+        if (invitedUser.email === action.payload.invitedUser.email) {
+          invitedUserIndexToRemove = index;
+        }
+      });
+      newState.entities[action.payload.projectId].invitedUsers.splice(invitedUserIndexToRemove, 1);
       return newState;
     }
 

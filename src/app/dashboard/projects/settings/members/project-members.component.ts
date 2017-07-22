@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {Project} from '../../../../shared/state/project/project.model';
 import {ProjectService}  from '../../../shared/projects.service';
 import {userRoleInProject} from '../../../shared/utils';
@@ -11,11 +11,17 @@ import {Md5} from 'ts-md5/dist/md5';
   styleUrls: ['./project-members.component.sass']
 })
 
-export class ProjectMembersComponent {
+export class ProjectMembersComponent implements OnInit{
   @Input() project: Project;
   @Input() user: User;
 
   constructor(private projectServices: ProjectService) {
+  }
+
+  ngOnInit(): void {
+    console.log(this.project);
+    const userIndexInMembersList = this.project.teamMembers.indexOf(this.user);
+    this.project.teamMembers.splice(userIndexInMembersList, 1);
   }
 
   userEmailHash(email) {
@@ -29,7 +35,7 @@ export class ProjectMembersComponent {
   removeMember(id) {
     console.log(id);
     // TODO: arminghm 22 Jul 2017 Show a popup menu to accept the delete process
-    this.projectServices.removeMember(this.project._id, id)
+    this.projectServices.removeMember(this.project.id, id)
       .then(response => {
         // TODO: arminghm 22 Jul 2017 Remove the deleted members from state
       })

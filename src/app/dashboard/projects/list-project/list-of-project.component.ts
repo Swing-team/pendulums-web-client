@@ -11,6 +11,7 @@ import {Project} from '../../../shared/state/project/project.model';
 
 export class ListOfProjectComponent {
   @Input() projects: Observable<Project>;
+  @Input() user: Observable<Project>;
 
   constructor (
     private store: Store<AppState>,
