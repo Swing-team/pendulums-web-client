@@ -1,7 +1,7 @@
 <aside class="menu">
   <ul class="menu-list">
-    <li><a class="is-active"><span class="icon-dashboard"></span></a></li>
+    <li><a class="is-active" [routerLink]="['dashboard']"><span class="icon-dashboard"></span></a></li>
     <li><a><span class="icon-settings"></span></a></li>
-    <li><a><span class="icon-sign-out ps-reverse-icon"></span></a></li>
+    <li><a (click)="signout()"><span class="icon-sign-out ps-reverse-icon"></span></a></li>
   </ul>
 </aside>

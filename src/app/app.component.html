@@ -1,6 +1,6 @@
 <toolbar *ngIf="(user | async).id" [projects]="projects | async" class="ps-toolbar"></toolbar>
-<div class="columns ps-main-content">
-  <side-menu *ngIf="(user | async).id" class="ps-side-menu"></side-menu>
+<div class="columns ps-main-content" [ngClass]="{'ps-main-signed-in-content': (user | async).id}">
+  <side-menu *ngIf="(user | async).id" (onSignoutClicked)="signOut()" class="ps-side-menu"></side-menu>
   <div class="column has-text-centered">
     <router-outlet></router-outlet>
   </div>
