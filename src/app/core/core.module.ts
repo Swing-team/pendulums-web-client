@@ -1,4 +1,6 @@
 import { NgModule, Optional, SkipSelf } from '@angular/core';
+import { RouterModule }                 from '@angular/router';
+
 import { StoreModule }                  from '@ngrx/store';
 
 import { APP_CONFIG, CONFIG }           from '../app.config';
@@ -19,6 +21,7 @@ import { ModalComponent }               from './modal/modal.component';
   imports:      [
     SharedModule,
     StoreModule.provideStore(reducers),
+    RouterModule
   ],
   declarations: [
     ToolbarComponent,
@@ -31,6 +34,7 @@ import { ModalComponent }               from './modal/modal.component';
   ],
   providers:    [
     { provide: APP_CONFIG, useValue: CONFIG },
+    RouterModule,
     ModalService,
     UserService,
     AuthenticationService,
