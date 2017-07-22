@@ -1,5 +1,4 @@
 import {Component, ViewChild} from '@angular/core';
-import {Router} from '@angular/router';
 import {Project} from '../../../shared/state/project/project.model';
 import * as _ from 'lodash';
 import {Md5} from 'ts-md5/dist/md5';
@@ -7,6 +6,7 @@ import {ProjectService} from '../../shared/projects.service';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../../shared/state/appState';
 import {ProjectsActions} from '../../../shared/state/project/projects.actions';
+import {ModalService} from '../../../core/modal/modal.service';
 
 const EMAIL_REGEX = /^(?=.{8,64}$)[\w!#$%&'*+/=?`{|}~^-]+(?:\.[\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,6}$/;
 
@@ -25,24 +25,21 @@ export class CreateProjectComponent {
   @ViewChild('canvasPreviewImageElem') canvasPreviewImageElem;
   previewImage: string;
   canvasPreviewImage: string;
-  modalIsActive = false;
   userSubmitted = false;
   formSubmitted = false;
   md5: any;
 
-  constructor( private router: Router,
-               private projectServices: ProjectService,
-               private store: Store<AppState>,
-               private projectsActions: ProjectsActions) {
+  constructor(private projectServices: ProjectService,
+              private store: Store<AppState>,
+              private projectsActions: ProjectsActions,
+              private modalService: ModalService) {
     this.md5 = new Md5();
   }
-  modalActivation() {
-    this.modalIsActive = true;
-  }
+
   createProject() {
     if (!this.project.name || /^\s*$/.test(this.project.name) || !this.project.name.trim()) {
       console.log('error is: ', 'name is empty!');
-    }  else {
+    } else {
       this.formSubmitted = true;
       delete this.project['_id'];
       delete this.project['image'];
@@ -56,20 +53,16 @@ export class CreateProjectComponent {
       this.projectServices.create(formData).then(() => {
         console.log('project added successfully');
         this.project = new Project();
-        this.modalIsActive = false;
+        this.modalService.close();
       })
         .catch(error => {
           this.formSubmitted = false;
           console.log('error is: ', error);
         });
       this.formSubmitted = false;
+    }
   }
-};
-  cancel() {
-    this.modalIsActive = false;
-    this.project = new Project();
-    this.user = {email: null, role: this.roles[0], hash: null};
-  }
+
   invite() {
     this.userSubmitted = true;
     if (this.validateInvitedUser()) {
@@ -79,9 +72,11 @@ export class CreateProjectComponent {
     }
     this.userSubmitted = false;
   }
+
   delete(invitedUserId) {
     this.project.invitedUsers.splice(invitedUserId, 1);
   }
+
   getFiles(fileInput: any) {
     if (fileInput.target.files && fileInput.target.files[0]) {
       this.getBase64(fileInput.target.files[0], (base64) => {
@@ -89,12 +84,14 @@ export class CreateProjectComponent {
       });
     }
   }
+
   getBase64(file, callBack) {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => callBack(reader.result);
     reader.onerror = (error) => console.log('Error: ', error);
   }
+
   validateInvitedUser() {
     if (!EMAIL_REGEX.test(this.user.email)) {
       this.errorMessage = 'please enter correct email address';
@@ -107,9 +104,10 @@ export class CreateProjectComponent {
         console.log('error:', this.errorMessage);
         return false;
       }
-    };
+    }
     return true;
   }
+
   resizeImage() {
     // FIXME: arminghm 19 Jul 2017 Resized jpeg images has larger size than nonResized jpeg
     const MAX_WIDTH = 500;
