@@ -1,10 +1,11 @@
-import { Inject, Injectable } from '@angular/core';
-import { Headers, Http } from '@angular/http';
+import {Inject, Injectable} from '@angular/core';
+import {Headers, Http} from '@angular/http';
 
 import 'rxjs/add/operator/toPromise';
 
-import { APP_CONFIG } from '../../app.config';
+import {APP_CONFIG} from '../../app.config';
 import {Project} from '../../shared/state/project/project.model';
+import {getResponseURL} from '@angular/http/src/http_utils';
 
 @Injectable()
 export class ProjectService {
@@ -35,5 +36,15 @@ export class ProjectService {
   private handleError(error: any): Promise<any> {
     console.error('An error occurred', error);
     return Promise.reject(error);
+  }
+
+  removeMember(projectId, userId): Promise<any> {
+    return this.http
+      .delete(this.config.apiEndpoint + '/projects/' + projectId + '/team-members/' + userId)
+      .toPromise()
+      .then(response => {
+        console.log('project service:', response);
+      })
+      .catch(this.handleError);
   }
 }
