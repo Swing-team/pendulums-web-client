@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Action }     from '@ngrx/store';
 import { Projects }   from './projects.model';
 import { Project }    from './project.model';
+import {User} from '../user/user.model';
 
 @Injectable()
 export class ProjectsActions {
@@ -9,6 +10,9 @@ export class ProjectsActions {
   static CLEAR_PROJECTS = 'CLEAR_PROJECTS';
   static ADD_PROJECT = 'ADD_PROJECT';
   static REMOVE_PROJECT = 'REMOVE_PROJECT';
+  static ADD_INVITED_USER = 'ADD_INVITED_USER';
+  static UPDATE_PROJECT = 'UPDATE_PROJECT';
+  static REMOVE_INVITED_USER = 'REMOVE_INVITED_USER';
 
   loadProjects(projects: Projects): Action {
     return {
@@ -34,6 +38,33 @@ export class ProjectsActions {
     return {
       type: ProjectsActions.REMOVE_PROJECT,
       payload: project
+    };
+  }
+
+  updateProject(project: Project): Action {
+    return {
+      type: ProjectsActions.UPDATE_PROJECT,
+      payload: project
+    };
+  }
+
+  addInvitedUser(projectId: String, invitedUser: {email, role}): Action {
+    return {
+      type: ProjectsActions.ADD_INVITED_USER,
+      payload: {
+        projectId,
+        invitedUser
+      }
+    };
+  }
+
+  removeInvitedUser(projectId: String, invitedUser: {email, role}): Action {
+    return {
+      type: ProjectsActions.REMOVE_INVITED_USER,
+      payload: {
+        projectId,
+        invitedUser
+      }
     };
   }
 }

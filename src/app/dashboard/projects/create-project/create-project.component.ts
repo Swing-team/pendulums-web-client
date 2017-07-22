@@ -19,7 +19,7 @@ const EMAIL_REGEX = /^(?=.{8,64}$)[\w!#$%&'*+/=?`{|}~^-]+(?:\.[\w!#$%&'*+/=?`{|}
 export class CreateProjectComponent {
   roles = ['team member', 'admin'];
   private project: Project = new Project();
-  private user = {email: null, role: this.roles[0], hash: null};
+  private user = {email: null, role: this.roles[0]};
   private errorMessage: string;
   @ViewChild('projectImageCanvasElem') projectImageCanvasElem;
   @ViewChild('canvasPreviewImageElem') canvasPreviewImageElem;
@@ -41,7 +41,7 @@ export class CreateProjectComponent {
       console.log('error is: ', 'name is empty!');
     } else {
       this.formSubmitted = true;
-      delete this.project['_id'];
+      delete this.project['id'];
       delete this.project['image'];
       const formData = new FormData();
       formData.append('project', JSON.stringify(this.project));
@@ -65,11 +65,14 @@ export class CreateProjectComponent {
   invite() {
     this.userSubmitted = true;
     if (this.validateInvitedUser()) {
-      this.user.hash = Md5.hashStr(this.user.email);
       this.project.invitedUsers.push(_.cloneDeep(this.user));
-      this.user = {email: null, role: this.roles[0], hash: null};
+      this.user = {email: null, role: this.roles[0]};
     }
     this.userSubmitted = false;
+  }
+
+  userEmailHash(email) {
+    return Md5.hashStr(email);
   }
 
   delete(invitedUserId) {

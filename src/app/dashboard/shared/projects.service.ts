@@ -27,8 +27,7 @@ export class ProjectService {
     return this.http
       .put(this.config.apiEndpoint + '/projects/' + projectId, project, {withCredentials: true})
       .toPromise()
-      .then(response => {
-      })
+      .then(response => response.json() as Project)
       .catch(this.handleError);
   }
 

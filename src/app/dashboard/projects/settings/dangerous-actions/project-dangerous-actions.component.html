@@ -2,7 +2,7 @@
   <div class="box has-text-left">
     <p class="ps-text-red">You are going to delete <b>{{project.name}}</b>. Delete project <b>CANNOT</b> be restored
       and ALL data will be lost. Are you sure?</p>
-    <p class="ps-text-gray">Please type <b class="ps-text-red">{{project.name}}</b> to proceed this action.</p>
+    <p class="ps-text-gray">Please type <b class="ps-text-red">'{{project.name}}'</b> to proceed this action.</p>
     <div class="ps-confirm-container">
       <input class="ps-confirm-text-input" [(ngModel)]="projectNameInput" />
       <a class="button ps-confirm-button" (click)="confirm()">Confirm</a>

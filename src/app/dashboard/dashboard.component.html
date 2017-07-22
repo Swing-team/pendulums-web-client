@@ -1,3 +1,3 @@
 <div class="container ps-dashboard-padding">
-<list-of-project [projects]="((projects | async).entities | objectKeys)"></list-of-project>
+<list-of-project [projects]="((projects | async).entities | objectKeys)" [user]="user | async"></list-of-project>
 </div>

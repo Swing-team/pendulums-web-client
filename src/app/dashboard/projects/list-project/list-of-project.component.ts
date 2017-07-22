@@ -12,6 +12,7 @@ import {Project}                                    from '../../../shared/state/
 
 export class ListOfProjectComponent {
   @Input() projects: Observable<Project>;
+  @Input() user: Observable<Project>;
 
   constructor (
     private modalService: ModalService,
