@@ -9,10 +9,12 @@ import { ProjectsActions }              from '../shared/state/project/projects.a
 
 import { UserService }                  from './user.service';
 import { AuthenticationService }        from './authentication.service';
+import { ModalService }                 from './modal/modal.service';
 
 import { ToolbarComponent }             from './toolbar/toolbar.component';
 import { SharedModule }                 from '../shared/shared.module';
-import {SideMenuComponent}              from './side-menu/side-menu.component';
+import { SideMenuComponent }            from './side-menu/side-menu.component';
+import { ModalComponent }               from './modal/modal.component';
 
 @NgModule({
   imports:      [
@@ -21,7 +23,8 @@ import {SideMenuComponent}              from './side-menu/side-menu.component';
   ],
   declarations: [
     ToolbarComponent,
-    SideMenuComponent
+    SideMenuComponent,
+    ModalComponent
   ],
   exports:      [
     ToolbarComponent,
@@ -29,10 +32,14 @@ import {SideMenuComponent}              from './side-menu/side-menu.component';
   ],
   providers:    [
     { provide: APP_CONFIG, useValue: CONFIG },
+    ModalService,
     UserService,
     AuthenticationService,
     UserActions,
     ProjectsActions
+  ],
+  entryComponents: [
+    ModalComponent
   ]
 })
 export class CoreModule {
