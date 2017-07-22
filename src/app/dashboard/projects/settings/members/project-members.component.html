@@ -1,27 +1,28 @@
 <div dir="auto" class="ps-container">
   <div class="box ps-section-you-container">
     <div class="ps-profile-image-container">
-      <svg width="36" height="36" [identiconHash]="invited.hash">
+      <svg width="36" height="36" [identiconHash]="userEmailHash('armingh.ghoreishi@gmail.com')">
       </svg>
     </div>
     <i class="ps-user-email">
-      armin.ghoreishi@gmail.com
+      {{user.email}}
     </i>
     <span class="ps-user-role">
-      Team member
+      <!--{{getUserRole()}}-->
+      Owner
     </span>
   </div>
-  <div class="ps-section-members-container">
+  <div *ngFor='let member of project.teamMembers;trackBy:let i = index' class="ps-section-members-container">
     <div class="ps-profile-image-container">
-      <svg width="36" height="36" [identiconHash]="invited.hash">
+      <svg width="36" height="36" [identiconHash]="userEmailHash(member.email)">
       </svg>
     </div>
     <i class="ps-user-email">
-      armin.ghoreishi@gmail.com
+      {{member.email}}
     </i>
     <span class="ps-user-role">
-      Team member
+      {{member.role}}
     </span>
-    <i class="icon-trash has-text-danger ps-body-button"></i>
+    <i class="icon-trash has-text-danger ps-body-button" (click)="removeMember(member.id)"></i>
   </div>
 </div>
