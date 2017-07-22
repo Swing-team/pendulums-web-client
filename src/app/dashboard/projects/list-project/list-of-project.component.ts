@@ -1,8 +1,6 @@
 import {Component, Inject, Input}        from '@angular/core';
-import {Store}                    from '@ngrx/store';
-import {Observable}               from 'rxjs/Observable';
-import {AppState}                 from '../../../shared/state/appState';
-import {APP_CONFIG}               from '../../../app.config';
+import {Observable}                      from 'rxjs/Observable';
+import {APP_CONFIG}                      from '../../../app.config';
 import {Project} from '../../../shared/state/project/project.model';
 
 @Component({
