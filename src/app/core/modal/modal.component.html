@@ -1,0 +1,16 @@
+<div class="modal is-active">
+  <div class="modal-background"></div>
+  <div class="modal-card ps-modal-card">
+    <section class="modal-card-body ps-modal-body">
+      <button class="button is-pulled-right is-small is-danger ps-header-delete-button"
+              (click)="closeModal()">
+        <span class="icon is-small">
+          <i class="delete ps-no-background"></i>
+        </span>
+      </button>
+
+      <ng-content></ng-content>
+
+    </section>
+  </div>
+</div>
