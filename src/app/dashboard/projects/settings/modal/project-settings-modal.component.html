@@ -18,7 +18,7 @@
       </ul>
     </div>
       <project-details *ngIf="tabs[0] === 'is-active'" [project]="project"></project-details>
-      <project-members *ngIf="tabs[1] === 'is-active'" [project]="project"></project-members>
+      <project-members *ngIf="tabs[1] === 'is-active'" [project]="project" [user]="{email: 'yaro@yaro.com'}"></project-members>
       <project-pending-invitations *ngIf="tabs[2] === 'is-active'" [project]="project"></project-pending-invitations>
       <dangerous-actions *ngIf="tabs[3] === 'is-active'" [project]="project"></dangerous-actions>
     </section>
