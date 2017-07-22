@@ -1,6 +1,21 @@
 @import "../../../sass/variables"
 
+$item-size: 64px
+
 .menu
-  width: 64px
+  width: $item-size
   height: 100%
-  background-color: $primary
+  background-color: $primary-light
+  .menu-list li a
+    height: $item-size
+    padding: 15px
+    &.is-active
+      background-color: transparent
+    &:hover
+      background-color: $primary
+    span
+      font-size: 24px
+      vertical-align: middle
+      color: $paper
+      &.ps-reverse-icon:before
+        transform: rotate(180deg)
