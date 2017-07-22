@@ -2,6 +2,9 @@ import {Component, Input} from '@angular/core';
 import {Project} from '../../../../shared/state/project/project.model';
 import {ProjectService} from '../../../shared/projects.service';
 import {errorHandler} from '@angular/platform-browser/src/browser';
+import {AppState} from '../../../../shared/state/appState';
+import {Store} from '@ngrx/store';
+import {ProjectsActions} from '../../../../shared/state/project/projects.actions';
 
 @Component({
   selector: 'dangerous-actions',
@@ -13,14 +16,19 @@ export class DangerousActionsComponent {
   @Input() project: Project;
   projectNameInput: String;
 
-  constructor(private projectService: ProjectService) {
+  constructor(
+    private projectService: ProjectService,
+    private store: Store<AppState>,
+    private projectsAction: ProjectsActions
+  ) {
   }
 
   confirm() {
-    if (this.projectNameInput === this.project.name) {
+    if (this.projectNameInput.valueOf() === this.project.name.valueOf()) {
       console.log('deletion confirmed');
-      this.projectService.delete(this.project._id)
+      this.projectService.delete(this.project.id)
         .then(response => {
+          this.store.dispatch(this.projectsAction.removeProject(this.project));
         })
         .catch(errorHandler => {
         });

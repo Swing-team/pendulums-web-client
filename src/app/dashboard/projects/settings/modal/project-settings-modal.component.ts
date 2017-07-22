@@ -1,5 +1,6 @@
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {Project} from '../../../../shared/state/project/project.model';
+import {User} from '../../../../shared/state/user/user.model';
 
 @Component({
   selector: 'project-settings-modal',
@@ -8,9 +9,8 @@ import {Project} from '../../../../shared/state/project/project.model';
 })
 
 export class ProjectSettingsModalComponent {
-  private project: Project = new Project();
-  modalIsActive = false;
-  formSubmitted = false;
+  @Input() project: Project;
+  @Input() user: User;
   tabs = ['is-active', '', ''];
   constructor() {
   }
@@ -42,14 +42,5 @@ export class ProjectSettingsModalComponent {
         this.tabs[3] = 'is-active';
         break;
     }
-  }
-
-  settingsModalActivation() {
-    this.modalIsActive = true;
-  }
-
-  closeSettingsModal() {
-    this.modalIsActive = false;
-    this.setSelectedTab(0);
   }
 }
