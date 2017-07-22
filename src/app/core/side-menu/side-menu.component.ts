@@ -1,4 +1,4 @@
-import {Component, Inject} from '@angular/core';
+import {Component, EventEmitter, Output} from '@angular/core';
 
 @Component({
   selector: 'side-menu',
@@ -7,5 +7,9 @@ import {Component, Inject} from '@angular/core';
 })
 
 export class SideMenuComponent {
+  @Output() onSignoutClicked = new EventEmitter();
 
+  signout() {
+    this.onSignoutClicked.emit();
+  }
 }
