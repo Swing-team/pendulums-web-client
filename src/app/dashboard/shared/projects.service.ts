@@ -74,4 +74,12 @@ export class ProjectService {
       }).catch(this.handleError);
   }
 
+  delete(projectId): Promise<any> {
+    return this.http
+      .delete(this.config.apiEndpoint + '/projects/' + projectId, {withCredentials: true})
+      .toPromise()
+      .then(response => {
+      })
+      .catch(this.handleError);
+  }
 }
