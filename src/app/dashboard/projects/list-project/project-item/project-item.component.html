@@ -50,7 +50,7 @@
       <div class="has-text-left ps-member-image-container">
         <span *ngFor="let member of project.teamMembers|slice:0:4">
           <img class="ps-member-image"
-               src="{{member.image? config.imagesEndpoint + '/profile/' + member.image :
+               src="{{member.profileImage? config.imagesEndpoint + '/profile/' + member.profileImage :
                       'http://bulma.io/images/placeholders/640x480.png'}}" >
         </span>
       </div>

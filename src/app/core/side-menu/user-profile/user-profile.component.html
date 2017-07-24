@@ -1,0 +1,28 @@
+<div class="box">
+  <article class="media">
+    <div class="media-left">
+      <a (click)="userProfileImageElem.click()">
+        <span>
+          <input #userProfileImageElem type="file" name="projectImage" style="display:none" (change)="getFiles($event)" accept="image/">
+          <img class="ps-user-image"
+               src="{{userEdit.profileImage? config.imagesEndpoint + '/profile/' + userEdit.profileImage :
+                      'http://bulma.io/images/placeholders/640x480.png'}}" >
+        </span>
+      </a>
+    </div>
+    <div class="media-content">
+      <div class="content has-text-centered">
+        <div *ngIf="!userNameEdited">
+          {{userEdit.name? userEdit.name : "Untiled name"}}
+          <span class="ps-edit-profile-button" (click)="toggleTimer()">✍</span>
+        </div>
+        <div *ngIf="userNameEdited">
+          <input [(ngModel)]="userEdit.name" class="input ps-user-name"
+                 placeholder="Untitled name" type="text">
+          <span class="ps-edit-profile-button icon-mail" (click)="saveProfile()"></span>
+        </div>
+        <div>{{userEdit.email}}</div>
+      </div>
+    </div>
+  </article>
+</div>

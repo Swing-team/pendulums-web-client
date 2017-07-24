@@ -17,6 +17,7 @@ import { ToolbarComponent }             from './toolbar/toolbar.component';
 import { SharedModule }                 from '../shared/shared.module';
 import { SideMenuComponent }            from './side-menu/side-menu.component';
 import { ModalComponent }               from './modal/modal.component';
+import {UserProfileComponent}           from './side-menu/user-profile/user-profile.component';
 
 @NgModule({
   imports:      [
@@ -27,7 +28,8 @@ import { ModalComponent }               from './modal/modal.component';
   declarations: [
     ToolbarComponent,
     SideMenuComponent,
-    ModalComponent
+    ModalComponent,
+    UserProfileComponent
   ],
   exports:      [
     ToolbarComponent,
@@ -40,7 +42,7 @@ import { ModalComponent }               from './modal/modal.component';
     UserService,
     AuthenticationService,
     UserActions,
-    ProjectsActions
+    ProjectsActions,
   ],
   entryComponents: [
     ModalComponent
