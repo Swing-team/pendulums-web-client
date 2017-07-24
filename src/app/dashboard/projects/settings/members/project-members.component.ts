@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Project} from '../../../../shared/state/project/project.model';
-import {ProjectService}  from '../../../shared/projects.service';
+import {ProjectService} from '../../../shared/projects.service';
 import {userRoleInProject} from '../../../shared/utils';
 import {User} from '../../../../shared/state/user/user.model';
 import {Md5} from 'ts-md5/dist/md5';
@@ -11,7 +11,7 @@ import {Md5} from 'ts-md5/dist/md5';
   styleUrls: ['./project-members.component.sass']
 })
 
-export class ProjectMembersComponent implements OnInit{
+export class ProjectMembersComponent implements OnInit {
   @Input() project: Project;
   @Input() user: User;
 
@@ -20,8 +20,15 @@ export class ProjectMembersComponent implements OnInit{
 
   ngOnInit(): void {
     console.log(this.project);
-    const userIndexInMembersList = this.project.teamMembers.indexOf(this.user);
-    this.project.teamMembers.splice(userIndexInMembersList, 1);
+    let userIndexInMembersList = null;
+    this.project.teamMembers.map((teamMember, index) => {
+      if (teamMember.id === this.user.id) {
+        userIndexInMembersList = index;
+      }
+    });
+    if (userIndexInMembersList !== null) {
+      this.project.teamMembers.splice(userIndexInMembersList, 1);
+    }
   }
 
   userEmailHash(email) {
