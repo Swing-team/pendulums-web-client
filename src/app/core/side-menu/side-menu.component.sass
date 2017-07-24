@@ -9,6 +9,11 @@ $item-size: 64px
   .menu-list li a
     height: $item-size
     padding: 15px
+    .ps-user-image
+      width: 36px
+      height: 36px
+      border: 1px solid $ink
+      border-radius: 100%
     &.is-active
       background-color: transparent
     &:hover
@@ -19,3 +24,9 @@ $item-size: 64px
       color: $paper
       &.ps-reverse-icon:before
         transform: rotate(180deg)
+
+.ps-profile
+  position: absolute
+  top: 10px
+  left: $item-size
+  width: 300px
