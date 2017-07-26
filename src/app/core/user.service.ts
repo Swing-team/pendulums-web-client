@@ -25,8 +25,7 @@ export class UserService {
     return this.http
       .put(this.config.apiEndpoint + '/user' , user,{withCredentials: true})
       .toPromise()
-      .then(response => {
-      })
+      .then(response => response.json().user as User)
       .catch(this.handleError);
   }
 
