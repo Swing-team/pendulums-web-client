@@ -1,5 +1,5 @@
 export const userRoleInProject = (project, userId) => {
-  let role = '';
+  let role = 'team member';
   if (project.owner.id === userId) {
     role = 'owner';
   } else {

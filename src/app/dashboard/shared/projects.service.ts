@@ -79,4 +79,22 @@ export class ProjectService {
       })
       .catch(this.handleError);
   }
+
+  changeTeamMemberRole(projectId, memberId, role) {
+    return this.http
+      .put(this.config.apiEndpoint + '/projects/' + projectId + '/roles',
+        JSON.stringify({
+          userWithRole: {
+            id: memberId,
+            role: role
+          }
+        }), {withCredentials: true})
+      .toPromise()
+      .then(response => {
+        console.log(response);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
 }

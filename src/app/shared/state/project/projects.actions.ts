@@ -13,6 +13,7 @@ export class ProjectsActions {
   static ADD_INVITED_USER = 'ADD_INVITED_USER';
   static UPDATE_PROJECT = 'UPDATE_PROJECT';
   static REMOVE_INVITED_USER = 'REMOVE_INVITED_USER';
+  static CHANGE_MEMBER_ROLE = 'CHANGE_MEMBER_ROLE';
 
   loadProjects(projects: Projects): Action {
     return {
@@ -64,6 +65,17 @@ export class ProjectsActions {
       payload: {
         projectId,
         invitedUser
+      }
+    };
+  }
+
+  changeMemberRole(projectId: String, userId: String, updatedRole: String) {
+    return {
+      type: ProjectsActions.CHANGE_MEMBER_ROLE,
+      payload: {
+        projectId,
+        userId,
+        updatedRole
       }
     };
   }

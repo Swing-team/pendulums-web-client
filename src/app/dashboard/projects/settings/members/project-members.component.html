@@ -11,7 +11,7 @@
       {{getUserRole()}}
     </span>
   </div>
-  <div *ngFor='let member of project.teamMembers;trackBy:let i = index' class="ps-section-members-container">
+  <div *ngFor='let member of members;trackBy:let i = index' class="ps-section-members-container">
     <div class="ps-profile-image-container">
       <svg width="36" height="36" [identiconHash]="userEmailHash(member.email)">
       </svg>
@@ -20,7 +20,11 @@
       {{member.email}}
     </i>
     <span class="ps-user-role">
-      {{member.role}}
+      <swing-select
+        [items]="['team member','admin']"
+        [label]="member.role"
+        (onItemClicked)="changeTeamMemberRole(member.id, $event)"
+      ></swing-select>
     </span>
     <i class="icon-trash has-text-danger ps-body-button" (click)="removeMember(member.id)"></i>
   </div>

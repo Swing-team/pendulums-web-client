@@ -2,8 +2,14 @@ import {Component, Input, OnInit} from '@angular/core';
 import {Project} from '../../../../shared/state/project/project.model';
 import {ProjectService} from '../../../shared/projects.service';
 import {userRoleInProject} from '../../../shared/utils';
+import {cloneDeep} from 'lodash';
 import {User} from '../../../../shared/state/user/user.model';
 import {Md5} from 'ts-md5/dist/md5';
+import {TeamMember} from '../../../../shared/state/team-member/team-member.model';
+import {log} from 'util';
+import {AppState} from '../../../../shared/state/appState';
+import {Store} from '@ngrx/store';
+import {ProjectsActions} from '../../../../shared/state/project/projects.actions';
 
 @Component({
   selector: 'project-members',
@@ -14,21 +20,46 @@ import {Md5} from 'ts-md5/dist/md5';
 export class ProjectMembersComponent implements OnInit {
   @Input() project: Project;
   @Input() user: User;
+  members: Array<TeamMember> = [];
 
-  constructor(private projectServices: ProjectService) {
+  constructor(private projectServices: ProjectService,
+              private store: Store<AppState>,
+              private projectsAction: ProjectsActions) {
   }
 
   ngOnInit(): void {
     console.log(this.project);
     let userIndexInMembersList = null;
-    this.project.teamMembers.map((teamMember, index) => {
+    const projectMembers = cloneDeep(this.project.teamMembers);
+    console.log('deep copy', projectMembers);
+    const adminIds = [];
+    projectMembers.map((teamMember, index) => {
       if (teamMember.id === this.user.id) {
         userIndexInMembersList = index;
       }
     });
     if (userIndexInMembersList !== null) {
-      this.project.teamMembers.splice(userIndexInMembersList, 1);
+      projectMembers.splice(userIndexInMembersList, 1);
     }
+    if (this.project.admins) {
+      this.project.admins.map(admin => {
+        if (admin.id !== this.user.id) {
+          this.members.push({...admin, role: 'admin'});
+          adminIds.push(admin.id);
+        }
+      });
+    }
+
+    projectMembers.map(member => {
+      if (this.project.admins) {
+        if (adminIds.indexOf(member.id) === -1) {
+          this.members.push({...member, role: 'team member'});
+        }
+      } else {
+        this.members.push({...member, role: 'team member'});
+      }
+    });
+    console.log(this.members);
   }
 
   userEmailHash(email) {
@@ -48,6 +79,16 @@ export class ProjectMembersComponent implements OnInit {
       })
       .catch(error => {
         console.log('error is: ', error);
+      });
+  }
+
+  changeTeamMemberRole(memberId, event) {
+    console.log(event);
+    this.projectServices.changeTeamMemberRole(this.project.id, memberId, event.selectedItem)
+      .then(response => {
+        this.store.dispatch(this.projectsAction.changeMemberRole(this.project.id, memberId, event.selectedItem));
+      })
+      .catch(error => {
       });
   }
 }
