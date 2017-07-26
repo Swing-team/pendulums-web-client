@@ -14,6 +14,9 @@ import {ProjectsActions} from '../../../../shared/state/project/projects.actions
 
 export class DangerousActionsComponent {
   @Input() project: Project;
+  @Input() readOnly: boolean;
+  @Input() isOwner: boolean;
+  @Input() isAdmin: boolean;
   projectNameInput: String;
 
   constructor(

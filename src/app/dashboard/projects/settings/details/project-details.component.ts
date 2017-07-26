@@ -14,6 +14,7 @@ import {ProjectsActions} from '../../../../shared/state/project/projects.actions
 })
 export class ProjectDetailsComponent implements OnInit {
   @Input() project: Project;
+  @Input() readOnly: boolean;
   private clonedProject: Project;
   formSubmitted = false;
   @ViewChild('projectImageCanvasElem') projectImageCanvasElem;

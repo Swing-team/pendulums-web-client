@@ -51,23 +51,4 @@ export class ProjectItemComponent {
       }
     });
   }
-
-
-
-  userIsOwnerOrAdmin() {
-    let isAdmin = false;
-    let isOwner = false;
-    if (this.project.admins) {
-      this.project.admins.map(admin => {
-        if (admin.id === this.user.id) {
-          isAdmin = true;
-        }
-      });
-    }
-
-    if(this.project.owner.id === this.user.id) {
-      isOwner = true;
-    }
-    return isAdmin || isOwner;
-  }
 }
