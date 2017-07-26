@@ -1,6 +1,11 @@
-export interface TeamMember {
+import {transient} from '../../decorators/transient.decorator';
+
+export class TeamMember {
   id: string;
   email: string;
   name: string;
   image: string;
+  // FIXME: arminghm 24 Jul 2017 transient decorator is not working
+  @transient()
+  role: string;
 }
