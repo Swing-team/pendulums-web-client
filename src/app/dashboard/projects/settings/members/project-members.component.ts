@@ -20,6 +20,7 @@ import {ProjectsActions} from '../../../../shared/state/project/projects.actions
 export class ProjectMembersComponent implements OnInit {
   @Input() project: Project;
   @Input() user: User;
+  @Input() readOnly: boolean;
   members: Array<TeamMember> = [];
 
   constructor(private projectServices: ProjectService,
