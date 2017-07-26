@@ -36,8 +36,7 @@ export class UserProfileComponent implements OnInit {
       const formData = new FormData();
       formData.append('user', JSON.stringify({name: this.userEdit.name}));
       this.UserService.update(formData).then((user) => {
-        // this.store.dispatch(this.userActions.loadUser(user));
-        console.log('user edited successfully');
+        this.store.dispatch(this.userActions.loadUser(user));
       })
         .catch(error => {
           console.log('error is: ', error);
