@@ -1,4 +1,4 @@
-<div dir="auto" class="ps-container">
+<div *ngIf="isOwner" dir="auto" class="ps-container">
   <div class="box has-text-left">
     <p class="ps-text-red">You are going to delete <b>{{project.name}}</b>. Delete project <b>CANNOT</b> be restored
       and ALL data will be lost. Are you sure?</p>
@@ -9,14 +9,22 @@
     </div>
   </div>
   <div class="box has-text-left ps-bottom-box">
-    <p class="ps-text-red">You are going to leave <b>{{project.name}}</b>. Leaving <b>WILLNOT delete you data and
-      statistics on the project. You can ask project owner or admins to invite you again</b></p>
+    <p class="ps-text-red">You are going to leave <b>{{project.name}}</b>. Leaving <b>WILLNOT</b> delete you data and
+      statistics on the project. You can ask project owner or admins to invite you again</p>
     <p class="ps-text-gray">You are the project owner and you're not allowed to leave the project. First choose a member
       as project owner, then you can leave the project</p>
     <div class="ps-choose-member-container">
       <select class="ps-members-select"></select>
       <a class="button is-primary ps-choose-member-button">Choose as member</a>
     </div>
+    <a class="button ps-leave-button">Leave</a>
+  </div>
+</div>
+
+<div *ngIf="isAdmin || readOnly" dir="auto" class="ps-container">
+  <div class="box has-text-left ps-bottom-box">
+    <p class="ps-text-red">You are going to leave <b>{{project.name}}</b>. Leaving <b>WILLNOT</b> delete you data and
+      statistics on the project. You can ask project owner or admins to invite you again</p>
     <a class="button ps-leave-button">Leave</a>
   </div>
 </div>

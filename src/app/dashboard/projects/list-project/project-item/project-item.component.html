@@ -6,7 +6,7 @@
     [ngStyle]="{'background-image': project.image ? 'url(' + config.imagesEndpoint + '/projects/' + project.image + ')' :
          'url(http://bulma.io/images/placeholders/640x480.png)'}">
     <div class="ps-image-caption">
-      <span *ngIf="userIsOwnerOrAdmin()" class="is-pulled-left">
+      <span class="is-pulled-left">
         <i class="icon-settings ps-picture-icon" (click)="showSettings()"></i>
       </span>
       <span class="is-pulled-right">
