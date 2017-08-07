@@ -1,4 +1,4 @@
-import {Component, Inject, Input, OnInit} from '@angular/core';
+import {Component, Inject, Input, OnInit, ViewContainerRef} from '@angular/core';
 import {User}                     from '../../../shared/state/user/user.model';
 import {APP_CONFIG}               from '../../../app.config';
 import {UserService}       from '../../user.service';
@@ -6,6 +6,9 @@ import * as _ from 'lodash';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../../shared/state/appState';
 import {UserActions} from '../../../shared/state/user/user.actions';
+import {ImgCropperComponent} from './image-cropper/image-cropper.component';
+import {ModalService} from '../../modal/modal.service';
+import {Md5} from 'ts-md5/dist/md5';
 
 @Component({
   selector: 'user-profile',
@@ -15,15 +18,19 @@ import {UserActions} from '../../../shared/state/user/user.actions';
 export class UserProfileComponent implements OnInit {
   @Input() user: User;
   userEdit: User;
+  emailHash: any;
   userNameEdited: boolean;
 
   constructor (@Inject(APP_CONFIG) private config,
                private store: Store<AppState>,
                private userActions: UserActions,
-               private UserService: UserService) {}
+               private UserService: UserService,
+               private modalService: ModalService,
+               private viewContainerRef: ViewContainerRef) {}
 
   ngOnInit(){
     this.userEdit = _.cloneDeep(this.user);
+    this.emailHash = Md5.hashStr(this.user.email);
   }
 
   toggleTimer() {
@@ -42,5 +49,12 @@ export class UserProfileComponent implements OnInit {
           console.log('error is: ', error);
         });
     }
+  }
+
+  openImageModal() {
+    this.modalService.show({
+      component: ImgCropperComponent,
+      containerRef: this.viewContainerRef
+    });
   }
 }
