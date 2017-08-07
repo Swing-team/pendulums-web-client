@@ -2,11 +2,12 @@
   <ul class="menu-list">
     <li>
       <a (click)="toggleProfile()">
-        <span>
-          <img class="ps-user-image"
-           src="{{user.profileImage? config.imagesEndpoint + '/profile/' + user.profileImage :
+        <img *ngIf="user.profileImage" class="ps-user-image"
+             src="{{user.profileImage? config.imagesEndpoint + '/profile/' + user.profileImage :
                       'http://bulma.io/images/placeholders/640x480.png'}}" >
-        </span>
+        <svg *ngIf="!user.profileImage" class="ps-user-image" width="36" height="36" [identiconHash]="emailHash">
+          Fallback text for browsers not supporting inline svg
+        </svg>
       </a>
     </li>
     <li><a class="is-active" [routerLink]="['dashboard']"><span class="icon-dashboard"></span></a></li>

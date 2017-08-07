@@ -18,6 +18,8 @@ import { SharedModule }                 from '../shared/shared.module';
 import { SideMenuComponent }            from './side-menu/side-menu.component';
 import { ModalComponent }               from './modal/modal.component';
 import {UserProfileComponent}           from './side-menu/user-profile/user-profile.component';
+import {ImgCropperComponent} from './side-menu/user-profile/image-cropper/image-cropper.component';
+import {ImageCropperComponent} from 'ng2-img-cropper';
 
 @NgModule({
   imports:      [
@@ -29,7 +31,9 @@ import {UserProfileComponent}           from './side-menu/user-profile/user-prof
     ToolbarComponent,
     SideMenuComponent,
     ModalComponent,
-    UserProfileComponent
+    UserProfileComponent,
+    ImgCropperComponent,
+    ImageCropperComponent
   ],
   exports:      [
     ToolbarComponent,
@@ -45,7 +49,8 @@ import {UserProfileComponent}           from './side-menu/user-profile/user-prof
     ProjectsActions,
   ],
   entryComponents: [
-    ModalComponent
+    ModalComponent,
+    ImgCropperComponent
   ]
 })
 export class CoreModule {
