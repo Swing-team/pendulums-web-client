@@ -1,0 +1,15 @@
+<div class="columns">
+  <div class="column is-three-quarters">
+    <img-cropper #cropper [image]="profileData" [settings]="cropperSettings"></img-cropper>
+  </div>
+</div>
+<div class="columns">
+  <div class="column">
+    <input id="custom-input" type="file" style="display:none" (change)="fileChangeListener($event)">
+    <label class="button is-info" for="custom-input">choose a file...</label>
+    <button class="button is-success"  (click)="save()">save</button>
+    <button class="button is-danger" (click)="cancel()">cancel</button>
+  </div>
+</div>
+
+
