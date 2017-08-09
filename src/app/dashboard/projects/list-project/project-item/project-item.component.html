@@ -22,7 +22,8 @@
                placeholder="Task Name" type="text" *ngIf="startTask">
       </span>
       <span class="is-pulled-right is-inline-block ps-item-card-button" (click)="toggleTimer()">
-        <i>{{startTask ? '■' : '►'}}</i>
+        <span *ngIf="startTask" class="icon-stop"></span>
+        <span *ngIf="!startTask" class="icon-play"></span>
       </span>
     </div>
     <div>
@@ -39,7 +40,7 @@
         <tr *ngFor="let activity of activities |slice:0:2">
           <td>{{activity.name}}</td>
           <td class="row-narrow has-text-right">
-            <i class="icon-error"></i>
+            <i class="icon-stopwatch"></i>
             {{activity.hour}}
           </td>
         </tr>
@@ -58,7 +59,7 @@
         12 $/h
       </span>
       <span class="is-pulled-right">
-        <i class=" icon-trainers-list">
+        <i class=" icon-group">
           {{project.teamMembers.length}}
         </i>
       </span>
