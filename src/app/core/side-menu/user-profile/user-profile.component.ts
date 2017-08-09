@@ -28,7 +28,7 @@ export class UserProfileComponent implements OnInit {
                private modalService: ModalService,
                private viewContainerRef: ViewContainerRef) {}
 
-  ngOnInit(){
+  ngOnInit() {
     this.userEdit = _.cloneDeep(this.user);
     this.emailHash = Md5.hashStr(this.user.email);
   }

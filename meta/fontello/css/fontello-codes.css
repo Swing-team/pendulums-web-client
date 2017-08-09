@@ -29,3 +29,9 @@
 .icon-sign-out:before { content: '\e81b'; } /* '' */
 .icon-workout-management:before { content: '\e81c'; } /* '' */
 .icon-close-eye:before { content: '\e81d'; } /* '' */
+.icon-bell:before { content: '\e81e'; } /* '' */
+.icon-check:before { content: '\e81f'; } /* '' */
+.icon-cancel:before { content: '\e820'; } /* '' */
+.icon-stopwatch:before { content: '\e821'; } /* '' */
+.icon-group:before { content: '\e822'; } /* '' */
+.icon-pencil:before { content: '\e823'; } /* '' */

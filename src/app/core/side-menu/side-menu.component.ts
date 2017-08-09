@@ -13,7 +13,8 @@ export class SideMenuComponent implements OnInit {
   @Output() onSignoutClicked = new EventEmitter();
   @Input() user: User;
   emailHash: any;
-  private profileActive = false;
+  private profileIsActive = false;
+  private notificationIsActive = false;
 
   constructor (@Inject(APP_CONFIG) private config) {}
 
@@ -26,6 +27,12 @@ export class SideMenuComponent implements OnInit {
   }
 
   toggleProfile() {
-    this.profileActive = !this.profileActive;
+    this.profileIsActive = !this.profileIsActive;
+    this.notificationIsActive = false;
+  }
+
+  toggleNotifications() {
+    this.notificationIsActive = !this.notificationIsActive;
+    this.profileIsActive = false;
   }
 }
