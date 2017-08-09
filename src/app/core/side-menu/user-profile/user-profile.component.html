@@ -14,7 +14,7 @@
     <div class="media-content">
       <div class="content has-text-centered">
         <div *ngIf="!userNameEdited">
-          {{userEdit.name? userEdit.name : "Untiled name"}}
+          {{userEdit.name? userEdit.name : "No name"}}
           <span class="ps-edit-profile-button icon-pencil" (click)="toggleTimer()"></span>
         </div>
         <div *ngIf="userNameEdited">
