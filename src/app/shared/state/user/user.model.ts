@@ -3,4 +3,5 @@ export interface User {
   email: string;
   name: string;
   profileImage: string;
+  pendingInvitations: Array<object>;
 }
