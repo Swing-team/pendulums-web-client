@@ -5,6 +5,8 @@ import {Store} from '@ngrx/store';
 import {UserActions} from '../../../shared/state/user/user.actions';
 import {AppState} from '../../../shared/state/appState';
 import {Project} from '../../../shared/state/project/project.model';
+import {User} from '../../../shared/state/user/user.model';
+import {ProjectsActions} from '../../../shared/state/project/projects.actions';
 
 @Component({
   selector: 'notification',
@@ -12,30 +14,44 @@ import {Project} from '../../../shared/state/project/project.model';
   styleUrls: ['./notification.component.sass'],
 })
 export class NotificationComponent implements OnInit {
-  @Input() pendingInvitations: Project[] = [];
+  private pendingInvitations: Array<object>;
+  @Input() user: User;
 
   constructor (@Inject(APP_CONFIG) private config,
                private NotificationService: NotificationService,
                private store: Store<AppState>,
-               private userActions: UserActions) {}
+               private userActions: UserActions,
+               private projectsActions: ProjectsActions) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.pendingInvitations = this.user.pendingInvitations;
+  }
 
   accept(projectId) {
-    this.NotificationService.accept(projectId).then(
-      // todo: update user state and list
-      // todo: add project to state
-      
-    )
+    this.NotificationService.accept(projectId).then((project) => {
+      this.store.dispatch(this.projectsActions.addProject(project));
+      console.log('project added successfully');
+      this.user.pendingInvitations.map((obj, index) => {
+        if (obj.id === projectId) {
+          this.user.pendingInvitations.splice(index, 1);
+        }
+      });
+      this.store.dispatch(this.userActions.loadUser(this.user));
+    })
       .catch(error => {
         console.log('error is: ', error);
       });
   }
 
   deny(projectId) {
-    this.NotificationService.deny(projectId).then(
-      // todo: update user state and list
-    )
+    this.NotificationService.deny(projectId).then((Id) => {
+      this.user.pendingInvitations.map((obj, index) => {
+        if (obj.id === projectId) {
+          this.user.pendingInvitations.splice(index, 1);
+        }
+      });
+      this.store.dispatch(this.userActions.loadUser(this.user));
+    })
       .catch(error => {
         console.log('error is: ', error);
       });
