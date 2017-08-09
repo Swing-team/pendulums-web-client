@@ -17,9 +17,11 @@ import { ToolbarComponent }             from './toolbar/toolbar.component';
 import { SharedModule }                 from '../shared/shared.module';
 import { SideMenuComponent }            from './side-menu/side-menu.component';
 import { ModalComponent }               from './modal/modal.component';
+import {NotificationComponent}          from './side-menu/notifacation/notification.component';
+import {NotificationService}            from './side-menu/notifacation/notification.service';
 import {UserProfileComponent}           from './side-menu/user-profile/user-profile.component';
-import {ImgCropperComponent} from './side-menu/user-profile/image-cropper/image-cropper.component';
-import {ImageCropperComponent} from 'ng2-img-cropper';
+import {ImgCropperComponent}            from './side-menu/user-profile/image-cropper/image-cropper.component';
+import {ImageCropperComponent}          from 'ng2-img-cropper';
 
 @NgModule({
   imports:      [
@@ -31,6 +33,7 @@ import {ImageCropperComponent} from 'ng2-img-cropper';
     ToolbarComponent,
     SideMenuComponent,
     ModalComponent,
+    NotificationComponent,
     UserProfileComponent,
     ImgCropperComponent,
     ImageCropperComponent
@@ -44,6 +47,7 @@ import {ImageCropperComponent} from 'ng2-img-cropper';
     RouterModule,
     ModalService,
     UserService,
+    NotificationService,
     AuthenticationService,
     UserActions,
     ProjectsActions,

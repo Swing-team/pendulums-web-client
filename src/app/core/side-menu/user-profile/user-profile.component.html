@@ -5,7 +5,8 @@
         <img *ngIf="userEdit.profileImage" class="ps-user-image" (click)="openImageModal()"
                src="{{userEdit.profileImage? config.imagesEndpoint + '/profile/' + userEdit.profileImage :
                       'http://bulma.io/images/placeholders/640x480.png'}}">
-        <svg *ngIf="!userEdit.profileImage" class="ps-user-image" width="36" height="36" [identiconHash]="emailHash">
+        <svg *ngIf="!userEdit.profileImage" class="ps-user-image" (click)="openImageModal()"
+             width="36" height="36" [identiconHash]="emailHash">
           Fallback text for browsers not supporting inline svg
         </svg>
       </span>
@@ -14,13 +15,13 @@
       <div class="content has-text-centered">
         <div *ngIf="!userNameEdited">
           {{userEdit.name? userEdit.name : "Untiled name"}}
-          <span class="ps-edit-profile-button" (click)="toggleTimer()">✎</span>
+          <span class="ps-edit-profile-button icon-pencil" (click)="toggleTimer()"></span>
         </div>
         <div *ngIf="userNameEdited">
           <input [(ngModel)]="userEdit.name" class="input ps-user-name"
                  placeholder="Untitled name" type="text">
-          <span class="ps-edit-profile-button" (click)="saveProfile()">✓</span>
-          <span class="ps-edit-profile-button" (click)="toggleTimer()">X</span>
+          <span class="ps-edit-profile-button icon-check" (click)="saveProfile()"></span>
+          <span class="ps-edit-profile-button icon-cancel" (click)="toggleTimer()"></span>
         </div>
         <div>{{userEdit.email}}</div>
       </div>

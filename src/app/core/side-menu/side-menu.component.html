@@ -10,10 +10,17 @@
         </svg>
       </a>
     </li>
+    <li>
+      <a (click)="toggleNotifications()">
+        <span class="icon-bell"></span>
+        <span class="ps-notification-count">{{user.pendingInvitations.length}}</span>
+      </a>
+    </li>
     <li><a class="is-active" [routerLink]="['dashboard']"><span class="icon-dashboard"></span></a></li>
     <li><a><span class="icon-settings"></span></a></li>
     <li><a (click)="signout()"><span class="icon-sign-out ps-reverse-icon"></span></a></li>
   </ul>
 </aside>
 
-<user-profile *ngIf="profileActive" class="ps-profile" [user]="user"> </user-profile>
+<user-profile *ngIf="profileIsActive" class="ps-profile" [user]="user"> </user-profile>
+<notification *ngIf="notificationIsActive" class="ps-notifications-container" [pendingInvitations]="user.pendingInvitations"> </notification>

@@ -7,7 +7,8 @@ const initialState: User = {
   id: null,
   email: null,
   name: null,
-  profileImage: null
+  profileImage: null,
+  pendingInvitations: []
 };
 
 export default function reducer(state = initialState, action: Action) {
