@@ -36,10 +36,8 @@ export class ProjectDetailsComponent implements OnInit {
   updateProject() {
     const formData = new FormData();
 
-    formData.append('project', JSON.stringify({name: this.clonedProject.name}));
-    formData.append('image', this.projectImageCanvasElem.nativeElement.mozGetAsFile('projectImage.png'));
-    this.projectServices.update(formData, this.project.id)
-      .then((response) => {
+    if (nameIsDirty || imageIsDirty) {
+      this.projectServices.update(formData, this.project.id).then((response) => {
         // TODO: arminghm 19 Jul 2017 show a success message
         this.clonedProject.image = response[0].image;
         this.store.dispatch(this.projectsAction.updateProject(this.clonedProject))

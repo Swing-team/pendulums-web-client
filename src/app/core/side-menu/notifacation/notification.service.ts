@@ -27,7 +27,7 @@ export class NotificationService {
     return this.http
       .get(this.config.apiEndpoint + '/projects/' + projectId + '/deny-invitation', {withCredentials: true})
       .toPromise()
-      .then(response => response)
+      .then(response => projectId)
       .catch(this.handleError);
   }
 
