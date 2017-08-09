@@ -41,7 +41,7 @@ export class CreateProjectComponent {
       console.log('error is: ', 'name is empty!');
     } else {
       this.formSubmitted = true;
-      delete this.project['_id'];
+      delete this.project['id'];
       delete this.project['image'];
       const formData = new FormData();
       formData.append('project', JSON.stringify(this.project));

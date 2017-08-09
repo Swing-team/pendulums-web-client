@@ -41,7 +41,7 @@ export class ProjectDetailsComponent implements OnInit {
     }
 
     if (nameIsDirty || imageIsDirty) {
-      this.projectServices.update(formData, this.project._id).then((response) => {
+      this.projectServices.update(formData, this.project.id).then((response) => {
         // TODO: arminghm 19 Jul 2017 show a success message
         this.formSubmitted = false;
       })
