@@ -43,6 +43,7 @@ export class UserProfileComponent implements OnInit {
       const formData = new FormData();
       formData.append('user', JSON.stringify({name: this.userEdit.name}));
       this.UserService.update(formData).then((user) => {
+        user.pendingInvitations = this.user.pendingInvitations;
         this.store.dispatch(this.userActions.loadUser(user));
       })
         .catch(error => {
