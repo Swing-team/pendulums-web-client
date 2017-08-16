@@ -15,15 +15,15 @@
     </div>
   </figure>
   <div class="column ps-project-footer-container">
-    <div class="has-text-left ps-title" [ngClass]="{'ps-task-input-container': startTask}">
+    <div class="has-text-left ps-title" [ngClass]="{'ps-task-input-container': activityStarted}">
       <span class="subtitle is-inline-block">
-        <p *ngIf="!startTask">{{project.name}}</p>
+        <p *ngIf="!activityStarted">{{project.name}}</p>
         <input [(ngModel)]="taskName" class="input ps-task-input"
-               placeholder="Task Name" type="text" *ngIf="startTask">
+               placeholder="Task Name" type="text" *ngIf="activityStarted">
       </span>
-      <span class="is-pulled-right is-inline-block ps-item-card-button" (click)="toggleTimer()">
-        <span *ngIf="startTask" class="icon-stop"></span>
-        <span *ngIf="!startTask" class="icon-play"></span>
+      <span class="is-pulled-right is-inline-block ps-item-card-button">
+        <span *ngIf="activityStarted" class="icon-stop"  (click)="stopActivity()"></span>
+        <span *ngIf="!activityStarted" class="icon-play"  (click)="startActivity()"></span>
       </span>
     </div>
     <div>
