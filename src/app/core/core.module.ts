@@ -8,6 +8,7 @@ import { APP_CONFIG, CONFIG }           from '../app.config';
 import reducers                         from '../shared/state/appState';
 import { UserActions }                  from '../shared/state/user/user.actions';
 import { ProjectsActions }              from '../shared/state/project/projects.actions';
+import {ActivityActions}                from '../shared/state/activity/activity.actions';
 
 import { UserService }                  from './user.service';
 import { AuthenticationService }        from './authentication.service';
@@ -51,6 +52,7 @@ import {ImageCropperComponent}          from 'ng2-img-cropper';
     AuthenticationService,
     UserActions,
     ProjectsActions,
+    ActivityActions
   ],
   entryComponents: [
     ModalComponent,

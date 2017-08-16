@@ -10,9 +10,11 @@ import {AppState} from '../shared/state/appState';
 })
 export class DashboardComponent {
   private projects: Observable<any>;
+  private currentActivity: Observable<any>;
 
   constructor (private store: Store<AppState>) {
     this.projects = store.select('projects');
+    this.currentActivity = store.select('activity');
   }
 }
 

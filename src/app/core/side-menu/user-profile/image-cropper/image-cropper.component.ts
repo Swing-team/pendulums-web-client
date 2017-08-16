@@ -52,7 +52,7 @@ export class ImgCropperComponent {
     formData.append('user', JSON.stringify({}));
     formData.append('image', this.croppedImageFile);
     this.UserService.update(formData).then((user) => {
-      this.store.dispatch(this.userActions.loadUser(user));
+      this.store.dispatch(this.userActions.updateUserImage(user.profileImage));
     })
       .catch(error => {
         console.log('error is: ', error);
