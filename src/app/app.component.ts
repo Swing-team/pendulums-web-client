@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
@@ -9,6 +9,7 @@ import { UserActions } from './shared/state/user/user.actions';
 import { AuthenticationService } from './core/authentication.service';
 import { UserService } from './core/user.service';
 import {ProjectsActions} from './shared/state/project/projects.actions';
+import {ActivityActions} from './shared/state/activity/activity.actions';
 
 @Component({
   selector: 'app-root',
@@ -25,6 +26,7 @@ export class AppComponent implements OnInit {
     private userService: UserService,
     private userActions: UserActions,
     private projectsActions: ProjectsActions,
+    private activityActions: ActivityActions,
     private store: Store<AppState>
   ) {
     this.user = store.select('user');
@@ -36,6 +38,7 @@ export class AppComponent implements OnInit {
       .then((user) => {
         this.store.dispatch(this.userActions.loadUser(user));
         this.store.dispatch(this.projectsActions.loadProjects(user.projects));
+        this.store.dispatch(this.activityActions.loadactivity(user.currentActivities[0]));
         this.router.navigate(['dashboard']);
       })
       .catch(error => {
@@ -48,6 +51,7 @@ export class AppComponent implements OnInit {
       .then(() => {
         this.store.dispatch(this.userActions.clearUser());
         this.store.dispatch(this.projectsActions.clearProjects());
+        this.store.dispatch(this.activityActions.clearActivity());
         this.router.navigate(['signIn']);
       });
   }

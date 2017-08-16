@@ -1,7 +1,9 @@
-import {Component, Inject, Input}        from '@angular/core';
-import {Observable}                      from 'rxjs/Observable';
-import {APP_CONFIG}                      from '../../../app.config';
-import {Project} from '../../../shared/state/project/project.model';
+import {Component, Input, ViewContainerRef} from '@angular/core';
+import {Observable}                                 from 'rxjs/Observable';
+import {ModalService}                               from '../../../core/modal/modal.service';
+import {CreateProjectComponent}                     from '../create-project/create-project.component';
+import {Project}                                    from '../../../shared/state/project/project.model';
+import {Activity} from '../../../shared/state/activity/activity.model';
 
 @Component({
   selector: 'list-of-project',
@@ -10,8 +12,8 @@ import {Project} from '../../../shared/state/project/project.model';
 })
 
 export class ListOfProjectComponent {
-  @Input() projects: Observable<Project>;
-  @Input() user: Observable<Project>;
+  @Input() projects: Array<Project>;
+  @Input() currentActivity: Observable<Activity>;
 
   constructor (
     private store: Store<AppState>,
