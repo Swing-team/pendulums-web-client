@@ -19,6 +19,7 @@ import {ActivityActions} from './shared/state/activity/activity.actions';
 export class AppComponent implements OnInit {
   private user: Observable<any>;
   private projects: Observable<any>;
+  private currentActivity: Observable<any>;
 
   constructor(
     private authService: AuthenticationService,
@@ -31,6 +32,7 @@ export class AppComponent implements OnInit {
   ) {
     this.user = store.select('user');
     this.projects = store.select('projects');
+    this.currentActivity = store.select('activity');
   }
 
   ngOnInit(): void {

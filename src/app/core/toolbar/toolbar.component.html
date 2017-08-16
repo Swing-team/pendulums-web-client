@@ -7,7 +7,7 @@
   </div>
 
   <div class="nav-item">
-    <div class="ps-nav-right-item columns is-mobile">
+    <div *ngIf="!currentActivityCopy.startedAt" class="ps-nav-right-item columns is-mobile">
       <input class="input is-small" placeholder="Task name" type="text">
       <span>/</span>
       <swing-select [items]="projects.entities | objectKeys"
@@ -16,8 +16,15 @@
                     [label]="'Select Project'"
                     class="ps-toolbar-select"></swing-select>
     </div>
+    <div *ngIf="currentActivityCopy.startedAt" class="ps-nav-right-item columns is-mobile">
+      <span>{{currentActivityCopy.name}}</span>
+      <span>/</span>
+      <span>{{selectedProject.name ? selectedProject.name : ''}}</span>
+      <span>{{timeDuration}}</span>
+    </div>
     <div class="ps-toolbar-play">
-      <span class="icon-play"></span>
+      <span *ngIf="!currentActivityCopy.startedAt" class="icon-play"></span>
+      <span *ngIf="currentActivityCopy.startedAt" class="icon-stop"></span>
     </div>
   </div>
 </nav>
