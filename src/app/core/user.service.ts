@@ -23,7 +23,7 @@ export class UserService {
 
   update(user): Promise<any> {
     return this.http
-      .put(this.config.apiEndpoint + '/user' , user,{withCredentials: true})
+      .put(this.config.apiEndpoint + '/user' , user, this.config.httpOptions)
       .toPromise()
       .then(response => response.json().user as User)
       .catch(this.handleError);
