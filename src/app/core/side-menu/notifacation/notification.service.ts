@@ -17,7 +17,7 @@ export class NotificationService {
 
   accept(projectId): Promise<Project> {
     return this.http
-      .get(this.config.apiEndpoint + '/projects/' + projectId + '/accept-invitation', {withCredentials: true})
+      .get(this.config.apiEndpoint + '/projects/' + projectId + '/accept-invitation', this.config.httpOptions)
       .toPromise()
       .then(response => response.json() as Project)
       .catch(this.handleError);
@@ -25,7 +25,7 @@ export class NotificationService {
 
   deny(projectId): Promise<Project> {
     return this.http
-      .get(this.config.apiEndpoint + '/projects/' + projectId + '/deny-invitation', {withCredentials: true})
+      .get(this.config.apiEndpoint + '/projects/' + projectId + '/deny-invitation', this.config.httpOptions)
       .toPromise()
       .then(response => projectId)
       .catch(this.handleError);
