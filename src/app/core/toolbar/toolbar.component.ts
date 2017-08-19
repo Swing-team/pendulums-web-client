@@ -21,16 +21,6 @@ export class ToolbarComponent implements OnInit {
 
   constructor (@Inject(APP_CONFIG) private config) {
     this.selectedProject = new Project();
-    setInterval(() => {
-      const startedAt = +this.currentActivityCopy.startedAt;
-      const now = Date.now();
-      const duration = now - startedAt;
-      console.log(startedAt);
-      console.log(now);
-      console.log(duration);
-      this.timeDuration = this.getTime(duration);
-
-    }, 1000);
   }
 
   ngOnInit() {
@@ -38,16 +28,42 @@ export class ToolbarComponent implements OnInit {
       this.currentActivity.subscribe(currentActivity => {
         this.currentActivityCopy = currentActivity;
         this.selectedProject = this.projects.entities[currentActivity.project];
+        if (this.currentActivityCopy.startedAt) {
+          let startedAt;
+          let now;
+          let duration;
+          setInterval(() => {
+            startedAt = Number(this.currentActivityCopy.startedAt);
+            now = Date.now();
+            duration = now - startedAt;
+            this.timeDuration = this.getTime(duration);
+          }, 1000);
+        }
       });
     }
   }
 
   getTime (duration) {
-    const seconds = (duration / 1000).toFixed(1);
-    const minutes = (duration / (1000 * 60)).toFixed(1);
-    const hours = (duration / (1000 * 60 * 60)).toFixed(1);
+    let result: string;
+    let x = duration / 1000;
+    const seconds = Math.floor(x % 60);
+    // minutes
+    x /= 60;
+    const minutes = Math.floor(x % 60);
+    // hours
+    x /= 60;
+    const hours = Math.floor(x);
 
-    return hours + ':' + minutes + ':' + seconds;
+    result = hours + ' : ' + minutes + ' : ' + seconds ;
+
+    if (minutes !== 0 && hours === 0) {
+      result = minutes + ' : ' + seconds ;
+    }
+
+    if (minutes === 0 && hours === 0) {
+      result = seconds + ' sec';
+    }
+    return result;
   };
 
   projectSelected(event) {
