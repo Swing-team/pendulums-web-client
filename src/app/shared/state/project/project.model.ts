@@ -3,6 +3,7 @@ export class Project {
   name: string = null;
   image: string = null;
   invitedUsers = [];
+  activities = [];
   owner: object;
   teamMembers: Array<object>
 

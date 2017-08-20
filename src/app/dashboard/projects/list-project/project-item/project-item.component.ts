@@ -20,25 +20,14 @@ export class ProjectItemComponent implements OnInit {
   private activityStarted = false;
   private taskName: string;
   private activity: Activity;
-  private activities = [
-    {
-      name: 'first activity',
-      hour: '1',
-    },
-    {
-      name: 'second activity second activity',
-      hour: '2',
-    },
-    {
-      name: 'third activity',
-      hour: '12',
-    },
-  ];
+  private activities: any;
+
   constructor (@Inject(APP_CONFIG) private config,
                private activityService: ActivityService,
                private store: Store<AppState>,
                private activityActions: ActivityActions) {
     this.taskName = 'Untitled task';
+    this.activities = [];
   }
 
   ngOnInit() {
@@ -52,12 +41,17 @@ export class ProjectItemComponent implements OnInit {
         this.currentActivityCopy = currentActivity;
       });
     }
+    if (this.project.activities) {
+      this.project.activities.map((activity) => {
+        this.calculateActivityDuration(activity);
+      });
+    }
   }
 
   startActivity() {
     if (this.currentActivityCopy.startedAt) {
       this.currentActivityCopy.stoppedAt = Date.now().toString();
-      this.activityService.edit(this.project.id, this.currentActivityCopy).then(() => {
+      this.activityService.editCurrentActivity(this.project.id, this.currentActivityCopy).then(() => {
         this.store.dispatch(this.activityActions.clearActivity());
         this.activity = new Activity();
         this.activity.name = this.taskName;
@@ -88,8 +82,9 @@ export class ProjectItemComponent implements OnInit {
   stopActivity() {
     if (this.currentActivity) {
       this.currentActivityCopy.stoppedAt = Date.now().toString();
-      this.activityService.edit(this.project.id, this.currentActivityCopy).then((activity) => {
+      this.activityService.editCurrentActivity(this.project.id, this.currentActivityCopy).then((activity) => {
         this.store.dispatch(this.activityActions.clearActivity());
+        this.taskName = 'Untitled task';
       })
         .catch(error => {
           console.log('error is: ', error);
@@ -98,6 +93,44 @@ export class ProjectItemComponent implements OnInit {
   }
 
   nameActivity() {
-
+    if (this.currentActivity) {
+      this.currentActivityCopy.name = this.taskName;
+      this.activityService.editCurrentActivity(this.project.id, this.currentActivityCopy).then((activity) => {
+        this.store.dispatch(this.activityActions.loadactivity(activity));
+      })
+        .catch(error => {
+          console.log('error is: ', error);
+        });
+    }
   }
+
+  calculateActivityDuration (activity) {
+    const duration = Number(activity.stoppedAt) - Number(activity.startedAt);
+    let result: any;
+    result = {
+      name: activity.name,
+      hour: 0
+    };
+    let x = duration / 1000;
+    const seconds = Math.floor(x % 60);
+    // minutes
+    x /= 60;
+    const minutes = Math.floor(x % 60);
+    // hours
+    x /= 60;
+    const hours = Math.floor(x);
+
+    if (hours !== 0) {
+      result.hour = hours + ':' + minutes ;
+    }
+
+    if (minutes !== 0 && hours === 0) {
+      result.hour = minutes + ' min' ;
+    }
+
+    if (minutes === 0 && hours === 0) {
+      result.hour = seconds + ' sec';
+    }
+    this.activities.push(result);
+  };
 }

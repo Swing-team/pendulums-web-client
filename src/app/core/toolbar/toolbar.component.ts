@@ -1,9 +1,13 @@
 import {Component, Inject, Input, OnInit} from '@angular/core';
-import {Observable}               from 'rxjs/Observable';
-import {APP_CONFIG}               from '../../app.config';
-import {Activity} from '../../shared/state/activity/activity.model';
-import {Project} from '../../shared/state/project/project.model';
-import {Projects} from '../../shared/state/project/projects.model';
+import {Observable}                       from 'rxjs/Observable';
+import {APP_CONFIG}                       from '../../app.config';
+import {Activity}                         from '../../shared/state/activity/activity.model';
+import {Project}                          from '../../shared/state/project/project.model';
+import {Projects}                         from '../../shared/state/project/projects.model';
+import {ActivityService}                  from 'app/shared/activity/activity.service';
+import {Store}                            from '@ngrx/store';
+import {ActivityActions}                  from 'app/shared/state/activity/activity.actions';
+import {AppState}                         from 'app/shared/state/appState';
 
 @Component({
   selector: 'toolbar',
@@ -16,10 +20,13 @@ export class ToolbarComponent implements OnInit {
   @Input() currentActivity: Observable<Activity>;
   private currentActivityCopy: Activity;
   private selectedProject: Project;
+  private taskName: string;
   private timeDuration: string;
 
-
-  constructor (@Inject(APP_CONFIG) private config) {
+  constructor (@Inject(APP_CONFIG) private config,
+               private activityService: ActivityService,
+               private store: Store<AppState>,
+               private activityActions: ActivityActions) {
     this.selectedProject = new Project();
   }
 
@@ -68,6 +75,40 @@ export class ToolbarComponent implements OnInit {
 
   projectSelected(event) {
     console.log(event.index);
+    this.selectedProject = event.selectedItem;
     console.log(event.selectedItem);
+  }
+
+  startActivity() {
+    if (this.selectedProject) {
+      if (!this.taskName) {
+        this.taskName = 'Untiteld name';
+      }
+      let activity = new Activity();
+      activity.project = this.selectedProject.id;
+      activity.name = this.taskName;
+      activity.startedAt = Date.now().toString();
+      this.activityService.create(this.selectedProject.id, JSON.stringify({activity: activity})).then((activity) => {
+        this.store.dispatch(this.activityActions.loadactivity(activity));
+      })
+        .catch(error => {
+          console.log('error is: ', error);
+        });
+    } else {
+      console.log('error is: ', 'task should run on the distinct project');
+    }
+  }
+
+  stopActivity() {
+    if (this.currentActivity) {
+      this.currentActivityCopy.stoppedAt = Date.now().toString();
+      this.activityService.editCurrentActivity(this.currentActivityCopy.project, this.currentActivityCopy).then((activity) => {
+        this.store.dispatch(this.activityActions.clearActivity());
+        this.taskName = null;
+      })
+        .catch(error => {
+          console.log('error is: ', error);
+        });
+    }
   }
 }
