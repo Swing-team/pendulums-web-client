@@ -1,12 +1,13 @@
-import {Component, DoCheck, Inject, Input, OnChanges, OnInit, SimpleChange} from '@angular/core';
-import {APP_CONFIG} from '../../../../app.config';
-import {Project} from '../../../../shared/state/project/project.model';
-import {ActivityService} from '../../../../shared/activity/activity.service';
-import {Store} from '@ngrx/store';
-import {AppState} from '../../../../shared/state/appState';
-import {Observable, } from 'rxjs/Observable';
-import {Activity} from '../../../../shared/state/activity/activity.model';
-import {ActivityActions} from '../../../../shared/state/activity/activity.actions';
+import {Component, Inject, Input, OnInit}   from '@angular/core';
+import {APP_CONFIG}                         from '../../../../app.config';
+import {Project}                            from '../../../../shared/state/project/project.model';
+import {ActivityService}                    from '../../../../shared/activity/activity.service';
+import {Store}                              from '@ngrx/store';
+import {AppState}                           from '../../../../shared/state/appState';
+import {Observable}                         from 'rxjs/Observable';
+import {Activity}                           from '../../../../shared/state/activity/activity.model';
+import {ActivityActions}                    from '../../../../shared/state/activity/activity.actions';
+import {ProjectsActions}                    from '../../../../shared/state/project/projects.actions';
 
 @Component({
   selector: 'project-item',
@@ -25,7 +26,8 @@ export class ProjectItemComponent implements OnInit {
   constructor (@Inject(APP_CONFIG) private config,
                private activityService: ActivityService,
                private store: Store<AppState>,
-               private activityActions: ActivityActions) {
+               private activityActions: ActivityActions,
+               private projectsActions: ProjectsActions) {
     this.taskName = 'Untitled task';
     this.activities = [];
   }
@@ -84,6 +86,7 @@ export class ProjectItemComponent implements OnInit {
       this.currentActivityCopy.stoppedAt = Date.now().toString();
       this.activityService.editCurrentActivity(this.project.id, this.currentActivityCopy).then((activity) => {
         this.store.dispatch(this.activityActions.clearActivity());
+        this.store.dispatch(this.projectsActions.updateProjectActivity(this.project.id, activity));
         this.taskName = 'Untitled task';
       })
         .catch(error => {
