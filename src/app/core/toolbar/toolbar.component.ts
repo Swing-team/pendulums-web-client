@@ -8,6 +8,7 @@ import {ActivityService}                  from 'app/shared/activity/activity.ser
 import {Store}                            from '@ngrx/store';
 import {ActivityActions}                  from 'app/shared/state/activity/activity.actions';
 import {AppState}                         from 'app/shared/state/appState';
+import {ProjectsActions}                  from '../../shared/state/project/projects.actions';
 
 @Component({
   selector: 'toolbar',
@@ -26,7 +27,8 @@ export class ToolbarComponent implements OnInit {
   constructor (@Inject(APP_CONFIG) private config,
                private activityService: ActivityService,
                private store: Store<AppState>,
-               private activityActions: ActivityActions) {
+               private activityActions: ActivityActions,
+               private projectsActions: ProjectsActions) {
     this.selectedProject = new Project();
   }
 
@@ -104,6 +106,7 @@ export class ToolbarComponent implements OnInit {
       this.currentActivityCopy.stoppedAt = Date.now().toString();
       this.activityService.editCurrentActivity(this.currentActivityCopy.project, this.currentActivityCopy).then((activity) => {
         this.store.dispatch(this.activityActions.clearActivity());
+        this.store.dispatch(this.projectsActions.updateProjectActivity(activity.project, activity));
         this.taskName = null;
       })
         .catch(error => {

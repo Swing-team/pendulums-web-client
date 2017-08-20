@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Action }     from '@ngrx/store';
 import { Projects }   from './projects.model';
 import { Project }    from './project.model';
+import {Activity} from "../activity/activity.model";
 
 @Injectable()
 export class ProjectsActions {
@@ -9,6 +10,7 @@ export class ProjectsActions {
   static CLEAR_PROJECTS = 'CLEAR_PROJECTS';
   static ADD_PROJECT = 'ADD_PROJECT';
   static REMOVE_PROJECT = 'REMOVE_PROJECT';
+  static UPDATE_PROJECT_ACTIVITIES = 'UPDATE_PROJECT_ACTIVITIES';
 
   loadProjects(projects: Projects): Action {
     return {
@@ -34,6 +36,16 @@ export class ProjectsActions {
     return {
       type: ProjectsActions.REMOVE_PROJECT,
       payload: project
+    };
+  }
+
+  updateProjectActivity(projectId: string, activity: Activity): Action {
+    return {
+      type: ProjectsActions.UPDATE_PROJECT_ACTIVITIES,
+      payload: {
+        projectId,
+        activity
+      }
     };
   }
 }
