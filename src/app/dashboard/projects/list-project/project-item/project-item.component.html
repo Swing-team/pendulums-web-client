@@ -18,10 +18,11 @@
     <div class="has-text-left ps-title" [ngClass]="{'ps-task-input-container': activityStarted}">
       <span class="subtitle is-inline-block">
         <p *ngIf="!activityStarted">{{project.name}}</p>
-        <input [(ngModel)]="taskName" class="input ps-task-input"
+        <input [(ngModel)]="taskName" class="input ps-task-input" (change)="nameActivity()"
                placeholder="Task Name" type="text" *ngIf="activityStarted">
       </span>
-      <span class="is-pulled-right is-inline-block ps-item-card-button">
+      <span class="is-pulled-right is-inline-block ps-item-card-button"
+            [ngClass]="{'ps-item-card-stop': activityStarted}">
         <span *ngIf="activityStarted" class="icon-stop"  (click)="stopActivity()"></span>
         <span *ngIf="!activityStarted" class="icon-play"  (click)="startActivity()"></span>
       </span>
@@ -35,14 +36,21 @@
       </div>
     </div>
     <div class="ps-title">
-      <table class="table ps-item-table">
+      <table *ngIf="project.activities" class="table ps-item-table">
         <tbody>
-        <tr *ngFor="let activity of activities |slice:0:2">
+        <tr *ngFor="let activity of activities">
           <td>{{activity.name}}</td>
           <td class="row-narrow has-text-right">
             <i class="icon-stopwatch"></i>
             {{activity.hour}}
           </td>
+        </tr>
+        </tbody>
+      </table>
+      <table *ngIf="!project.activities" class="table ps-item-table">
+        <tbody>
+        <tr>
+          <td>There is no activity yet!</td>
         </tr>
         </tbody>
       </table>

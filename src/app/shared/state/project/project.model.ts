@@ -5,9 +5,9 @@ export class Project {
   name: string = null;
   image: string = null;
   invitedUsers = [];
-  owner: TeamMember;
-  teamMembers: Array<TeamMember>;
-  admins: Array<TeamMember>;
+  activities = [];
+  owner: object;
+  teamMembers: Array<object>
 
   constructor() {}
 }

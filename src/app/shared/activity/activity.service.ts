@@ -19,9 +19,9 @@ export class ActivityService {
       .catch(this.handleError);
   }
 
-  edit(projectId, activity): Promise<any> {
+  editCurrentActivity(projectId, activity): Promise<any> {
     return this.http
-      .put(this.config.apiEndpoint + '/projects/' + projectId + '/activities/' + activity.id ,
+      .put(this.config.apiEndpoint + '/projects/' + projectId + '/activities/current/' + activity.id ,
         JSON.stringify({activity: activity}),
         {withCredentials: true})
       .toPromise()
