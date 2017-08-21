@@ -3,6 +3,7 @@ import { Http } from '@angular/http';
 
 import 'rxjs/add/operator/toPromise';
 import { APP_CONFIG } from '../../app.config';
+import {Activity} from "../state/activity/activity.model";
 
 @Injectable()
 export class ActivityService {
@@ -13,9 +14,9 @@ export class ActivityService {
 
   create(projectId, activity): Promise<any> {
     return this.http
-      .post(this.config.apiEndpoint + '/projects/' + projectId + '/activities' , activity , {withCredentials: true})
+      .post(this.config.apiEndpoint + '/projects/' + projectId + '/activities' , activity , this.config.httpOptions)
       .toPromise()
-      .then(response => response.json())
+      .then(response => response.json() as Activity)
       .catch(this.handleError);
   }
 
@@ -23,7 +24,33 @@ export class ActivityService {
     return this.http
       .put(this.config.apiEndpoint + '/projects/' + projectId + '/activities/current/' + activity.id ,
         JSON.stringify({activity: activity}),
-        {withCredentials: true})
+        this.config.httpOptions)
+      .toPromise()
+      .then(response => response.json() as Activity)
+      .catch(this.handleError);
+  }
+
+  editOldActivity(projectId, activity): Promise<any> {
+    return this.http
+      .put(this.config.apiEndpoint + '/projects/' + projectId + '/activities/old/' + activity.id ,
+        JSON.stringify({activity: activity}),
+        this.config.httpOptions)
+      .toPromise()
+      .then(response => response.json() as Activity)
+      .catch(this.handleError);
+  }
+
+  getActivities(projectId): Promise<Activity[]> {
+    return this.http
+      .get(this.config.apiEndpoint + '/projects/' + projectId + '/activities' , this.config.httpOptions)
+      .toPromise()
+      .then(response => response.json() as Activity [])
+      .catch(this.handleError);
+  }
+
+  delete(projectId, activityId): Promise<any> {
+    return this.http
+      .delete(this.config.apiEndpoint + '/projects/' + projectId + '/activities/' + activityId , this.config.httpOptions)
       .toPromise()
       .then(response => response.json())
       .catch(this.handleError);
