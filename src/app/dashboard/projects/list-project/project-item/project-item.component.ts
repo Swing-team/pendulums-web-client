@@ -8,6 +8,7 @@ import {Observable}                         from 'rxjs/Observable';
 import {Activity}                           from '../../../../shared/state/activity/activity.model';
 import {ActivityActions}                    from '../../../../shared/state/activity/activity.actions';
 import {ProjectsActions}                    from '../../../../shared/state/project/projects.actions';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'project-item',
@@ -27,7 +28,8 @@ export class ProjectItemComponent implements OnInit {
                private activityService: ActivityService,
                private store: Store<AppState>,
                private activityActions: ActivityActions,
-               private projectsActions: ProjectsActions) {
+               private projectsActions: ProjectsActions,
+               private router: Router) {
     this.taskName = 'Untitled task';
     this.activities = [];
   }
@@ -136,4 +138,8 @@ export class ProjectItemComponent implements OnInit {
     }
     this.activities.push(result);
   };
+
+  goToActivities(): void{
+    this.router.navigate(['/activities', this.project.id]);
+  }
 }
