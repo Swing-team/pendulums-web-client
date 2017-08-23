@@ -1,3 +1,17 @@
-<div *ngFor='let activity of projectActivities' class="column is-4-widescreen is-6-desktop is-6-tablet">
-  <activity-item [activity]="activity"> </activity-item>
+<div class="columns is-mobile">
+  <div class="column is-4 is-offset-4">
+    <div *ngFor='let group of projectActivities; trackBy: let j = index'>
+      <div class="ps-time-line-header">
+        {{group.date}}
+      </div>
+      <div class="ps-card-container">
+        <div *ngFor='let activity of group.activities; trackBy: let i = index'>
+          <activity-item [activity]="activity" (onDeleteClicked)="deleteActivity(activity, j, i)"></activity-item>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+
+
+
