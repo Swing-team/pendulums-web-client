@@ -39,6 +39,7 @@ export class ProjectItemComponent implements OnInit {
       this.currentActivity.subscribe(currentActivity => {
         if (currentActivity.project === this.project.id) {
           this.activityStarted = true;
+          this.taskName = currentActivity.name;
         } else {
           this.activityStarted = false;
         }

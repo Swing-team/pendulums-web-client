@@ -1,5 +1,7 @@
 import 'rxjs/add/operator/switchMap';
-import { Component, Inject, Input, OnInit } from '@angular/core';
+import {Observable}                                 from 'rxjs/Observable';
+import { Component, Inject, OnInit } from '@angular/core';
+import * as _ from 'lodash';
 import { APP_CONFIG }                       from '../../app.config';
 import { ActivityService }                  from '../../shared/activity/activity.service';
 import { Activity }                         from '../../shared/state/activity/activity.model';
@@ -11,7 +13,10 @@ import {ActivatedRoute, ParamMap}           from '@angular/router';
   styleUrls: ['./activities.component.sass']
 })
 export class ActivitiesComponent implements OnInit {
-  private projectActivities: Activity[];
+  private projectActivities: {
+    date: any
+    activities: any
+  }[];
 
   constructor (@Inject(APP_CONFIG) private config,
                private route: ActivatedRoute,
@@ -21,11 +26,27 @@ export class ActivitiesComponent implements OnInit {
     this.route.paramMap
       .switchMap((params: ParamMap) => this.activityService.getActivities(params.get('projectId')))
       .subscribe((activities) => {
-        this.projectActivities = activities;
+        this.projectActivities = _.chain(activities)
+          .groupBy((activity: Activity) => {
+            return new Date(Number(activity.stoppedAt)).toDateString();
+          })
+          .map((value, key) => {
+            return {date: key, activities: value};
+          })
+          .value();
         console.log(this.projectActivities);
-      });
+    });
   }
 
+  deleteActivity(activity , index1, index2) {
+    this.activityService.delete(activity.project, activity.id).then(() => {
+      this.projectActivities[index1].activities.splice(index2, 1);
+      console.log('activity deleted successfully');
+    })
+      .catch(error => {
+        console.log('error is: ', error);
+      });
+  }
 }
 
 

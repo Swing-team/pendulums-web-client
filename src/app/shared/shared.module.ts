@@ -7,7 +7,7 @@ import { SwingSelectComponent }   from './swing-select/swing-select.component';
 import { SwingSwitchComponent }   from './swing-switch/swing-switch.component';
 import { IdenticonHashDirective } from './identicon-hash.directive';
 import { ObjectKeysPipe }         from './object-keys.pipe';
-import {ActivityService}          from './activity/activity.service';
+import { ActivityService }        from './activity/activity.service';
 
 @NgModule({
   imports:      [ CommonModule ],
