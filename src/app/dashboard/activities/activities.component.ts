@@ -1,11 +1,11 @@
 import 'rxjs/add/operator/switchMap';
-import {Observable}                                 from 'rxjs/Observable';
-import { Component, Inject, OnInit } from '@angular/core';
 import * as _ from 'lodash';
+import { Component, Inject, OnInit }        from '@angular/core';
 import { APP_CONFIG }                       from '../../app.config';
 import { ActivityService }                  from '../../shared/activity/activity.service';
 import { Activity }                         from '../../shared/state/activity/activity.model';
 import {ActivatedRoute, ParamMap}           from '@angular/router';
+import { Location }                         from '@angular/common';
 
 @Component({
   selector: 'activities',
@@ -20,7 +20,8 @@ export class ActivitiesComponent implements OnInit {
 
   constructor (@Inject(APP_CONFIG) private config,
                private route: ActivatedRoute,
-               private activityService: ActivityService) {}
+               private activityService: ActivityService,
+               private location: Location) {}
 
   ngOnInit() {
     this.route.paramMap
@@ -34,7 +35,6 @@ export class ActivitiesComponent implements OnInit {
             return {date: key, activities: value};
           })
           .value();
-        console.log(this.projectActivities);
     });
   }
 
@@ -46,6 +46,10 @@ export class ActivitiesComponent implements OnInit {
       .catch(error => {
         console.log('error is: ', error);
       });
+  }
+
+  goBack() {
+    this.location.back();
   }
 }
 
