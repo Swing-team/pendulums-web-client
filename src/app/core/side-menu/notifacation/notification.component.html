@@ -1,0 +1,31 @@
+<div class="box">
+  <article class="media">
+    <div class="media-content">
+      <div class="content has-text-centered" *ngFor='let project of pendingInvitations'>
+        <p>
+          you have invited to <strong>{{project.name}}</strong> project.
+        </p>
+        <nav class="level is-mobile">
+            <a class="level-item button is-primary is-outlined" (click)="accept(project.id)">
+              <span class="icon">
+               <i class="icon-check"></i>
+               </span>
+              <span>accept</span>
+            </a>
+            <a class="level-item button is-danger is-outlined" (click)="deny(project.id)">
+              <span class="icon">
+               <i class="icon-cancel"></i>
+               </span>
+              <span>deny</span>
+            </a>
+        </nav>
+        <hr>
+      </div>
+      <div class="content" *ngIf="pendingInvitations.length == 0">
+        <p>
+          You don't have any new notification!
+        </p>
+      </div>
+    </div>
+  </article>
+</div>

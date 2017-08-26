@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { Action }     from '@ngrx/store';
 import { Projects }   from './projects.model';
 import { Project }    from './project.model';
-import {User} from '../user/user.model';
+import {Activity}     from '../activity/activity.model';
+import {User}         from '../user/user.model';
 
 @Injectable()
 export class ProjectsActions {
@@ -14,6 +15,7 @@ export class ProjectsActions {
   static UPDATE_PROJECT = 'UPDATE_PROJECT';
   static REMOVE_INVITED_USER = 'REMOVE_INVITED_USER';
   static CHANGE_MEMBER_ROLE = 'CHANGE_MEMBER_ROLE';
+  static UPDATE_PROJECT_ACTIVITIES = 'UPDATE_PROJECT_ACTIVITIES';
 
   loadProjects(projects: Projects): Action {
     return {
@@ -76,6 +78,16 @@ export class ProjectsActions {
         projectId,
         userId,
         updatedRole
+      }
+    };
+  }
+
+  updateProjectActivity(projectId: string, activity: Activity): Action {
+    return {
+      type: ProjectsActions.UPDATE_PROJECT_ACTIVITIES,
+      payload: {
+        projectId,
+        activity
       }
     };
   }

@@ -5,6 +5,7 @@ export class Project {
   name: string = null;
   image: string = null;
   invitedUsers = [];
+  activities = [];
   owner: TeamMember;
   teamMembers: Array<TeamMember>;
   admins: Array<TeamMember>;

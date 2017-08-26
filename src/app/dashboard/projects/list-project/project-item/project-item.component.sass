@@ -39,6 +39,9 @@ $item-size: 180px
   background-color: rgba(0, 0, 0, 0.5)
   cursor: pointer
 
+.ps-item-card-stop
+  padding-left: unset
+
 .ps-item-table
   background-color: inherit
   table-layout: fixed
@@ -51,7 +54,8 @@ $item-size: 180px
     overflow: hidden
     text-overflow: ellipsis
     &.row-narrow
-      width: 50px
+      width: 80px
+      text-align: left !important
   tr
     &:hover
       background-color: transparent
@@ -125,6 +129,7 @@ $item-size: 180px
   box-shadow: unset !important
   width: 95%
   max-width: 95%
+  color: $paper
 
 .ps-task-input-container
   display: inline-flex

@@ -21,6 +21,14 @@ export class UserService {
       .catch(this.handleError);
   }
 
+  update(user): Promise<any> {
+    return this.http
+      .put(this.config.apiEndpoint + '/user' , user, this.config.httpOptions)
+      .toPromise()
+      .then(response => response.json().user as User)
+      .catch(this.handleError);
+  }
+
   private handleError(error: any): Promise<any> {
     console.error('An error occurred', error);
     return Promise.reject(error);

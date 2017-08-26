@@ -7,13 +7,22 @@ const initialState: User = {
   id: null,
   email: null,
   name: null,
-  profileImage: null
+  profileImage: null,
+  pendingInvitations: []
 };
 
 export default function reducer(state = initialState, action: Action) {
   switch (action.type) {
     case UserActions.LOAD_USER: {
       return action.payload;
+    }
+
+    case UserActions.UPDATE_USER_NAME: {
+      return Object.assign({}, state , { name: action.payload});
+    }
+
+    case UserActions.UPDATE_USER_IMAGE: {
+      return Object.assign({}, state , { profileImage: action.payload});
     }
 
     case UserActions.CLEAR_USER: {

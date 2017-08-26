@@ -6,11 +6,27 @@ import {User} from './user.model';
 export class UserActions {
   static LOAD_USER = 'LOAD_USER';
   static CLEAR_USER = 'CLEAR_USER';
+  static UPDATE_USER_NAME = 'UPDATE_USER_NAME';
+  static UPDATE_USER_IMAGE = 'UPDATE_USER_IMAGE';
 
   loadUser(user: User): Action {
     return {
       type: UserActions.LOAD_USER,
       payload: user
+    };
+  }
+
+  updateUserName(userName: string): Action {
+    return {
+      type: UserActions.UPDATE_USER_NAME,
+      payload: userName
+    };
+  }
+
+  updateUserImage(userImage: string): Action {
+    return {
+      type: UserActions.UPDATE_USER_IMAGE,
+      payload: userImage
     };
   }
 

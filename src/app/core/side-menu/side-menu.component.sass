@@ -1,6 +1,54 @@
 @import "../../../sass/variables"
 
+$item-size: 64px
+
 .menu
-  width: 64px
+  width: $item-size
   height: 100%
-  background-color: $primary
+  background-color: $primary-light
+  .menu-list li a
+    position: relative
+    height: $item-size
+    padding: 15px
+    .ps-user-image
+      width: 34px
+      height: 34px
+      border: 1px solid $ink
+      border-radius: 100%
+    &.is-active
+      background-color: transparent
+    &:hover
+      background-color: $primary
+    span
+      font-size: 24px
+      vertical-align: middle
+      color: $paper
+      &.ps-reverse-icon:before
+        transform: rotate(180deg)
+
+.ps-profile
+  position: absolute
+  top: 10px
+  left: $item-size
+  width: 300px
+
+.ps-notifications-container
+  position: absolute
+  top: 65px
+  left: $item-size
+  width: 300px
+  max-height: 400px
+  overflow-y: auto
+
+.ps-notification-count
+  background-color: $google-login
+  border-radius: 100%
+  width: 16px
+  height: 16px
+  color: $paper
+  padding: 1px 3px
+  font-size: 12px !important
+  position: absolute
+  top: 10px
+  right: 15px
+  text-align: center

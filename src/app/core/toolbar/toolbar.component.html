@@ -7,8 +7,8 @@
   </div>
 
   <div class="nav-item">
-    <div class="ps-nav-right-item columns is-mobile">
-      <input class="input is-small" placeholder="Task name" type="text">
+    <div *ngIf="!currentActivityCopy.startedAt" class="ps-nav-right-item columns is-mobile">
+      <input class="input is-small" [(ngModel)]="taskName" placeholder="Task name" type="text">
       <span>/</span>
       <swing-select [items]="projects.entities | objectKeys"
                     [itemTextAttribute]="'name'"
@@ -16,8 +16,14 @@
                     [label]="'Select Project'"
                     class="ps-toolbar-select"></swing-select>
     </div>
-    <div class="ps-toolbar-play">
-      ▶️
+    <div *ngIf="currentActivityCopy.startedAt" class="ps-nav-right-item ps-nav-display-item is-mobile">
+      <span class="is-5">{{currentActivityCopy.name}}&nbsp;/&nbsp;</span>
+      <span class="is-5">{{selectedProject.name ? selectedProject.name : ''}}&nbsp;/&nbsp;</span>
+      <span class="is-2">{{timeDuration}}</span>
+    </div>
+    <div class="ps-toolbar-play" [ngClass]="{'ps-toolbar-stop': currentActivityCopy.startedAt}">
+      <span *ngIf="!currentActivityCopy.startedAt" class="icon-play" (click)="startActivity()"></span>
+      <span *ngIf="currentActivityCopy.startedAt" class="icon-stop" (click)="stopActivity()"></span>
     </div>
   </div>
 </nav>

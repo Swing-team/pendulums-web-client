@@ -46,7 +46,7 @@ export class AuthenticationService {
 
   signOut(): Promise<any> {
     return this.http
-      .get(this.config.apiEndpoint + '/auth/signout', {withCredentials: true})
+      .get(this.config.apiEndpoint + '/auth/signout', this.config.httpOptions)
       .toPromise()
       .then(response => response)
       .catch(this.handleError);
