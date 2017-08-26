@@ -1,27 +1,48 @@
 <div dir="auto" class="ps-container">
   <div class="box ps-section-you-container">
     <div class="ps-profile-image-container">
-      <svg width="36" height="36" [identiconHash]="invited.hash">
+      <svg width="36" height="36" [identiconHash]="userEmailHash('armingh.ghoreishi@gmail.com')">
       </svg>
     </div>
     <i class="ps-user-email">
-      armin.ghoreishi@gmail.com
+      {{user.email}}
     </i>
     <span class="ps-user-role">
-      Team member
+      {{getUserRole()}}
     </span>
   </div>
-  <div class="ps-section-members-container">
-    <div class="ps-profile-image-container">
-      <svg width="36" height="36" [identiconHash]="invited.hash">
-      </svg>
+  <ng-container *ngIf="!readOnly">
+    <div *ngFor='let member of members;trackBy:let i = index' class="ps-section-members-container">
+      <div class="ps-profile-image-container">
+        <svg width="36" height="36" [identiconHash]="userEmailHash(member.email)">
+        </svg>
+      </div>
+      <i class="ps-user-email">
+        {{member.email}}
+      </i>
+      <span class="ps-user-role">
+      <swing-select
+        [items]="['team member','admin']"
+        [label]="member.role"
+        (onItemClicked)="changeTeamMemberRole(member.id, $event)"
+      ></swing-select>
+    </span>
+      <i class="icon-trash has-text-danger ps-body-button" (click)="removeMember(member.id)"></i>
     </div>
-    <i class="ps-user-email">
-      armin.ghoreishi@gmail.com
-    </i>
-    <span class="ps-user-role">
-      Team member
+  </ng-container>
+
+  <ng-container *ngIf="readOnly">
+    <div *ngFor='let member of members;trackBy:let i = index' class="ps-section-members-container">
+      <div class="ps-profile-image-container">
+        <svg width="36" height="36" [identiconHash]="userEmailHash(member.email)">
+        </svg>
+      </div>
+      <i class="ps-user-email">
+        {{member.email}}
+      </i>
+      <span class="ps-user-role">
+      {{member.role}}
     </span>
-    <i class="icon-trash has-text-danger ps-body-button"></i>
-  </div>
+    </div>
+  </ng-container>
 </div>

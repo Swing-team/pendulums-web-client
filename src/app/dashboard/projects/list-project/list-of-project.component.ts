@@ -12,7 +12,8 @@ import {Activity} from '../../../shared/state/activity/activity.model';
 })
 
 export class ListOfProjectComponent {
-  @Input() projects: Array<Project>;
+  @Input() projects: Observable<Project>;
+  @Input() user: Observable<Project>;
   @Input() currentActivity: Observable<Activity>;
 
   constructor (

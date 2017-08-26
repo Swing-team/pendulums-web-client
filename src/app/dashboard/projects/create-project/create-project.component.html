@@ -57,7 +57,7 @@
       </div>
       <div *ngFor='let invited of project.invitedUsers;trackBy:let i = index'
            class="columns is-gapless is-mobile ps-invited-user-item">
-        <svg width="36" height="36" [identiconHash]="invited.hash">
+        <svg width="36" height="36" [identiconHash]="userEmailHash(invited.email)">
           Fallback text for browsers not supporting inline svg
         </svg>
         <span class="column ps-invited-user-email">

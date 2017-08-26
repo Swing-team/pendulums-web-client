@@ -1,4 +1,4 @@
-<form (ngSubmit)="updateProject()" #test="ngForm" novalidate>
+<form *ngIf="!readOnly" (ngSubmit)="updateProject()" #test="ngForm" novalidate>
   <div dir="auto" class="ps-container">
     <div class="ps-image-container">
       <div style="padding: unset">
@@ -18,7 +18,7 @@
     <div>
       <div class="field">
         <p class="control">
-          <input [(ngModel)]="project.name" name="name" class="input ps-header-input"
+          <input [(ngModel)]="clonedProject.name" name="name" class="input ps-header-input"
                  placeholder="untitled project..." type="text">
         </p>
       </div>
@@ -40,3 +40,17 @@
     </p>
   </div>
 </form>
+
+<div *ngIf="readOnly" dir="auto" class="ps-container">
+  <div class="ps-image-container">
+    <img [src]="previewImage ? previewImage : 'http://bulma.io/images/placeholders/128x128.png'">
+  </div>
+  <div class="ps-project-name-container">
+    <span class="ps-header-input">
+      Project name:
+    </span>
+    <span class="ps-header-input">
+    {{clonedProject.name}}
+    </span>
+  </div>
+</div>

@@ -1,5 +1,7 @@
-import {Component} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {Project} from '../../../../shared/state/project/project.model';
+import {User} from '../../../../shared/state/user/user.model';
+import {userRoleInProject} from '../../../shared/utils';
 
 @Component({
   selector: 'project-settings-modal',
@@ -7,11 +9,28 @@ import {Project} from '../../../../shared/state/project/project.model';
   styleUrls: ['./project-settings-modal.component.sass']
 })
 
-export class ProjectSettingsModalComponent {
-  private project: Project = new Project();
-  modalIsActive = false;
-  formSubmitted = false;
+export class ProjectSettingsModalComponent implements OnInit{
+  @Input() project: Project;
+  @Input() user: User;
   tabs = ['is-active', '', ''];
+  readOnly = false;
+  isOwner = false;
+  isAdmin = false;
+
+  ngOnInit(): void {
+    switch (userRoleInProject(this.project, this.user.id)) {
+      case 'team member':
+        this.readOnly = true;
+        break;
+      case 'owner':
+        this.isOwner = true;
+        break;
+      case 'admin':
+        this.isAdmin = true;
+        break;
+    }
+  }
+
   constructor() {
   }
 
@@ -42,14 +61,5 @@ export class ProjectSettingsModalComponent {
         this.tabs[3] = 'is-active';
         break;
     }
-  }
-
-  settingsModalActivation() {
-    this.modalIsActive = true;
-  }
-
-  closeSettingsModal() {
-    this.modalIsActive = false;
-    this.setSelectedTab(0);
   }
 }
