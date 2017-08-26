@@ -1,7 +1,56 @@
 @import "../../../sass/variables"
 
+.ps-activities-container
+  position: relative
+
+.ps-activity-item
+  &:before
+    border-left: 2px solid $primary-light
+    content: ''
+    height: 25%
+    position: absolute
+    z-index: -1
+
 .ps-card-container
   background: $paper
+  border-radius: $radius
+  padding: 5px
+  text-align: left
+  div
+    border-bottom: 1px solid #dedfcb
+    margin: 0 10px 0 10px
+    &:last-child
+      border-bottom: none
 
-.ps-time-line-header
-  background: $primary
+.ps-activity-header
+  width: 50%
+  border-top-left-radius: 100px
+  border-bottom-right-radius: 100px
+  color: $paper
+  background: $primary-light
+  margin: 0 auto
+  padding: 5px
+  font-size: 0.9rem
+
+.ps-header-container
+  min-height: 80px
+  padding-top: 30px
+
+.ps-add-manually-activity
+  cursor: pointer
+  font-size: 2rem
+  line-height: 3rem
+  position: absolute
+  color: $primary-light
+  background-color: $paper
+  border-radius: 100%
+  height: 50px
+  width: 50px
+  z-index: 5
+  top: 30px
+  right: 50px
+
+.ps-activity-back
+  left: 50px !important
+  font-size: 1.5rem
+  line-height: 3rem
