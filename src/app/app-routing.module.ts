@@ -5,7 +5,7 @@ import { SignUpComponent }              from './authentication/sign-up/sign-up.c
 import { ForgotPasswordComponent }      from './authentication/forgot-password/forgot-password.component';
 import { ResetPasswordComponent }       from './authentication/reset-password/reset-password.component';
 import { DashboardComponent }           from './dashboard/dashboard.component';
-import {ActivitiesComponent}            from './dashboard/activities/activities.component';
+import {ActivitiesComponent}            from './dashboard/activities/list-activities/activities.component';
 
 const appRoutes: Routes = [
   {
