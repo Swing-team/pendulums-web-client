@@ -4,7 +4,7 @@
     <p class="ps-activity-item-text"><i class="icon-stopwatch" (click)="delete()"></i> from {{from}} to {{to}} / {{duration}}</p>
   </span>
   <span class="ps-activity-item-button is-pulled-right">
-   <i class="icon-pencil has-text-success"></i>
+   <i class="icon-pencil has-text-success" (click)="openEditManuallyModal()"></i>
    <i class="icon-trash has-text-danger" (click)="delete()"></i>
   </span>
 </div>

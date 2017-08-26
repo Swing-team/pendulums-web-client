@@ -1,10 +1,11 @@
 import {
   Component, EventEmitter,
-  Inject, Input, OnInit, Output
-}                                   from '@angular/core';
-import { APP_CONFIG }               from '../../../app.config';
-import { ActivityService }          from '../../../shared/activity/activity.service';
-import { Activity }                 from '../../../shared/state/activity/activity.model';
+  Inject, Input, OnInit, Output, ViewContainerRef
+} from '@angular/core';
+import { APP_CONFIG }                      from '../../../../app.config';
+import { Activity }                        from '../../../../shared/state/activity/activity.model';
+import { ModalService }                    from '../../../../core/modal/modal.service';
+import { AddManuallyActivityComponent }    from '../../add-manually-activity/add-manually-activity.component';
 
 @Component({
   selector: 'activity-item',
@@ -19,7 +20,8 @@ export class ActivityItemComponent implements OnInit {
   private duration: string;
 
   constructor (@Inject(APP_CONFIG) private config,
-               private activityService: ActivityService) {}
+               private modalService: ModalService,
+               private viewContainerRef: ViewContainerRef) {}
 
   ngOnInit() {
     const fromDate = new Date(Number(this.activity.startedAt));
@@ -31,6 +33,16 @@ export class ActivityItemComponent implements OnInit {
 
   delete() {
     this.onDeleteClicked.emit();
+  }
+
+  openEditManuallyModal() {
+    this.modalService.show({
+      component:  AddManuallyActivityComponent,
+      containerRef: this.viewContainerRef,
+      inputs: {
+        activity: this.activity,
+      }
+    });
   }
 
   calculateActivityDuration (activity) {
@@ -62,6 +74,7 @@ export class ActivityItemComponent implements OnInit {
     }
     return result;
   };
+
 }
 
 

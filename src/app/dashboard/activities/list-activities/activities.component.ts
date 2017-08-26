@@ -1,11 +1,14 @@
 import 'rxjs/add/operator/switchMap';
 import * as _ from 'lodash';
-import { Component, Inject, OnInit }        from '@angular/core';
-import { APP_CONFIG }                       from '../../app.config';
-import { ActivityService }                  from '../../shared/activity/activity.service';
-import { Activity }                         from '../../shared/state/activity/activity.model';
-import {ActivatedRoute, ParamMap}           from '@angular/router';
+import { Component, Inject, OnInit,
+         ViewContainerRef}                  from '@angular/core';
+import { APP_CONFIG }                       from '../../../app.config';
+import { ActivityService }                  from '../../../shared/activity/activity.service';
+import { Activity }                         from '../../../shared/state/activity/activity.model';
+import { ActivatedRoute, ParamMap }         from '@angular/router';
 import { Location }                         from '@angular/common';
+import { ModalService }                     from '../../../core/modal/modal.service';
+import { AddManuallyActivityComponent }     from '../add-manually-activity/add-manually-activity.component';
 
 @Component({
   selector: 'activities',
@@ -21,7 +24,9 @@ export class ActivitiesComponent implements OnInit {
   constructor (@Inject(APP_CONFIG) private config,
                private route: ActivatedRoute,
                private activityService: ActivityService,
-               private location: Location) {}
+               private location: Location,
+               private modalService: ModalService,
+               private viewContainerRef: ViewContainerRef) {}
 
   ngOnInit() {
     this.route.paramMap
@@ -50,6 +55,16 @@ export class ActivitiesComponent implements OnInit {
 
   goBack() {
     this.location.back();
+  }
+
+  openAddManuallyModal() {
+    this.modalService.show({
+      component:  AddManuallyActivityComponent,
+      containerRef: this.viewContainerRef,
+      inputs: {
+      activity: {name: 'salam'},
+    }
+    });
   }
 }
 
