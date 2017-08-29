@@ -43,7 +43,6 @@ export class ProjectService {
       .delete(this.config.apiEndpoint + '/projects/' + projectId + '/team-members/' + userId)
       .toPromise()
       .then(response => {
-        console.log('project service:', response);
       })
       .catch(this.handleError);
   }

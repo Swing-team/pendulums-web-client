@@ -22,6 +22,7 @@ export class ProjectMembersComponent implements OnInit {
   @Input() user: User;
   @Input() readOnly: boolean;
   members: Array<TeamMember> = [];
+  removeMemberConfirmationViewIndex: Number = -1;
 
   constructor(private projectServices: ProjectService,
               private store: Store<AppState>,
@@ -71,12 +72,10 @@ export class ProjectMembersComponent implements OnInit {
     return userRoleInProject(this.project, this.user.id);
   }
 
-  removeMember(id) {
-    console.log(id);
-    // TODO: arminghm 22 Jul 2017 Show a popup menu to accept the delete process
-    this.projectServices.removeMember(this.project.id, id)
+  removeMember(memberId) {
+    this.projectServices.removeMember(this.project.id, memberId)
       .then(response => {
-        // TODO: arminghm 22 Jul 2017 Remove the deleted members from state
+        this.store.dispatch(this.projectsAction.removeMember(this.project.id, memberId));
       })
       .catch(error => {
         console.log('error is: ', error);

@@ -15,6 +15,7 @@ import {Md5} from 'ts-md5/dist/md5';
 export class ProjectPendingInvitationsComponent {
   @Input() project: Project;
   roles = ['team member', 'admin'];
+  cancelInvitationConfirmationViewIndex: Number = -1;
   private user = {email: null, role: this.roles[0]};
 
   constructor(private projectService: ProjectService,
@@ -44,7 +45,6 @@ export class ProjectPendingInvitationsComponent {
   }
 
   cancelInvitation(invitedUser) {
-    console.log('invited user:', invitedUser);
     this.projectService.cancelInvitation(this.project.id, {invitedUser})
       .then(response => {
         this.store.dispatch(this.projectsActions.removeInvitedUser(this.project.id, invitedUser));
