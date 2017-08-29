@@ -14,6 +14,7 @@ export class ProjectsActions {
   static ADD_INVITED_USER = 'ADD_INVITED_USER';
   static UPDATE_PROJECT = 'UPDATE_PROJECT';
   static REMOVE_INVITED_USER = 'REMOVE_INVITED_USER';
+  static REMOVE_MEMBER = 'REMOVE_MEMBER';
   static CHANGE_MEMBER_ROLE = 'CHANGE_MEMBER_ROLE';
   static UPDATE_PROJECT_ACTIVITIES = 'UPDATE_PROJECT_ACTIVITIES';
 
@@ -67,6 +68,16 @@ export class ProjectsActions {
       payload: {
         projectId,
         invitedUser
+      }
+    };
+  }
+
+  removeMember(projectId: String, memberId: String): Action {
+    return {
+      type: ProjectsActions.REMOVE_MEMBER,
+      payload: {
+        projectId,
+        memberId
       }
     };
   }

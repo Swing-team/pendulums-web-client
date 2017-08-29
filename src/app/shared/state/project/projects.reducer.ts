@@ -62,6 +62,18 @@ export default function reducer(state = initialState, action: Action) {
       return newState;
     }
 
+    case ProjectsActions.REMOVE_MEMBER: {
+      const newState = JSON.parse(JSON.stringify(state));
+      let removedMemberIndex;
+      newState.entities[action.payload.projectId].teamMembers.map((member, index) => {
+        if (member.id === action.payload.memberId) {
+          removedMemberIndex = index;
+        }
+      });
+      newState.entities[action.payload.projectId].teamMembers.splice(removedMemberIndex, 1);
+      return newState;
+    }
+
     case ProjectsActions.CHANGE_MEMBER_ROLE: {
       const newState = JSON.parse(JSON.stringify(state));
       const updatedProject = newState.entities[action.payload.projectId];

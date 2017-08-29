@@ -1,13 +1,19 @@
 @import '../../../../../sass/variables'
 
 .ps-invited-user-item
+  position: relative
   border-bottom: 1px solid #dedfcb
+  &:nth-child(2)
+    border-top: 1px solid #dedfcb
+  svg
+    margin: 10px
   span
-    line-height: 36px
+    line-height: 56px
   .ps-invited-user-email
     word-break: break-all
     padding-left: 10px
   .ps-invited-user-role
+    text-align: left
     padding-left: 10px
 
 .ps-inviting-user
@@ -31,3 +37,36 @@
   &:hover
     background-color: #dddddd
     cursor: pointer
+
+.ps-cancel-invitation-confirmation
+  height: 0
+  display: flex
+  overflow: hidden
+  align-items: center
+  position: absolute
+  top: 0
+  right: 0
+  -webkit-transition: height 0.3s /* For Safari 3.1 to 6.0 */
+  transition: height 0.3s
+  .icon-cancel
+    width: 59px
+    height: 59px
+    flex-basis: 50%
+    color: $paper
+    line-height: 59px
+    background-color: #005580
+    font-size: 24px
+    cursor: pointer
+  .icon-check
+    width: 54px
+    height: 59px
+    flex-basis: 50%
+    color: $paper
+    line-height: 59px
+    background-color: $red
+    font-size: 24px
+    cursor: pointer
+
+
+.ps-cancel-invitation-confirmation-shown
+  height: 59px
