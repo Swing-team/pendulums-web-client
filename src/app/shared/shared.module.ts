@@ -8,6 +8,7 @@ import { SwingSwitchComponent }   from './swing-switch/swing-switch.component';
 import { IdenticonHashDirective } from './identicon-hash.directive';
 import { ObjectKeysPipe }         from './object-keys.pipe';
 import { ActivityService }        from './activity/activity.service';
+import { SwingCalendarComponent } from './swing-calendar/swing-calendar.component';
 
 @NgModule({
   imports:      [ CommonModule ],
@@ -15,6 +16,7 @@ import { ActivityService }        from './activity/activity.service';
     IdenticonHashDirective,
     SwingSwitchComponent,
     SwingSelectComponent,
+    SwingCalendarComponent,
     ObjectKeysPipe
   ],
   exports:      [
@@ -23,6 +25,7 @@ import { ActivityService }        from './activity/activity.service';
     HttpModule,
     IdenticonHashDirective,
     ObjectKeysPipe,
+    SwingCalendarComponent,
     SwingSelectComponent,
     SwingSwitchComponent
   ],
