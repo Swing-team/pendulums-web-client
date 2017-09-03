@@ -11,6 +11,13 @@ import { Activity }                         from '../../../shared/state/activity
 export class AddManuallyActivityComponent implements OnInit {
   @Input() activity: Activity;
   private activityModel: Activity;
+  private activityName: string;
+  private toCalanderShow = false;
+  private toDate: string;
+  private toTime: string;
+  private fromCalanderShow = false;
+  private fromDate: string;
+  private fromTime: string;
 
   constructor (@Inject(APP_CONFIG) private config) {}
 
@@ -23,6 +30,29 @@ export class AddManuallyActivityComponent implements OnInit {
     }
   }
 
+  showFromCalender() {
+    this.fromCalanderShow = true;
+  }
+
+  closeFromCalender() {
+    this.fromCalanderShow = false;
+  }
+
+  showToCalender() {
+    this.toCalanderShow = true;
+  }
+
+  updateTo(event) {
+    this.toDate = event.format('YYYY-MM-DD');
+    this.toCalanderShow = false;
+    console.log(event);
+  }
+
+  updateFrom(event) {
+    this.fromDate = event.format('YYYY-MM-DD');
+    this.fromCalanderShow = false;
+    console.log(event);
+  }
 }
 
 

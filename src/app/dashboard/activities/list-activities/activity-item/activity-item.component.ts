@@ -41,7 +41,8 @@ export class ActivityItemComponent implements OnInit {
       containerRef: this.viewContainerRef,
       inputs: {
         activity: this.activity,
-      }
+      },
+      customStyles: {'width': '400px', 'overflow': 'initial'}
     });
   }
 

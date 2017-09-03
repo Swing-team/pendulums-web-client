@@ -61,9 +61,7 @@ export class ActivitiesComponent implements OnInit {
     this.modalService.show({
       component:  AddManuallyActivityComponent,
       containerRef: this.viewContainerRef,
-      inputs: {
-      activity: {name: 'salam'},
-    }
+      customStyles: {'width': '400px', 'overflow': 'initial'}
     });
   }
 }
