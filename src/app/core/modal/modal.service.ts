@@ -18,6 +18,11 @@ export class ModalService {
     this.modalComponentRef = modalConfig.containerRef.createComponent(modalFactory,
       0, undefined, [[this.contentComponentRef.location.nativeElement]]);
 
+    if (modalConfig.customStyles) {
+      console.log(modalConfig.customStyles);
+      this.modalComponentRef.instance['customStyles'] = modalConfig.customStyles;
+      console.log(this.modalComponentRef.instance['customStyles']);
+    }
 
     if (modalConfig.inputs) {
       for (const input in modalConfig.inputs) {
@@ -51,4 +56,5 @@ interface ModalConfig {
   containerRef: ViewContainerRef;
   inputs?:  Object;
   outputs?: Object;
+  customStyles?: Object;
 }

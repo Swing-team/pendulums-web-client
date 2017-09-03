@@ -1,0 +1,33 @@
+<div class="calendar">
+  <div class="calendar-nav">
+    <div class="calendar-nav-left">
+      <button class="button is-link" (click)="setNextMonth()">
+        <span class="fa fa-chevron-left"><</span>
+      </button>
+    </div>
+    <div>{{currMonth}} {{currYear}}</div>
+    <div class="calendar-nav-right">
+      <button class="button is-link" (click)="setPrevMonth()">
+        <span class="fa fa-chevron-right">></span>
+      </button>
+    </div>
+  </div>
+  <div class="calendar-container">
+    <div class="calendar-header">
+      <div class="calendar-date" *ngFor='let day of daysOfWeek'>{{day}}</div>
+    </div>
+    <div class="calendar-body">
+      <div class="calendar-date" [ngClass]="{'is-disabled': day.disabled}"
+           *ngFor='let day of dates'>
+        <button class="date-item"
+                [ngClass]="{'is-active': day.selected,
+                            'is-today': day.date === currDate.date()
+                                        && day.month === currDate.month()+1
+                                        && day.year === currDate.year()}"
+                (click)="setDate(day)">
+          {{day.date}}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
