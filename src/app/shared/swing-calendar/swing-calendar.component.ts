@@ -16,7 +16,7 @@ export class SwingCalendarComponent implements OnChanges, OnInit {
   @Input() value = '';
 
   private currDate = moment();
-  private daysOfWeek = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+  private daysOfWeek = [ 'Sa', 'Su', 'Mo', 'Tu', 'We', 'Th', 'Fr'];
   private months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   private currMonth: string;
   private currYear: number;

@@ -18,12 +18,17 @@ export class ActivityItemComponent implements OnInit {
   private from: string;
   private to: string;
   private duration: string;
+  private deleteConfirmation = false;
 
   constructor (@Inject(APP_CONFIG) private config,
                private modalService: ModalService,
                private viewContainerRef: ViewContainerRef) {}
 
   ngOnInit() {
+    this.initial();
+  }
+
+  initial() {
     const fromDate = new Date(Number(this.activity.startedAt));
     this.from = fromDate.getHours() + ':' + fromDate.getMinutes();
     const toDate = new Date(Number(this.activity.stoppedAt));
@@ -32,7 +37,20 @@ export class ActivityItemComponent implements OnInit {
   }
 
   delete() {
+    this.deleteConfirmation = true;
+  }
+
+  confirmDelete() {
     this.onDeleteClicked.emit();
+  }
+
+  cancelDelete() {
+    this.deleteConfirmation = false;
+  }
+
+  updateActivity(param) {
+    this.activity = param;
+    this.initial();
   }
 
   openEditManuallyModal() {
@@ -41,6 +59,12 @@ export class ActivityItemComponent implements OnInit {
       containerRef: this.viewContainerRef,
       inputs: {
         activity: this.activity,
+        projectId: this.activity.project,
+      },
+      outputs: {
+        responseActivity: (param) => {
+          this.updateActivity(param);
+        }
       },
       customStyles: {'width': '400px', 'overflow': 'initial'}
     });

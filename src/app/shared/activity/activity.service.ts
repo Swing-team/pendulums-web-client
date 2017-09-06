@@ -14,7 +14,8 @@ export class ActivityService {
 
   create(projectId, activity): Promise<any> {
     return this.http
-      .post(this.config.apiEndpoint + '/projects/' + projectId + '/activities' , activity , this.config.httpOptions)
+      .post(this.config.apiEndpoint + '/projects/' + projectId + '/activities' ,
+        JSON.stringify({activity: activity}) , this.config.httpOptions)
       .toPromise()
       .then(response => response.json() as Activity)
       .catch(this.handleError);
