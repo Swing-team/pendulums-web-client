@@ -1,14 +1,17 @@
-import {Component, Inject, Input, OnInit}   from '@angular/core';
-import {APP_CONFIG}                         from '../../../../app.config';
-import {Project}                            from '../../../../shared/state/project/project.model';
-import {ActivityService}                    from '../../../../shared/activity/activity.service';
-import {Store}                              from '@ngrx/store';
-import {AppState}                           from '../../../../shared/state/appState';
-import {Observable}                         from 'rxjs/Observable';
-import {Activity}                           from '../../../../shared/state/activity/activity.model';
-import {ActivityActions}                    from '../../../../shared/state/activity/activity.actions';
-import {ProjectsActions}                    from '../../../../shared/state/project/projects.actions';
-import {Router} from '@angular/router';
+import { Component, Inject, Input, OnInit, ViewContainerRef } from '@angular/core';
+import { APP_CONFIG }                         from '../../../../app.config';
+import { Project }                            from '../../../../shared/state/project/project.model';
+import { ActivityService }                    from '../../../../shared/activity/activity.service';
+import { Store }                              from '@ngrx/store';
+import { AppState }                           from '../../../../shared/state/appState';
+import { Observable }                         from 'rxjs/Observable';
+import { Activity }                           from '../../../../shared/state/activity/activity.model';
+import { ActivityActions }                    from '../../../../shared/state/activity/activity.actions';
+import { ProjectsActions }                    from '../../../../shared/state/project/projects.actions';
+import { ModalService }                       from '../../../../core/modal/modal.service';
+import { ProjectSettingsModalComponent }      from 'app/dashboard/projects/settings/modal/project-settings-modal.component';
+import { User }                               from '../../../../shared/state/user/user.model';
+import { Router }                             from '@angular/router';
 
 @Component({
   selector: 'project-item',
@@ -61,7 +64,7 @@ export class ProjectItemComponent implements OnInit {
         this.activity = new Activity();
         this.activity.name = this.taskName;
         this.activity.startedAt = Date.now().toString();
-        this.activityService.create(this.project.id, JSON.stringify({activity: this.activity})).then((activity) => {
+        this.activityService.create(this.project.id, this.activity).then((activity) => {
           this.store.dispatch(this.activityActions.loadactivity(activity));
         })
           .catch(error => {
@@ -75,7 +78,7 @@ export class ProjectItemComponent implements OnInit {
       this.activity = new Activity();
       this.activity.name = this.taskName;
       this.activity.startedAt = Date.now().toString();
-      this.activityService.create(this.project.id, JSON.stringify({activity: this.activity})).then((activity) => {
+      this.activityService.create(this.project.id, this.activity).then((activity) => {
         this.store.dispatch(this.activityActions.loadactivity(activity));
       })
         .catch(error => {
@@ -139,6 +142,17 @@ export class ProjectItemComponent implements OnInit {
     }
     this.activities.push(result);
   };
+
+  showSettings() {
+    this.modalService.show({
+      component: ProjectSettingsModalComponent,
+      containerRef: this.viewContainerRef,
+      inputs: {
+        project: this.project,
+        user: this.user
+      }
+    });
+  }
 
   goToActivities(): void{
     this.router.navigate(['/activities', this.project.id]);
