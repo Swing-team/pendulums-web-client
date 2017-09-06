@@ -35,7 +35,7 @@ export class ModalService {
     if (modalConfig.outputs) {
       for (const output in modalConfig.outputs) {
         if (modalConfig.outputs.hasOwnProperty(output)) {
-          this.contentComponentRef.instance[output].subscribe(output);
+          this.contentComponentRef.instance[output].subscribe(modalConfig.outputs[output]);
         }
       }
     }

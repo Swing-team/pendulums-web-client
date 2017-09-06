@@ -16,6 +16,8 @@ import { AddManuallyActivityComponent }     from '../add-manually-activity/add-m
   styleUrls: ['./activities.component.sass']
 })
 export class ActivitiesComponent implements OnInit {
+  private projectId: string;
+  private tempArray: Array<Activity>;
   private projectActivities: {
     date: any
     activities: any
@@ -30,8 +32,12 @@ export class ActivitiesComponent implements OnInit {
 
   ngOnInit() {
     this.route.paramMap
-      .switchMap((params: ParamMap) => this.activityService.getActivities(params.get('projectId')))
+      .switchMap((params: ParamMap) => {
+      this.projectId = params.get('projectId');
+      return this.activityService.getActivities(params.get('projectId'));
+    })
       .subscribe((activities) => {
+        this.tempArray = activities;
         this.projectActivities = _.chain(activities)
           .groupBy((activity: Activity) => {
             return new Date(Number(activity.stoppedAt)).toDateString();
@@ -57,10 +63,30 @@ export class ActivitiesComponent implements OnInit {
     this.location.back();
   }
 
+  updateActivities(param) {
+    this.tempArray.push(param);
+    this.projectActivities = _.chain(this.tempArray)
+      .groupBy((activity: Activity) => {
+        return new Date(Number(activity.stoppedAt)).toDateString();
+      })
+      .map((value, key) => {
+        return {date: key, activities: value};
+      })
+      .value();
+  }
+
   openAddManuallyModal() {
     this.modalService.show({
       component:  AddManuallyActivityComponent,
       containerRef: this.viewContainerRef,
+      inputs: {
+        projectId: this.projectId,
+      },
+      outputs: {
+        responseActivity: (param) => {
+          this.updateActivities(param);
+        }
+      },
       customStyles: {'width': '400px', 'overflow': 'initial'}
     });
   }

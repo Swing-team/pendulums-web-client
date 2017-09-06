@@ -9,11 +9,13 @@ import { IdenticonHashDirective } from './identicon-hash.directive';
 import { ObjectKeysPipe }         from './object-keys.pipe';
 import { ActivityService }        from './activity/activity.service';
 import { SwingCalendarComponent } from './swing-calendar/swing-calendar.component';
+import { RestrictInputDirective } from './restrict-input.directive';
 
 @NgModule({
   imports:      [ CommonModule ],
   declarations: [
     IdenticonHashDirective,
+    RestrictInputDirective,
     SwingSwitchComponent,
     SwingSelectComponent,
     SwingCalendarComponent,
@@ -28,6 +30,7 @@ import { SwingCalendarComponent } from './swing-calendar/swing-calendar.componen
     FormsModule,
     HttpModule,
     IdenticonHashDirective,
+    RestrictInputDirective,
     ObjectKeysPipe,
     SwingCalendarComponent,
     SwingSelectComponent,
