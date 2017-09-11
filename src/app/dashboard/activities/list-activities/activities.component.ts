@@ -94,9 +94,10 @@ export class ActivitiesComponent implements OnInit {
 
   @HostListener('window:scroll', ['$event'])
   onWindowScroll($event) {
-    const listLength = this.tempArray.length * 100;
+    const listLength = this.tempArray.length * 90;
     console.log(listLength);
     console.log('page number:', this.pageNumber);
+    console.log($event.pageY);
     if ($event.pageY > listLength && this.scrolEnable) {
       this.scrolEnable = false;
       console.log($event.pageY);
