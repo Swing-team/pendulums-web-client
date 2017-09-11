@@ -31,12 +31,14 @@
   margin: 0 auto
   padding: 5px
   font-size: 0.9rem
+  @media (max-width: $ps-mobile)
+    font-size: 0.8rem
 
 .ps-header-container
   min-height: 80px
   padding-top: 30px
 
-.ps-add-manually-activity
+.ps-activity-top-button
   cursor: pointer
   font-size: 2rem
   line-height: 3rem
@@ -49,8 +51,15 @@
   z-index: 5
   top: 30px
   right: 50px
+  @media (max-width: $ps-mobile)
+    height: 40px
+    width: 40px
+    top: 20px
+    right: 5px
+    font-size: 1.2rem
+    line-height: 2.5rem
 
 .ps-activity-back
   left: 50px !important
-  font-size: 1.5rem
-  line-height: 3rem
+  @media (max-width: $ps-mobile)
+    left: 5px !important
