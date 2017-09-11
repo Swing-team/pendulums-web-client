@@ -6,16 +6,25 @@
   width: 100%
   position: relative
 
+.ps-activity-item-name
+  @media (max-width: $ps-mobile)
+    font-size: 0.75rem
+
 .ps-activity-item-text
   font-size: 0.7rem
   color:  gray
+  @media (max-width: $ps-mobile)
+    font-size: 0.65rem
 
 .ps-activity-item-button
   font-size: 1.4rem
   line-height: 3rem
   i
     cursor: pointer
-    
+  @media (max-width: $ps-mobile)
+    font-size: 1rem
+    line-height: 2.5rem
+
 .ps-activity-item-delete-confirmation
   height: 0
   display: flex
