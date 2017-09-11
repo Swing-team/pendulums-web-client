@@ -41,9 +41,9 @@ export class ActivityService {
       .catch(this.handleError);
   }
 
-  getActivities(projectId): Promise<Activity[]> {
+  getActivities(projectId , page?: number): Promise<Activity[]> {
     return this.http
-      .get(this.config.apiEndpoint + '/projects/' + projectId + '/activities' , this.config.httpOptions)
+      .get(this.config.apiEndpoint + '/projects/' + projectId + '/activities' , {withCredentials: true, params: { page: page}})
       .toPromise()
       .then(response => response.json() as Activity [])
       .catch(this.handleError);

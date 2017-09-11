@@ -4,16 +4,18 @@
   <div class="columns is-mobile">
     <div class="column is-4 is-offset-4">
       <div *ngFor='let group of projectActivities; trackBy: let j = index' class="ps-activity-item">
-        <div class="ps-header-container">
-          <div class="ps-activity-header">
-            {{group.date}}
+        <ng-container *ngIf="group.activities.length>0">
+          <div class="ps-header-container">
+            <div class="ps-activity-header">
+              {{group.date}}
+            </div>
           </div>
-        </div>
-        <div class="ps-card-container">
-          <div *ngFor='let activity of group.activities; trackBy: let i = index'>
-            <activity-item [activity]="activity" (onDeleteClicked)="deleteActivity(activity, j, i)"></activity-item>
+          <div class="ps-card-container">
+            <div *ngFor='let activity of group.activities; trackBy: let i = index'>
+              <activity-item [activity]="activity" (onDeleteClicked)="deleteActivity(activity, j, i)"></activity-item>
+            </div>
           </div>
-        </div>
+        </ng-container>
       </div>
     </div>
   </div>

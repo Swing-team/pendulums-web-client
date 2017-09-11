@@ -4,6 +4,7 @@
   padding: 10px
   display: inline-block
   width: 100%
+  position: relative
 
 .ps-activity-item-text
   font-size: 0.7rem
@@ -14,10 +15,36 @@
   line-height: 3rem
   i
     cursor: pointer
+    
+.ps-activity-item-delete-confirmation
+  height: 0
+  display: flex
+  overflow: hidden
+  align-items: center
+  position: absolute
+  text-align: center
+  top: 0
+  right: 0
+  -webkit-transition: height 0.3s /* For Safari 3.1 to 6.0 */
+  transition: height 0.3s
+  .icon-cancel
+    height: 60px
+    width: 54px
+    flex-basis: 50%
+    color: $paper
+    line-height: 54px
+    background-color: #005580
+    font-size: 24px
+    cursor: pointer
+  .icon-check
+    width: 54px
+    height: 60px
+    flex-basis: 50%
+    color: $paper
+    line-height: 54px
+    background-color: $red
+    font-size: 24px
+    cursor: pointer
 
-.ps-activity-item-Delete
-  height: 50%
-  .ps-confirm
-    background-color: $secondary
-  .ps-cancel
-     background-color: $blue
+.ps-ps-activity-item-delete-confirmation-shown
+  height: 60px

@@ -1,7 +1,9 @@
 import 'rxjs/add/operator/switchMap';
 import * as _ from 'lodash';
-import { Component, Inject, OnInit,
-         ViewContainerRef}                  from '@angular/core';
+import {
+  Component, HostListener, Inject, OnInit,
+  ViewContainerRef
+} from '@angular/core';
 import { APP_CONFIG }                       from '../../../app.config';
 import { ActivityService }                  from '../../../shared/activity/activity.service';
 import { Activity }                         from '../../../shared/state/activity/activity.model';
@@ -17,6 +19,8 @@ import { AddManuallyActivityComponent }     from '../add-manually-activity/add-m
 })
 export class ActivitiesComponent implements OnInit {
   private projectId: string;
+  private pageNumber = 0;
+  private scrolEnable = true;
   private tempArray: Array<Activity>;
   private projectActivities: {
     date: any
@@ -38,14 +42,7 @@ export class ActivitiesComponent implements OnInit {
     })
       .subscribe((activities) => {
         this.tempArray = activities;
-        this.projectActivities = _.chain(activities)
-          .groupBy((activity: Activity) => {
-            return new Date(Number(activity.stoppedAt)).toDateString();
-          })
-          .map((value, key) => {
-            return {date: key, activities: value};
-          })
-          .value();
+        this.groupByActivities();
     });
   }
 
@@ -65,6 +62,10 @@ export class ActivitiesComponent implements OnInit {
 
   updateActivities(param) {
     this.tempArray.push(param);
+    this.groupByActivities();
+  }
+
+  groupByActivities() {
     this.projectActivities = _.chain(this.tempArray)
       .groupBy((activity: Activity) => {
         return new Date(Number(activity.stoppedAt)).toDateString();
@@ -89,6 +90,32 @@ export class ActivitiesComponent implements OnInit {
       },
       customStyles: {'width': '400px', 'overflow': 'initial'}
     });
+  }
+
+  @HostListener('window:scroll', ['$event'])
+  onWindowScroll($event) {
+    const listLength = this.tempArray.length * 100;
+    console.log(listLength);
+    console.log('page number:', this.pageNumber);
+    if ($event.pageY > listLength && this.scrolEnable) {
+      this.scrolEnable = false;
+      console.log($event.pageY);
+      this.pageNumber++;
+      this.route.paramMap
+        .switchMap((params: ParamMap) => {
+          this.projectId = params.get('projectId');
+          return this.activityService.getActivities(params.get('projectId'), this.pageNumber);
+        })
+        .subscribe((activities) => {
+        if (activities.length > 0) {
+          this.scrolEnable = true;
+        }
+          activities.map((activity) => {
+            this.tempArray.push(activity);
+          })
+          this.groupByActivities();
+        });
+    }
   }
 }
 
