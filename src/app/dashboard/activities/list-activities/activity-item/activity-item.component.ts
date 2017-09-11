@@ -38,6 +38,7 @@ export class ActivityItemComponent implements OnInit {
 
   delete() {
     this.deleteConfirmation = true;
+    console.log(this.deleteConfirmation)
   }
 
   confirmDelete() {
