@@ -18,7 +18,7 @@ export class SideMenuComponent implements OnInit {
 
   constructor (@Inject(APP_CONFIG) private config) {}
 
-  ngOnInit(){
+  ngOnInit() {
     this.emailHash = Md5.hashStr(this.user.email);
   }
 
