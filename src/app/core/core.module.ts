@@ -8,7 +8,7 @@ import { APP_CONFIG, CONFIG }           from '../app.config';
 import reducers                         from '../shared/state/appState';
 import { UserActions }                  from '../shared/state/user/user.actions';
 import { ProjectsActions }              from '../shared/state/project/projects.actions';
-import {ActivityActions}                from '../shared/state/activity/activity.actions';
+import { ActivityActions }              from '../shared/state/activity/activity.actions';
 
 import { UserService }                  from './user.service';
 import { AuthenticationService }        from './authentication.service';
@@ -18,11 +18,13 @@ import { ToolbarComponent }             from './toolbar/toolbar.component';
 import { SharedModule }                 from '../shared/shared.module';
 import { SideMenuComponent }            from './side-menu/side-menu.component';
 import { ModalComponent }               from './modal/modal.component';
-import {NotificationComponent}          from './side-menu/notifacation/notification.component';
-import {NotificationService}            from './side-menu/notifacation/notification.service';
-import {UserProfileComponent}           from './side-menu/user-profile/user-profile.component';
-import {ImgCropperComponent}            from './side-menu/user-profile/image-cropper/image-cropper.component';
-import {ImageCropperComponent}          from 'ng2-img-cropper';
+import { NotificationComponent }        from './side-menu/notifacation/notification.component';
+import { NotificationService }          from './side-menu/notifacation/notification.service';
+import { UserProfileComponent }         from './side-menu/user-profile/user-profile.component';
+import { ImgCropperComponent }          from './side-menu/user-profile/image-cropper/image-cropper.component';
+import { ImageCropperComponent }        from 'ng2-img-cropper';
+import { ErrorComponent }               from './error/error.component';
+import { ErrorService }                 from './error/error.service';
 
 @NgModule({
   imports:      [
@@ -33,6 +35,7 @@ import {ImageCropperComponent}          from 'ng2-img-cropper';
   declarations: [
     ToolbarComponent,
     SideMenuComponent,
+    ErrorComponent,
     ModalComponent,
     NotificationComponent,
     UserProfileComponent,
@@ -46,6 +49,7 @@ import {ImageCropperComponent}          from 'ng2-img-cropper';
   providers:    [
     { provide: APP_CONFIG, useValue: CONFIG },
     RouterModule,
+    ErrorService,
     ModalService,
     UserService,
     NotificationService,
@@ -56,6 +60,7 @@ import {ImageCropperComponent}          from 'ng2-img-cropper';
   ],
   entryComponents: [
     ModalComponent,
+    ErrorComponent,
     ImgCropperComponent
   ]
 })
