@@ -11,6 +11,7 @@ import { ActivatedRoute, ParamMap }         from '@angular/router';
 import { Location }                         from '@angular/common';
 import { ModalService }                     from '../../../core/modal/modal.service';
 import { AddManuallyActivityComponent }     from '../add-manually-activity/add-manually-activity.component';
+import { ErrorService }                     from '../../../core/error/error.service';
 
 @Component({
   selector: 'activities',
@@ -20,7 +21,7 @@ import { AddManuallyActivityComponent }     from '../add-manually-activity/add-m
 export class ActivitiesComponent implements OnInit {
   private projectId: string;
   private pageNumber = 0;
-  private scrolEnable = true;
+  private scrollEnable = true;
   private tempArray: Array<Activity>;
   private projectActivities: {
     date: any
@@ -32,9 +33,12 @@ export class ActivitiesComponent implements OnInit {
                private activityService: ActivityService,
                private location: Location,
                private modalService: ModalService,
-               private viewContainerRef: ViewContainerRef) {}
+               private errorService: ErrorService,
+               private viewContainerRef: ViewContainerRef) {
+  }
 
   ngOnInit() {
+    this.tempArray = [];
     this.route.paramMap
       .switchMap((params: ParamMap) => {
       this.projectId = params.get('projectId');
@@ -49,9 +53,11 @@ export class ActivitiesComponent implements OnInit {
   deleteActivity(activity , index1, index2) {
     this.activityService.delete(activity.project, activity.id).then(() => {
       this.projectActivities[index1].activities.splice(index2, 1);
+      this.showError('activity deleted successfully');
       console.log('activity deleted successfully');
     })
       .catch(error => {
+        this.showError(error);
         console.log('error is: ', error);
       });
   }
@@ -92,14 +98,20 @@ export class ActivitiesComponent implements OnInit {
     });
   }
 
+  showError(error) {
+    this.errorService.show({
+      input: error
+    });
+  }
+
   @HostListener('window:scroll', ['$event'])
   onWindowScroll($event) {
     const listLength = this.tempArray.length * 90;
     console.log(listLength);
     console.log('page number:', this.pageNumber);
     console.log($event.pageY);
-    if ($event.pageY > listLength && this.scrolEnable) {
-      this.scrolEnable = false;
+    if ($event.pageY > listLength && this.scrollEnable) {
+      this.scrollEnable = false;
       console.log($event.pageY);
       this.pageNumber++;
       this.route.paramMap
@@ -109,7 +121,7 @@ export class ActivitiesComponent implements OnInit {
         })
         .subscribe((activities) => {
         if (activities.length > 0) {
-          this.scrolEnable = true;
+          this.scrollEnable = true;
         }
           activities.map((activity) => {
             this.tempArray.push(activity);

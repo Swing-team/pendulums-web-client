@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewContainerRef} from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
@@ -10,6 +10,7 @@ import { AuthenticationService } from './core/authentication.service';
 import { UserService } from './core/user.service';
 import {ProjectsActions} from './shared/state/project/projects.actions';
 import {ActivityActions} from './shared/state/activity/activity.actions';
+import {ErrorService} from "./core/error/error.service";
 
 @Component({
   selector: 'app-root',
@@ -28,11 +29,14 @@ export class AppComponent implements OnInit {
     private userActions: UserActions,
     private projectsActions: ProjectsActions,
     private activityActions: ActivityActions,
-    private store: Store<AppState>
+    private store: Store<AppState>,
+    private viewContainerRef: ViewContainerRef,
+    private errorService: ErrorService
   ) {
     this.user = store.select('user');
     this.projects = store.select('projects');
     this.currentActivity = store.select('activity');
+    this.errorService.setViewContainerRef(this.viewContainerRef);
   }
 
   ngOnInit(): void {
