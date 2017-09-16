@@ -1,4 +1,5 @@
-import {Component, Inject, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Inject,
+        Input, Output, OnInit}            from '@angular/core';
 import {Observable}                       from 'rxjs/Observable';
 import {APP_CONFIG}                       from '../../app.config';
 import {Activity}                         from '../../shared/state/activity/activity.model';
@@ -9,6 +10,7 @@ import {Store}                            from '@ngrx/store';
 import {ActivityActions}                  from 'app/shared/state/activity/activity.actions';
 import {AppState}                         from 'app/shared/state/appState';
 import {ProjectsActions}                  from '../../shared/state/project/projects.actions';
+import {ErrorService}                     from '../error/error.service';
 
 @Component({
   selector: 'toolbar',
@@ -19,6 +21,7 @@ import {ProjectsActions}                  from '../../shared/state/project/proje
 export class ToolbarComponent implements OnInit {
   @Input() projects: Projects;
   @Input() currentActivity: Observable<Activity>;
+  @Output() onMenuItemClicked = new EventEmitter();
   private currentActivityCopy: Activity;
   private selectedProject: Project;
   private taskName: string;
@@ -28,7 +31,8 @@ export class ToolbarComponent implements OnInit {
                private activityService: ActivityService,
                private store: Store<AppState>,
                private activityActions: ActivityActions,
-               private projectsActions: ProjectsActions) {
+               private projectsActions: ProjectsActions,
+               private errorService: ErrorService) {
     this.selectedProject = new Project();
   }
 
@@ -86,17 +90,20 @@ export class ToolbarComponent implements OnInit {
       if (!this.taskName) {
         this.taskName = 'Untiteld name';
       }
-      let activity = new Activity();
+      const activity = new Activity();
       activity.project = this.selectedProject.id;
       activity.name = this.taskName;
       activity.startedAt = Date.now().toString();
-      this.activityService.create(this.selectedProject.id, JSON.stringify({activity: activity})).then((activity) => {
+      this.activityService.create(this.selectedProject.id, activity).then((activity) => {
+        this.showError('Activity started successfully!');
         this.store.dispatch(this.activityActions.loadactivity(activity));
       })
         .catch(error => {
+          this.showError('Server communication error.');
           console.log('error is: ', error);
         });
     } else {
+      this.showError('Select a distinct project.');
       console.log('error is: ', 'task should run on the distinct project');
     }
   }
@@ -108,10 +115,22 @@ export class ToolbarComponent implements OnInit {
         this.store.dispatch(this.activityActions.clearActivity());
         this.store.dispatch(this.projectsActions.updateProjectActivity(activity.project, activity));
         this.taskName = null;
+        this.showError('Activity stopped successfully!');
       })
         .catch(error => {
+          this.showError('Server communication error.');
           console.log('error is: ', error);
         });
     }
+  }
+
+  showSideMenu() {
+    this.onMenuItemClicked.emit();
+  }
+
+  showError(error) {
+    this.errorService.show({
+      input: error
+    });
   }
 }
