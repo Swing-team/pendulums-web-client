@@ -6,6 +6,7 @@ import { APP_CONFIG }                       from '../../../app.config';
 import { Activity }                         from '../../../shared/state/activity/activity.model';
 import { ActivityService }                  from '../../../shared/activity/activity.service';
 import { ModalService }                     from '../../../core/modal/modal.service';
+import { ErrorService }                     from '../../../core/error/error.service';
 
 @Component({
   selector: 'create-activity',
@@ -36,7 +37,8 @@ export class AddManuallyActivityComponent implements OnInit {
 
   constructor (@Inject(APP_CONFIG) private config,
                private activityService: ActivityService,
-               private modalService: ModalService) {}
+               private modalService: ModalService,
+               private errorService: ErrorService) {}
 
   ngOnInit() {
     if (this.activity) {
@@ -166,20 +168,24 @@ export class AddManuallyActivityComponent implements OnInit {
       this.activityModel.stoppedAt = tempToDate.toString();
       if (this.activity) {
         this.activityService.editOldActivity(this.projectId,  this.activityModel).then((activity) => {
+          this.showError('Activity edited successfully');
           console.log('Activity edited successfully');
           this.responseActivity.emit(activity);
           this.modalService.close();
         })
           .catch(error => {
+            this.showError('Server error happened.');
             console.log('error is: ', error);
           });
       } else {
         this.activityService.create(this.projectId,  this.activityModel).then((activity) => {
+          this.showError('Activity added successfully');
           console.log('Activity added successfully');
           this.responseActivity.emit(activity);
           this.modalService.close();
         })
           .catch(error => {
+            this.showError('Server error happened.');
             console.log('error is: ', error);
           });
       }
@@ -218,6 +224,12 @@ export class AddManuallyActivityComponent implements OnInit {
       finalCheck = false;
     }
     return finalCheck;
+  }
+
+  showError(error) {
+    this.errorService.show({
+      input: error
+    });
   }
 }
 
