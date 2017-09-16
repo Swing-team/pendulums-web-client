@@ -1,3 +1,4 @@
+@import "../sass/variables.sass"
 $toolbar-size: 52px
 $side-menu-size: 64px
 
@@ -11,6 +12,8 @@ $side-menu-size: 64px
   padding-top: $toolbar-size
   &.ps-main-signed-in-content
     padding-left: $side-menu-size
+    @media (max-width: $ps-mobile)
+     padding-left: 0px
 
 .ps-side-menu
   position: fixed
@@ -18,3 +21,8 @@ $side-menu-size: 64px
   top: $toolbar-size
   height: 100vh
   z-index: 9
+  @media (max-width: $ps-mobile)
+    display: none
+
+.ps-side-menu-show
+  display: inherit

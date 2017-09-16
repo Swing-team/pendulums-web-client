@@ -28,11 +28,20 @@
     right: 1.125em
     top: 50%
     z-index: 4
+    @media (max-width: $ps-mobile)
+      right: 0em
   .ps-select-label
     padding-right: 2.5em
     cursor: pointer
     line-height: 2.25em
     text-overflow: ellipsis
+    width: 120px
+    min-width: 120px
+    overflow: hidden
+    white-space: nowrap
+    @media (max-width: $ps-mobile)
+      width: 100px
+      min-width: 100px
   .ps-select-items-list
     display: none
     position: absolute

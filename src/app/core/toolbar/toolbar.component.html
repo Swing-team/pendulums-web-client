@@ -6,6 +6,12 @@
     </div>
   </div>
 
+  <div class="nav-left ps-is-visible-mobile">
+    <div class="nav-item">
+      <span class="icon-menu ps-nav-menu-icon" (click)="showSideMenu()"></span>
+    </div>
+  </div>
+
   <div class="nav-item">
     <div *ngIf="!currentActivityCopy.startedAt" class="ps-nav-right-item columns is-mobile">
       <input class="input is-small" [(ngModel)]="taskName" placeholder="Task name" type="text">
@@ -17,9 +23,9 @@
                     class="ps-toolbar-select"></swing-select>
     </div>
     <div *ngIf="currentActivityCopy.startedAt" class="ps-nav-right-item ps-nav-display-item is-mobile">
-      <span class="is-5">{{currentActivityCopy.name}}&nbsp;/&nbsp;</span>
-      <span class="is-5">{{selectedProject.name ? selectedProject.name : ''}}&nbsp;/&nbsp;</span>
-      <span class="is-2">{{timeDuration}}</span>
+      <span class="ps-display-span">{{currentActivityCopy.name}}</span>
+      <span class="ps-display-span">/&nbsp;{{selectedProject.name ? selectedProject.name : ''}}</span>
+      <span class="ps-display-span-time">/&nbsp;{{timeDuration}}</span>
     </div>
     <div class="ps-toolbar-play" [ngClass]="{'ps-toolbar-stop': currentActivityCopy.startedAt}">
       <span *ngIf="!currentActivityCopy.startedAt" class="icon-play" (click)="startActivity()"></span>
