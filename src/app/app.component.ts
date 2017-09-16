@@ -21,6 +21,7 @@ export class AppComponent implements OnInit {
   private user: Observable<any>;
   private projects: Observable<any>;
   private currentActivity: Observable<any>;
+  private SideMenuIsActive = false;
 
   constructor(
     private authService: AuthenticationService,
@@ -60,6 +61,10 @@ export class AppComponent implements OnInit {
         this.store.dispatch(this.activityActions.clearActivity());
         this.router.navigate(['signIn']);
       });
+  }
+
+  showSideMenu() {
+    this.SideMenuIsActive = !this.SideMenuIsActive;
   }
 }
 
