@@ -1,0 +1,46 @@
+<div class="container ps-profile-padding">
+  <div class="columns is-multiline">
+    <div class="column is-4-widescreen is-6-desktop is-6-tablet">
+      <div class="box">
+        <form (ngSubmit)="resetPassword()" #signinForm="ngForm" novalidate>
+          <div class="is-centered">
+            <div dir="auto">
+              <div class="field">
+                <h3 class="title is-4">
+                  Change password
+                </h3>
+              </div>
+              <div class="field">
+                <p class="control">
+                  <input [(ngModel)]="data.oldPassword" name="password" class="input"
+                         placeholder="Old password" type="password">
+                </p>
+              </div>
+              <div class="field">
+                <p class="control">
+                  <input [(ngModel)]="data.newPassword" name="password" class="input"
+                         placeholder="New password" type="password">
+                </p>
+              </div>
+              <div class="field">
+                <p class="control has-icons-right">
+                  <input [(ngModel)]="rePassword" name="rePassword" class="input"
+                         placeholder="Re-type new password" type="password">
+                </p>
+              </div>
+              <br>
+              <div class="field">
+                <p class="control">
+                  <button class="button is-primary is-fullwidth" type="submit" [disabled]="submitted">Reset Password
+                  </button>
+                </p>
+              </div>
+              <div class="ps-reserve-big-space"></div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+

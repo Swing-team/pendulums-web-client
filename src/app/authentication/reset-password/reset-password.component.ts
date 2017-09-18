@@ -22,10 +22,12 @@ export class ResetPasswordComponent implements OnInit {
     private authService: AuthenticationService,
     private router: Router,
   ) {}
+
   ngOnInit() {
     this.sub = this.route.params.subscribe(params => {
       this.User.token = params['token']; });
   }
+
   resetPassword() {
     this.submitted = true;
     this.errorMessage = null;
@@ -45,6 +47,7 @@ export class ResetPasswordComponent implements OnInit {
       this.submitted = false;
     }
   };
+
   validation(User): boolean {
     if (!User.password
       || User.password.length < 6

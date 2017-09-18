@@ -44,6 +44,14 @@ export class AuthenticationService {
       .catch(this.handleError);
   }
 
+  changePassword(passwordForm): Promise<any> {
+    return this.http
+      .put(this.config.apiEndpoint + '/user/change-password', JSON.stringify(passwordForm), this.config.httpOptions)
+      .toPromise()
+      .then(() => console.log('successfully changed the password'))
+      .catch(this.handleError);
+  }
+
   signOut(): Promise<any> {
     return this.http
       .get(this.config.apiEndpoint + '/auth/signout', this.config.httpOptions)
