@@ -46,7 +46,9 @@ export class AppComponent implements OnInit {
         this.store.dispatch(this.userActions.loadUser(user));
         this.store.dispatch(this.projectsActions.loadProjects(user.projects));
         this.store.dispatch(this.activityActions.loadactivity(user.currentActivities[0]));
-        this.router.navigate(['dashboard']);
+        if (this.router.url === '/dashboard' || this.router.url === '/signIn') {
+          this.router.navigate(['dashboard']);
+        }
       })
       .catch(error => {
         console.log('error is: ', error);
