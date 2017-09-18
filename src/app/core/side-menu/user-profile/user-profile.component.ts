@@ -54,7 +54,8 @@ export class UserProfileComponent implements OnInit {
   openImageModal() {
     this.modalService.show({
       component: ImgCropperComponent,
-      containerRef: this.viewContainerRef
+      containerRef: this.viewContainerRef,
+      customStyles: {'width': '350px', 'overflow': 'initial'}
     });
   }
 }

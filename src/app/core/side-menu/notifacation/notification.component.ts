@@ -1,12 +1,14 @@
-import {Component, Inject, Input, OnInit} from '@angular/core';
-import {APP_CONFIG}               from '../../../app.config';
-import {NotificationService} from './notification.service';
-import {Store} from '@ngrx/store';
-import {UserActions} from '../../../shared/state/user/user.actions';
-import {AppState} from '../../../shared/state/appState';
-import {Project} from '../../../shared/state/project/project.model';
-import {User} from '../../../shared/state/user/user.model';
-import {ProjectsActions} from '../../../shared/state/project/projects.actions';
+import {
+  Component, ElementRef, HostListener,
+  Inject, Input, OnInit, Output, EventEmitter
+}                                        from '@angular/core';
+import { APP_CONFIG }                    from '../../../app.config';
+import { NotificationService }           from './notification.service';
+import { Store }                         from '@ngrx/store';
+import { UserActions }                   from '../../../shared/state/user/user.actions';
+import { AppState }                      from '../../../shared/state/appState';
+import { User }                          from '../../../shared/state/user/user.model';
+import { ProjectsActions }               from '../../../shared/state/project/projects.actions';
 
 @Component({
   selector: 'notification',
@@ -16,12 +18,14 @@ import {ProjectsActions} from '../../../shared/state/project/projects.actions';
 export class NotificationComponent implements OnInit {
   private pendingInvitations: Array<object>;
   @Input() user: User;
+  @Output() clickedOutside = new EventEmitter();
 
   constructor (@Inject(APP_CONFIG) private config,
                private NotificationService: NotificationService,
                private store: Store<AppState>,
                private userActions: UserActions,
-               private projectsActions: ProjectsActions) {}
+               private projectsActions: ProjectsActions,
+               private eRef: ElementRef) {}
 
   ngOnInit() {
     this.pendingInvitations = this.user.pendingInvitations;
@@ -55,5 +59,14 @@ export class NotificationComponent implements OnInit {
       .catch(error => {
         console.log('error is: ', error);
       });
+  }
+
+  @HostListener('document:click', ['$event'])
+  clickOut(event) {
+    if (this.eRef.nativeElement.contains(event.target)) {
+      console.log('clicked inside');
+    } else {
+      this.clickedOutside.emit(event);
+    }
   }
 }
