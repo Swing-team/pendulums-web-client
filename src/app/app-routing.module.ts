@@ -6,7 +6,7 @@ import { ForgotPasswordComponent }      from './authentication/forgot-password/f
 import { ResetPasswordComponent }       from './authentication/reset-password/reset-password.component';
 import { DashboardComponent }           from './dashboard/dashboard.component';
 import { ActivitiesComponent }          from './dashboard/activities/list-activities/activities.component';
-import { ProfileSettingComponent }      from './dashboard/profile-setting/profile-setting.component';
+import { ProfileSettingComponent }      from './profile-setting/profile-setting.component';
 
 const appRoutes: Routes = [
   {

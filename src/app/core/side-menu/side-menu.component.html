@@ -1,7 +1,7 @@
 <aside class="menu">
   <ul class="menu-list">
     <li>
-      <a (click)="toggleProfile()">
+      <a [routerLink]="['/profile']">
         <img *ngIf="user.profileImage" class="ps-user-image"
              src="{{user.profileImage? config.imagesEndpoint + '/profile/' + user.profileImage :
                       'http://bulma.io/images/placeholders/640x480.png'}}" >
@@ -17,11 +17,11 @@
       </a>
     </li>
     <li><a class="is-active" [routerLink]="['dashboard']"><span class="icon-dashboard"></span></a></li>
-    <li><a [routerLink]="['/profile']"><span class="icon-settings"></span></a></li>
+
     <li><a (click)="signout()"><span class="icon-sign-out ps-reverse-icon"></span></a></li>
   </ul>
 </aside>
 
-<user-profile *ngIf="profileIsActive" class="ps-profile" [user]="user"></user-profile>
+
 <notification *ngIf="notificationIsActive" class="ps-notifications-container"
               [user]="user" (clickedOutside)="clickedOutside($event)"></notification>

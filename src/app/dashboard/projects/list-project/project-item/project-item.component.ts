@@ -157,7 +157,7 @@ export class ProjectItemComponent implements OnInit {
     });
   }
 
-  goToActivities(): void{
+  goToActivities(): void {
     this.router.navigate(['/activities', this.project.id]);
   }
 }

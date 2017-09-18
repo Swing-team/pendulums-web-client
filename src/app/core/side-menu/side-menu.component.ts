@@ -1,9 +1,10 @@
 import {
   Component, EventEmitter, Inject,
-  Input, OnInit, Output, ViewChild }                      from '@angular/core';
-import { User }                                           from '../../shared/state/user/user.model';
-import { APP_CONFIG }                                     from '../../app.config';
-import { Md5 }                                            from 'ts-md5/dist/md5';
+  Input, OnInit, Output, ViewChild }     from '@angular/core';
+import { User }                          from '../../shared/state/user/user.model';
+import { APP_CONFIG }                    from '../../app.config';
+import { Md5 }                           from 'ts-md5/dist/md5';
+import { Router }                        from '@angular/router';
 
 @Component({
   selector: 'side-menu',
@@ -19,7 +20,8 @@ export class SideMenuComponent implements OnInit {
   private profileIsActive = false;
   private notificationIsActive = false;
 
-  constructor (@Inject(APP_CONFIG) private config) {}
+  constructor (@Inject(APP_CONFIG) private config,
+               private router: Router) {}
 
   ngOnInit() {
     this.emailHash = Md5.hashStr(this.user.email);
@@ -27,11 +29,6 @@ export class SideMenuComponent implements OnInit {
 
   signout() {
     this.onSignoutClicked.emit();
-  }
-
-  toggleProfile() {
-    this.profileIsActive = !this.profileIsActive;
-    this.notificationIsActive = false;
   }
 
   toggleNotifications() {

@@ -15,7 +15,7 @@ import { DangerousActionsComponent }          from './projects/settings/dangerou
 import { ListOfProjectComponent }             from './projects/list-project/list-of-project.component';
 import { DashboardComponent }                 from './dashboard.component';
 import { ProjectSettingsModalComponent }      from './projects/settings/modal/project-settings-modal.component';
-import { ProfileSettingComponent }            from './profile-setting/profile-setting.component';
+import { ProfileSettingComponent }            from '../profile-setting/profile-setting.component';
 
 @NgModule({
   imports: [
