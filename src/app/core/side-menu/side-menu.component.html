@@ -11,7 +11,7 @@
       </a>
     </li>
     <li>
-      <a (click)="toggleNotifications()">
+      <a #notifications (click)="toggleNotifications()">
         <span class="icon-bell"></span>
         <span class="ps-notification-count" *ngIf="user.pendingInvitations.length>0">{{user.pendingInvitations.length}}</span>
       </a>
@@ -22,5 +22,6 @@
   </ul>
 </aside>
 
-<user-profile *ngIf="profileIsActive" class="ps-profile" [user]="user"> </user-profile>
-<notification *ngIf="notificationIsActive" class="ps-notifications-container" [user]="user"> </notification>
+<user-profile *ngIf="profileIsActive" class="ps-profile" [user]="user"></user-profile>
+<notification *ngIf="notificationIsActive" class="ps-notifications-container"
+              [user]="user" (clickedOutside)="clickedOutside($event)"></notification>
