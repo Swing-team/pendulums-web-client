@@ -1,10 +1,10 @@
 import {Component, ViewChild} from '@angular/core';
 import {ImageCropperComponent, CropperSettings} from 'ng2-img-cropper';
-import {ModalService} from '../../../modal/modal.service';
+import {ModalService} from '../../core/modal/modal.service';
 import {Store} from '@ngrx/store';
-import {AppState} from '../../../../shared/state/appState';
-import {UserActions} from '../../../../shared/state/user/user.actions';
-import {UserService} from '../../../user.service';
+import {AppState} from '../../shared/state/appState';
+import {UserActions} from '../../shared/state/user/user.actions';
+import {UserService} from '../../core/user.service';
 
 @Component({
   selector: 'image-cropper',

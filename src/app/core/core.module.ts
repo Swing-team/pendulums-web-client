@@ -20,8 +20,7 @@ import { SideMenuComponent }            from './side-menu/side-menu.component';
 import { ModalComponent }               from './modal/modal.component';
 import { NotificationComponent }        from './side-menu/notifacation/notification.component';
 import { NotificationService }          from './side-menu/notifacation/notification.service';
-import { UserProfileComponent }         from './side-menu/user-profile/user-profile.component';
-import { ImgCropperComponent }          from './side-menu/user-profile/image-cropper/image-cropper.component';
+import { ImgCropperComponent }          from '../profile-setting/image-cropper/image-cropper.component';
 import { ImageCropperComponent }        from 'ng2-img-cropper';
 import { ErrorComponent }               from './error/error.component';
 import { ErrorService }                 from './error/error.service';
@@ -38,7 +37,6 @@ import { ErrorService }                 from './error/error.service';
     ErrorComponent,
     ModalComponent,
     NotificationComponent,
-    UserProfileComponent,
     ImgCropperComponent,
     ImageCropperComponent
   ],

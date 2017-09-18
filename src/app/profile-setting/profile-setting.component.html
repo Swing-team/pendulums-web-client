@@ -2,6 +2,36 @@
   <div class="columns is-multiline">
     <div class="column is-4-widescreen is-6-desktop is-6-tablet">
       <div class="box">
+        <div>
+          <span>
+            <img *ngIf="userEdit.profileImage" class="ps-user-image" (click)="openImageModal()"
+                 src="{{userEdit.profileImage? config.imagesEndpoint + '/profile/' + userEdit.profileImage :
+                          'http://bulma.io/images/placeholders/640x480.png'}}">
+            <svg *ngIf="!userEdit.profileImage" class="ps-user-image" (click)="openImageModal()"
+                 width="36" height="36" [identiconHash]="emailHash">
+              Fallback text for browsers not supporting inline svg
+            </svg>
+          </span>
+        </div>
+        <div class="ps-reserve-space"></div>
+        <div>
+          <div *ngIf="!userNameEdited">
+            {{userEdit.name? userEdit.name : "No name"}}
+            <span class="ps-edit-profile-button icon-pencil" (click)="toggleView()"></span>
+          </div>
+          <div *ngIf="userNameEdited">
+            <input [(ngModel)]="userEdit.name" class="input ps-user-name"
+                   placeholder="Untitled name" type="text">
+            <span class="ps-edit-profile-button icon-check" (click)="saveProfile()"></span>
+            <span class="ps-edit-profile-button icon-cancel" (click)="toggleView()"></span>
+          </div>
+        </div>
+        <div>{{userEdit.email}}</div>
+        <div class="ps-reserve-space"></div>
+      </div>
+    </div>
+    <div class="column is-4-widescreen is-6-desktop is-6-tablet">
+      <div class="box">
         <form (ngSubmit)="resetPassword()" #signinForm="ngForm" novalidate>
           <div class="is-centered">
             <div dir="auto">
@@ -43,4 +73,3 @@
     </div>
   </div>
 </div>
-
