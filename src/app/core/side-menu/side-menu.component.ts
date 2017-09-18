@@ -1,7 +1,9 @@
-import {Component, EventEmitter, Inject, Input, OnInit, Output} from '@angular/core';
-import {User}                                           from '../../shared/state/user/user.model';
-import {APP_CONFIG}                                     from '../../app.config';
-import {Md5}                                            from 'ts-md5/dist/md5';
+import {
+  Component, EventEmitter, Inject,
+  Input, OnInit, Output, ViewChild }                      from '@angular/core';
+import { User }                                           from '../../shared/state/user/user.model';
+import { APP_CONFIG }                                     from '../../app.config';
+import { Md5 }                                            from 'ts-md5/dist/md5';
 
 @Component({
   selector: 'side-menu',
@@ -12,6 +14,7 @@ import {Md5}                                            from 'ts-md5/dist/md5';
 export class SideMenuComponent implements OnInit {
   @Output() onSignoutClicked = new EventEmitter();
   @Input() user: User;
+  @ViewChild('notifications') notifications;
   emailHash: any;
   private profileIsActive = false;
   private notificationIsActive = false;
@@ -34,5 +37,13 @@ export class SideMenuComponent implements OnInit {
   toggleNotifications() {
     this.notificationIsActive = !this.notificationIsActive;
     this.profileIsActive = false;
+  }
+
+  clickedOutside(event) {
+    if (this.notifications.nativeElement.contains(event.target)) {
+      console.log('clicked inside2');
+    } else {
+      this.notificationIsActive = false;
+    }
   }
 }
