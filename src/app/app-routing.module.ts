@@ -5,7 +5,8 @@ import { SignUpComponent }              from './authentication/sign-up/sign-up.c
 import { ForgotPasswordComponent }      from './authentication/forgot-password/forgot-password.component';
 import { ResetPasswordComponent }       from './authentication/reset-password/reset-password.component';
 import { DashboardComponent }           from './dashboard/dashboard.component';
-import {ActivitiesComponent}            from './dashboard/activities/list-activities/activities.component';
+import { ActivitiesComponent }          from './dashboard/activities/list-activities/activities.component';
+import { ProfileSettingComponent }      from './dashboard/profile-setting/profile-setting.component';
 
 const appRoutes: Routes = [
   {
@@ -36,6 +37,10 @@ const appRoutes: Routes = [
   {
     path: 'activities/:projectId',
     component: ActivitiesComponent
+  },
+  {
+    path: 'profile',
+    component: ProfileSettingComponent
   },
 ];
 
