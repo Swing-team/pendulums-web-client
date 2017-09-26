@@ -1,13 +1,13 @@
-import {Injectable} from '@angular/core';
-import {Action} from '@ngrx/store';
-import {Activity} from './activity.model';
+import { Injectable }     from '@angular/core';
+import { Action }         from '@ngrx/store';
+import { Activity }       from './activity.model';
 
 @Injectable()
 export class ActivityActions {
   static LOAD_ACTIVITY = 'LOAD_ACTIVITY';
   static CLEAR_ACTIVITY = 'CLEAR_ACTIVITY';
 
-  loadactivity(activity: Activity): Action {
+  loadActivity(activity: Activity): Action {
     return {
       type: ActivityActions.LOAD_ACTIVITY,
       payload: activity

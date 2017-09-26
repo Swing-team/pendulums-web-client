@@ -96,7 +96,7 @@ export class ToolbarComponent implements OnInit {
       activity.startedAt = Date.now().toString();
       this.activityService.create(this.selectedProject.id, activity).then((activity) => {
         this.showError('Activity started successfully!');
-        this.store.dispatch(this.activityActions.loadactivity(activity));
+        this.store.dispatch(this.activityActions.loadActivity(activity));
       })
         .catch(error => {
           this.showError('Server communication error.');
