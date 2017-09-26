@@ -10,8 +10,8 @@ import { UserActions }                  from '../shared/state/user/user.actions'
 import { ProjectsActions }              from '../shared/state/project/projects.actions';
 import { ActivityActions }              from '../shared/state/activity/activity.actions';
 
-import { UserService }                  from './user.service';
-import { AuthenticationService }        from './authentication.service';
+import { UserService }                  from './servises/user.service';
+import { AuthenticationService }        from './servises/authentication.service';
 import { ModalService }                 from './modal/modal.service';
 
 import { ToolbarComponent }             from './toolbar/toolbar.component';
@@ -24,6 +24,8 @@ import { ImgCropperComponent }          from '../profile-setting/image-cropper/i
 import { ImageCropperComponent }        from 'ng2-img-cropper';
 import { ErrorComponent }               from './error/error.component';
 import { ErrorService }                 from './error/error.service';
+import { DatabaseService }              from './servises/database/database.service';
+import { DexieService }                 from './servises/database/dexie.service';
 
 @NgModule({
   imports:      [
@@ -54,7 +56,9 @@ import { ErrorService }                 from './error/error.service';
     AuthenticationService,
     UserActions,
     ProjectsActions,
-    ActivityActions
+    ActivityActions,
+    DexieService,
+    DatabaseService
   ],
   entryComponents: [
     ModalComponent,

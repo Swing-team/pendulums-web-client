@@ -3,7 +3,7 @@ import { Http } from '@angular/http';
 
 import 'rxjs/add/operator/toPromise';
 
-import { APP_CONFIG } from '../app.config';
+import { APP_CONFIG } from '../../app.config';
 
 @Injectable()
 export class AuthenticationService {

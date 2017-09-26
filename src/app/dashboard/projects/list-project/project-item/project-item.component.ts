@@ -68,7 +68,7 @@ export class ProjectItemComponent implements OnInit {
         this.activity.name = this.taskName;
         this.activity.startedAt = Date.now().toString();
         this.activityService.create(this.project.id, this.activity).then((activity) => {
-          this.store.dispatch(this.activityActions.loadactivity(activity));
+          this.store.dispatch(this.activityActions.loadActivity(activity));
         })
           .catch(error => {
             console.log('error is: ', error);
@@ -82,7 +82,7 @@ export class ProjectItemComponent implements OnInit {
       this.activity.name = this.taskName;
       this.activity.startedAt = Date.now().toString();
       this.activityService.create(this.project.id, this.activity).then((activity) => {
-        this.store.dispatch(this.activityActions.loadactivity(activity));
+        this.store.dispatch(this.activityActions.loadActivity(activity));
       })
         .catch(error => {
           console.log('error is: ', error);
@@ -108,7 +108,7 @@ export class ProjectItemComponent implements OnInit {
     if (this.currentActivity) {
       this.currentActivityCopy.name = this.taskName;
       this.activityService.editCurrentActivity(this.project.id, this.currentActivityCopy).then((activity) => {
-        this.store.dispatch(this.activityActions.loadactivity(activity));
+        this.store.dispatch(this.activityActions.loadActivity(activity));
       })
         .catch(error => {
           console.log('error is: ', error);

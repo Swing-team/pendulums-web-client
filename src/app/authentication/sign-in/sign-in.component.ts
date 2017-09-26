@@ -1,12 +1,13 @@
-import {Component} from '@angular/core';
-import {AuthenticationService} from '../../core/authentication.service';
-import {Router} from '@angular/router';
-import {Store} from '@ngrx/store';
-import {AppState} from '../../shared/state/appState';
-import {UserService} from '../../core/user.service';
-import {UserActions} from '../../shared/state/user/user.actions';
-import {ProjectsActions} from '../../shared/state/project/projects.actions';
-import {ActivityActions} from '../../shared/state/activity/activity.actions';
+import { Component }                        from '@angular/core';
+import { AuthenticationService }            from '../../core/servises/authentication.service';
+import { Router }                           from '@angular/router';
+import { Store }                            from '@ngrx/store';
+import { AppState }                         from '../../shared/state/appState';
+import { UserService }                      from '../../core/servises/user.service';
+import { UserActions }                      from '../../shared/state/user/user.actions';
+import { ProjectsActions }                  from '../../shared/state/project/projects.actions';
+import { ActivityActions }                  from '../../shared/state/activity/activity.actions';
+import { DatabaseService }                  from '../../core/servises/database/database.service';
 
 const EMAIL_REGEX = /^(?=.{8,64}$)[\w!#$%&'*+/=?`{|}~^-]+(?:\.[\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,6}$/;
 
@@ -28,7 +29,8 @@ export class SignInComponent {
     private userActions: UserActions,
     private projectsActions: ProjectsActions,
     private activityActions: ActivityActions,
-    private store: Store<AppState>
+    private store: Store<AppState>,
+    private dBService: DatabaseService
   ) {}
 
   signIn() {
@@ -42,10 +44,43 @@ export class SignInComponent {
               this.router.navigate(['dashboard']);
               this.store.dispatch(this.userActions.loadUser(user));
               this.store.dispatch(this.projectsActions.loadProjects(user.projects));
-              this.store.dispatch(this.activityActions.loadactivity(user.currentActivities[0]));
+              this.store.dispatch(this.activityActions.loadActivity(user.currentActivities[0]));
+              this.dBService
+                .removeAll('activeUser')
+                .then(() => {
+                  this.dBService
+                    .createOrUpdate('activeUser', {data: user.id})
+                    .then(() => {});
+                });
             })
             .catch(error => {
+              if (error.status !== 403) {
+              let uId: string;
+              this.dBService
+                .getAll('activeUser')
+                .then((data) => {
+                  uId = data[0].data;
+                  if (uId) {
+                    this.dBService
+                      .get('userData', uId)
+                      .then((userData) => {
+                        if (userData) {
+                          console.log('loaded from index db');
+                          this.store.dispatch(this.userActions.loadUser(userData.data.user));
+                          this.store.dispatch(this.projectsActions.loadDbProjects(userData.data.projects.entities));
+                          this.store.dispatch(this.activityActions.loadActivity(userData.data.currentActivity));
+                          if (this.router.url === '/dashboard' || this.router.url === '/signIn') {
+                            this.router.navigate(['dashboard']);
+                          }
+                        } else {
+                          this.router.navigate(['signIn']);
+                        }
+                      });
+                  }
+                });
+            } else {
               console.log('error is: ', error);
+            }
             });
           this.router.navigate(['dashboard']);
         })

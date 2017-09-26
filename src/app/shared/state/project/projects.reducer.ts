@@ -18,6 +18,12 @@ export default function reducer(state = initialState, action: Action) {
       };
     }
 
+    case ProjectsActions.LOAD_DB_PROJECTS: {
+      return {
+        entities: action.payload
+      };
+    }
+
     case ProjectsActions.CLEAR_PROJECTS: {
       return initialState;
     }

@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { Action }     from '@ngrx/store';
 import { Projects }   from './projects.model';
 import { Project }    from './project.model';
-import {Activity}     from '../activity/activity.model';
-import {User}         from '../user/user.model';
+import { Activity }   from '../activity/activity.model';
 
 @Injectable()
 export class ProjectsActions {
   static LOAD_PROJECTS = 'LOAD_PROJECTS';
+  static LOAD_DB_PROJECTS = 'LOAD_DB_PROJECTS';
   static CLEAR_PROJECTS = 'CLEAR_PROJECTS';
   static ADD_PROJECT = 'ADD_PROJECT';
   static REMOVE_PROJECT = 'REMOVE_PROJECT';
@@ -21,6 +21,13 @@ export class ProjectsActions {
   loadProjects(projects: Projects): Action {
     return {
       type: ProjectsActions.LOAD_PROJECTS,
+      payload: projects
+    };
+  }
+
+  loadDbProjects(projects: Projects): Action {
+    return {
+      type: ProjectsActions.LOAD_DB_PROJECTS,
       payload: projects
     };
   }
