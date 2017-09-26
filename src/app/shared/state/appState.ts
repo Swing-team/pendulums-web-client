@@ -1,19 +1,21 @@
 import '@ngrx/core/add/operator/select';
-import {compose} from '@ngrx/core/compose';
-// import {storeLogger} from 'ngrx-store-logger';
-import { combineReducers } from '@ngrx/store';
+import { compose }          from '@ngrx/core/compose';
+import { combineReducers }  from '@ngrx/store';
 
-import userReducer from './user/user.reducer';
-import projectsReducer from './project/projects.reducer';
-import activityReducer from './activity/activity.reducer';
-import {User} from './user/user.model';
-import {Projects} from './project/projects.model';
-import {Activity} from './activity/activity.model';
+import userReducer          from './user/user.reducer';
+import projectsReducer      from './project/projects.reducer';
+import activityReducer      from './activity/activity.reducer';
+import statusReducer        from './status/status.reducer';
+import { User }             from './user/user.model';
+import { Projects }         from './project/projects.model';
+import { Activity }         from './activity/activity.model';
+import { Status }           from './status/status.model';
 
 export interface AppState {
   user: User;
   projects: Projects;
   activity: Activity;
+  status: Status;
 }
 
 // uncomment the storeLogger import and this line
@@ -27,4 +29,5 @@ export default compose(combineReducers)({
   user: userReducer,
   projects: projectsReducer,
   activity: activityReducer,
+  status: statusReducer
 });
