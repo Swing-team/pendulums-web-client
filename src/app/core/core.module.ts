@@ -26,6 +26,7 @@ import { ErrorComponent }               from './error/error.component';
 import { ErrorService }                 from './error/error.service';
 import { DatabaseService }              from './servises/database/database.service';
 import { DexieService }                 from './servises/database/dexie.service';
+import { StatusActions }                from '../shared/state/status/status.actions';
 
 @NgModule({
   imports:      [
@@ -55,6 +56,7 @@ import { DexieService }                 from './servises/database/dexie.service'
     NotificationService,
     AuthenticationService,
     UserActions,
+    StatusActions,
     ProjectsActions,
     ActivityActions,
     DexieService,

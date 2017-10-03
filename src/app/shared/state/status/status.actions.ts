@@ -5,20 +5,28 @@ import { Status }     from './status.model';
 @Injectable()
 export class StatusActions {
   static LOAD_STATUS = 'LOAD_STATUS';
-  static CLEAR_STATUS = 'CLEAR_STATUS';
   static UPDATE_NET_STATUS = 'UPDATE_NET_STATUS';
+  static UPDATE_IS_LOGIN  = 'UPDATE_IS_LOGIN ';
+  static CLEAR_STATUS = 'CLEAR_STATUS';
 
-  loadStatus(status: Status): Action {
+  loadStatus(netStatus: boolean): Action {
     return {
       type: StatusActions.LOAD_STATUS,
-      payload: status
+      payload: netStatus
     };
   }
 
-  updateNetStatus(status: boolean): Action {
+  updateNetStatus(netStatus: boolean): Action {
     return {
       type: StatusActions.UPDATE_NET_STATUS,
-      payload: status
+      payload: netStatus
+    };
+  }
+
+  updateIsLogin(isLogin: boolean): Action {
+    return {
+      type: StatusActions.UPDATE_IS_LOGIN,
+      payload: isLogin
     };
   }
 
