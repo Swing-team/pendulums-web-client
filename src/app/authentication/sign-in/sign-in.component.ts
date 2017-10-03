@@ -3,11 +3,7 @@ import { AuthenticationService }            from '../../core/servises/authentica
 import { Router }                           from '@angular/router';
 import { Store }                            from '@ngrx/store';
 import { AppState }                         from '../../shared/state/appState';
-import { UserService }                      from '../../core/servises/user.service';
-import { UserActions }                      from '../../shared/state/user/user.actions';
-import { ProjectsActions }                  from '../../shared/state/project/projects.actions';
-import { ActivityActions }                  from '../../shared/state/activity/activity.actions';
-import { DatabaseService }                  from '../../core/servises/database/database.service';
+import { StatusActions }                    from '../../shared/state/status/status.actions';
 
 const EMAIL_REGEX = /^(?=.{8,64}$)[\w!#$%&'*+/=?`{|}~^-]+(?:\.[\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,6}$/;
 
@@ -25,12 +21,8 @@ export class SignInComponent {
   constructor(
     private authService: AuthenticationService,
     private router: Router,
-    private userService: UserService,
-    private userActions: UserActions,
-    private projectsActions: ProjectsActions,
-    private activityActions: ActivityActions,
+    private statusActions: StatusActions,
     private store: Store<AppState>,
-    private dBService: DatabaseService
   ) {}
 
   signIn() {
@@ -39,49 +31,7 @@ export class SignInComponent {
     if (this.validation(this.authUser)) {
       this.authService.signIn(this.authUser)
         .then(() => {
-          this.userService.getSummary()
-            .then((user) => {
-              this.router.navigate(['dashboard']);
-              this.store.dispatch(this.userActions.loadUser(user));
-              this.store.dispatch(this.projectsActions.loadProjects(user.projects));
-              this.store.dispatch(this.activityActions.loadActivity(user.currentActivities[0]));
-              this.dBService
-                .removeAll('activeUser')
-                .then(() => {
-                  this.dBService
-                    .createOrUpdate('activeUser', {data: user.id})
-                    .then(() => {});
-                });
-            })
-            .catch(error => {
-              if (error.status !== 403) {
-              let uId: string;
-              this.dBService
-                .getAll('activeUser')
-                .then((data) => {
-                  uId = data[0].data;
-                  if (uId) {
-                    this.dBService
-                      .get('userData', uId)
-                      .then((userData) => {
-                        if (userData) {
-                          console.log('loaded from index db');
-                          this.store.dispatch(this.userActions.loadUser(userData.data.user));
-                          this.store.dispatch(this.projectsActions.loadDbProjects(userData.data.projects.entities));
-                          this.store.dispatch(this.activityActions.loadActivity(userData.data.currentActivity));
-                          if (this.router.url === '/dashboard' || this.router.url === '/signIn') {
-                            this.router.navigate(['dashboard']);
-                          }
-                        } else {
-                          this.router.navigate(['signIn']);
-                        }
-                      });
-                  }
-                });
-            } else {
-              console.log('error is: ', error);
-            }
-            });
+          this.store.dispatch(this.statusActions.updateIsLogin(true));
           this.router.navigate(['dashboard']);
         })
         .catch(error => {
