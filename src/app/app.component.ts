@@ -22,6 +22,7 @@ export class AppComponent implements OnInit {
   private projects: Observable<any>;
   private currentActivity: Observable<any>;
   private SideMenuIsActive = false;
+  private status: Observable<any>;
 
   constructor(
     private authService: AuthenticationService,
@@ -38,6 +39,7 @@ export class AppComponent implements OnInit {
     this.user = store.select('user');
     this.projects = store.select('projects');
     this.currentActivity = store.select('activity');
+    this.status = store.select('status');
 
     // todo: It can be better later
     store.debounceTime(2000).subscribe((state) => {
@@ -55,11 +57,31 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    let isLogin = true;
+    this.status.subscribe((status) => {
+      isLogin = status.isLogin;
+      if (isLogin) {
+        console.log('login value1:', isLogin);
+        this.initialApp();
+      } else {
+        this.initialApp();
+      }
+    });
+  }
+
+  initialApp() {
     this.userService.getSummary()
       .then((user) => {
         this.store.dispatch(this.userActions.loadUser(user));
         this.store.dispatch(this.projectsActions.loadProjects(user.projects));
         this.store.dispatch(this.activityActions.loadActivity(user.currentActivities[0]));
+        this.dBService
+          .removeAll('activeUser')
+          .then(() => {
+            this.dBService
+              .createOrUpdate('activeUser', {data: user.id})
+              .then(() => {});
+          });
         if (this.router.url === '/dashboard' || this.router.url === '/signIn') {
           this.router.navigate(['dashboard']);
         }
