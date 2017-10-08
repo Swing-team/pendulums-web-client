@@ -100,7 +100,7 @@ export class ProjectsActions {
     };
   }
 
-  updateProjectActivity(projectId: string, activity: Activity): Action {
+  updateProjectActivities(projectId: string, activity: Activity): Action {
     return {
       type: ProjectsActions.UPDATE_PROJECT_ACTIVITIES,
       payload: {
