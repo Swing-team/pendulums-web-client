@@ -195,7 +195,8 @@ export class AddManuallyActivityComponent implements OnInit {
 
   validateForm(): boolean {
     let finalCheck = true ;
-    if (/\s/g.test(this.activityModel.name) || !this.activityModel.name) {
+    if (this.IsNullOrWhiteSpace(this.activityModel.name)) {
+      console.log('jgjhjhjhjhjjhjjhjhj87686876868676768686868768')
       this.activityModel.name = 'Untitled name';
     }
     if (this.fromDate && this.toDate) {
@@ -224,6 +225,13 @@ export class AddManuallyActivityComponent implements OnInit {
       finalCheck = false;
     }
     return finalCheck;
+  }
+
+  IsNullOrWhiteSpace(value: string): boolean {
+    if (value == null || value === 'undefined') {
+      return true;
+    }
+    return value.toString().replace(/\s/g, '').length < 1;
   }
 
   showError(error) {
