@@ -15,6 +15,7 @@ export class SwingCalendarComponent implements OnChanges, OnInit {
   // value is used when we have input date
   @Input() value = '';
 
+  // below fields are needed in html UI
   private currDate = moment();
   private daysOfWeek = [ 'Sa', 'Su', 'Mo', 'Tu', 'We', 'Th', 'Fr'];
   private months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -240,7 +241,7 @@ export class SwingCalendarComponent implements OnChanges, OnInit {
         const tempMonth = this.months.indexOf(this.currMonth);
          // Set the new date array with active date
         const selectedDate = moment().year(this.currYear).month(tempMonth).date(sDate.date);
-        if (selectedDate.isBefore(moment())) {
+        if (selectedDate.isSameOrBefore(moment())) {
           // console.log('selected Date:', selectedDate)
           this.dateSelected.next(selectedDate);
         }
