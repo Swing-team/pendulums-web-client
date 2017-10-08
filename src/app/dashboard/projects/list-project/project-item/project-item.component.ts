@@ -12,6 +12,7 @@ import { ModalService }                       from '../../../../core/modal/modal
 import { ProjectSettingsModalComponent }      from 'app/dashboard/projects/settings/modal/project-settings-modal.component';
 import { User }                               from '../../../../shared/state/user/user.model';
 import { Router }                             from '@angular/router';
+import { DatabaseService }                    from '../../../../core/servises/database/database.service';
 
 @Component({
   selector: 'project-item',
@@ -32,7 +33,10 @@ export class ProjectItemComponent implements OnInit {
                private store: Store<AppState>,
                private activityActions: ActivityActions,
                private projectsActions: ProjectsActions,
-               private router: Router) {
+               private router: Router,
+               private modalService: ModalService,
+               private viewContainerRef: ViewContainerRef,
+               private dBService: DatabaseService) {
     this.taskName = 'Untitled task';
     this.activities = [];
   }
@@ -58,58 +62,93 @@ export class ProjectItemComponent implements OnInit {
 
   startActivity() {
     if (this.currentActivityCopy.startedAt) {
-      this.currentActivityCopy.stoppedAt = Date.now().toString();
-      this.activityService.editCurrentActivity(this.project.id, this.currentActivityCopy).then(() => {
-        this.store.dispatch(this.activityActions.clearActivity());
-        this.activity = new Activity();
-        this.activity.name = this.taskName;
-        this.activity.startedAt = Date.now().toString();
-        this.activityService.create(this.project.id, this.activity).then((activity) => {
-          this.store.dispatch(this.activityActions.loadActivity(activity));
-        })
-          .catch(error => {
-            console.log('error is: ', error);
-          });
-      })
-        .catch(error => {
-          console.log('error is: ', error);
-        });
+      this.stopActivity();
+      this.startActivityAtServer();
     } else {
-      this.activity = new Activity();
-      this.activity.name = this.taskName;
-      this.activity.startedAt = Date.now().toString();
-      this.activityService.create(this.project.id, this.activity).then((activity) => {
-        this.store.dispatch(this.activityActions.loadActivity(activity));
-      })
-        .catch(error => {
-          console.log('error is: ', error);
-        });
+      this.startActivityAtServer();
     }
+  }
+
+  startActivityAtServer() {
+    this.activity = new Activity();
+    this.activity.name = this.taskName;
+    this.activity.startedAt = Date.now().toString();
+    this.activityService.create(this.project.id, this.activity).then((activity) => {
+      delete activity.createdAt;
+      delete activity.updatedAt;
+      this.store.dispatch(this.activityActions.loadActivity(activity));
+    })
+      .catch(error => {
+        // we need two below fields for offline logic
+        this.activity.project = this.project.id;
+        this.activity.user = this.user.id;
+        console.log('server error happened and it is: ', error);
+        this.store.dispatch(this.activityActions.loadActivity(this.activity));
+      });
   }
 
   stopActivity() {
     if (this.currentActivity) {
       this.currentActivityCopy.stoppedAt = Date.now().toString();
-      this.activityService.editCurrentActivity(this.project.id, this.currentActivityCopy).then((activity) => {
-        this.store.dispatch(this.activityActions.clearActivity());
-        this.store.dispatch(this.projectsActions.updateProjectActivity(this.project.id, activity));
-        this.taskName = 'Untitled task';
-      })
-        .catch(error => {
-          console.log('error is: ', error);
-        });
+      if (this.currentActivityCopy.id) {
+        this.activityService.editCurrentActivity(this.project.id, this.currentActivityCopy).then((activity) => {
+          this.store.dispatch(this.activityActions.clearActivity());
+          this.store.dispatch(this.projectsActions.updateProjectActivities(this.project.id, activity));
+          this.taskName = 'Untitled task';
+        })
+          .catch(error => {
+            console.log('server error happened and it is: ', error);
+            console.log('current Activity loaded from db ');
+            this.stopActivityAtDb();
+          });
+      } else {
+        console.log('activity has no name so it should go through the sync way');
+        this.activityService.create(this.project.id, this.currentActivityCopy).then((activity) => {
+          this.store.dispatch(this.activityActions.clearActivity());
+          this.store.dispatch(this.projectsActions.updateProjectActivities(this.project.id, activity));
+          this.taskName = 'Untitled task';
+        })
+          .catch(error => {
+            console.log('server error happened and it is: ', error);
+            console.log('current Activity loaded from db ');
+            this.stopActivityAtDb();
+          });
+      }
     }
+  }
+
+  stopActivityAtDb() {
+    this.dBService
+      .get('activities', this.user.id)
+      .then((activities) => {
+        let ActivitiesArray = [];
+        if (activities) {
+          ActivitiesArray = activities.data;
+        }
+        ActivitiesArray.push(this.currentActivityCopy);
+        this.dBService
+          .createOrUpdate('activities', {data: ActivitiesArray, userId: this.user.id})
+          .then((activity) => {
+            this.store.dispatch(this.activityActions.clearActivity());
+            this.store.dispatch(this.projectsActions.updateProjectActivities(this.project.id, this.currentActivityCopy));
+            this.taskName = 'Untitled task';
+          });
+      });
   }
 
   nameActivity() {
     if (this.currentActivity) {
-      this.currentActivityCopy.name = this.taskName;
-      this.activityService.editCurrentActivity(this.project.id, this.currentActivityCopy).then((activity) => {
-        this.store.dispatch(this.activityActions.loadActivity(activity));
-      })
-        .catch(error => {
-          console.log('error is: ', error);
-        });
+      if (this.currentActivityCopy.id) {
+        this.activityService.editCurrentActivity(this.project.id, this.currentActivityCopy).then((activity) => {
+          this.store.dispatch(this.activityActions.loadActivity(activity));
+        })
+          .catch(error => {
+            console.log('server error happened and it is: ', error);
+            this.store.dispatch(this.activityActions.loadActivity(this.currentActivityCopy));
+          });
+      } else {
+        console.log('activity has no name so it should go through the sync way');
+      }
     }
   }
 
@@ -156,5 +195,31 @@ export class ProjectItemComponent implements OnInit {
 
   goToActivities(): void {
     this.router.navigate(['/activities', this.project.id]);
+  }
+
+  isEquivalent(a, b): boolean {
+    // Create arrays of property names
+    const aProps = Object.getOwnPropertyNames(a);
+    const bProps = Object.getOwnPropertyNames(b);
+
+    // If number of properties is different,
+    // objects are not equivalent
+    if (aProps.length !== bProps.length) {
+      return false;
+    }
+
+    for (let i = 0; i < aProps.length; i++) {
+      const propName = aProps[i];
+
+      // If values of same property are not equal,
+      // objects are not equivalent
+      if (a[propName] !== b[propName]) {
+        return false;
+      }
+    }
+
+    // If we made it this far, objects
+    // are considered equivalent
+    return true;
   }
 }

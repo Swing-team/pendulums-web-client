@@ -1,16 +1,18 @@
-import {Component, EventEmitter, Inject,
-        Input, Output, OnInit}            from '@angular/core';
-import {Observable}                       from 'rxjs/Observable';
-import {APP_CONFIG}                       from '../../app.config';
-import {Activity}                         from '../../shared/state/activity/activity.model';
-import {Project}                          from '../../shared/state/project/project.model';
-import {Projects}                         from '../../shared/state/project/projects.model';
-import {ActivityService}                  from 'app/shared/activity/activity.service';
-import {Store}                            from '@ngrx/store';
-import {ActivityActions}                  from 'app/shared/state/activity/activity.actions';
-import {AppState}                         from 'app/shared/state/appState';
-import {ProjectsActions}                  from '../../shared/state/project/projects.actions';
-import {ErrorService}                     from '../error/error.service';
+import { Component, EventEmitter, Inject,
+         Input, Output, OnInit }            from '@angular/core';
+import { Observable }                       from 'rxjs/Observable';
+import { APP_CONFIG }                       from '../../app.config';
+import { Activity }                         from '../../shared/state/activity/activity.model';
+import { Project }                          from '../../shared/state/project/project.model';
+import { Projects }                         from '../../shared/state/project/projects.model';
+import { ActivityService }                  from 'app/shared/activity/activity.service';
+import { Store }                            from '@ngrx/store';
+import { ActivityActions }                  from 'app/shared/state/activity/activity.actions';
+import { AppState }                         from 'app/shared/state/appState';
+import { ProjectsActions }                  from '../../shared/state/project/projects.actions';
+import { ErrorService }                     from '../error/error.service';
+import { User }                             from '../../shared/state/user/user.model';
+import { DatabaseService }                  from '../servises/database/database.service';
 
 @Component({
   selector: 'toolbar',
@@ -19,6 +21,7 @@ import {ErrorService}                     from '../error/error.service';
 })
 
 export class ToolbarComponent implements OnInit {
+  @Input() user: User;
   @Input() projects: Projects;
   @Input() currentActivity: Observable<Activity>;
   @Output() onMenuItemClicked = new EventEmitter();
@@ -32,7 +35,8 @@ export class ToolbarComponent implements OnInit {
                private store: Store<AppState>,
                private activityActions: ActivityActions,
                private projectsActions: ProjectsActions,
-               private errorService: ErrorService) {
+               private errorService: ErrorService,
+               private dBService: DatabaseService) {
     this.selectedProject = new Project();
   }
 
@@ -92,15 +96,19 @@ export class ToolbarComponent implements OnInit {
       }
       const activity = new Activity();
       activity.project = this.selectedProject.id;
+      activity.user = this.user.id;
       activity.name = this.taskName;
       activity.startedAt = Date.now().toString();
       this.activityService.create(this.selectedProject.id, activity).then((activity) => {
         this.showError('Activity started successfully!');
+        delete activity.createdAt;
+        delete activity.updatedAt;
         this.store.dispatch(this.activityActions.loadActivity(activity));
       })
         .catch(error => {
           this.showError('Server communication error.');
-          console.log('error is: ', error);
+          console.log('server error happened and it is: ', error);
+          this.store.dispatch(this.activityActions.loadActivity(activity));
         });
     } else {
       this.showError('Select a distinct project.');
@@ -111,17 +119,53 @@ export class ToolbarComponent implements OnInit {
   stopActivity() {
     if (this.currentActivity) {
       this.currentActivityCopy.stoppedAt = Date.now().toString();
-      this.activityService.editCurrentActivity(this.currentActivityCopy.project, this.currentActivityCopy).then((activity) => {
-        this.store.dispatch(this.activityActions.clearActivity());
-        this.store.dispatch(this.projectsActions.updateProjectActivity(activity.project, activity));
-        this.taskName = null;
-        this.showError('Activity stopped successfully!');
-      })
-        .catch(error => {
-          this.showError('Server communication error.');
-          console.log('error is: ', error);
-        });
+      if (this.currentActivityCopy.id) {
+        this.activityService.editCurrentActivity(this.currentActivityCopy.project, this.currentActivityCopy).then((activity) => {
+          this.store.dispatch(this.activityActions.clearActivity());
+          this.store.dispatch(this.projectsActions.updateProjectActivities(activity.project, activity));
+          this.taskName = null;
+          this.showError('Activity stopped successfully!');
+        })
+          .catch(error => {
+            console.log('server error happened and it is: ', error);
+            console.log('current Activity loaded from db ');
+            this.showError('Server communication error.');
+            this.stopActivityAtDb();
+          });
+      } else {
+        console.log('activity has no name so it should go through the sync way');
+        this.activityService.create(this.currentActivityCopy.project, this.currentActivityCopy).then((activity) => {
+          this.store.dispatch(this.activityActions.clearActivity());
+          this.store.dispatch(this.projectsActions.updateProjectActivities(this.currentActivityCopy.project, activity));
+          this.taskName = 'Untitled task';
+        })
+          .catch(error => {
+            console.log('server error happened and it is: ', error);
+            console.log('current Activity loaded from db ');
+            this.stopActivityAtDb();
+          });
+      }
     }
+
+  }
+
+  stopActivityAtDb() {
+    this.dBService
+      .get('activities', this.user.id)
+      .then((activities) => {
+        let ActivitiesArray = [];
+        if (activities) {
+          ActivitiesArray = activities.data;
+        }
+        ActivitiesArray.push(this.currentActivityCopy);
+        this.dBService
+          .createOrUpdate('activities', {data: ActivitiesArray, userId: this.user.id})
+          .then((activity) => {
+            this.store.dispatch(this.activityActions.clearActivity());
+            this.store.dispatch(this.projectsActions.updateProjectActivities(this.currentActivityCopy.project, this.currentActivityCopy));
+            this.taskName = 'Untitled task';
+          });
+      });
   }
 
   showSideMenu() {
