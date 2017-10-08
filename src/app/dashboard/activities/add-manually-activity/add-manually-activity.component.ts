@@ -196,7 +196,6 @@ export class AddManuallyActivityComponent implements OnInit {
   validateForm(): boolean {
     let finalCheck = true ;
     if (this.IsNullOrWhiteSpace(this.activityModel.name)) {
-      console.log('jgjhjhjhjhjjhjjhjhj87686876868676768686868768')
       this.activityModel.name = 'Untitled name';
     }
     if (this.fromDate && this.toDate) {
