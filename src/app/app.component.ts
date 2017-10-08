@@ -101,7 +101,7 @@ export class AppComponent implements OnInit {
                       console.log('loaded from index db');
                       this.store.dispatch(this.userActions.loadUser(userData.data.user));
                       this.store.dispatch(this.projectsActions.loadDbProjects(userData.data.projects.entities));
-                      this.store.dispatch(this.activityActions.loadActivity(userData.data.currentActivity));
+                      this.store.dispatch(this.activityActions.loadActivity(userData.data.activity));
                       if (this.router.url === '/dashboard' || this.router.url === '/signIn') {
                         this.router.navigate(['dashboard']);
                       }

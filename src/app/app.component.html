@@ -1,4 +1,4 @@
-<toolbar *ngIf="(user | async).id" [projects]="projects | async" [currentActivity]="currentActivity"
+<toolbar *ngIf="(user | async).id" [user]="user | async" [projects]="projects | async" [currentActivity]="currentActivity"
          class="ps-toolbar" (onMenuItemClicked)="showSideMenu()" ></toolbar>
 <div class="columns ps-main-content" [ngClass]="{'ps-main-signed-in-content': (user | async).id}">
   <side-menu *ngIf="(user | async).id" [user]="user | async"  (onSignoutClicked)="signOut()"
