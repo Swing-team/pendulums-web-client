@@ -1,5 +1,6 @@
 import 'rxjs/add/operator/switchMap';
 import * as _ from 'lodash';
+import * as moment from 'moment';
 import {
   Component, HostListener, Inject, OnInit,
   ViewContainerRef
@@ -68,10 +69,14 @@ export class ActivitiesComponent implements OnInit {
 
   updateActivities(param) {
     this.tempArray.push(param);
+    this.sortArrayByDate();
     this.groupByActivities();
+    console.log('this.tempArray', this.tempArray);
   }
 
   groupByActivities() {
+    console.log('this.projectActivities1', this.projectActivities);
+    this.projectActivities = [];
     this.projectActivities = _.chain(this.tempArray)
       .groupBy((activity: Activity) => {
         return new Date(Number(activity.stoppedAt)).toDateString();
@@ -80,6 +85,17 @@ export class ActivitiesComponent implements OnInit {
         return {date: key, activities: value};
       })
       .value();
+    console.log('this.projectActivities2', this.projectActivities);
+  }
+
+  sortArrayByDate(): void {
+
+    this.tempArray.sort((a: Activity, b: Activity) => {
+      console.log('this.te ay', moment(a.stoppedAt));
+      console.log('this.te ray', moment(b.stoppedAt));
+      return +b.stoppedAt - +a.stoppedAt;
+
+    });
   }
 
   openAddManuallyModal() {
@@ -125,7 +141,7 @@ export class ActivitiesComponent implements OnInit {
         }
           activities.map((activity) => {
             this.tempArray.push(activity);
-          })
+          });
           this.groupByActivities();
         });
     }
