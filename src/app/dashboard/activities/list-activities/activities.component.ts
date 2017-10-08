@@ -54,6 +54,10 @@ export class ActivitiesComponent implements OnInit {
   deleteActivity(activity , index1, index2) {
     this.activityService.delete(activity.project, activity.id).then(() => {
       this.projectActivities[index1].activities.splice(index2, 1);
+      const Removed = this.tempArray .filter(function(el) {
+        return el.id !== activity.id ;
+      });
+      this.tempArray = Removed;
       this.showError('activity deleted successfully');
       console.log('activity deleted successfully');
     })
@@ -71,11 +75,9 @@ export class ActivitiesComponent implements OnInit {
     this.tempArray.push(param);
     this.sortArrayByDate();
     this.groupByActivities();
-    console.log('this.tempArray', this.tempArray);
   }
 
   groupByActivities() {
-    console.log('this.projectActivities1', this.projectActivities);
     this.projectActivities = [];
     this.projectActivities = _.chain(this.tempArray)
       .groupBy((activity: Activity) => {
@@ -85,16 +87,11 @@ export class ActivitiesComponent implements OnInit {
         return {date: key, activities: value};
       })
       .value();
-    console.log('this.projectActivities2', this.projectActivities);
   }
 
   sortArrayByDate(): void {
-
     this.tempArray.sort((a: Activity, b: Activity) => {
-      console.log('this.te ay', moment(a.stoppedAt));
-      console.log('this.te ray', moment(b.stoppedAt));
       return +b.stoppedAt - +a.stoppedAt;
-
     });
   }
 
