@@ -78,6 +78,11 @@ export class ProjectItemComponent implements OnInit {
       delete activity.createdAt;
       delete activity.updatedAt;
       this.store.dispatch(this.activityActions.loadActivity(activity));
+      this.dBService
+        .createOrUpdate('currentActivity', {data: activity, userId: this.user.id})
+        .then((dbActivity) => {
+          console.log('activity stored in db: ', dbActivity);
+        });
     })
       .catch(error => {
         // we need two below fields for offline logic
@@ -85,6 +90,11 @@ export class ProjectItemComponent implements OnInit {
         this.activity.user = this.user.id;
         console.log('server error happened and it is: ', error);
         this.store.dispatch(this.activityActions.loadActivity(this.activity));
+        this.dBService
+          .createOrUpdate('currentActivity', {data: this.activity, userId: this.user.id})
+          .then((dbActivity) => {
+            console.log('activity stored in db: ', dbActivity);
+          });
       });
   }
 
@@ -94,6 +104,9 @@ export class ProjectItemComponent implements OnInit {
       if (this.currentActivityCopy.id) {
         this.activityService.editCurrentActivity(this.project.id, this.currentActivityCopy).then((activity) => {
           this.store.dispatch(this.activityActions.clearActivity());
+          this.dBService
+            .removeAll('currentActivity')
+            .then(() => {});
           this.store.dispatch(this.projectsActions.updateProjectActivities(this.project.id, activity));
           this.taskName = 'Untitled task';
         })
@@ -106,6 +119,9 @@ export class ProjectItemComponent implements OnInit {
         console.log('activity has no id so id should go through the sync way');
         this.activityService.create(this.project.id, this.currentActivityCopy).then((activity) => {
           this.store.dispatch(this.activityActions.clearActivity());
+          this.dBService
+            .removeAll('currentActivity')
+            .then(() => {});
           this.store.dispatch(this.projectsActions.updateProjectActivities(this.project.id, activity));
           this.taskName = 'Untitled task';
         })
@@ -132,6 +148,9 @@ export class ProjectItemComponent implements OnInit {
           .then((activity) => {
             this.store.dispatch(this.projectsActions.updateProjectActivities(this.project.id, this.currentActivityCopy));
             this.store.dispatch(this.activityActions.clearActivity());
+            this.dBService
+              .removeAll('currentActivity')
+              .then(() => {});
             this.taskName = 'Untitled task';
           });
       });
@@ -142,22 +161,46 @@ export class ProjectItemComponent implements OnInit {
       this.currentActivityCopy.name = this.taskName;
       if (this.currentActivityCopy.id) {
         this.activityService.editCurrentActivity(this.project.id, this.currentActivityCopy).then((activity) => {
+          delete activity.createdAt;
+          delete activity.updatedAt;
           this.store.dispatch(this.activityActions.loadActivity(activity));
+          this.dBService
+            .createOrUpdate('currentActivity', {data: activity, userId: this.user.id})
+            .then((dbActivity) => {
+              console.log('activity stored in db: ', dbActivity);
+            });
         })
           .catch(error => {
             console.log('server error happened and it is: ', error);
             console.log('this.currentActivityCopy', this.currentActivityCopy)
             this.store.dispatch(this.activityActions.loadActivity(this.currentActivityCopy));
+            this.dBService
+              .createOrUpdate('currentActivity', {data: this.currentActivityCopy, userId: this.user.id})
+              .then((dbActivity) => {
+                console.log('activity stored in db: ', dbActivity);
+              });
           });
       } else {
         console.log('activity has no id so id should go through the sync way');
         this.activityService.create(this.project.id, this.currentActivityCopy).then((activity) => {
+          delete activity.createdAt;
+          delete activity.updatedAt;
           this.store.dispatch(this.activityActions.loadActivity(activity));
+          this.dBService
+            .createOrUpdate('currentActivity', {data: activity, userId: this.user.id})
+            .then((dbActivity) => {
+              console.log('activity stored in db: ', dbActivity);
+            });
         })
           .catch(error => {
             console.log('server error happened and it is: ', error);
             console.log('your edit will store at db ');
             this.store.dispatch(this.activityActions.loadActivity(this.currentActivityCopy));
+            this.dBService
+              .createOrUpdate('currentActivity', {data: this.currentActivityCopy, userId: this.user.id})
+              .then((dbActivity) => {
+                console.log('activity stored in db: ', dbActivity);
+              });
           });
       }
     }
