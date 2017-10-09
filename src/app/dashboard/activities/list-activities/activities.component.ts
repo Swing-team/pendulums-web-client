@@ -10,7 +10,7 @@ import { Activity }                         from '../../../shared/state/activity
 import { ActivatedRoute, ParamMap }         from '@angular/router';
 import { Location }                         from '@angular/common';
 import { ModalService }                     from '../../../core/modal/modal.service';
-import { AddManuallyActivityComponent }     from '../add-manually-activity/add-manually-activity.component';
+import { AddManuallyActivityComponent }     from '../activity-add-edit-manually/activity-add-edit-manually.component';
 import { ErrorService }                     from '../../../core/error/error.service';
 
 @Component({

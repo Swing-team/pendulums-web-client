@@ -99,11 +99,11 @@ export class ToolbarComponent implements OnInit {
       activity.user = this.user.id;
       activity.name = this.taskName;
       activity.startedAt = Date.now().toString();
-      this.activityService.create(this.selectedProject.id, activity).then((activity) => {
+      this.activityService.create(this.selectedProject.id, activity).then((resActivity) => {
         this.showError('Activity started successfully!');
-        delete activity.createdAt;
-        delete activity.updatedAt;
-        this.store.dispatch(this.activityActions.loadActivity(activity));
+        delete resActivity.createdAt;
+        delete resActivity.updatedAt;
+        this.store.dispatch(this.activityActions.loadActivity(resActivity));
       })
         .catch(error => {
           this.showError('Server communication error.');
@@ -128,20 +128,21 @@ export class ToolbarComponent implements OnInit {
         })
           .catch(error => {
             console.log('server error happened and it is: ', error);
-            console.log('current Activity loaded from db ');
+            console.log('current Activity will store at db');
             this.showError('Server communication error.');
             this.stopActivityAtDb();
           });
       } else {
-        console.log('activity has no name so it should go through the sync way');
+        console.log('activity has no id so id should go through the sync way');
         this.activityService.create(this.currentActivityCopy.project, this.currentActivityCopy).then((activity) => {
+          this.store.dispatch(this.projectsActions.updateProjectActivities(activity.project, activity));
           this.store.dispatch(this.activityActions.clearActivity());
-          this.store.dispatch(this.projectsActions.updateProjectActivities(this.currentActivityCopy.project, activity));
-          this.taskName = 'Untitled task';
+          this.taskName = null;
+          this.showError('Activity stopped successfully!');
         })
           .catch(error => {
             console.log('server error happened and it is: ', error);
-            console.log('current Activity loaded from db ');
+            console.log('current Activity will store at db ');
             this.stopActivityAtDb();
           });
       }
@@ -161,8 +162,8 @@ export class ToolbarComponent implements OnInit {
         this.dBService
           .createOrUpdate('activities', {data: ActivitiesArray, userId: this.user.id})
           .then((activity) => {
-            this.store.dispatch(this.activityActions.clearActivity());
             this.store.dispatch(this.projectsActions.updateProjectActivities(this.currentActivityCopy.project, this.currentActivityCopy));
+            this.store.dispatch(this.activityActions.clearActivity());
             this.taskName = 'Untitled task';
           });
       });
