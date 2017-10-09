@@ -7,6 +7,7 @@ export class DexieService extends Dexie {
     // entityToKey object of DatabaseService
     this.version(1).stores({
       activities: 'userId',
+      currentActivity: 'userId',
       userData: 'userId',
       activeUser: '++id',
     });
