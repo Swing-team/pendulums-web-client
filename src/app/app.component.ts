@@ -74,7 +74,12 @@ export class AppComponent implements OnInit {
       .then((user) => {
         this.store.dispatch(this.userActions.loadUser(user));
         this.store.dispatch(this.projectsActions.loadProjects(user.projects));
-        this.store.dispatch(this.activityActions.loadActivity(user.currentActivities[0]));
+        this.store.dispatch(this.activityActions.loadActivity(user.currentActivity));
+        this.dBService
+          .createOrUpdate('currentActivity', {data: user.currentActivity, userId: user.id})
+          .then((dbActivity) => {
+            console.log('activity stored in db: ', dbActivity);
+          });
         this.dBService
           .removeAll('activeUser')
           .then(() => {
@@ -123,6 +128,9 @@ export class AppComponent implements OnInit {
         this.store.dispatch(this.userActions.clearUser());
         this.store.dispatch(this.projectsActions.clearProjects());
         this.store.dispatch(this.activityActions.clearActivity());
+        this.dBService
+          .removeAll('currentActivity')
+          .then(() => {});
         this.router.navigate(['signIn']);
       });
   }
