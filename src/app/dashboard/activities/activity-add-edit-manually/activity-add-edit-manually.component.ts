@@ -10,8 +10,8 @@ import { ErrorService }                     from '../../../core/error/error.serv
 
 @Component({
   selector: 'create-activity',
-  templateUrl: './add-manually-activity.component.html',
-  styleUrls: ['./add-manually-activity.component.sass']
+  templateUrl: './activity-add-edit-manually.component.html',
+  styleUrls: ['./activity-add-edit-manually.component.sass']
 })
 export class AddManuallyActivityComponent implements OnInit {
   @Output() responseActivity = new EventEmitter();

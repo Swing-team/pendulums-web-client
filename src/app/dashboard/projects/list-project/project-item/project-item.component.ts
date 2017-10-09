@@ -102,7 +102,7 @@ export class ProjectItemComponent implements OnInit {
             this.stopActivityAtDb();
           });
       } else {
-        console.log('activity has no name so it should go through the sync way');
+        console.log('activity has no id so id should go through the sync way');
         this.activityService.create(this.project.id, this.currentActivityCopy).then((activity) => {
           this.store.dispatch(this.activityActions.clearActivity());
           this.store.dispatch(this.projectsActions.updateProjectActivities(this.project.id, activity));
@@ -110,7 +110,7 @@ export class ProjectItemComponent implements OnInit {
         })
           .catch(error => {
             console.log('server error happened and it is: ', error);
-            console.log('current Activity loaded from db ');
+            console.log('current Activity will store at db ');
             this.stopActivityAtDb();
           });
       }
@@ -129,8 +129,8 @@ export class ProjectItemComponent implements OnInit {
         this.dBService
           .createOrUpdate('activities', {data: ActivitiesArray, userId: this.user.id})
           .then((activity) => {
-            this.store.dispatch(this.activityActions.clearActivity());
             this.store.dispatch(this.projectsActions.updateProjectActivities(this.project.id, this.currentActivityCopy));
+            this.store.dispatch(this.activityActions.clearActivity());
             this.taskName = 'Untitled task';
           });
       });
@@ -138,16 +138,26 @@ export class ProjectItemComponent implements OnInit {
 
   nameActivity() {
     if (this.currentActivity) {
+      this.currentActivityCopy.name = this.taskName;
       if (this.currentActivityCopy.id) {
         this.activityService.editCurrentActivity(this.project.id, this.currentActivityCopy).then((activity) => {
           this.store.dispatch(this.activityActions.loadActivity(activity));
         })
           .catch(error => {
             console.log('server error happened and it is: ', error);
+            console.log('this.currentActivityCopy', this.currentActivityCopy)
             this.store.dispatch(this.activityActions.loadActivity(this.currentActivityCopy));
           });
       } else {
-        console.log('activity has no name so it should go through the sync way');
+        console.log('activity has no id so id should go through the sync way');
+        this.activityService.create(this.project.id, this.currentActivityCopy).then((activity) => {
+          this.store.dispatch(this.activityActions.loadActivity(activity));
+        })
+          .catch(error => {
+            console.log('server error happened and it is: ', error);
+            console.log('your edit will store at db ');
+            this.store.dispatch(this.activityActions.loadActivity(this.currentActivityCopy));
+          });
       }
     }
   }
@@ -195,31 +205,5 @@ export class ProjectItemComponent implements OnInit {
 
   goToActivities(): void {
     this.router.navigate(['/activities', this.project.id]);
-  }
-
-  isEquivalent(a, b): boolean {
-    // Create arrays of property names
-    const aProps = Object.getOwnPropertyNames(a);
-    const bProps = Object.getOwnPropertyNames(b);
-
-    // If number of properties is different,
-    // objects are not equivalent
-    if (aProps.length !== bProps.length) {
-      return false;
-    }
-
-    for (let i = 0; i < aProps.length; i++) {
-      const propName = aProps[i];
-
-      // If values of same property are not equal,
-      // objects are not equivalent
-      if (a[propName] !== b[propName]) {
-        return false;
-      }
-    }
-
-    // If we made it this far, objects
-    // are considered equivalent
-    return true;
   }
 }
