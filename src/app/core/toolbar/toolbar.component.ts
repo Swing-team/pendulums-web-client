@@ -104,11 +104,26 @@ export class ToolbarComponent implements OnInit {
         delete resActivity.createdAt;
         delete resActivity.updatedAt;
         this.store.dispatch(this.activityActions.loadActivity(resActivity));
+        this.dBService
+          .createOrUpdate('currentActivity', {data: resActivity, userId: this.user.id})
+          .then((dbActivity) => {
+            console.log('activity stored in db: ', dbActivity);
+          });
       })
         .catch(error => {
           this.showError('Server communication error.');
           console.log('server error happened and it is: ', error);
           this.store.dispatch(this.activityActions.loadActivity(activity));
+          this.dBService
+            .removeAll('currentActivity')
+            .then(() => {
+
+            });
+          this.dBService
+            .createOrUpdate('currentActivity', {data: activity, userId: this.user.id})
+            .then((dbActivity) => {
+              console.log('activity stored in db: ', dbActivity);
+            });
         });
     } else {
       this.showError('Select a distinct project.');
@@ -122,6 +137,9 @@ export class ToolbarComponent implements OnInit {
       if (this.currentActivityCopy.id) {
         this.activityService.editCurrentActivity(this.currentActivityCopy.project, this.currentActivityCopy).then((activity) => {
           this.store.dispatch(this.activityActions.clearActivity());
+          this.dBService
+            .removeAll('currentActivity')
+            .then(() => {});
           this.store.dispatch(this.projectsActions.updateProjectActivities(activity.project, activity));
           this.taskName = null;
           this.showError('Activity stopped successfully!');
@@ -137,6 +155,9 @@ export class ToolbarComponent implements OnInit {
         this.activityService.create(this.currentActivityCopy.project, this.currentActivityCopy).then((activity) => {
           this.store.dispatch(this.projectsActions.updateProjectActivities(activity.project, activity));
           this.store.dispatch(this.activityActions.clearActivity());
+          this.dBService
+            .removeAll('currentActivity')
+            .then(() => {});
           this.taskName = null;
           this.showError('Activity stopped successfully!');
         })
@@ -164,6 +185,9 @@ export class ToolbarComponent implements OnInit {
           .then((activity) => {
             this.store.dispatch(this.projectsActions.updateProjectActivities(this.currentActivityCopy.project, this.currentActivityCopy));
             this.store.dispatch(this.activityActions.clearActivity());
+            this.dBService
+              .removeAll('currentActivity')
+              .then(() => {});
             this.taskName = 'Untitled task';
           });
       });
