@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Action }     from '@ngrx/store';
 import { Projects }   from './projects.model';
 import { Project }    from './project.model';
-import { Activity }   from '../activity/activity.model';
+import { Activity }   from '../current-activity/current-activity.model';
 
 @Injectable()
 export class ProjectsActions {
@@ -105,7 +105,7 @@ export class ProjectsActions {
       type: ProjectsActions.UPDATE_PROJECT_ACTIVITIES,
       payload: {
         projectId,
-        activity
+        currentActivity: activity
       }
     };
   }

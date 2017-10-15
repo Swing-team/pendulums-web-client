@@ -6,7 +6,6 @@ import { DexieService } from './dexie.service';
 export class DatabaseService {
 
   private entityToKey = {
-    activities: 'userId',
     userData: 'userId'
   };
   constructor(private dexieService: DexieService) {}

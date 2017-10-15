@@ -14,7 +14,8 @@ export class DashboardComponent {
 
   constructor (private store: Store<AppState>) {
     this.projects = store.select('projects');
-    this.currentActivity = store.select('activity');
+    this.currentActivity = store.select('currentActivity');
+    this.user = store.select('user');
   }
 }
 

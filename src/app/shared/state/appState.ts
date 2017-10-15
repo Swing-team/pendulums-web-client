@@ -2,19 +2,22 @@ import '@ngrx/core/add/operator/select';
 import { compose }          from '@ngrx/core/compose';
 import { combineReducers }  from '@ngrx/store';
 
-import userReducer          from './user/user.reducer';
-import projectsReducer      from './project/projects.reducer';
-import activityReducer      from './activity/activity.reducer';
-import statusReducer        from './status/status.reducer';
-import { User }             from './user/user.model';
-import { Projects }         from './project/projects.model';
-import { Activity }         from './activity/activity.model';
-import { Status }           from './status/status.model';
+import userReducer                 from './user/user.reducer';
+import projectsReducer             from './project/projects.reducer';
+import activityReducer             from './current-activity/current-activity.reducer';
+import statusReducer               from './status/status.reducer';
+import uncyncedAvtivitiesReducer   from './unsynced-activities/unsynced-activities.reducer';
+import { User }                    from './user/user.model';
+import { Projects }                from './project/projects.model';
+import { Activity }                from './current-activity/current-activity.model';
+import { Status }                  from './status/status.model';
+import { UncyncedActivities }      from './unsynced-activities/uncynced-activities.model';
 
 export interface AppState {
   user: User;
   projects: Projects;
-  activity: Activity;
+  currentActivity: Activity;
+  uncyncedActivity: UncyncedActivities;
   status: Status;
 }
 
@@ -28,6 +31,7 @@ export interface AppState {
 export default compose(combineReducers)({
   user: userReducer,
   projects: projectsReducer,
-  activity: activityReducer,
+  currentActivity: activityReducer,
+  uncyncedActivity: uncyncedAvtivitiesReducer,
   status: statusReducer
 });

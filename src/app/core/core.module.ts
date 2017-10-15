@@ -8,7 +8,8 @@ import { APP_CONFIG, CONFIG }           from '../app.config';
 import reducers                         from '../shared/state/appState';
 import { UserActions }                  from '../shared/state/user/user.actions';
 import { ProjectsActions }              from '../shared/state/project/projects.actions';
-import { ActivityActions }              from '../shared/state/activity/activity.actions';
+import { CurrentActivityActions }       from '../shared/state/current-activity/current-activity.actions';
+import { UnsyncedActivityActions }       from '../shared/state/unsynced-activities/unsynced-activities.actions';
 
 import { UserService }                  from './servises/user.service';
 import { AuthenticationService }        from './servises/authentication.service';
@@ -27,6 +28,7 @@ import { ErrorService }                 from './error/error.service';
 import { DatabaseService }              from './servises/database/database.service';
 import { DexieService }                 from './servises/database/dexie.service';
 import { StatusActions }                from '../shared/state/status/status.actions';
+import { SyncService }                  from './servises/sync.service';
 
 @NgModule({
   imports:      [
@@ -58,9 +60,11 @@ import { StatusActions }                from '../shared/state/status/status.acti
     UserActions,
     StatusActions,
     ProjectsActions,
-    ActivityActions,
+    CurrentActivityActions,
+    UnsyncedActivityActions,
     DexieService,
-    DatabaseService
+    DatabaseService,
+    SyncService
   ],
   entryComponents: [
     ModalComponent,
