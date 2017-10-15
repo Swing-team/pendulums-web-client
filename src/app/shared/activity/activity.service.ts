@@ -3,7 +3,7 @@ import { Http } from '@angular/http';
 
 import 'rxjs/add/operator/toPromise';
 import { APP_CONFIG } from '../../app.config';
-import {Activity} from "../state/activity/activity.model";
+import {Activity} from "../state/current-activity/current-activity.model";
 
 @Injectable()
 export class ActivityService {

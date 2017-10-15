@@ -1,6 +1,6 @@
-import { Action } from '@ngrx/store';
-import {Activity} from './activity.model';
-import {ActivityActions} from './activity.actions';
+import { Action }                 from '@ngrx/store';
+import { Activity }               from './current-activity.model';
+import { CurrentActivityActions } from './current-activity.actions';
 
 const initialState: Activity = {
   id: null,
@@ -13,11 +13,11 @@ const initialState: Activity = {
 
 export default function reducer(state = initialState, action: Action) {
   switch (action.type) {
-    case ActivityActions.LOAD_ACTIVITY: {
+    case CurrentActivityActions.LOAD_CURRENT_ACTIVITY: {
       return action.payload ? action.payload : state;
     }
 
-    case ActivityActions.CLEAR_ACTIVITY: {
+    case CurrentActivityActions.CLEAR_CURRENT_ACTIVITY: {
       return initialState;
     }
 

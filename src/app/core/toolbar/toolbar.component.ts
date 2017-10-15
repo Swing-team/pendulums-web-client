@@ -2,17 +2,18 @@ import { Component, EventEmitter, Inject,
          Input, Output, OnInit }            from '@angular/core';
 import { Observable }                       from 'rxjs/Observable';
 import { APP_CONFIG }                       from '../../app.config';
-import { Activity }                         from '../../shared/state/activity/activity.model';
+import { Activity }                         from '../../shared/state/current-activity/current-activity.model';
 import { Project }                          from '../../shared/state/project/project.model';
 import { Projects }                         from '../../shared/state/project/projects.model';
 import { ActivityService }                  from 'app/shared/activity/activity.service';
 import { Store }                            from '@ngrx/store';
-import { ActivityActions }                  from 'app/shared/state/activity/activity.actions';
+import { CurrentActivityActions }                  from 'app/shared/state/current-activity/current-activity.actions';
 import { AppState }                         from 'app/shared/state/appState';
 import { ProjectsActions }                  from '../../shared/state/project/projects.actions';
 import { ErrorService }                     from '../error/error.service';
 import { User }                             from '../../shared/state/user/user.model';
 import { DatabaseService }                  from '../servises/database/database.service';
+import { UnsyncedActivityActions }          from '../../shared/state/unsynced-activities/unsynced-activities.actions';
 
 @Component({
   selector: 'toolbar',
@@ -33,10 +34,10 @@ export class ToolbarComponent implements OnInit {
   constructor (@Inject(APP_CONFIG) private config,
                private activityService: ActivityService,
                private store: Store<AppState>,
-               private activityActions: ActivityActions,
+               private CurrentActivityActions: CurrentActivityActions,
+               private UnsyncedActivityActions: UnsyncedActivityActions,
                private projectsActions: ProjectsActions,
-               private errorService: ErrorService,
-               private dBService: DatabaseService) {
+               private errorService: ErrorService) {
     this.selectedProject = new Project();
   }
 
@@ -103,27 +104,12 @@ export class ToolbarComponent implements OnInit {
         this.showError('Activity started successfully!');
         delete resActivity.createdAt;
         delete resActivity.updatedAt;
-        this.store.dispatch(this.activityActions.loadActivity(resActivity));
-        this.dBService
-          .createOrUpdate('currentActivity', {data: resActivity, userId: this.user.id})
-          .then((dbActivity) => {
-            console.log('activity stored in db: ', dbActivity);
-          });
+        this.store.dispatch(this.CurrentActivityActions.loadCurrentActivity(resActivity));
       })
         .catch(error => {
           this.showError('Server communication error.');
           console.log('server error happened and it is: ', error);
-          this.store.dispatch(this.activityActions.loadActivity(activity));
-          this.dBService
-            .removeAll('currentActivity')
-            .then(() => {
-
-            });
-          this.dBService
-            .createOrUpdate('currentActivity', {data: activity, userId: this.user.id})
-            .then((dbActivity) => {
-              console.log('activity stored in db: ', dbActivity);
-            });
+          this.store.dispatch(this.CurrentActivityActions.loadCurrentActivity(activity));
         });
     } else {
       this.showError('Select a distinct project.');
@@ -136,61 +122,41 @@ export class ToolbarComponent implements OnInit {
       this.currentActivityCopy.stoppedAt = Date.now().toString();
       if (this.currentActivityCopy.id) {
         this.activityService.editCurrentActivity(this.currentActivityCopy.project, this.currentActivityCopy).then((activity) => {
-          this.store.dispatch(this.activityActions.clearActivity());
-          this.dBService
-            .removeAll('currentActivity')
-            .then(() => {});
+          this.store.dispatch(this.CurrentActivityActions.clearCurrentActivity());
           this.store.dispatch(this.projectsActions.updateProjectActivities(activity.project, activity));
           this.taskName = null;
           this.showError('Activity stopped successfully!');
         })
           .catch(error => {
             console.log('server error happened and it is: ', error);
-            console.log('current Activity will store at db');
+            console.log('current Activity will store as offline');
             this.showError('Server communication error.');
-            this.stopActivityAtDb();
+            this.store.dispatch(this.UnsyncedActivityActions.addUnsyncedActivity(this.currentActivityCopy));
+            this.store.dispatch(this.projectsActions.updateProjectActivities(this.currentActivityCopy.project, this.currentActivityCopy));
+            this.store.dispatch(this.CurrentActivityActions.clearCurrentActivity());
+            this.taskName = null;
+            this.showError('Activity stopped successfully!');
           });
       } else {
-        console.log('activity has no id so id should go through the sync way');
+        console.log('activity has no id so it should go through the sync way');
         this.activityService.create(this.currentActivityCopy.project, this.currentActivityCopy).then((activity) => {
           this.store.dispatch(this.projectsActions.updateProjectActivities(activity.project, activity));
-          this.store.dispatch(this.activityActions.clearActivity());
-          this.dBService
-            .removeAll('currentActivity')
-            .then(() => {});
+          this.store.dispatch(this.CurrentActivityActions.clearCurrentActivity());
           this.taskName = null;
           this.showError('Activity stopped successfully!');
         })
           .catch(error => {
             console.log('server error happened and it is: ', error);
-            console.log('current Activity will store at db ');
-            this.stopActivityAtDb();
+            console.log('current Activity will store as offline ');
+            this.showError('Server communication error.');
+            this.store.dispatch(this.UnsyncedActivityActions.addUnsyncedActivity(this.currentActivityCopy));
+            this.store.dispatch(this.projectsActions.updateProjectActivities(this.currentActivityCopy.project, this.currentActivityCopy));
+            this.store.dispatch(this.CurrentActivityActions.clearCurrentActivity());
+            this.taskName = null;
+            this.showError('Activity stopped successfully!');
           });
       }
     }
-
-  }
-
-  stopActivityAtDb() {
-    this.dBService
-      .get('activities', this.user.id)
-      .then((activities) => {
-        let ActivitiesArray = [];
-        if (activities) {
-          ActivitiesArray = activities.data;
-        }
-        ActivitiesArray.push(this.currentActivityCopy);
-        this.dBService
-          .createOrUpdate('activities', {data: ActivitiesArray, userId: this.user.id})
-          .then((activity) => {
-            this.store.dispatch(this.projectsActions.updateProjectActivities(this.currentActivityCopy.project, this.currentActivityCopy));
-            this.store.dispatch(this.activityActions.clearActivity());
-            this.dBService
-              .removeAll('currentActivity')
-              .then(() => {});
-            this.taskName = 'Untitled task';
-          });
-      });
   }
 
   showSideMenu() {

@@ -3,7 +3,7 @@ import {Observable}                                 from 'rxjs/Observable';
 import {ModalService}                               from '../../../core/modal/modal.service';
 import {CreateProjectComponent}                     from '../create-project/create-project.component';
 import {Project}                                    from '../../../shared/state/project/project.model';
-import {Activity} from '../../../shared/state/activity/activity.model';
+import {Activity} from '../../../shared/state/current-activity/current-activity.model';
 
 @Component({
   selector: 'list-of-project',
