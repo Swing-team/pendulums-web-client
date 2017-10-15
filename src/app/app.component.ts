@@ -8,9 +8,10 @@ import { UserActions }                            from './shared/state/user/user
 import { AuthenticationService }                  from './core/servises/authentication.service';
 import { UserService }                            from './core/servises/user.service';
 import { ProjectsActions }                        from './shared/state/project/projects.actions';
-import { ActivityActions }                        from './shared/state/activity/activity.actions';
+import { CurrentActivityActions }                        from './shared/state/current-activity/current-activity.actions';
 import { ErrorService }                           from './core/error/error.service';
 import { DatabaseService }                        from './core/servises/database/database.service';
+import { SyncService }                            from './core/servises/sync.service';
 
 @Component({
   selector: 'app-root',
@@ -30,15 +31,16 @@ export class AppComponent implements OnInit {
     private userService: UserService,
     private userActions: UserActions,
     private projectsActions: ProjectsActions,
-    private activityActions: ActivityActions,
+    private CurrentActivityActions: CurrentActivityActions,
     private store: Store<AppState>,
     private viewContainerRef: ViewContainerRef,
     private errorService: ErrorService,
-    private dBService: DatabaseService
+    private dBService: DatabaseService,
+    private syncService: SyncService
   ) {
     this.user = store.select('user');
     this.projects = store.select('projects');
-    this.currentActivity = store.select('activity');
+    this.currentActivity = store.select('currentActivity');
     this.status = store.select('status');
 
     // todo: It can be better later
@@ -74,12 +76,7 @@ export class AppComponent implements OnInit {
       .then((user) => {
         this.store.dispatch(this.userActions.loadUser(user));
         this.store.dispatch(this.projectsActions.loadProjects(user.projects));
-        this.store.dispatch(this.activityActions.loadActivity(user.currentActivity));
-        this.dBService
-          .createOrUpdate('currentActivity', {data: user.currentActivity, userId: user.id})
-          .then((dbActivity) => {
-            console.log('activity stored in db: ', dbActivity);
-          });
+        this.store.dispatch(this.CurrentActivityActions.loadCurrentActivity(user.currentActivity));
         this.dBService
           .removeAll('activeUser')
           .then(() => {
@@ -106,7 +103,7 @@ export class AppComponent implements OnInit {
                       console.log('loaded from index db');
                       this.store.dispatch(this.userActions.loadUser(userData.data.user));
                       this.store.dispatch(this.projectsActions.loadDbProjects(userData.data.projects.entities));
-                      this.store.dispatch(this.activityActions.loadActivity(userData.data.activity));
+                      this.store.dispatch(this.CurrentActivityActions.loadCurrentActivity(userData.data.currentActivity));
                       if (this.router.url === '/dashboard' || this.router.url === '/signIn') {
                         this.router.navigate(['dashboard']);
                       }
@@ -127,9 +124,9 @@ export class AppComponent implements OnInit {
       .then(() => {
         this.store.dispatch(this.userActions.clearUser());
         this.store.dispatch(this.projectsActions.clearProjects());
-        this.store.dispatch(this.activityActions.clearActivity());
+        this.store.dispatch(this.CurrentActivityActions.clearCurrentActivity());
         this.dBService
-          .removeAll('currentActivity')
+          .removeAll('activeUser')
           .then(() => {});
         this.router.navigate(['signIn']);
       });
