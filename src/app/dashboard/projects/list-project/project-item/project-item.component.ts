@@ -14,7 +14,7 @@ import { User }                               from '../../../../shared/state/use
 import { Router }                             from '@angular/router';
 import { DatabaseService }                    from '../../../../core/servises/database/database.service';
 import { ErrorService }                       from '../../../../core/error/error.service';
-import { UnsyncedActivityActions }            from '../../../../shared/state/unsynced-activities/unsynced-activities.actions';
+import { UnSyncedActivityActions }            from '../../../../shared/state/unsynced-activities/unsynced-activities.actions';
 
 @Component({
   selector: 'project-item',
@@ -40,7 +40,7 @@ export class ProjectItemComponent implements OnInit {
                private modalService: ModalService,
                private viewContainerRef: ViewContainerRef,
                private errorService: ErrorService,
-               private UnsyncedActivityActions: UnsyncedActivityActions,) {
+               private UnSyncedActivityActions: UnSyncedActivityActions) {
     this.taskName = 'Untitled task';
     this.activities = [];
   }
@@ -107,7 +107,7 @@ export class ProjectItemComponent implements OnInit {
             console.log('server error happened and it is: ', error);
             console.log('current Activity will store as offline');
             this.showError('Server communication error.');
-            this.store.dispatch(this.UnsyncedActivityActions.addUnsyncedActivity(this.currentActivityCopy));
+            this.store.dispatch(this.UnSyncedActivityActions.addUnSyncedActivity(this.currentActivityCopy));
             this.store.dispatch(this.projectsActions.updateProjectActivities(this.currentActivityCopy.project, this.currentActivityCopy));
             this.store.dispatch(this.CurrentActivityActions.clearCurrentActivity());
             this.taskName = null;
@@ -125,7 +125,7 @@ export class ProjectItemComponent implements OnInit {
             console.log('server error happened and it is: ', error);
             console.log('current Activity will store as offline ');
             this.showError('Server communication error.');
-            this.store.dispatch(this.UnsyncedActivityActions.addUnsyncedActivity(this.currentActivityCopy));
+            this.store.dispatch(this.UnSyncedActivityActions.addUnSyncedActivity(this.currentActivityCopy));
             this.store.dispatch(this.projectsActions.updateProjectActivities(this.currentActivityCopy.project, this.currentActivityCopy));
             this.store.dispatch(this.CurrentActivityActions.clearCurrentActivity());
             this.taskName = null;

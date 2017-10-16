@@ -6,18 +6,18 @@ import userReducer                 from './user/user.reducer';
 import projectsReducer             from './project/projects.reducer';
 import activityReducer             from './current-activity/current-activity.reducer';
 import statusReducer               from './status/status.reducer';
-import uncyncedAvtivitiesReducer   from './unsynced-activities/unsynced-activities.reducer';
+import unSyncedActivitiesReducer   from './unsynced-activities/unsynced-activities.reducer';
 import { User }                    from './user/user.model';
 import { Projects }                from './project/projects.model';
 import { Activity }                from './current-activity/current-activity.model';
 import { Status }                  from './status/status.model';
-import { UncyncedActivities }      from './unsynced-activities/uncynced-activities.model';
+import { UnSyncedActivities }      from './unsynced-activities/unsynced-activities.model';
 
 export interface AppState {
   user: User;
   projects: Projects;
   currentActivity: Activity;
-  uncyncedActivity: UncyncedActivities;
+  unSyncedActivity: UnSyncedActivities;
   status: Status;
 }
 
@@ -32,6 +32,6 @@ export default compose(combineReducers)({
   user: userReducer,
   projects: projectsReducer,
   currentActivity: activityReducer,
-  uncyncedActivity: uncyncedAvtivitiesReducer,
+  unSyncedActivity: unSyncedActivitiesReducer,
   status: statusReducer
 });
