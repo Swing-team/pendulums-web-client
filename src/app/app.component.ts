@@ -69,7 +69,7 @@ export class AppComponent implements OnInit {
       isLogin = status.isLogin;
       if (isLogin) {
         console.log('isLogin:', isLogin);
-        this.initialApp();
+        this.getSummaryOnline();
       } else {
         this.initialAppOffline();
       }
@@ -101,7 +101,7 @@ export class AppComponent implements OnInit {
                   console.log('syncData', syncData);
                   this.syncService.syncData(syncData)
                     .then(() => {
-                      this.initialApp();
+                      this.getSummaryOnline();
                     })
                     .catch(error => {
                       // todo: handle sync errors based on corrupted data
@@ -113,19 +113,19 @@ export class AppComponent implements OnInit {
                       }
                     });
                 } else {
-                  this.initialApp();
+                  this.getSummaryOnline();
                 }
               } else {
-                this.initialApp();
+                this.getSummaryOnline();
               }
             });
         } else {
-          this.initialApp();
+          this.getSummaryOnline();
         }
       });
   }
 
-  initialApp() {
+  getSummaryOnline() {
     this.userService.getSummary()
       .then((user) => {
         this.store.dispatch(this.userActions.loadUser(user));
