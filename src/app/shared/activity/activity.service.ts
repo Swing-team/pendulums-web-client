@@ -14,7 +14,7 @@ export class ActivityService {
 
   create(projectId, activity): Promise<any> {
     return this.http
-      .post(this.config.apiEndpoint + '/projects/' + projectId + '/activities' ,
+      .post(this.config.apiEndpoint + '/projects123/12' + projectId + '/activities' ,
         JSON.stringify({activity: activity}) , this.config.httpOptions)
       .toPromise()
       .then(response => response.json() as Activity)
@@ -23,7 +23,7 @@ export class ActivityService {
 
   editCurrentActivity(projectId, activity): Promise<any> {
     return this.http
-      .put(this.config.apiEndpoint + '/projects/' + projectId + '/activities/current/' + activity.id ,
+      .put(this.config.apiEndpoint + '/projects/12' + projectId + '/activities/current/' + activity.id ,
         JSON.stringify({activity: activity}),
         this.config.httpOptions)
       .toPromise()
@@ -33,7 +33,7 @@ export class ActivityService {
 
   editOldActivity(projectId, activity): Promise<any> {
     return this.http
-      .put(this.config.apiEndpoint + '/projects/' + projectId + '/activities/old/' + activity.id ,
+      .put(this.config.apiEndpoint + '/projects/12' + projectId + '/activities/old/' + activity.id ,
         JSON.stringify({activity: activity}),
         this.config.httpOptions)
       .toPromise()

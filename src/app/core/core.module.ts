@@ -9,7 +9,7 @@ import reducers                         from '../shared/state/appState';
 import { UserActions }                  from '../shared/state/user/user.actions';
 import { ProjectsActions }              from '../shared/state/project/projects.actions';
 import { CurrentActivityActions }       from '../shared/state/current-activity/current-activity.actions';
-import { UnsyncedActivityActions }       from '../shared/state/unsynced-activities/unsynced-activities.actions';
+import { UnSyncedActivityActions }       from '../shared/state/unsynced-activities/unsynced-activities.actions';
 
 import { UserService }                  from './servises/user.service';
 import { AuthenticationService }        from './servises/authentication.service';
@@ -61,7 +61,7 @@ import { SyncService }                  from './servises/sync.service';
     StatusActions,
     ProjectsActions,
     CurrentActivityActions,
-    UnsyncedActivityActions,
+    UnSyncedActivityActions,
     DexieService,
     DatabaseService,
     SyncService

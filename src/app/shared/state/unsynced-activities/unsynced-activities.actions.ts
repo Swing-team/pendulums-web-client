@@ -3,27 +3,27 @@ import { Action }         from '@ngrx/store';
 import { Activity }       from './../current-activity/current-activity.model';
 
 @Injectable()
-export class UnsyncedActivityActions {
+export class UnSyncedActivityActions {
   static LOAD_UNSYNCED_ACTIVITY = 'LOAD_UNSYNCED_ACTIVITY';
-  static CLEAR_UNSYNCED_ACTIVITY = 'CLEAR_UNCYNCED_ACTIVITY';
-  static ADD_UNSYNCED_ACTIVITY = 'ADD_UNCYNCED_ACTIVITY';
+  static CLEAR_UNSYNCED_ACTIVITY = 'CLEAR_UNSYNCED_ACTIVITY';
+  static ADD_UNSYNCED_ACTIVITY = 'ADD_UNSYNCED_ACTIVITY';
 
-  loadUnsyncedActivity(activity: Activity): Action {
+  loadUnSyncedActivity(activity: Activity): Action {
     return {
-      type: UnsyncedActivityActions.LOAD_UNSYNCED_ACTIVITY,
+      type: UnSyncedActivityActions.LOAD_UNSYNCED_ACTIVITY,
       payload: activity
     };
   }
 
-  clearUnsyncedActivity(): Action {
+  clearUnSyncedActivity(): Action {
     return {
-      type: UnsyncedActivityActions.CLEAR_UNSYNCED_ACTIVITY
+      type: UnSyncedActivityActions.CLEAR_UNSYNCED_ACTIVITY
     };
   }
 
-  addUnsyncedActivity(activity: Activity): Action {
+  addUnSyncedActivity(activity: Activity): Action {
     return {
-      type: UnsyncedActivityActions.ADD_UNSYNCED_ACTIVITY,
+      type: UnSyncedActivityActions.ADD_UNSYNCED_ACTIVITY,
       payload: activity
     };
   }
