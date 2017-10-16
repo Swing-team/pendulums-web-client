@@ -1,24 +1,24 @@
 import { Action }                   from '@ngrx/store';
-import { UnsyncedActivityActions }  from './unsynced-activities.actions';
-import { UncyncedActivities }       from './uncynced-activities.model';
+import { UnSyncedActivityActions }  from './unsynced-activities.actions';
+import { UnSyncedActivities }       from './unsynced-activities.model';
 
-const initialState: UncyncedActivities = {
+const initialState: UnSyncedActivities = {
   entities: []
 };
 
 export default function reducer(state = initialState, action: Action) {
   switch (action.type) {
-    case UnsyncedActivityActions.LOAD_UNSYNCED_ACTIVITY: {
+    case UnSyncedActivityActions.LOAD_UNSYNCED_ACTIVITY: {
       return action.payload ? action.payload : state;
     }
 
-    case UnsyncedActivityActions.ADD_UNSYNCED_ACTIVITY: {
+    case UnSyncedActivityActions.ADD_UNSYNCED_ACTIVITY: {
       const newState = JSON.parse(JSON.stringify(state));
       newState.entities.push(action.payload);
       return newState;
     }
 
-    case UnsyncedActivityActions.CLEAR_UNSYNCED_ACTIVITY: {
+    case UnSyncedActivityActions.CLEAR_UNSYNCED_ACTIVITY: {
       return initialState;
     }
 
