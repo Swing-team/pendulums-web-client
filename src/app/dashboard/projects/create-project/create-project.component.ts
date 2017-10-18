@@ -45,20 +45,26 @@ export class CreateProjectComponent {
       delete this.project['image'];
       const formData = new FormData();
       formData.append('project', JSON.stringify(this.project));
-      // FIXME: arminghm 19 Jul 2017 mozGetAsFile() method is deprecated
-      formData.append('image', this.projectImageCanvasElem.nativeElement.mozGetAsFile('projectImage.png'));
-
-      this.projectServices.create(formData).then((project) => {
-        this.store.dispatch(this.projectsActions.addProject(project));
-        console.log('project added successfully');
-        this.project = new Project();
-        this.modalService.close();
-      })
-        .catch(error => {
+      this.projectImageCanvasElem.nativeElement.toBlob(blob => {
+        console.log('picture size is:', blob.size);
+        if (blob.size > 500000) {
           this.formSubmitted = false;
-          console.log('error is: ', error);
-        });
-      this.formSubmitted = false;
+          this.errorMessage = 'Picture size exceeded from 500KB';
+          return;
+        }
+        formData.append('image', blob);
+        this.projectServices.create(formData).then((project) => {
+          this.store.dispatch(this.projectsActions.addProject(project));
+          console.log('project added successfully');
+          this.project = new Project();
+          this.modalService.close();
+        })
+          .catch(error => {
+            this.formSubmitted = false;
+            console.log('error is: ', error);
+          });
+        this.formSubmitted = false;
+      }, 'image/jpeg', 0.90);
     }
   }
 
