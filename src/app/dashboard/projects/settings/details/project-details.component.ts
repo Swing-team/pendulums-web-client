@@ -21,6 +21,7 @@ export class ProjectDetailsComponent implements OnInit {
   @ViewChild('canvasPreviewImageElem') canvasPreviewImageElem;
   previewImage: String;
   canvasPreviewImage: string;
+  imageIsEdited: boolean;
 
   constructor(private projectServices: ProjectService,
               @Inject(APP_CONFIG) private config,
@@ -45,7 +46,10 @@ export class ProjectDetailsComponent implements OnInit {
         console.log('Picture size exceeded from 500KB');
         return;
       }
-      formData.append('image', blob);
+      if (this.imageIsEdited) {
+        formData.append('image', blob);
+        console.log('Project image has been edited');
+      }
       this.projectServices.update(formData, this.project.id).then((response) => {
         // TODO: arminghm 19 Jul 2017 show a success message
         this.clonedProject.image = response[0].image;
@@ -64,6 +68,7 @@ export class ProjectDetailsComponent implements OnInit {
     if (fileInput.target.files && fileInput.target.files[0]) {
       this.getBase64(fileInput.target.files[0], (base64) => {
         this.canvasPreviewImage = base64;
+        this.imageIsEdited = true;
       });
     }
   }
