@@ -12,7 +12,7 @@ import { ModalService }                       from '../../../../core/modal/modal
 import { ProjectSettingsModalComponent }      from 'app/dashboard/projects/settings/modal/project-settings-modal.component';
 import { User }                               from '../../../../shared/state/user/user.model';
 import { Router }                             from '@angular/router';
-import { DatabaseService }                    from '../../../../core/servises/database/database.service';
+import { DatabaseService }                    from '../../../../core/services/database/database.service';
 import { ErrorService }                       from '../../../../core/error/error.service';
 import { UnSyncedActivityActions }            from '../../../../shared/state/unsynced-activities/unsynced-activities.actions';
 

@@ -1,9 +1,10 @@
 import { Component }                        from '@angular/core';
-import { AuthenticationService }            from '../../core/servises/authentication.service';
+import { AuthenticationService }            from '../../core/services/authentication.service';
 import { Router }                           from '@angular/router';
 import { Store }                            from '@ngrx/store';
 import { AppState }                         from '../../shared/state/appState';
 import { StatusActions }                    from '../../shared/state/status/status.actions';
+import { SyncService }                      from '../../core/services/sync.service';
 
 const EMAIL_REGEX = /^(?=.{8,64}$)[\w!#$%&'*+/=?`{|}~^-]+(?:\.[\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,6}$/;
 
@@ -23,6 +24,7 @@ export class SignInComponent {
     private router: Router,
     private statusActions: StatusActions,
     private store: Store<AppState>,
+    private syncService: SyncService
   ) {}
 
   signIn() {
@@ -32,6 +34,7 @@ export class SignInComponent {
       this.authService.signIn(this.authUser)
         .then(() => {
           this.store.dispatch(this.statusActions.updateIsLogin(true));
+          this.syncService.init();
           this.router.navigate(['dashboard']);
         })
         .catch(error => {

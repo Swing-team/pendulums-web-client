@@ -9,7 +9,7 @@ export class StatusActions {
   static UPDATE_IS_LOGIN  = 'UPDATE_IS_LOGIN ';
   static CLEAR_STATUS = 'CLEAR_STATUS';
 
-  loadStatus(netStatus: boolean): Action {
+  loadStatus(netStatus: Status): Action {
     return {
       type: StatusActions.LOAD_STATUS,
       payload: netStatus
