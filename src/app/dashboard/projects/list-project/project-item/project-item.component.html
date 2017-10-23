@@ -49,7 +49,7 @@
         </tr>
         </tbody>
       </table>
-      <table *ngIf="!project.activities" class="table ps-item-table">
+      <table *ngIf="project.activities.length === 0" class="table ps-item-table">
         <tbody>
         <tr>
           <td>There is no activity yet!</td>

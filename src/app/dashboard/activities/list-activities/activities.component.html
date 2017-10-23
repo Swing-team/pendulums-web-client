@@ -12,7 +12,7 @@
           </div>
           <div class="ps-card-container">
             <div *ngFor='let activity of group.activities; trackBy: let i = index'>
-              <activity-item [activity]="activity" (onDeleteClicked)="deleteActivity(activity, j, i)"></activity-item>
+              <activity-item *ngIf="activity.stoppedAt" [activity]="activity" (onDeleteClicked)="deleteActivity(activity, j, i)"></activity-item>
             </div>
           </div>
         </ng-container>

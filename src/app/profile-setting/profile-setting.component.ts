@@ -3,13 +3,13 @@ import { Component, Inject, Input,
          OnInit, ViewContainerRef }         from '@angular/core';
 import { Router }                           from '@angular/router';
 import { APP_CONFIG }                       from '../app.config';
-import { AuthenticationService }            from '../core/servises/authentication.service';
+import { AuthenticationService }            from '../core/services/authentication.service';
 import { ErrorService }                     from '../core/error/error.service';
 import { User }                             from '../shared/state/user/user.model';
 import { Store }                            from '@ngrx/store';
 import { AppState }                         from '../shared/state/appState';
 import { UserActions }                      from '../shared/state/user/user.actions';
-import { UserService }                      from '../core/servises/user.service';
+import { UserService }                      from '../core/services/user.service';
 import { ModalService }                     from '../core/modal/modal.service';
 import { ImgCropperComponent }              from './image-cropper/image-cropper.component';
 import { Md5 }                              from 'ts-md5/dist/md5';
