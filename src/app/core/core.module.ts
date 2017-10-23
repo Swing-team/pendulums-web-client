@@ -11,8 +11,8 @@ import { ProjectsActions }              from '../shared/state/project/projects.a
 import { CurrentActivityActions }       from '../shared/state/current-activity/current-activity.actions';
 import { UnSyncedActivityActions }       from '../shared/state/unsynced-activities/unsynced-activities.actions';
 
-import { UserService }                  from './servises/user.service';
-import { AuthenticationService }        from './servises/authentication.service';
+import { UserService }                  from './services/user.service';
+import { AuthenticationService }        from './services/authentication.service';
 import { ModalService }                 from './modal/modal.service';
 
 import { ToolbarComponent }             from './toolbar/toolbar.component';
@@ -25,10 +25,10 @@ import { ImgCropperComponent }          from '../profile-setting/image-cropper/i
 import { ImageCropperComponent }        from 'ng2-img-cropper';
 import { ErrorComponent }               from './error/error.component';
 import { ErrorService }                 from './error/error.service';
-import { DatabaseService }              from './servises/database/database.service';
-import { DexieService }                 from './servises/database/dexie.service';
+import { DatabaseService }              from './services/database/database.service';
+import { DexieService }                 from './services/database/dexie.service';
 import { StatusActions }                from '../shared/state/status/status.actions';
-import { SyncService }                  from './servises/sync.service';
+import { SyncService }                  from './services/sync.service';
 
 @NgModule({
   imports:      [
