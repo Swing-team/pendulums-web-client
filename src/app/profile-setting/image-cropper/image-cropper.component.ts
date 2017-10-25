@@ -4,7 +4,7 @@ import {ModalService} from '../../core/modal/modal.service';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../shared/state/appState';
 import {UserActions} from '../../shared/state/user/user.actions';
-import {UserService} from '../../core/user.service';
+import {UserService} from '../../core/services/user.service';
 
 @Component({
   selector: 'image-cropper',

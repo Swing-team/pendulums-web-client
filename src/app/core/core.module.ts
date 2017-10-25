@@ -8,10 +8,11 @@ import { APP_CONFIG, CONFIG }           from '../app.config';
 import reducers                         from '../shared/state/appState';
 import { UserActions }                  from '../shared/state/user/user.actions';
 import { ProjectsActions }              from '../shared/state/project/projects.actions';
-import { ActivityActions }              from '../shared/state/activity/activity.actions';
+import { CurrentActivityActions }       from '../shared/state/current-activity/current-activity.actions';
+import { UnSyncedActivityActions }       from '../shared/state/unsynced-activities/unsynced-activities.actions';
 
-import { UserService }                  from './user.service';
-import { AuthenticationService }        from './authentication.service';
+import { UserService }                  from './services/user.service';
+import { AuthenticationService }        from './services/authentication.service';
 import { ModalService }                 from './modal/modal.service';
 
 import { ToolbarComponent }             from './toolbar/toolbar.component';
@@ -24,6 +25,10 @@ import { ImgCropperComponent }          from '../profile-setting/image-cropper/i
 import { ImageCropperComponent }        from 'ng2-img-cropper';
 import { ErrorComponent }               from './error/error.component';
 import { ErrorService }                 from './error/error.service';
+import { DatabaseService }              from './services/database/database.service';
+import { DexieService }                 from './services/database/dexie.service';
+import { StatusActions }                from '../shared/state/status/status.actions';
+import { SyncService }                  from './services/sync.service';
 
 @NgModule({
   imports:      [
@@ -53,8 +58,13 @@ import { ErrorService }                 from './error/error.service';
     NotificationService,
     AuthenticationService,
     UserActions,
+    StatusActions,
     ProjectsActions,
-    ActivityActions
+    CurrentActivityActions,
+    UnSyncedActivityActions,
+    DexieService,
+    DatabaseService,
+    SyncService
   ],
   entryComponents: [
     ModalComponent,

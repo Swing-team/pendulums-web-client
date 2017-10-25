@@ -7,11 +7,11 @@ import {
 import { Observable }                       from 'rxjs/Observable';
 import { APP_CONFIG }                       from '../../../app.config';
 import { ActivityService }                  from '../../../shared/activity/activity.service';
-import { Activity }                         from '../../../shared/state/activity/activity.model';
+import { Activity }                         from '../../../shared/state/current-activity/current-activity.model';
 import { ActivatedRoute, ParamMap }         from '@angular/router';
 import { Location }                         from '@angular/common';
 import { ModalService }                     from '../../../core/modal/modal.service';
-import { AddManuallyActivityComponent }     from '../add-manually-activity/add-manually-activity.component';
+import { AddManuallyActivityComponent }     from '../activity-add-edit-manually/activity-add-edit-manually.component';
 import { ErrorService }                     from '../../../core/error/error.service';
 import { Store }                            from '@ngrx/store';
 import { AppState }                         from '../../../shared/state/appState';

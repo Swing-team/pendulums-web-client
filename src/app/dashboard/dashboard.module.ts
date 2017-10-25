@@ -6,7 +6,7 @@ import { ProjectService }                     from './shared/projects.service';
 import { ProjectItemComponent }               from './projects/list-project/project-item/project-item.component';
 import { ActivitiesComponent }                from './activities/list-activities/activities.component';
 import { ActivityItemComponent }              from './activities/list-activities/activity-item/activity-item.component';
-import {AddManuallyActivityComponent}         from './activities/add-manually-activity/add-manually-activity.component';
+import {AddManuallyActivityComponent}         from './activities/activity-add-edit-manually/activity-add-edit-manually.component';
 import { CreateProjectComponent }             from './projects/create-project/create-project.component';
 import { ProjectDetailsComponent }            from './projects/settings/details/project-details.component';
 import { ProjectMembersComponent }            from './projects/settings/members/project-members.component';

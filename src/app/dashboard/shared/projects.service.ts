@@ -5,7 +5,6 @@ import 'rxjs/add/operator/toPromise';
 
 import {APP_CONFIG} from '../../app.config';
 import {Project} from '../../shared/state/project/project.model';
-import {getResponseURL} from '@angular/http/src/http_utils';
 
 @Injectable()
 export class ProjectService {

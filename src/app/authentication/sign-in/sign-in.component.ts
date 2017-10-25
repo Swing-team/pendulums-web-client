@@ -1,12 +1,10 @@
-import {Component} from '@angular/core';
-import {AuthenticationService} from '../../core/authentication.service';
-import {Router} from '@angular/router';
-import {Store} from '@ngrx/store';
-import {AppState} from '../../shared/state/appState';
-import {UserService} from '../../core/user.service';
-import {UserActions} from '../../shared/state/user/user.actions';
-import {ProjectsActions} from '../../shared/state/project/projects.actions';
-import {ActivityActions} from '../../shared/state/activity/activity.actions';
+import { Component }                        from '@angular/core';
+import { AuthenticationService }            from '../../core/services/authentication.service';
+import { Router }                           from '@angular/router';
+import { Store }                            from '@ngrx/store';
+import { AppState }                         from '../../shared/state/appState';
+import { StatusActions }                    from '../../shared/state/status/status.actions';
+import { SyncService }                      from '../../core/services/sync.service';
 
 const EMAIL_REGEX = /^(?=.{8,64}$)[\w!#$%&'*+/=?`{|}~^-]+(?:\.[\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,6}$/;
 
@@ -24,11 +22,9 @@ export class SignInComponent {
   constructor(
     private authService: AuthenticationService,
     private router: Router,
-    private userService: UserService,
-    private userActions: UserActions,
-    private projectsActions: ProjectsActions,
-    private activityActions: ActivityActions,
-    private store: Store<AppState>
+    private statusActions: StatusActions,
+    private store: Store<AppState>,
+    private syncService: SyncService
   ) {}
 
   signIn() {
@@ -37,16 +33,8 @@ export class SignInComponent {
     if (this.validation(this.authUser)) {
       this.authService.signIn(this.authUser)
         .then(() => {
-          this.userService.getSummary()
-            .then((user) => {
-              this.router.navigate(['dashboard']);
-              this.store.dispatch(this.userActions.loadUser(user));
-              this.store.dispatch(this.projectsActions.loadProjects(user.projects));
-              this.store.dispatch(this.activityActions.loadactivity(user.currentActivities[0]));
-            })
-            .catch(error => {
-              console.log('error is: ', error);
-            });
+          this.store.dispatch(this.statusActions.updateIsLogin(true));
+          this.syncService.init();
           this.router.navigate(['dashboard']);
         })
         .catch(error => {

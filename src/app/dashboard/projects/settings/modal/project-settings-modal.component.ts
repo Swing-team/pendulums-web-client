@@ -9,7 +9,7 @@ import {userRoleInProject} from '../../../shared/utils';
   styleUrls: ['./project-settings-modal.component.sass']
 })
 
-export class ProjectSettingsModalComponent implements OnInit{
+export class ProjectSettingsModalComponent implements OnInit {
   @Input() project: Project;
   @Input() user: User;
   tabs = ['is-active', '', ''];

@@ -18,6 +18,12 @@ export default function reducer(state = initialState, action: Action) {
       };
     }
 
+    case ProjectsActions.LOAD_DB_PROJECTS: {
+      return {
+        entities: action.payload
+      };
+    }
+
     case ProjectsActions.CLEAR_PROJECTS: {
       return initialState;
     }
@@ -108,7 +114,7 @@ export default function reducer(state = initialState, action: Action) {
     case ProjectsActions.UPDATE_PROJECT_ACTIVITIES: {
       const newState = JSON.parse(JSON.stringify(state));
       newState.entities[action.payload.projectId].activities =
-        [action.payload.activity, newState.entities[action.payload.projectId].activities[0]];
+        [action.payload.currentActivity, newState.entities[action.payload.projectId].activities[0]];
       return newState;
     }
 

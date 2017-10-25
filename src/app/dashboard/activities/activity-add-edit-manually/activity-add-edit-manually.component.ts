@@ -3,15 +3,15 @@ import * as moment from 'moment';
 import { Component, Inject, Input, OnInit,
   Output, EventEmitter }                    from '@angular/core';
 import { APP_CONFIG }                       from '../../../app.config';
-import { Activity }                         from '../../../shared/state/activity/activity.model';
+import { Activity }                         from '../../../shared/state/current-activity/current-activity.model';
 import { ActivityService }                  from '../../../shared/activity/activity.service';
 import { ModalService }                     from '../../../core/modal/modal.service';
 import { ErrorService }                     from '../../../core/error/error.service';
 
 @Component({
   selector: 'create-activity',
-  templateUrl: './add-manually-activity.component.html',
-  styleUrls: ['./add-manually-activity.component.sass']
+  templateUrl: './activity-add-edit-manually.component.html',
+  styleUrls: ['./activity-add-edit-manually.component.sass']
 })
 export class AddManuallyActivityComponent implements OnInit {
   @Output() responseActivity = new EventEmitter();
