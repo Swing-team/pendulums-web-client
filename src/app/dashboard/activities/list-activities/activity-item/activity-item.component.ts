@@ -25,7 +25,22 @@ export class ActivityItemComponent implements OnInit {
                private viewContainerRef: ViewContainerRef) {}
 
   ngOnInit() {
-    this.initial();
+    if (this.activity.stoppedAt) {
+      this.initial();
+    } else {
+      const fromDate = new Date(Number(this.activity.startedAt));
+      this.from = fromDate.getHours() + ':' + fromDate.getMinutes();
+      this.to = '...';
+      setInterval(() => {
+        let startedAt;
+        let now;
+        let duration;
+        startedAt = Number(this.activity.startedAt);
+        now = Date.now();
+        duration = now - startedAt;
+        this.duration = this.calculateActivityDuration(duration);
+      }, 1000);
+    }
   }
 
   initial() {
@@ -33,12 +48,13 @@ export class ActivityItemComponent implements OnInit {
     this.from = fromDate.getHours() + ':' + fromDate.getMinutes();
     const toDate = new Date(Number(this.activity.stoppedAt));
     this.to = toDate.getHours() + ':' + toDate.getMinutes();
-    this.duration = this.calculateActivityDuration(this.activity);
+    const tempDuration = Number(this.activity.stoppedAt) - Number(this.activity.startedAt);
+    this.duration = this.calculateActivityDuration(tempDuration);
   }
 
   delete() {
     this.deleteConfirmation = true;
-    console.log(this.deleteConfirmation)
+    console.log('delete Confirmed:', this.deleteConfirmation);
   }
 
   confirmDelete() {
@@ -71,8 +87,7 @@ export class ActivityItemComponent implements OnInit {
     });
   }
 
-  calculateActivityDuration (activity) {
-    const duration = Number(activity.stoppedAt) - Number(activity.startedAt);
+  calculateActivityDuration (duration) {
     let result: string;
     let x = duration / 1000;
     const seconds = Math.floor(x % 60);

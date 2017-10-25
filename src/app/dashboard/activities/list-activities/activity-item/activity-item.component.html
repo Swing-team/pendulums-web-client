@@ -3,11 +3,12 @@
     <p class="ps-activity-item-name" dir="auto">{{activity.name}}</p>
     <p class="ps-activity-item-text"><i class="icon-stopwatch"></i> from {{from}} to {{to}} / {{duration}}</p>
   </span>
+  <ng-container *ngIf="activity.stoppedAt">
   <span class="ps-activity-item-button is-pulled-right" *ngIf="!deleteConfirmation">
     <i class="icon-pencil has-text-success" (click)="openEditManuallyModal()"></i>
     <i class="icon-trash has-text-danger" (click)="delete()"></i>
   </span>
-
+  </ng-container>
   <span class="ps-activity-item-delete-confirmation" *ngIf="deleteConfirmation"
         [class.ps-ps-activity-item-delete-confirmation-shown]="deleteConfirmation">
     <span class="icon-cancel" (click)="cancelDelete()"></span>
