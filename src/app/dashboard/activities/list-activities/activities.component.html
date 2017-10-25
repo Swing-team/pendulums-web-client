@@ -3,6 +3,20 @@
   <span class="ps-activity-top-button ps-activity-back icon-back" (click)="goBack()"></span>
   <div class="columns">
     <div class="column is-offset-4-widescreen is-4-widescreen is-4-desktop is-offset-4-desktop   is-6-tablet is-offset-3-tablet">
+      <div *ngIf="currentActivityCopy" class="ps-activity-item">
+        <ng-container>
+          <div class="ps-header-container">
+            <div class="ps-activity-header">
+              Current Activity
+            </div>
+          </div>
+          <div class="ps-card-container">
+            <div>
+              <activity-item [activity]="currentActivityCopy"></activity-item>
+            </div>
+          </div>
+        </ng-container>
+      </div>
       <div *ngFor='let group of projectActivities; trackBy: let j = index' class="ps-activity-item">
         <ng-container *ngIf="group.activities.length>0">
           <div class="ps-header-container">
@@ -12,7 +26,7 @@
           </div>
           <div class="ps-card-container">
             <div *ngFor='let activity of group.activities; trackBy: let i = index'>
-              <activity-item *ngIf="activity.stoppedAt" [activity]="activity" (onDeleteClicked)="deleteActivity(activity, j, i)"></activity-item>
+              <activity-item [activity]="activity" (onDeleteClicked)="deleteActivity(activity, j, i)"></activity-item>
             </div>
           </div>
         </ng-container>

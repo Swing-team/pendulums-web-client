@@ -26,6 +26,8 @@ export class ActivitiesComponent implements OnInit {
   private pageNumber = 0;
   private scrollEnable = true;
   private tempArray: Array<Activity>;
+  private currentActivity: Observable<Activity>;
+  private currentActivityCopy: Activity;
   private projectActivities: {
     date: any
     activities: any
@@ -40,6 +42,7 @@ export class ActivitiesComponent implements OnInit {
                private modalService: ModalService,
                private errorService: ErrorService,
                private viewContainerRef: ViewContainerRef) {
+    this.currentActivity = store.select('currentActivity');
   }
 
   ngOnInit() {
@@ -57,11 +60,27 @@ export class ActivitiesComponent implements OnInit {
       });
         this.groupByActivities();
     });
+    if (this.currentActivity) {
+      this.currentActivity.subscribe(currentActivity => {
+        if (currentActivity.project === this.projectId) {
+          this.currentActivityCopy = currentActivity;
+        }
+        if (!currentActivity.startedAt && this.currentActivityCopy) {
+          if (this.currentActivityCopy.startedAt) {
+            const newActivity = this.currentActivityCopy;
+            newActivity.stoppedAt = Date.now().toString();
+            this.updateActivities(newActivity);
+          }
+          this.currentActivityCopy = null;
+        }
+      });
+    }
   }
 
   deleteActivity(activity , index1, index2) {
     this.activityService.delete(activity.project, activity.id).then(() => {
       this.projectActivities[index1].activities.splice(index2, 1);
+      this.calculateTotalDurationPerDay();
       const Removed = this.tempArray .filter(function(el) {
         return el.id !== activity.id ;
       });
