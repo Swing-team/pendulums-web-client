@@ -17,8 +17,8 @@ export class SideMenuComponent implements OnInit {
   @Input() user: User;
   @ViewChild('notifications') notifications;
   emailHash: any;
-  private profileIsActive = false;
   private notificationIsActive = false;
+  private activeItemNumber = 0;
 
   constructor (@Inject(APP_CONFIG) private config,
                private router: Router) {}
@@ -29,18 +29,37 @@ export class SideMenuComponent implements OnInit {
 
   signout() {
     this.onSignoutClicked.emit();
+    this.activeItemNumber = 4;
+  }
+
+  updateIndex(number) {
+    this.activeItemNumber = number;
   }
 
   toggleNotifications() {
+    this.activeItemNumber = 2;
     this.notificationIsActive = !this.notificationIsActive;
-    this.profileIsActive = false;
+    if (!this.notificationIsActive) {
+      if (this.router.url === '/dashboard') {
+        this.activeItemNumber = 3;
+      }
+      if (this.router.url === '/profile') {
+        this.activeItemNumber = 1;
+      }
+    }
   }
 
   clickedOutside(event) {
     if (this.notifications.nativeElement.contains(event.target)) {
-      console.log('clicked inside2');
+      console.log('clicked inside');
     } else {
       this.notificationIsActive = false;
+      if (this.router.url === '/dashboard') {
+        this.activeItemNumber = 3;
+      }
+      if (this.router.url === '/profile') {
+        this.activeItemNumber = 1;
+      }
     }
   }
 }
