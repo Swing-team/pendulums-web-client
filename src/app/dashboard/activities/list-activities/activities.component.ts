@@ -1,10 +1,10 @@
 import 'rxjs/add/operator/switchMap';
 import * as _ from 'lodash';
-import * as moment from 'moment';
 import {
-  Component, HostListener, Inject, OnInit,
-  ViewContainerRef
-} from '@angular/core';
+  Component, HostListener, Inject, Input,
+  OnInit, ViewContainerRef
+}                                           from '@angular/core';
+import { Observable }                       from 'rxjs/Observable';
 import { APP_CONFIG }                       from '../../../app.config';
 import { ActivityService }                  from '../../../shared/activity/activity.service';
 import { Activity }                         from '../../../shared/state/activity/activity.model';
@@ -13,6 +13,8 @@ import { Location }                         from '@angular/common';
 import { ModalService }                     from '../../../core/modal/modal.service';
 import { AddManuallyActivityComponent }     from '../add-manually-activity/add-manually-activity.component';
 import { ErrorService }                     from '../../../core/error/error.service';
+import { Store }                            from '@ngrx/store';
+import { AppState }                         from '../../../shared/state/appState';
 
 @Component({
   selector: 'activities',
@@ -27,9 +29,11 @@ export class ActivitiesComponent implements OnInit {
   private projectActivities: {
     date: any
     activities: any
+    duration: any
   }[];
 
   constructor (@Inject(APP_CONFIG) private config,
+               private store: Store<AppState>,
                private route: ActivatedRoute,
                private activityService: ActivityService,
                private location: Location,
@@ -46,7 +50,11 @@ export class ActivitiesComponent implements OnInit {
       return this.activityService.getActivities(params.get('projectId'));
     })
       .subscribe((activities) => {
-        this.tempArray = activities;
+      activities.map((activity) => {
+        if (activity.stoppedAt) {
+          this.tempArray.push(activity);
+        }
+      });
         this.groupByActivities();
     });
   }
@@ -84,9 +92,21 @@ export class ActivitiesComponent implements OnInit {
         return new Date(Number(activity.stoppedAt)).toDateString();
       })
       .map((value, key) => {
-        return {date: key, activities: value};
+        return {date: key, activities: value, duration: 0};
       })
       .value();
+    this.calculateTotalDurationPerDay();
+  }
+
+  calculateTotalDurationPerDay() {
+    this.projectActivities.map((group) => {
+      let totalDurationPerDay = 0 ;
+      group.activities.map((activity) => {
+        const activityDuration = activity.stoppedAt - activity.startedAt ;
+        totalDurationPerDay += activityDuration;
+      });
+      group.duration = this.calculateTimeDuration(totalDurationPerDay);
+    });
   }
 
   sortArrayByDate(): void {
@@ -137,12 +157,43 @@ export class ActivitiesComponent implements OnInit {
           this.scrollEnable = true;
         }
           activities.map((activity) => {
-            this.tempArray.push(activity);
+            if (activity.stoppedAt) {
+              this.tempArray.push(activity);
+            }
           });
           this.groupByActivities();
         });
     }
   }
+
+  calculateTimeDuration (duration) {
+    let result: string;
+    let x = duration / 1000;
+    const seconds = Math.floor(x % 60);
+    // minutes
+    x /= 60;
+    const minutes = Math.floor(x % 60);
+    // hours
+    x /= 60;
+    const hours = Math.floor(x);
+
+    if (hours !== 0) {
+      if (minutes < 10) {
+        result = hours + ':0' + minutes ;
+      } else {
+        result = hours + ':' + minutes ;
+      }
+    }
+
+    if (minutes !== 0 && hours === 0) {
+      result = minutes + ' min' ;
+    }
+
+    if (minutes === 0 && hours === 0) {
+      result = seconds + ' sec';
+    }
+    return result;
+  };
 }
 
 
