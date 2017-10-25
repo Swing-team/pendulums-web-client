@@ -14,7 +14,7 @@ export class ErrorComponent implements OnInit {
     if (this.errorMessages.length > 0) {
       setInterval(() => {
         this.errorMessages.splice(0, 1);
-      }, 200000);
+      }, 2000);
     }
   }
 
