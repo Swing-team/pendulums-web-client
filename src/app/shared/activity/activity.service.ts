@@ -21,6 +21,15 @@ export class ActivityService {
       .catch(this.handleError);
   }
 
+  createManually(projectId, activity): Promise<any> {
+    return this.http
+      .post(this.config.apiEndpoint + '/projects/' + projectId + '/activities/manualActivity' ,
+        JSON.stringify({activity: activity}) , this.config.httpOptions)
+      .toPromise()
+      .then(response => response.json() as Activity)
+      .catch(this.handleError);
+  }
+
   editCurrentActivity(projectId, activity): Promise<any> {
     return this.http
       .put(this.config.apiEndpoint + '/projects/' + projectId + '/activities/current/' + activity.id ,

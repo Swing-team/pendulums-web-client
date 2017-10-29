@@ -139,7 +139,7 @@ export class ToolbarComponent implements OnInit {
           });
       } else {
         console.log('activity has no id so it should go through the sync way');
-        this.activityService.create(this.currentActivityCopy.project, this.currentActivityCopy).then((activity) => {
+        this.activityService.createManually(this.currentActivityCopy.project, this.currentActivityCopy).then((activity) => {
           this.store.dispatch(this.projectsActions.updateProjectActivities(activity.project, activity));
           this.store.dispatch(this.CurrentActivityActions.clearCurrentActivity());
           this.taskName = null;
