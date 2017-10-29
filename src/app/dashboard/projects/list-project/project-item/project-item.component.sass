@@ -22,6 +22,16 @@ $item-size: 180px
     overflow: hidden
     text-overflow: ellipsis
 
+.ps-task-input
+  font-size: 0.75rem
+  background-color: rgba(0, 0, 0, 0.5)
+  border-radius: unset !important
+  border: unset !important
+  box-shadow: unset !important
+  width: 95%
+  max-width: 95%
+  color: $paper
+
 .ps-project-header-ellipsis
   overflow: hidden
   text-overflow: ellipsis
@@ -121,15 +131,10 @@ $item-size: 180px
   .ps-picture-icon
     color: #cee83d
 
-.ps-task-input
-  font-size: 0.75rem
-  background-color: rgba(0, 0, 0, 0.5)
-  border-radius: unset !important
-  border: unset !important
-  box-shadow: unset !important
-  width: 95%
-  max-width: 95%
-  color: $paper
-
 .ps-task-input-container
+  // todo: it must handle better for issue 22
   display: inline-flex
+  @media (max-width: 770px) and (min-width: 420px)
+    display: inherit
+  @media (max-width: 1200px) and (min-width: 920px)
+    display: inherit
