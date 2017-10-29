@@ -135,11 +135,18 @@ export class ActivitiesComponent implements OnInit {
   }
 
   openAddManuallyModal() {
+    let tempCurrentActivity: any;
+    if (this.currentActivity) {
+      this.currentActivity.subscribe(currentActivity => {
+        tempCurrentActivity = currentActivity;
+      });
+    }
     this.modalService.show({
       component:  AddManuallyActivityComponent,
       containerRef: this.viewContainerRef,
       inputs: {
         projectId: this.projectId,
+        currentActivity: tempCurrentActivity ? tempCurrentActivity : null,
       },
       outputs: {
         responseActivity: (param) => {

@@ -115,7 +115,7 @@ export class ProjectItemComponent implements OnInit {
           });
       } else {
         console.log('activity has no id so it should go through the sync way');
-        this.activityService.create(this.project.id, this.currentActivityCopy).then((activity) => {
+        this.activityService.createManually(this.project.id, this.currentActivityCopy).then((activity) => {
           this.store.dispatch(this.CurrentActivityActions.clearCurrentActivity());
           this.store.dispatch(this.projectsActions.updateProjectActivities(this.project.id, activity));
           this.taskName = 'Untitled task';
