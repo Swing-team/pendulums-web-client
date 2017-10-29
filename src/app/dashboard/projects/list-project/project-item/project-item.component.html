@@ -20,7 +20,7 @@
     <div class="has-text-left ps-title" [ngClass]="{'ps-task-input-container': activityStarted}">
       <span class="subtitle is-inline-block">
         <p *ngIf="!activityStarted">{{project.name}}</p>
-        <input [(ngModel)]="taskName" class="input ps-task-input" (change)="nameActivity()"
+        <input [(ngModel)]="taskName" class="input ps-task-input" (change)="nameActivity($event)"
                placeholder="Task Name" type="text" *ngIf="activityStarted">
       </span>
       <span class="is-pulled-right is-inline-block ps-item-card-button"
