@@ -135,7 +135,11 @@ export class ProjectItemComponent implements OnInit {
       }
   }
 
-  nameActivity() {
+  nameActivity($event) {
+    // just for blur out the input
+    const target = $event.target;
+    target.blur();
+
     if (this.currentActivity) {
       this.currentActivityCopy.name = this.taskName;
       if (this.currentActivityCopy.id) {
