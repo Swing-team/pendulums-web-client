@@ -32,12 +32,10 @@ export class SyncService {
   }
 
   init(): void {
-    console.log('init');
-    this.socket = io.connect(this.config.socketEndpoint,
-      {transports: ['websocket'], upgrade: false});
     this.getStateFromDb().then(() => {
       console.log('found data at db');
       this.initialAppOffline();
+      this.socket = io(this.config.socketEndpoint, {transports: ['websocket'], upgrade: true});
       this.socket.on('connect', () => {
         console.log('websocket connected!');
         this.autoSync();
