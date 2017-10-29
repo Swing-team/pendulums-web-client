@@ -15,6 +15,7 @@ import { ErrorService }                     from '../../../core/error/error.serv
 })
 export class AddManuallyActivityComponent implements OnInit {
   @Output() responseActivity = new EventEmitter();
+  @Input() currentActivity: Activity;
   @Input() activity: Activity;
   @Input() projectId: string;
   private activityModel: Activity;
@@ -158,14 +159,6 @@ export class AddManuallyActivityComponent implements OnInit {
   addActivity() {
     const validation = this.validateForm();
     if (validation) {
-      const fromTimeArray = this.fromTime.split(':');
-      const toTimeArray = this.toTime.split(':');
-      const tempFromDate = moment(this.fromDate, 'dddd, MMMM Do YYYY').hours(Number(fromTimeArray[0]))
-                           .minutes(Number(fromTimeArray[1])).seconds(0).valueOf();
-      const tempToDate = moment(this.toDate, 'dddd, MMMM Do YYYY').hours(Number(toTimeArray[0]))
-                           .minutes(Number(toTimeArray[1])).seconds(0).valueOf();
-      this.activityModel.startedAt = tempFromDate.toString();
-      this.activityModel.stoppedAt = tempToDate.toString();
       if (this.activity) {
         this.activityService.editOldActivity(this.projectId,  this.activityModel).then((activity) => {
           this.showError('Activity edited successfully');
@@ -178,7 +171,7 @@ export class AddManuallyActivityComponent implements OnInit {
             console.log('error is: ', error);
           });
       } else {
-        this.activityService.create(this.projectId,  this.activityModel).then((activity) => {
+        this.activityService.createManually(this.projectId,  this.activityModel).then((activity) => {
           this.showError('Activity added successfully');
           console.log('Activity added successfully');
           this.responseActivity.emit(activity);
@@ -189,7 +182,6 @@ export class AddManuallyActivityComponent implements OnInit {
             console.log('error is: ', error);
           });
       }
-
     }
   }
 
@@ -222,6 +214,39 @@ export class AddManuallyActivityComponent implements OnInit {
       this.toTimeError = !this.toTime;
       this.timeError = 'Specify this time.';
       finalCheck = false;
+    }
+    if (finalCheck) {
+      const now = moment().valueOf();
+      const fromTimeArray = this.fromTime.split(':');
+      const toTimeArray = this.toTime.split(':');
+      const tempFromDate = moment(this.fromDate, 'dddd, MMMM Do YYYY').hours(Number(fromTimeArray[0]))
+        .minutes(Number(fromTimeArray[1])).seconds(0).valueOf();
+      const tempToDate = moment(this.toDate, 'dddd, MMMM Do YYYY').hours(Number(toTimeArray[0]))
+        .minutes(Number(toTimeArray[1])).seconds(0).valueOf();
+      if (now < tempFromDate) {
+        finalCheck = false;
+        console.log('From time is after than now');
+        this.showError('From time is after than now!');
+      }
+      if (now < tempToDate) {
+        finalCheck = false;
+        console.log('To time is after than now');
+        this.showError('To time is after than now!');
+      }
+      if (this.currentActivity) {
+        if (Number(this.currentActivity.startedAt) < tempFromDate) {
+          finalCheck = false;
+          console.log('From time cant be after than currentActivity started time');
+          this.showError('From time is after currentActivity startedAt!');
+        }
+        if (Number(this.currentActivity.startedAt) < tempToDate) {
+          finalCheck = false;
+          console.log('To time cant be after than currentActivity started time');
+          this.showError('To time is after than currentActivity startedAt!');
+        }
+      }
+      this.activityModel.startedAt = tempFromDate.toString();
+      this.activityModel.stoppedAt = tempToDate.toString();
     }
     return finalCheck;
   }
