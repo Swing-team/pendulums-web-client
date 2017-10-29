@@ -1,25 +1,25 @@
 <div class="box">
   <article class="media">
     <div class="media-content">
-      <div class="content has-text-centered" *ngFor='let project of pendingInvitations'>
+      <div class="content has-text-centered" *ngFor='let project of pendingInvitations;trackBy:let i = index'>
         <p>
           you have invited to <strong>{{project.name}}</strong> project.
         </p>
         <nav class="level is-mobile">
-            <a class="level-item button is-primary is-outlined" (click)="accept(project.id)">
+            <a class="level-item button is-small is-primary is-outlined" (click)="accept(project.id)">
               <span class="icon">
                <i class="icon-check"></i>
                </span>
               <span>accept</span>
             </a>
-            <a class="level-item button is-danger is-outlined" (click)="deny(project.id)">
+            <a class="level-item button is-small is-danger is-outlined" (click)="deny(project.id)">
               <span class="icon">
                <i class="icon-cancel"></i>
                </span>
               <span>deny</span>
             </a>
         </nav>
-        <hr>
+        <hr *ngIf="i+1 != pendingInvitations.length">
       </div>
       <div class="content" *ngIf="pendingInvitations.length == 0">
         <p>
