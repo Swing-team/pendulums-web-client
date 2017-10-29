@@ -1,20 +1,29 @@
 @import "../../../sass/variables"
 
 $item-size: 64px
+$item-size-mobile: 56px
 
 .menu
   width: $item-size
   height: 100%
   background-color: $primary-light
+  @media (max-width: $ps-mobile)
+    width: $item-size-mobile
   .menu-list li a
     position: relative
     height: $item-size
     padding: 15px
+    @media (max-width: $ps-mobile)
+      padding: 15px
+      height: $item-size-mobile
     .ps-user-image
       width: 34px
       height: 34px
       border: 1px solid $ink
       border-radius: 100%
+      @media (max-width: $ps-mobile)
+        width: 26px
+        height: 26px
     &.is-active
       background-color: $primary
     &:hover
@@ -23,14 +32,10 @@ $item-size: 64px
       font-size: 24px
       vertical-align: middle
       color: $paper
+      @media (max-width: $ps-mobile)
+        font-size: 20px
       &.ps-reverse-icon:before
         transform: rotate(180deg)
-
-.ps-profile
-  position: absolute
-  top: 10px
-  left: $item-size
-  width: 300px
 
 .ps-notifications-container
   position: absolute
@@ -39,6 +44,12 @@ $item-size: 64px
   width: 300px
   max-height: 400px
   overflow-y: auto
+  box-shadow: 0 0 5px #777777
+  @media (max-width: $ps-mobile)
+    left: $item-size-mobile
+    top: 57px
+    font-size: 0.75rem
+    width: 250px
 
 .ps-notification-count
   background-color: $google-login
@@ -52,3 +63,8 @@ $item-size: 64px
   top: 10px
   right: 15px
   text-align: center
+  @media (max-width: $ps-mobile)
+    width: 14px
+    height: 14px
+    padding: 1px 3px
+    font-size: 10px !important
