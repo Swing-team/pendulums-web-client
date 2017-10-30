@@ -1,14 +1,29 @@
 import { Injectable }   from '@angular/core';
 import { DexieService } from './dexie.service';
+import { Store }        from '@ngrx/store';
+import { AppState }     from '../../../shared/state/appState';
 
 
 @Injectable()
 export class DatabaseService {
-
+  private stateObserver: any;
   private entityToKey = {
     userData: 'userId'
   };
-  constructor(private dexieService: DexieService) {}
+  constructor(private dexieService: DexieService,
+              private store: Store<AppState>) {
+    // todo: It can be better later
+    this.stateObserver = store.debounceTime(2000).subscribe((state) => {
+      let uId: string;
+      uId = state.user.id;
+      if (uId) {
+        this.createOrUpdate('userData', {data: state, userId: uId })
+          .then((data) => {
+          console.log('state stored at dexie db.');
+          });
+        }
+    });
+  }
 
   createOrUpdate(tableName, data) {
     const table = this.dexieService.table(tableName);
@@ -38,5 +53,9 @@ export class DatabaseService {
   removeAll(tableName) {
     const table = this.dexieService.table(tableName);
     return table.clear();
+  }
+
+  unSubscribeState() {
+    this.stateObserver.unsubscribe();
   }
 }
