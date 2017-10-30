@@ -6,11 +6,9 @@ import { Store }                                  from '@ngrx/store';
 import { AppState }                               from './shared/state/appState';
 import { UserActions }                            from './shared/state/user/user.actions';
 import { AuthenticationService }                  from './core/services/authentication.service';
-import { UserService }                            from './core/services/user.service';
 import { ProjectsActions }                        from './shared/state/project/projects.actions';
 import { StatusActions }                          from './shared/state/status/status.actions';
 import { CurrentActivityActions }                 from './shared/state/current-activity/current-activity.actions';
-import { UnSyncedActivityActions }                from './shared/state/unsynced-activities/unsynced-activities.actions';
 import { ErrorService }                           from './core/error/error.service';
 import { DatabaseService }                        from './core/services/database/database.service';
 import { SyncService }                            from './core/services/sync.service';
@@ -46,18 +44,6 @@ export class AppComponent implements OnInit {
     this.currentActivity = store.select('currentActivity');
     this.status = store.select('status');
 
-    // todo: It can be better later
-    store.debounceTime(2000).subscribe((state) => {
-      let uId: string;
-      this.user.subscribe((user) => {
-        uId = user.id;
-        if (uId) {
-          this.dBService
-            .createOrUpdate('userData', {data: state, userId: uId })
-            .then((data) => {});
-        }
-      });
-    });
     errorService.setViewContainerRef(this.viewContainerRef);
 
     // to initialize webSocket connection

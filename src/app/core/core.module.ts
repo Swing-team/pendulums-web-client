@@ -29,6 +29,8 @@ import { DatabaseService }              from './services/database/database.servi
 import { DexieService }                 from './services/database/dexie.service';
 import { StatusActions }                from '../shared/state/status/status.actions';
 import { SyncService }                  from './services/sync.service';
+import {HttpInterceptor} from "../shared/httpInterceptor";
+import {Http} from "@angular/http";
 
 @NgModule({
   imports:      [
@@ -51,6 +53,7 @@ import { SyncService }                  from './services/sync.service';
   ],
   providers:    [
     { provide: APP_CONFIG, useValue: CONFIG },
+    { provide: Http, useClass: HttpInterceptor },
     RouterModule,
     ErrorService,
     ModalService,
