@@ -45,30 +45,10 @@ export class AppComponent implements OnInit {
     this.currentActivity = store.select('currentActivity');
     this.status = store.select('status');
 
-    // todo: It can be better later
-    store.debounceTime(2000).subscribe((state) => {
-      let uId: string;
-      this.user.subscribe((user) => {
-        uId = user.id;
-        if (uId) {
-          this.dBService
-            .createOrUpdate('userData', {data: state, userId: uId })
-            .then((data) => {});
-        }
-      });
-    });
-    // To handle connection indicator
-    this.status.subscribe((state) => {
-      console.log('app status:', state)
-      if (!state.netStatus) {
-        console.log('net is not connected!');
-        this.netConnectionString = true;
-      }
-      if (state.netStatus) {
-        console.log('net is connected!');
-        this.netConnectionString = false;
-      }
-    });
+    errorService.setViewContainerRef(this.viewContainerRef);
+
+    // to initialize webSocket connection
+    syncService.init();
   }
 
   ngOnInit(): void {
