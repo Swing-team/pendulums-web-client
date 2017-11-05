@@ -1,15 +1,16 @@
 import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { RouterModule }                 from '@angular/router';
+import { HTTP_INTERCEPTORS }            from '@angular/common/http';
 
 import { StoreModule }                  from '@ngrx/store';
 
-import { APP_CONFIG, CONFIG }           from '../app.config';
+import { AppConfigModule }              from '../app.config';
 
-import reducers                         from '../shared/state/appState';
+import { reducers }                     from '../shared/state/appState';
 import { UserActions }                  from '../shared/state/user/user.actions';
 import { ProjectsActions }              from '../shared/state/project/projects.actions';
 import { CurrentActivityActions }       from '../shared/state/current-activity/current-activity.actions';
-import { UnSyncedActivityActions }       from '../shared/state/unsynced-activities/unsynced-activities.actions';
+import { UnSyncedActivityActions }      from '../shared/state/unsynced-activities/unsynced-activities.actions';
 
 import { UserService }                  from './services/user.service';
 import { AuthenticationService }        from './services/authentication.service';
@@ -29,14 +30,14 @@ import { DatabaseService }              from './services/database/database.servi
 import { DexieService }                 from './services/database/dexie.service';
 import { StatusActions }                from '../shared/state/status/status.actions';
 import { SyncService }                  from './services/sync.service';
-import {HttpInterceptor} from "../shared/httpInterceptor";
-import {Http} from "@angular/http";
+import { AuthInterceptor }              from './auth.interceptor';
 
 @NgModule({
   imports:      [
     SharedModule,
-    StoreModule.provideStore(reducers),
-    RouterModule
+    StoreModule.forRoot(reducers),
+    RouterModule,
+    AppConfigModule
   ],
   declarations: [
     ToolbarComponent,
@@ -52,8 +53,6 @@ import {Http} from "@angular/http";
     SideMenuComponent
   ],
   providers:    [
-    { provide: APP_CONFIG, useValue: CONFIG },
-    { provide: Http, useClass: HttpInterceptor },
     RouterModule,
     ErrorService,
     ModalService,
@@ -67,7 +66,8 @@ import {Http} from "@angular/http";
     UnSyncedActivityActions,
     DexieService,
     DatabaseService,
-    SyncService
+    SyncService,
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],
   entryComponents: [
     ModalComponent,
