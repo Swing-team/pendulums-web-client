@@ -1,7 +1,7 @@
 import 'rxjs/add/operator/toPromise';
 import * as io from 'socket.io-client';
 import { Inject, Injectable }           from '@angular/core';
-import { Http }                         from '@angular/http';
+import { HttpClient }                   from '@angular/common/http';
 import { APP_CONFIG }                   from '../../app.config';
 import { Store }                        from '@ngrx/store';
 import { AppState }                     from '../../shared/state/appState';
@@ -19,7 +19,7 @@ export class SyncService {
   private socket = null;
   private tempState: any;
   constructor(@Inject(APP_CONFIG) private config,
-              private http: Http,
+              private http: HttpClient,
               private router: Router,
               private userService: UserService,
               private store: Store<AppState>,

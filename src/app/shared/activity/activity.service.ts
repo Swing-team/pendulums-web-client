@@ -1,15 +1,15 @@
 import { Inject, Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 
 import 'rxjs/add/operator/toPromise';
-import { APP_CONFIG } from '../../app.config';
-import {Activity} from "../state/current-activity/current-activity.model";
+import {APP_CONFIG, AppConfig} from '../../app.config';
+import {Activity}             from '../state/current-activity/current-activity.model';
 
 @Injectable()
 export class ActivityService {
   constructor(
-    private http: Http,
-    @Inject(APP_CONFIG) private config
+    private http: HttpClient,
+    @Inject(APP_CONFIG) private config: AppConfig
   ) { }
 
   create(projectId, activity): Promise<any> {
@@ -17,7 +17,7 @@ export class ActivityService {
       .post(this.config.apiEndpoint + '/projects/' + projectId + '/activities' ,
         JSON.stringify({activity: activity}) , this.config.httpOptions)
       .toPromise()
-      .then(response => response.json() as Activity)
+      .then(response => response as Activity)
       .catch(this.handleError);
   }
 
@@ -26,7 +26,7 @@ export class ActivityService {
       .post(this.config.apiEndpoint + '/projects/' + projectId + '/activities/manualActivity' ,
         JSON.stringify({activity: activity}) , this.config.httpOptions)
       .toPromise()
-      .then(response => response.json() as Activity)
+      .then(response => response as Activity)
       .catch(this.handleError);
   }
 
@@ -36,7 +36,7 @@ export class ActivityService {
         JSON.stringify({activity: activity}),
         this.config.httpOptions)
       .toPromise()
-      .then(response => response.json() as Activity)
+      .then(response => response as Activity)
       .catch(this.handleError);
   }
 
@@ -46,15 +46,18 @@ export class ActivityService {
         JSON.stringify({activity: activity}),
         this.config.httpOptions)
       .toPromise()
-      .then(response => response.json() as Activity)
+      .then(response => response as Activity)
       .catch(this.handleError);
   }
 
   getActivities(projectId , page?: number): Promise<Activity[]> {
+    const httpParams = new HttpParams();
+    httpParams.set('page', page.toString());
     return this.http
-      .get(this.config.apiEndpoint + '/projects/' + projectId + '/activities' , {withCredentials: true, params: { page: page}})
+      .get(this.config.apiEndpoint + '/projects/' + projectId + '/activities' ,
+        {...this.config.httpOptions, params: httpParams})
       .toPromise()
-      .then(response => response.json() as Activity [])
+      .then(response => response as Activity[])
       .catch(this.handleError);
   }
 
@@ -62,7 +65,7 @@ export class ActivityService {
     return this.http
       .delete(this.config.apiEndpoint + '/projects/' + projectId + '/activities/' + activityId , this.config.httpOptions)
       .toPromise()
-      .then(response => response.json())
+      .then(response => response)
       .catch(this.handleError);
   }
 
