@@ -1,13 +1,13 @@
-import { Action }         from '@ngrx/store';
-import { Status }         from './status.model';
-import { StatusActions }  from './status.actions';
+import { Status }            from './status.model';
+import { StatusActions }     from './status.actions';
+import { ActionWithPayload } from '../action-with-payload';
 
 const initialState: Status = {
   netStatus: true,
   isLogin: false,
 };
 
-export default function reducer(state = initialState, action: Action) {
+export default function reducer(state = initialState, action:  ActionWithPayload<any>) {
   switch (action.type) {
     case StatusActions.LOAD_STATUS: {
       return action.payload ? action.payload : state;

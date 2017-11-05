@@ -1,15 +1,30 @@
-import { Inject, Injectable } from '@angular/core';
-import { Http } from '@angular/http';
-
 import 'rxjs/add/operator/toPromise';
-
-import { APP_CONFIG } from '../../app.config';
+import { Inject, Injectable }                 from '@angular/core';
+import { HttpClient }                         from '@angular/common/http';
+import { APP_CONFIG, AppConfig }              from '../../app.config';
+import { UserActions }                        from 'app/shared/state/user/user.actions';
+import { ProjectsActions }                    from 'app/shared/state/project/projects.actions';
+import { Router }                             from '@angular/router';
+import { CurrentActivityActions }             from '../../shared/state/current-activity/current-activity.actions';
+import { StatusActions }                      from '../../shared/state/status/status.actions';
+import { Store }                              from '@ngrx/store';
+import { AppState }                           from '../../shared/state/appState';
+import { SyncService }                        from './sync.service';
+import { DatabaseService }                    from './database/database.service';
 
 @Injectable()
 export class AuthenticationService {
   constructor(
-    private http: Http,
-    @Inject(APP_CONFIG) private config
+    private http: HttpClient,
+    @Inject(APP_CONFIG) private config: AppConfig,
+    private store: Store<AppState>,
+    private router: Router,
+    private userActions: UserActions,
+    private projectsActions: ProjectsActions,
+    private StatusActions: StatusActions,
+    private currentActivityActions: CurrentActivityActions,
+    private syncService: SyncService,
+    private dBService: DatabaseService,
   ) { }
 
   signIn(authUser): Promise<any> {
@@ -56,8 +71,22 @@ export class AuthenticationService {
     return this.http
       .get(this.config.apiEndpoint + '/auth/signout', this.config.httpOptions)
       .toPromise()
-      .then(response => response)
+      .then((response) => {
+        this.dBService
+          .removeAll('activeUser')
+          .then(() => {});
+      this.applySignOut();
+      })
       .catch(this.handleError);
+  }
+
+  applySignOut(): void {
+    this.store.dispatch(this.userActions.clearUser());
+    this.store.dispatch(this.projectsActions.clearProjects());
+    this.store.dispatch(this.currentActivityActions.clearCurrentActivity());
+    this.store.dispatch(this.StatusActions.clearStatus());
+    this.syncService.closeConnection();
+    this.router.navigate(['signIn']);
   }
 
   private handleError(error: any): Promise<any> {

@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core';
-import { Action }     from '@ngrx/store';
-import { Status }     from './status.model';
+import { Injectable }         from '@angular/core';
+import { Action }             from '@ngrx/store';
+import { Status }             from './status.model';
+import { ActionWithPayload }  from '../action-with-payload';
 
 @Injectable()
 export class StatusActions {
@@ -9,21 +10,21 @@ export class StatusActions {
   static UPDATE_IS_LOGIN  = 'UPDATE_IS_LOGIN ';
   static CLEAR_STATUS = 'CLEAR_STATUS';
 
-  loadStatus(netStatus: Status): Action {
+  loadStatus(netStatus: Status): ActionWithPayload<Status> {
     return {
       type: StatusActions.LOAD_STATUS,
       payload: netStatus
     };
   }
 
-  updateNetStatus(netStatus: boolean): Action {
+  updateNetStatus(netStatus: boolean):  ActionWithPayload<boolean> {
     return {
       type: StatusActions.UPDATE_NET_STATUS,
       payload: netStatus
     };
   }
 
-  updateIsLogin(isLogin: boolean): Action {
+  updateIsLogin(isLogin: boolean):  ActionWithPayload<boolean> {
     return {
       type: StatusActions.UPDATE_IS_LOGIN,
       payload: isLogin

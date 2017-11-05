@@ -1,7 +1,7 @@
 import { NgModule }               from '@angular/core';
 import { CommonModule }           from '@angular/common';
 import { FormsModule }            from '@angular/forms';
-import { HttpModule }             from '@angular/http';
+import { HttpClientModule }       from '@angular/common/http';
 
 import { SwingSelectComponent }   from './swing-select/swing-select.component';
 import { SwingSwitchComponent }   from './swing-switch/swing-switch.component';
@@ -24,7 +24,7 @@ import { RestrictInputDirective } from './restrict-input.directive';
   exports:      [
     CommonModule,
     FormsModule,
-    HttpModule,
+    HttpClientModule,
     IdenticonHashDirective,
     RestrictInputDirective,
     ObjectKeysPipe,

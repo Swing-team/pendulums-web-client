@@ -1,13 +1,12 @@
-import {Action} from '@ngrx/store';
-
-import {ProjectsActions} from './projects.actions';
-import {Projects} from './projects.model';
+import { ProjectsActions }    from './projects.actions';
+import { Projects }           from './projects.model';
+import { ActionWithPayload }  from '../action-with-payload';
 
 const initialState: Projects = {
   entities: {}
 };
 
-export default function reducer(state = initialState, action: Action) {
+export default function reducer(state = initialState, action: ActionWithPayload<any>) {
   switch (action.type) {
     case ProjectsActions.LOAD_PROJECTS: {
       return {
