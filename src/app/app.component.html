@@ -4,6 +4,9 @@
   <side-menu *ngIf="(user | async).id" [user]="user | async"  (onSignoutClicked)="signOut()"
              class="ps-side-menu" [ngClass]="{'ps-side-menu-show': SideMenuIsActive}"></side-menu>
   <div class="column has-text-centered">
+    <div *ngIf="netConnectionString" class="offline-indicator has-text-centered">
+      Internet is offline!
+    </div>
     <router-outlet></router-outlet>
   </div>
 </div>
