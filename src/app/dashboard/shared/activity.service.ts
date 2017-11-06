@@ -3,7 +3,7 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 
 import 'rxjs/add/operator/toPromise';
 import {APP_CONFIG, AppConfig} from '../../app.config';
-import {Activity}             from '../state/current-activity/current-activity.model';
+import {Activity}             from '../../shared/state/current-activity/current-activity.model';
 
 @Injectable()
 export class ActivityService {
@@ -50,7 +50,7 @@ export class ActivityService {
       .catch(this.handleError);
   }
 
-  getActivities(projectId , page?: number): Promise<Activity[]> {
+  getActivities(projectId , page: number = 0): Promise<Activity[]> {
     const httpParams = new HttpParams();
     httpParams.set('page', page.toString());
     return this.http
