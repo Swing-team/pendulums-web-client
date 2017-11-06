@@ -6,11 +6,9 @@ import { Store }                                  from '@ngrx/store';
 import { AppState }                               from './shared/state/appState';
 import { UserActions }                            from './shared/state/user/user.actions';
 import { AuthenticationService }                  from './core/services/authentication.service';
-import { UserService }                            from './core/services/user.service';
 import { ProjectsActions }                        from './shared/state/project/projects.actions';
 import { StatusActions }                          from './shared/state/status/status.actions';
 import { CurrentActivityActions }                 from './shared/state/current-activity/current-activity.actions';
-import { UnSyncedActivityActions }                from './shared/state/unsynced-activities/unsynced-activities.actions';
 import { ErrorService }                           from './core/error/error.service';
 import { DatabaseService }                        from './core/services/database/database.service';
 import { SyncService }                            from './core/services/sync.service';
@@ -26,6 +24,7 @@ export class AppComponent implements OnInit {
   private currentActivity: Observable<any>;
   private status: Observable<any>;
   private SideMenuIsActive = false;
+  private netConnectionString: boolean;
 
   constructor(
     private authService: AuthenticationService,
@@ -58,13 +57,24 @@ export class AppComponent implements OnInit {
         }
       });
     });
-    errorService.setViewContainerRef(this.viewContainerRef);
-
-    // to initialize webSocket connection
-    syncService.init();
+    // To handle connection indicator
+    this.status.subscribe((state) => {
+      console.log('app status:', state)
+      if (!state.netStatus) {
+        console.log('net is not connected!');
+        this.netConnectionString = true;
+      }
+      if (state.netStatus) {
+        console.log('net is connected!');
+        this.netConnectionString = false;
+      }
+    });
   }
 
   ngOnInit(): void {
+    this.errorService.setViewContainerRef(this.viewContainerRef);
+    // to initialize webSocket connection
+    this.syncService.init();
   }
 
   signOut() {

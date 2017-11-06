@@ -3,7 +3,7 @@ import { Status }         from './status.model';
 import { StatusActions }  from './status.actions';
 
 const initialState: Status = {
-  netStatus: true,
+  netStatus: false,
   isLogin: false,
 };
 
