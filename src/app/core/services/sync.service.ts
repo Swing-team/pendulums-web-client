@@ -60,9 +60,11 @@ export class SyncService {
 
   syncData(data): Promise<any> {
     return this.http
-      .put(this.config.apiEndpoint + '/sync/activities', JSON.stringify(data), this.config.httpOptions)
+      .put(this.config.apiEndpoint + '/sync/activities', JSON.stringify(data), {...this.config.httpOptions, responseType: 'text'})
       .toPromise()
-      .then(() => console.log('Offline activities has been sync with server successfully :)'))
+      .then(() => {
+      console.log('Offline activities has been sync with server successfully :)');
+    })
       .catch(this.handleError);
   }
 
@@ -110,6 +112,8 @@ export class SyncService {
         console.log('syncData', syncData);
         this.syncData(syncData)
           .then(() => {
+            this.store.dispatch(this.unSyncedActivityActions.clearUnSyncedActivity());
+            this.tempState.activities = null;
             this.getSummaryOnline();
           })
           .catch(error => {
@@ -174,7 +178,10 @@ export class SyncService {
   }
 
   closeConnection(): void {
-    this.socket.disconnect();
+    if (this.socket) {
+      this.socket.disconnect();
+    }
+
   }
 
   private handleError(error: any): Promise<any> {

@@ -18,18 +18,13 @@ export class AuthenticationService {
     private http: HttpClient,
     @Inject(APP_CONFIG) private config: AppConfig,
     private store: Store<AppState>,
-    private router: Router,
-    private userActions: UserActions,
-    private projectsActions: ProjectsActions,
-    private StatusActions: StatusActions,
-    private currentActivityActions: CurrentActivityActions,
-    private syncService: SyncService,
+    private statusActions: StatusActions,
     private dBService: DatabaseService,
   ) { }
 
   signIn(authUser): Promise<any> {
     return this.http
-      .post(this.config.apiEndpoint + '/auth/signin', JSON.stringify(authUser), this.config.httpOptions)
+      .post(this.config.apiEndpoint + '/auth/signin', JSON.stringify(authUser), {...this.config.httpOptions, responseType: 'text'})
       .toPromise()
       .then(() => console.log('signIn successful'))
       .catch(this.handleError);
@@ -37,7 +32,7 @@ export class AuthenticationService {
 
   signUp(newUser): Promise<any> {
     return this.http
-      .post(this.config.apiEndpoint + '/auth/signup', JSON.stringify(newUser), this.config.httpOptions)
+      .post(this.config.apiEndpoint + '/auth/signup', JSON.stringify(newUser), {...this.config.httpOptions, responseType: 'text'})
       .toPromise()
       .then(() => console.log('verification email has been sent'))
       .catch(this.handleError);
@@ -45,7 +40,7 @@ export class AuthenticationService {
 
   forgotPassword(UserEmail): Promise<any> {
     return this.http
-      .post(this.config.apiEndpoint + '/auth/recover-account', JSON.stringify(UserEmail), this.config.httpOptions)
+      .post(this.config.apiEndpoint + '/auth/recover-account', JSON.stringify(UserEmail), {...this.config.httpOptions, responseType: 'text'})
       .toPromise()
       .then(() => console.log('reset password request has been sent'))
       .catch(this.handleError);
@@ -53,7 +48,7 @@ export class AuthenticationService {
 
   resetPassword(passwordForm): Promise<any> {
     return this.http
-      .put(this.config.apiEndpoint + '/auth/reset-password', JSON.stringify(passwordForm), this.config.httpOptions)
+      .put(this.config.apiEndpoint + '/auth/reset-password', JSON.stringify(passwordForm), {...this.config.httpOptions, responseType: 'text'})
       .toPromise()
       .then(() => console.log('successfully changed the password'))
       .catch(this.handleError);
@@ -61,7 +56,7 @@ export class AuthenticationService {
 
   changePassword(passwordForm): Promise<any> {
     return this.http
-      .put(this.config.apiEndpoint + '/user/change-password', JSON.stringify(passwordForm), this.config.httpOptions)
+      .put(this.config.apiEndpoint + '/user/change-password', JSON.stringify(passwordForm), {...this.config.httpOptions, responseType: 'text'})
       .toPromise()
       .then(() => console.log('successfully changed the password'))
       .catch(this.handleError);
@@ -69,24 +64,16 @@ export class AuthenticationService {
 
   signOut(): Promise<any> {
     return this.http
-      .get(this.config.apiEndpoint + '/auth/signout', this.config.httpOptions)
+      .get(this.config.apiEndpoint + '/auth/signout', {...this.config.httpOptions, responseType: 'text'})
       .toPromise()
       .then((response) => {
         this.dBService
           .removeAll('activeUser')
-          .then(() => {});
-      this.applySignOut();
+          .then(() => {
+            this.store.dispatch(this.statusActions.updateIsLogin(false));
+          });
       })
       .catch(this.handleError);
-  }
-
-  applySignOut(): void {
-    this.store.dispatch(this.userActions.clearUser());
-    this.store.dispatch(this.projectsActions.clearProjects());
-    this.store.dispatch(this.currentActivityActions.clearCurrentActivity());
-    this.store.dispatch(this.StatusActions.clearStatus());
-    this.syncService.closeConnection();
-    this.router.navigate(['signIn']);
   }
 
   private handleError(error: any): Promise<any> {
