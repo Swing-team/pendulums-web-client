@@ -5,7 +5,7 @@ import { APP_CONFIG }                       from '../../app.config';
 import { Activity }                         from '../../shared/state/current-activity/current-activity.model';
 import { Project }                          from '../../shared/state/project/project.model';
 import { Projects }                         from '../../shared/state/project/projects.model';
-import { ActivityService }                  from 'app/shared/activity/activity.service';
+import { ActivityService }                  from 'app/dashboard/shared/activity.service';
 import { Store }                            from '@ngrx/store';
 import { CurrentActivityActions }                  from 'app/shared/state/current-activity/current-activity.actions';
 import { AppState }                         from 'app/shared/state/appState';

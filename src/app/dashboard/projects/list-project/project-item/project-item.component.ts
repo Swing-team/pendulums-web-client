@@ -1,7 +1,7 @@
 import { Component, Inject, Input, OnInit, ViewContainerRef } from '@angular/core';
 import { APP_CONFIG }                         from '../../../../app.config';
 import { Project }                            from '../../../../shared/state/project/project.model';
-import { ActivityService }                    from '../../../../shared/activity/activity.service';
+import { ActivityService }                    from '../../../shared/activity.service';
 import { Store }                              from '@ngrx/store';
 import { AppState }                           from '../../../../shared/state/appState';
 import { Observable }                         from 'rxjs/Observable';
