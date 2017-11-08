@@ -149,7 +149,6 @@ export class SyncService {
               .then(() => {});
           });
         if (this.router.url === '/dashboard' || this.router.url === '/signIn') {
-          console.log('this.router.url', this.router.url)
           this.router.navigate(['dashboard']);
         }
       })
@@ -171,7 +170,6 @@ export class SyncService {
       this.store.dispatch(this.currentActivityActions.loadCurrentActivity(this.tempState.currentActivity));
       this.store.dispatch(this.unSyncedActivityActions.loadUnSyncedActivity(this.tempState.unSyncedActivity));
       if (this.router.url === '/dashboard' || this.router.url === '/signIn') {
-        console.log('this.router.url', this.router.url)
         this.router.navigate(['dashboard']);
       }
     } else {
@@ -182,6 +180,7 @@ export class SyncService {
   closeConnection(): void {
     if (this.socket) {
       this.socket.disconnect();
+      this.store.dispatch(this.StatusActions.clearStatus());
     }
 
   }
