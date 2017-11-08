@@ -3,8 +3,8 @@ import { StatusActions }     from './status.actions';
 import { ActionWithPayload } from '../action-with-payload';
 
 const initialState: Status = {
-  netStatus: false,
-  isLogin: false,
+  netStatus: true,
+  isLogin: null,
 };
 
 export default function reducer(state = initialState, action:  ActionWithPayload<any>) {
