@@ -1,5 +1,23 @@
 @import "../../sass/variables"
 
+.hero-body
+  @media (max-width: $ps-small-screen-size)
+    padding: 0.5rem
+    font-size: 0.8rem
+
+.title
+  font-size: 1.2rem
+
+@media screen and (min-width: $ps-small-screen-size) and (max-width: 768px)
+  .column.ps-is-offset-2-mobile
+    margin-left: 15%
+  .column.ps-is-8-mobile
+    -webkit-box-flex: 0
+      -ms-flex: none
+       flex: none
+    width: 70%
+
+
 .ps-auth-back
   position: relative
   height: 400px
@@ -15,6 +33,16 @@
     width: 80%
     background-color: $paper
     box-shadow: 0 0 3px #999999
+    @media (max-width: $ps-small-screen-size)
+      width: 90%
+      right: 5%
+      padding: 0.5rem
+      height: 480px
+    @media screen and (min-width: $ps-small-screen-size) and (max-width: 488px)
+      width: 90%
+      right: 5%
+      padding: 0.5rem
+      height: 480px
 
 .ps-reserve-space
   visibility: hidden

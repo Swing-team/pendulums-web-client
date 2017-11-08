@@ -43,12 +43,26 @@ export class AppComponent {
     this.projects = store.select('projects');
     this.currentActivity = store.select('currentActivity');
     this.status = store.select('status');
+  }
 
-    errorService.setViewContainerRef(this.viewContainerRef);
-
+  ngOnInit(): void {
+    this.errorService.setViewContainerRef(this.viewContainerRef);
     // to initialize webSocket connection
-    syncService.init();
+    this.syncService.init();
 
+    // To handle connection indicator
+    this.status.subscribe((state) => {
+      if (!state.netStatus) {
+        console.log('net is not connected!');
+        this.netConnectionString = false;
+      }
+      if (state.netStatus) {
+        console.log('net is connected!');
+        this.netConnectionString = true;
+      }
+    });
+
+    // to handle 403 interceptor by isLogin that has been handle in signOut and authInterceptor
     this.status.subscribe((status: Status) => {
       if ((status.isLogin === false) && status.isLogin !== this.previousLoginStatus) {
         this.store.dispatch(this.userActions.clearUser());
