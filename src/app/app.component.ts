@@ -1,5 +1,5 @@
 import 'rxjs/add/operator/debounceTime';
-import { Component, ViewContainerRef }            from '@angular/core';
+import {Component, OnInit, ViewContainerRef} from '@angular/core';
 import { Observable }                             from 'rxjs/Observable';
 import { Store }                                  from '@ngrx/store';
 import { AppState }                               from './shared/state/appState';
@@ -11,7 +11,7 @@ import { UserActions }                            from './shared/state/user/user
 import { ProjectsActions }                        from './shared/state/project/projects.actions';
 import { CurrentActivityActions }                 from './shared/state/current-activity/current-activity.actions';
 import { StatusActions }                          from './shared/state/status/status.actions';
-import { Router }                                 from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -50,7 +50,7 @@ export class AppComponent {
     syncService.init();
 
     this.status.subscribe((status: Status) => {
-      if (!status.isLogin && status.isLogin !== this.previousLoginStatus) {
+      if ((status.isLogin === false) && status.isLogin !== this.previousLoginStatus) {
         this.store.dispatch(this.userActions.clearUser());
         this.store.dispatch(this.projectsActions.clearProjects());
         this.store.dispatch(this.currentActivityActions.clearCurrentActivity());

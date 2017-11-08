@@ -51,10 +51,10 @@ export class ActivityService {
   }
 
   getActivities(projectId , page: number = 0): Promise<Activity[]> {
-    const httpParams = new HttpParams();
-    httpParams.set('page', page.toString());
+    const httpParams = new HttpParams()
+      .set('page', page.toString());
     return this.http
-      .get(this.config.apiEndpoint + '/projects/' + projectId + '/activities' ,
+      .get(this.config.apiEndpoint + '/projects/' + projectId + '/activities',
         {...this.config.httpOptions, params: httpParams})
       .toPromise()
       .then(response => response as Activity[])
@@ -63,7 +63,7 @@ export class ActivityService {
 
   delete(projectId, activityId): Promise<any> {
     return this.http
-      .delete(this.config.apiEndpoint + '/projects/' + projectId + '/activities/' + activityId , this.config.httpOptions)
+      .delete(this.config.apiEndpoint + '/projects/' + projectId + '/activities/' + activityId , {...this.config.httpOptions, responseType: 'text'})
       .toPromise()
       .then(response => response)
       .catch(this.handleError);
