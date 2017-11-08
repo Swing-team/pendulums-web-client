@@ -11,7 +11,7 @@ import { UserActions }                  from '../../shared/state/user/user.actio
 import { ProjectsActions }              from '../../shared/state/project/projects.actions';
 import { CurrentActivityActions }       from '../../shared/state/current-activity/current-activity.actions';
 import { UnSyncedActivityActions }      from 'app/shared/state/unsynced-activities/unsynced-activities.actions';
-import { Router }                       from '@angular/router';
+import { Router } from '@angular/router';
 import { UserService }                  from './user.service';
 
 @Injectable()
@@ -149,6 +149,7 @@ export class SyncService {
               .then(() => {});
           });
         if (this.router.url === '/dashboard' || this.router.url === '/signIn') {
+          console.log('this.router.url', this.router.url)
           this.router.navigate(['dashboard']);
         }
       })
@@ -170,6 +171,7 @@ export class SyncService {
       this.store.dispatch(this.currentActivityActions.loadCurrentActivity(this.tempState.currentActivity));
       this.store.dispatch(this.unSyncedActivityActions.loadUnSyncedActivity(this.tempState.unSyncedActivity));
       if (this.router.url === '/dashboard' || this.router.url === '/signIn') {
+        console.log('this.router.url', this.router.url)
         this.router.navigate(['dashboard']);
       }
     } else {

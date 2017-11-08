@@ -35,7 +35,7 @@ export class ProjectService {
 
   removeMember(projectId, userId): Promise<any> {
     return this.http
-      .delete(this.config.apiEndpoint + '/projects/' + projectId + '/team-members/' + userId)
+      .delete(this.config.apiEndpoint + '/projects/' + projectId + '/team-members/' + userId, {...this.config.httpOptions, responseType: 'text'})
       .toPromise()
       .then(response => {
       })
@@ -45,7 +45,7 @@ export class ProjectService {
   inviteMember(projectId, invitedUser): Promise<any> {
     return this.http
       .post(this.config.apiEndpoint + '/projects/' + projectId + '/invitation',
-        JSON.stringify(invitedUser), {withCredentials: true}
+        JSON.stringify(invitedUser), {...this.config.httpOptions, responseType: 'text'}
       )
       .toPromise()
       .then(response => {
@@ -68,7 +68,7 @@ export class ProjectService {
 
   delete(projectId): Promise<any> {
     return this.http
-      .delete(this.config.apiEndpoint + '/projects/' + projectId, {withCredentials: true})
+      .delete(this.config.apiEndpoint + '/projects/' + projectId, {...this.config.httpOptions, responseType: 'text'})
       .toPromise()
       .then(response => {
       })
@@ -83,7 +83,7 @@ export class ProjectService {
             id: memberId,
             role: role
           }
-        }), {withCredentials: true})
+        }), {...this.config.httpOptions, responseType: 'text'})
       .toPromise()
       .then(response => {
         console.log(response);
