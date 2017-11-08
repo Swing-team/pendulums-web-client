@@ -1,6 +1,4 @@
-import '@ngrx/core/add/operator/select';
-import { compose }          from '@ngrx/core/compose';
-import { combineReducers }  from '@ngrx/store';
+import {ActionReducerMap} from '@ngrx/store';
 
 import userReducer                 from './user/user.reducer';
 import projectsReducer             from './project/projects.reducer';
@@ -28,10 +26,10 @@ export interface AppState {
 
 // export default compose(storeLogger(), combineReducers)({
 
-export default compose(combineReducers)({
+export const reducers: ActionReducerMap<AppState> = {
   user: userReducer,
   projects: projectsReducer,
   currentActivity: activityReducer,
   unSyncedActivity: unSyncedActivitiesReducer,
   status: statusReducer
-});
+};

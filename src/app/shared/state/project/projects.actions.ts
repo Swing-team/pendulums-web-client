@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
-import { Action }     from '@ngrx/store';
-import { Projects }   from './projects.model';
-import { Project }    from './project.model';
-import { Activity }   from '../current-activity/current-activity.model';
+import { Injectable }         from '@angular/core';
+import { Action }             from '@ngrx/store';
+import { Projects }           from './projects.model';
+import { Project }            from './project.model';
+import { Activity }           from '../current-activity/current-activity.model';
+import { ActionWithPayload }  from '../action-with-payload';
 
 @Injectable()
 export class ProjectsActions {
@@ -18,14 +19,14 @@ export class ProjectsActions {
   static CHANGE_MEMBER_ROLE = 'CHANGE_MEMBER_ROLE';
   static UPDATE_PROJECT_ACTIVITIES = 'UPDATE_PROJECT_ACTIVITIES';
 
-  loadProjects(projects: Projects): Action {
+  loadProjects(projects: Projects):  ActionWithPayload<Projects> {
     return {
       type: ProjectsActions.LOAD_PROJECTS,
       payload: projects
     };
   }
 
-  loadDbProjects(projects: Projects): Action {
+  loadDbProjects(projects: Projects): ActionWithPayload<Projects> {
     return {
       type: ProjectsActions.LOAD_DB_PROJECTS,
       payload: projects
@@ -38,28 +39,28 @@ export class ProjectsActions {
     };
   }
 
-  addProject(project: Project): Action {
+  addProject(project: Project): ActionWithPayload<Project> {
     return {
       type: ProjectsActions.ADD_PROJECT,
       payload: project
     };
   }
 
-  removeProject(project: Project): Action {
+  removeProject(project: Project): ActionWithPayload<Project> {
     return {
       type: ProjectsActions.REMOVE_PROJECT,
       payload: project
     };
   }
 
-  updateProject(project: Project): Action {
+  updateProject(project: Project): ActionWithPayload<Project> {
     return {
       type: ProjectsActions.UPDATE_PROJECT,
       payload: project
     };
   }
 
-  addInvitedUser(projectId: String, invitedUser: {email, role}): Action {
+  addInvitedUser(projectId: String, invitedUser: {email, role}): ActionWithPayload<any> {
     return {
       type: ProjectsActions.ADD_INVITED_USER,
       payload: {
@@ -69,7 +70,7 @@ export class ProjectsActions {
     };
   }
 
-  removeInvitedUser(projectId: String, invitedUser: {email, role}): Action {
+  removeInvitedUser(projectId: String, invitedUser: {email, role}): ActionWithPayload<any> {
     return {
       type: ProjectsActions.REMOVE_INVITED_USER,
       payload: {
@@ -79,7 +80,7 @@ export class ProjectsActions {
     };
   }
 
-  removeMember(projectId: String, memberId: String): Action {
+  removeMember(projectId: String, memberId: String): ActionWithPayload<any> {
     return {
       type: ProjectsActions.REMOVE_MEMBER,
       payload: {
@@ -100,7 +101,7 @@ export class ProjectsActions {
     };
   }
 
-  updateProjectActivities(projectId: string, activity: Activity): Action {
+  updateProjectActivities(projectId: string, activity: Activity): ActionWithPayload<any> {
     return {
       type: ProjectsActions.UPDATE_PROJECT_ACTIVITIES,
       payload: {

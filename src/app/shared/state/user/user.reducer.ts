@@ -1,7 +1,6 @@
-import { Action } from '@ngrx/store';
-
-import { User } from './user.model';
-import { UserActions } from './user.actions';
+import { User }                 from './user.model';
+import { UserActions }          from './user.actions';
+import { ActionWithPayload }    from '../action-with-payload';
 
 const initialState: User = {
   id: null,
@@ -11,7 +10,7 @@ const initialState: User = {
   pendingInvitations: []
 };
 
-export default function reducer(state = initialState, action: Action) {
+export default function reducer(state = initialState, action: ActionWithPayload<any>) {
   switch (action.type) {
     case UserActions.LOAD_USER: {
       return action.payload;

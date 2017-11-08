@@ -6,7 +6,7 @@ import {
 }                                           from '@angular/core';
 import { Observable }                       from 'rxjs/Observable';
 import { APP_CONFIG }                       from '../../../app.config';
-import { ActivityService }                  from '../../../shared/activity/activity.service';
+import { ActivityService }                  from '../../shared/activity.service';
 import { Activity }                         from '../../../shared/state/current-activity/current-activity.model';
 import { ActivatedRoute, ParamMap }         from '@angular/router';
 import { Location }                         from '@angular/common';
@@ -166,19 +166,17 @@ export class ActivitiesComponent implements OnInit {
   @HostListener('window:scroll', ['$event'])
   onWindowScroll($event) {
     const listLength = this.tempArray.length * 90;
-    console.log(listLength);
-    console.log('page number:', this.pageNumber);
-    console.log($event.pageY);
     if ($event.pageY > listLength && this.scrollEnable) {
       this.scrollEnable = false;
-      console.log($event.pageY);
       this.pageNumber++;
+      console.log('page number:', this.pageNumber);
       this.route.paramMap
         .switchMap((params: ParamMap) => {
           this.projectId = params.get('projectId');
           return this.activityService.getActivities(params.get('projectId'), this.pageNumber);
         })
         .subscribe((activities) => {
+        console.log('activities', activities)
         if (activities.length > 0) {
           this.scrollEnable = true;
         }

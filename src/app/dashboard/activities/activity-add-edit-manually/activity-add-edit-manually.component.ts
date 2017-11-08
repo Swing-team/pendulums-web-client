@@ -4,7 +4,7 @@ import { Component, Inject, Input, OnInit,
   Output, EventEmitter }                    from '@angular/core';
 import { APP_CONFIG }                       from '../../../app.config';
 import { Activity }                         from '../../../shared/state/current-activity/current-activity.model';
-import { ActivityService }                  from '../../../shared/activity/activity.service';
+import { ActivityService }                  from '../../shared/activity.service';
 import { ModalService }                     from '../../../core/modal/modal.service';
 import { ErrorService }                     from '../../../core/error/error.service';
 
@@ -233,7 +233,8 @@ export class AddManuallyActivityComponent implements OnInit {
         console.log('To time is after than now');
         this.showError('To time is after than now!');
       }
-      if (this.currentActivity) {
+      if (this.currentActivity.startedAt) {
+        console.log('this.currentActivity', this.currentActivity)
         if (Number(this.currentActivity.startedAt) < tempFromDate) {
           finalCheck = false;
           console.log('From time cant be after than currentActivity started time');

@@ -1,23 +1,23 @@
 import { Inject, Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient }         from '@angular/common/http';
 
 import 'rxjs/add/operator/toPromise';
 
 import { User } from '../../shared/state/user/user.model';
-import { APP_CONFIG } from '../../app.config';
+import {APP_CONFIG, AppConfig} from '../../app.config';
 
 @Injectable()
 export class UserService {
   constructor(
-    private http: Http,
-    @Inject(APP_CONFIG) private config
+    private http: HttpClient,
+    @Inject(APP_CONFIG) private config: AppConfig
   ) { }
 
   getSummary(): Promise<any> {
     return this.http
       .get(this.config.apiEndpoint + '/user/summary', this.config.httpOptions)
       .toPromise()
-      .then(response => response.json().user as User)
+      .then(response => (response as any).user as User)
       .catch(this.handleError);
   }
 
@@ -25,7 +25,7 @@ export class UserService {
     return this.http
       .put(this.config.apiEndpoint + '/user' , user, this.config.httpOptions)
       .toPromise()
-      .then(response => response.json().user as User)
+      .then(response => (response as any).user as User)
       .catch(this.handleError);
   }
 

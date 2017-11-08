@@ -10,8 +10,8 @@ import { ProjectsActions }                        from './shared/state/project/p
 import { StatusActions }                          from './shared/state/status/status.actions';
 import { CurrentActivityActions }                 from './shared/state/current-activity/current-activity.actions';
 import { ErrorService }                           from './core/error/error.service';
-import { DatabaseService }                        from './core/services/database/database.service';
 import { SyncService }                            from './core/services/sync.service';
+import { Status }                                 from './shared/state/status/status.model';
 
 @Component({
   selector: 'app-root',
@@ -25,18 +25,18 @@ export class AppComponent implements OnInit {
   private status: Observable<any>;
   private SideMenuIsActive = false;
   private netConnectionString: boolean;
+  private previousLoginStatus = null;
 
   constructor(
     private authService: AuthenticationService,
-    private router: Router,
+    private store: Store<AppState>,
     private userActions: UserActions,
     private projectsActions: ProjectsActions,
-    private StatusActions: StatusActions,
     private currentActivityActions: CurrentActivityActions,
-    private store: Store<AppState>,
+    private statusActions: StatusActions,
+    private router: Router,
     private viewContainerRef: ViewContainerRef,
     private errorService: ErrorService,
-    private dBService: DatabaseService,
     private syncService: SyncService
   ) {
     // to initialize state
@@ -45,18 +45,6 @@ export class AppComponent implements OnInit {
     this.currentActivity = store.select('currentActivity');
     this.status = store.select('status');
 
-    // todo: It can be better later
-    store.debounceTime(2000).subscribe((state) => {
-      let uId: string;
-      this.user.subscribe((user) => {
-        uId = user.id;
-        if (uId) {
-          this.dBService
-            .createOrUpdate('userData', {data: state, userId: uId })
-            .then((data) => {});
-        }
-      });
-    });
     // To handle connection indicator
     this.status.subscribe((state) => {
       console.log('app status:', state)
@@ -75,21 +63,23 @@ export class AppComponent implements OnInit {
     this.errorService.setViewContainerRef(this.viewContainerRef);
     // to initialize webSocket connection
     this.syncService.init();
+
+    this.status.subscribe((status: Status) => {
+      if ((status.isLogin === false) && status.isLogin !== this.previousLoginStatus) {
+        this.store.dispatch(this.userActions.clearUser());
+        this.store.dispatch(this.projectsActions.clearProjects());
+        this.store.dispatch(this.currentActivityActions.clearCurrentActivity());
+        this.store.dispatch(this.statusActions.clearStatus());
+        this.syncService.closeConnection();
+        this.router.navigate(['signIn']);
+      }
+      this.previousLoginStatus = status.isLogin;
+    });
   }
 
   signOut() {
     this.authService.signOut()
-      .then(() => {
-        this.store.dispatch(this.userActions.clearUser());
-        this.store.dispatch(this.projectsActions.clearProjects());
-        this.store.dispatch(this.currentActivityActions.clearCurrentActivity());
-        this.store.dispatch(this.StatusActions.clearStatus());
-        this.syncService.closeConnection();
-        this.dBService
-          .removeAll('activeUser')
-          .then(() => {});
-        this.router.navigate(['signIn']);
-      });
+      .then(() => {});
   }
 
   showSideMenu() {
