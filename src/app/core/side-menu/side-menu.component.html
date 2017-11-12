@@ -18,7 +18,7 @@
     </li>
     <li><a [ngClass]="{'is-active': activeItemNumber === 3 }" [routerLink]="['dashboard']" (click)="updateIndex(3)"><span class="icon-dashboard"></span></a></li>
 
-    <li><a [ngClass]="{'is-active': activeItemNumber === 4 }" (click)="signout()"><span class="icon-sign-out ps-reverse-icon"></span></a></li>
+    <li><a [ngClass]="{'is-active': activeItemNumber === 4 , 'is-disabled': !netConnected}" (click)="signout()"><span class="icon-sign-out ps-reverse-icon"></span></a></li>
   </ul>
 </aside>
 

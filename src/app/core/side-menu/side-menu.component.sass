@@ -26,6 +26,12 @@ $item-size-mobile: 56px
         height: 26px
     &.is-active
       background-color: $primary
+    &.is-disabled
+      cursor: not-allowed
+      span
+        color: #333333 !important
+      &:hover
+        background-color: inherit
     &:hover
       background-color: $primary
     span

@@ -1,7 +1,6 @@
 import * as _ from 'lodash';
-import { Component, Inject, Input,
+import { Component, Inject,
          OnInit, ViewContainerRef }         from '@angular/core';
-import { Router }                           from '@angular/router';
 import { APP_CONFIG }                       from '../app.config';
 import { AuthenticationService }            from '../core/services/authentication.service';
 import { ErrorService }                     from '../core/error/error.service';
@@ -13,6 +12,7 @@ import { UserService }                      from '../core/services/user.service'
 import { ModalService }                     from '../core/modal/modal.service';
 import { ImgCropperComponent }              from './image-cropper/image-cropper.component';
 import { Md5 }                              from 'ts-md5/dist/md5';
+import { Observable }                       from 'rxjs/Observable';
 
 
 @Component({
@@ -21,7 +21,7 @@ import { Md5 }                              from 'ts-md5/dist/md5';
   styleUrls: ['./profile-setting.component.sass'],
 })
 
-export class ProfileSettingComponent {
+export class ProfileSettingComponent implements OnInit{
   private data = {newPassword: null, oldPassword: null};
   private rePassword: string;
   private submitted = false;
@@ -30,9 +30,10 @@ export class ProfileSettingComponent {
   userEdit: User;
   emailHash: any;
   userNameEdited: boolean;
+  netConnected: boolean;
+  private status: Observable<any>;
 
   constructor (@Inject(APP_CONFIG) private config,
-               private route: Router,
                private authService: AuthenticationService,
                private errorService: ErrorService,
                private store: Store<AppState>,
@@ -45,6 +46,20 @@ export class ProfileSettingComponent {
       this.userEdit = _.cloneDeep(user);
       if (user.email) {
         this.emailHash = Md5.hashStr(user.email);
+      }
+    });
+    this.status = store.select('status');
+  }
+
+  ngOnInit(): void {
+    // To handle connection status
+    this.status.subscribe((state) => {
+      if (!state.netStatus) {
+        this.netConnected = false;
+        this.showError('You cant change password in offline mod!');
+      }
+      if (state.netStatus) {
+        this.netConnected = true;
       }
     });
   }
