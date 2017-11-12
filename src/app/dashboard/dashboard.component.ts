@@ -12,11 +12,13 @@ export class DashboardComponent {
   private projects: Observable<any>;
   private user: Observable<any>;
   private currentActivity: Observable<any>;
+  private status: Observable<any>;
 
   constructor (private store: Store<AppState>) {
     this.projects = store.select('projects');
     this.currentActivity = store.select('currentActivity');
     this.user = store.select('user');
+    this.status = store.select('status');
   }
 }
 

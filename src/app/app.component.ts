@@ -24,7 +24,7 @@ export class AppComponent implements OnInit {
   private currentActivity: Observable<any>;
   private status: Observable<any>;
   private SideMenuIsActive = false;
-  private netConnectionString: boolean;
+  private netConnected: boolean;
   private previousLoginStatus = null;
 
   constructor(
@@ -55,11 +55,11 @@ export class AppComponent implements OnInit {
     this.status.subscribe((state) => {
       if (!state.netStatus) {
         console.log('net is not connected!');
-        this.netConnectionString = false;
+        this.netConnected = false;
       }
       if (state.netStatus) {
         console.log('net is connected!');
-        this.netConnectionString = true;
+        this.netConnected = true;
       }
     });
 

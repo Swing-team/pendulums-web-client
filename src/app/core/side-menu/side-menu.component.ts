@@ -5,6 +5,7 @@ import { User }                          from '../../shared/state/user/user.mode
 import { APP_CONFIG }                    from '../../app.config';
 import { Md5 }                           from 'ts-md5/dist/md5';
 import { Router }                        from '@angular/router';
+import {ErrorService} from "../error/error.service";
 
 @Component({
   selector: 'side-menu',
@@ -15,21 +16,27 @@ import { Router }                        from '@angular/router';
 export class SideMenuComponent implements OnInit {
   @Output() onSignoutClicked = new EventEmitter();
   @Input() user: User;
+  @Input() netConnected: boolean;
   @ViewChild('notifications') notifications;
   emailHash: any;
   private notificationIsActive = false;
   private activeItemNumber = 0;
 
   constructor (@Inject(APP_CONFIG) private config,
-               private router: Router) {}
+               private router: Router,
+               private errorService: ErrorService) {}
 
   ngOnInit() {
     this.emailHash = Md5.hashStr(this.user.email);
   }
 
   signout() {
-    this.onSignoutClicked.emit();
-    this.activeItemNumber = 4;
+    if (this.netConnected) {
+      this.onSignoutClicked.emit();
+      this.activeItemNumber = 4;
+    } else {
+      this.showError('You can not singOut offline!' );
+    }
   }
 
   updateIndex(number) {
@@ -61,5 +68,11 @@ export class SideMenuComponent implements OnInit {
         this.activeItemNumber = 1;
       }
     }
+  }
+
+  showError(error) {
+    this.errorService.show({
+      input: error
+    });
   }
 }

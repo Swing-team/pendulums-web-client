@@ -1,10 +1,10 @@
 <toolbar *ngIf="(user | async).id" [user]="user | async" [projects]="projects | async" [currentActivity]="currentActivity"
          class="ps-toolbar" (onMenuItemClicked)="showSideMenu()" ></toolbar>
 <div class="columns ps-main-content" [ngClass]="{'ps-main-signed-in-content': (user | async).id}">
-  <side-menu *ngIf="(user | async).id" [user]="user | async"  (onSignoutClicked)="signOut()"
+  <side-menu *ngIf="(user | async).id" [user]="user | async" [netConnected]="netConnected" (onSignoutClicked)="signOut()"
              class="ps-side-menu" [ngClass]="{'ps-side-menu-show': SideMenuIsActive}"></side-menu>
   <div class="column has-text-centered">
-    <div *ngIf="!netConnectionString" class="offline-indicator has-text-centered">
+    <div *ngIf="!netConnected" class="offline-indicator has-text-centered">
       Internet is offline!
     </div>
     <router-outlet></router-outlet>
