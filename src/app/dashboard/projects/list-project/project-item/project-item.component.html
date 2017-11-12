@@ -6,10 +6,12 @@
     [ngStyle]="{'background-image': project.image ? 'url(' + config.imagesEndpoint + '/projects/' + project.image + ')' :
          'url(http://bulma.io/images/placeholders/640x480.png)'}">
     <div class="ps-image-caption">
-      <span class="is-pulled-left">
-        <i class="icon-settings ps-picture-icon" (click)="showSettings()"></i>
+      <a [ngClass]="{'is-disabled': !status.netStatus}"  (click)="showSettings()">
+        <span class="is-pulled-left">
+        <i class="icon-settings ps-picture-icon" ></i>
       </span>
-      <a (click)="goToActivities()">
+      </a>
+      <a [ngClass]="{'is-disabled': !status.netStatus}" (click)="goToActivities()">
         <span class="is-pulled-right">
          <i class="icon-statistic ps-picture-icon" ></i>
         </span>

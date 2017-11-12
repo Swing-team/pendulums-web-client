@@ -1,4 +1,5 @@
-import { Component, Inject, Input, OnInit, ViewContainerRef } from '@angular/core';
+import { Component, Inject, Input,
+         OnInit, ViewContainerRef }           from '@angular/core';
 import { APP_CONFIG }                         from '../../../../app.config';
 import { Project }                            from '../../../../shared/state/project/project.model';
 import { ActivityService }                    from '../../../shared/activity.service';
@@ -6,15 +7,15 @@ import { Store }                              from '@ngrx/store';
 import { AppState }                           from '../../../../shared/state/appState';
 import { Observable }                         from 'rxjs/Observable';
 import { Activity }                           from '../../../../shared/state/current-activity/current-activity.model';
-import { CurrentActivityActions }                    from '../../../../shared/state/current-activity/current-activity.actions';
+import { CurrentActivityActions }             from '../../../../shared/state/current-activity/current-activity.actions';
 import { ProjectsActions }                    from '../../../../shared/state/project/projects.actions';
 import { ModalService }                       from '../../../../core/modal/modal.service';
 import { ProjectSettingsModalComponent }      from 'app/dashboard/projects/settings/modal/project-settings-modal.component';
 import { User }                               from '../../../../shared/state/user/user.model';
 import { Router }                             from '@angular/router';
-import { DatabaseService }                    from '../../../../core/services/database/database.service';
 import { ErrorService }                       from '../../../../core/error/error.service';
 import { UnSyncedActivityActions }            from '../../../../shared/state/unsynced-activities/unsynced-activities.actions';
+import { Status }                             from '../../../../shared/state/status/status.model';
 
 @Component({
   selector: 'project-item',
@@ -23,6 +24,8 @@ import { UnSyncedActivityActions }            from '../../../../shared/state/uns
 })
 export class ProjectItemComponent implements OnInit {
   @Input() project: Project;
+  @Input() user: User;
+  @Input() status: Status;
   @Input() currentActivity: Observable<Activity>;
   private currentActivityCopy: Activity;
   private activityStarted = false;
@@ -198,18 +201,26 @@ export class ProjectItemComponent implements OnInit {
   };
 
   showSettings() {
-    this.modalService.show({
-      component: ProjectSettingsModalComponent,
-      containerRef: this.viewContainerRef,
-      inputs: {
-        project: this.project,
-        user: this.user
-      }
-    });
+    if (this.status.netStatus) {
+      this.modalService.show({
+        component: ProjectSettingsModalComponent,
+        containerRef: this.viewContainerRef,
+        inputs: {
+          project: this.project,
+          user: this.user
+        }
+      });
+    } else {
+      this.showError('You cant edit project in offline mod!');
+    }
   }
 
   goToActivities(): void {
-    this.router.navigate(['/activities', this.project.id]);
+    if (this.status.netStatus) {
+      this.router.navigate(['/activities', this.project.id]);
+    } else {
+      this.showError('You cant get activities in offline mod!');
+    }
   }
 
   showError(error) {
