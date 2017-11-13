@@ -43,10 +43,12 @@ export class SideMenuComponent implements OnInit {
 
   updateIndex(number) {
     this.activeItemNumber = number;
+    this.pendulumNotification = false;
   }
 
   toggleNotifications() {
     this.activeItemNumber = 2;
+    this.pendulumNotification = false;
     this.notificationIsActive = !this.notificationIsActive;
     if (!this.notificationIsActive) {
       if (this.router.url === '/dashboard') {
