@@ -28,8 +28,7 @@ $item-size-mobile: 56px
       background-color: $primary
     &.is-disabled
       cursor: not-allowed
-      span
-        color: #333333 !important
+      background-color: #4B895E !important
       &:hover
         background-color: inherit
     &:hover
@@ -43,9 +42,15 @@ $item-size-mobile: 56px
       &.ps-reverse-icon:before
         transform: rotate(180deg)
 
+.ps-bug-report
+  position: fixed
+  bottom: 0px
+  @media (max-height: 320px)
+    position: inherit
+    bottom: unset
+
 .ps-notifications-container
   position: absolute
-  top: 65px
   left: $item-size
   width: 300px
   max-height: 400px
@@ -53,9 +58,22 @@ $item-size-mobile: 56px
   box-shadow: 0 0 5px #777777
   @media (max-width: $ps-mobile)
     left: $item-size-mobile
-    top: 57px
     font-size: 0.75rem
     width: 250px
+
+.ps-notifications-container-top
+  top: $item-size
+  @media (max-width: $ps-mobile)
+    top: $item-size-mobile
+
+.ps-alert-bottom
+  background-color: rgba(246, 249, 254, 0.9)
+  top: unset
+  bottom: $item-size - 10px
+  @media (max-width: $ps-mobile)
+    top: unset
+    bottom: $item-size-mobile
+
 
 .ps-notification-count
   background-color: $google-login

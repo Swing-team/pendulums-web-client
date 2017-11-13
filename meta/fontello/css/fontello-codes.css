@@ -35,6 +35,8 @@
 .icon-stopwatch:before { content: '\e821'; } /* '' */
 .icon-group:before { content: '\e822'; } /* '' */
 .icon-pencil:before { content: '\e823'; } /* '' */
-.icon-play:before { content: '\e824'; } /* '' */
-.icon-stop:before { content: '\e825'; } /* '' */
+.icon-stop:before { content: '\e824'; } /* '' */
+.icon-play:before { content: '\e825'; } /* '' */
 .icon-pause:before { content: '\e826'; } /* '' */
+.icon-stop-1:before { content: '\e827'; } /* '' */
+.icon-bug:before { content: '\f188'; } /* '' */
