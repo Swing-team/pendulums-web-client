@@ -19,6 +19,7 @@ export class SideMenuComponent implements OnInit {
   @Input() netConnected: boolean;
   @ViewChild('notifications') notifications;
   emailHash: any;
+  private pendulumNotification: boolean;
   private notificationIsActive = false;
   private activeItemNumber = 0;
 
@@ -28,6 +29,7 @@ export class SideMenuComponent implements OnInit {
 
   ngOnInit() {
     this.emailHash = Md5.hashStr(this.user.email);
+    this.pendulumNotification = false;
   }
 
   signout() {
@@ -56,7 +58,20 @@ export class SideMenuComponent implements OnInit {
     }
   }
 
-  clickedOutside(event) {
+  togglePendulumNotifications() {
+    this.activeItemNumber = 5;
+    this.pendulumNotification = !this.pendulumNotification;
+    if (!this.pendulumNotification) {
+      if (this.router.url === '/dashboard') {
+        this.activeItemNumber = 3;
+      }
+      if (this.router.url === '/profile') {
+        this.activeItemNumber = 1;
+      }
+    }
+  }
+
+  clickedOutSide(event) {
     if (this.notifications.nativeElement.contains(event.target)) {
       console.log('clicked inside');
     } else {

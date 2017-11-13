@@ -17,11 +17,27 @@
       </a>
     </li>
     <li><a [ngClass]="{'is-active': activeItemNumber === 3 }" [routerLink]="['dashboard']" (click)="updateIndex(3)"><span class="icon-dashboard"></span></a></li>
-
-    <li><a [ngClass]="{'is-active': activeItemNumber === 4 , 'is-disabled': !netConnected}" (click)="signout()"><span class="icon-sign-out ps-reverse-icon"></span></a></li>
+    <li><a [ngClass]="{'is-active': activeItemNumber === 4 , 'is-disabled': !netConnected}" title="{{ netConnected ? '' : 'Offline mod!'}}" (click)="signout()"><span class="icon-sign-out ps-reverse-icon"></span></a></li>
+    <li class="ps-bug-report" >
+      <a [ngClass]="{'is-active': activeItemNumber === 5 }" (click)="togglePendulumNotifications()">
+        <span class="icon-bug"></span>
+        <span class="ps-notification-count">!</span>
+      </a>
+    </li>
   </ul>
 </aside>
 
+<notification #notifications *ngIf="notificationIsActive" class="ps-notifications-container ps-notifications-container-top"
+              [user]="user" (clickedOutside)="clickedOutSide($event)"></notification>
 
-<notification *ngIf="notificationIsActive" class="ps-notifications-container"
-              [user]="user" (clickedOutside)="clickedOutside($event)"></notification>
+<article class="message is-info ps-notifications-container ps-alert-bottom" *ngIf="pendulumNotification">
+  <div class="message-body">
+    <p>
+      <strong><span class="icon-error"></span> THIS IS ALPHA SOFTWARE.</strong>
+      This software is pre-release, which means there are likely to be bugs our testing didn't catch. So be aware of data loosing.
+      <br>
+      Please inform us about that bugs we didn't catch in our testing <a href="https://github.com/Pendulum-Swing/web-client/issues" target="_blank"> here</a>.
+    </p>
+  </div>
+</article>
+
