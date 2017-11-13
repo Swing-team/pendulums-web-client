@@ -182,7 +182,6 @@ export class SyncService {
       this.socket.disconnect();
       this.store.dispatch(this.StatusActions.clearStatus());
     }
-
   }
 
   private handleError(error: any): Promise<any> {

@@ -51,21 +51,10 @@ export class AppComponent {
     // to initialize webSocket connection
     this.syncService.init();
 
-    // To handle connection indicator
-    this.status.subscribe((state) => {
-      if (!state.netStatus) {
-        console.log('net is not connected!');
-        this.netConnected = false;
-      }
-      if (state.netStatus) {
-        console.log('net is connected!');
-        this.netConnected = true;
-      }
-    });
-
     // to handle 403 interceptor by isLogin that has been handle in signOut and authInterceptor
     this.status.subscribe((status: Status) => {
       if ((status.isLogin === false) && status.isLogin !== this.previousLoginStatus) {
+        console.log('hererrererererererere:', status.isLogin)
         this.store.dispatch(this.userActions.clearUser());
         this.store.dispatch(this.projectsActions.clearProjects());
         this.store.dispatch(this.currentActivityActions.clearCurrentActivity());
@@ -74,6 +63,15 @@ export class AppComponent {
         this.router.navigate(['signIn']);
       }
       this.previousLoginStatus = status.isLogin;
+
+      // To handle connection indicator
+      if (!status.netStatus) {
+        console.log('net is not connected!');
+        this.netConnected = false;
+      } else {
+        console.log('net is connected!');
+        this.netConnected = true;
+      }
     });
   }
 
