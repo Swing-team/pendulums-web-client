@@ -57,14 +57,14 @@ export class AppComponent {
         this.store.dispatch(this.userActions.clearUser());
         this.store.dispatch(this.projectsActions.clearProjects());
         this.store.dispatch(this.currentActivityActions.clearCurrentActivity());
-        this.store.dispatch(this.statusActions.clearStatus());
+        this.store.dispatch(this.statusActions.loadStatus({netStatus: true, isLogin: null}));
         this.syncService.closeConnection();
         this.router.navigate(['signIn']);
       }
       this.previousLoginStatus = status.isLogin;
 
       // To handle connection indicator
-      if (!status.netStatus) {
+      if (status.netStatus === false) {
         console.log('net is not connected!');
         this.netConnected = false;
       } else {
