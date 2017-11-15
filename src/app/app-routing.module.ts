@@ -7,6 +7,8 @@ import { ResetPasswordComponent }       from './authentication/reset-password/re
 import { DashboardComponent }           from './dashboard/dashboard.component';
 import { ActivitiesComponent }          from './dashboard/activities/list-activities/activities.component';
 import { ProfileSettingComponent }      from './profile-setting/profile-setting.component';
+import { AuthGuardService }             from './core/services/router-guards/auth-guard.service';
+import { AnonymousGuardService }        from './core/services/router-guards/anonymous-guard.service';
 
 const appRoutes: Routes = [
   {
@@ -16,6 +18,7 @@ const appRoutes: Routes = [
   },
   {
     path: 'signIn',
+    canActivate: [AnonymousGuardService],
     component: SignInComponent
   },
   {
@@ -32,6 +35,7 @@ const appRoutes: Routes = [
   },
   {
     path: 'dashboard',
+    canActivate: [AuthGuardService],
     component: DashboardComponent
   },
   {
