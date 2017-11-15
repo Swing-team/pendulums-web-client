@@ -3,7 +3,7 @@ import { StatusActions }     from './status.actions';
 import { ActionWithPayload } from '../action-with-payload';
 
 const initialState: Status = {
-  netStatus: true,
+  netStatus: null,
   isLogin: null,
 };
 
