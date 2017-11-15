@@ -54,7 +54,6 @@ export class AppComponent {
     // to handle 403 interceptor by isLogin that has been handle in signOut and authInterceptor
     this.status.subscribe((status: Status) => {
       if ((status.isLogin === false) && status.isLogin !== this.previousLoginStatus) {
-        console.log('hererrererererererere:', status.isLogin)
         this.store.dispatch(this.userActions.clearUser());
         this.store.dispatch(this.projectsActions.clearProjects());
         this.store.dispatch(this.currentActivityActions.clearCurrentActivity());
