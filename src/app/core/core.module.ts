@@ -31,6 +31,8 @@ import { DexieService }                 from './services/database/dexie.service'
 import { StatusActions }                from '../shared/state/status/status.actions';
 import { SyncService }                  from './services/sync.service';
 import { AuthInterceptor }              from './auth.interceptor';
+import { AuthGuardService }             from './services/router-guards/auth-guard.service';
+import { AnonymousGuardService }        from './services/router-guards/anonymous-guard.service';
 
 @NgModule({
   imports:      [
@@ -54,6 +56,8 @@ import { AuthInterceptor }              from './auth.interceptor';
   ],
   providers:    [
     RouterModule,
+    AuthGuardService,
+    AnonymousGuardService,
     ErrorService,
     ModalService,
     UserService,
