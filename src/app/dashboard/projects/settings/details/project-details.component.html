@@ -6,7 +6,7 @@
           <figure class="image is-1by1">
             <input #projectImageElem type="file" name="projectImage" style="display:none" (change)="getFiles($event)"
                    accept="image/">
-            <img [src]="previewImage ? previewImage : 'http://bulma.io/images/placeholders/128x128.png'">
+            <img [src]="clonedProject.image ? previewImage : '../../../../../assets/images/placeholder.png'">
           </figure>
         </a>
       </div>
@@ -43,7 +43,7 @@
 
 <div *ngIf="readOnly" dir="auto" class="ps-container">
   <div class="ps-image-container">
-    <img [src]="previewImage ? previewImage : 'http://bulma.io/images/placeholders/128x128.png'">
+    <img [src]="previewImage ? previewImage : '../../../../../assets/images/placeholder.png'">
   </div>
   <div class="ps-project-name-container">
     <span class="ps-header-input">
