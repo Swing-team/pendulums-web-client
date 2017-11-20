@@ -52,7 +52,10 @@ export class CreateProjectComponent {
           this.errorMessage = 'Picture size exceeded from 500KB';
           return;
         }
-        formData.append('image', blob);
+        // check whether image has been changed or not
+        if (this.previewImage) {
+          formData.append('image', blob);
+        }
         this.projectServices.create(formData).then((project) => {
           this.store.dispatch(this.projectsActions.addProject(project));
           console.log('project added successfully');
