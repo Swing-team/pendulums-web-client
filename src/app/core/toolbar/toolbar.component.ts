@@ -12,7 +12,6 @@ import { AppState }                         from 'app/shared/state/appState';
 import { ProjectsActions }                  from '../../shared/state/project/projects.actions';
 import { ErrorService }                     from '../error/error.service';
 import { User }                             from '../../shared/state/user/user.model';
-import { DatabaseService }                  from '../services/database/database.service';
 import { UnSyncedActivityActions }          from '../../shared/state/unsynced-activities/unsynced-activities.actions';
 
 @Component({

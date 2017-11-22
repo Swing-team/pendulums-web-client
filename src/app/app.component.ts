@@ -23,7 +23,7 @@ export class AppComponent {
   private projects: Observable<any>;
   private currentActivity: Observable<any>;
   private status: Observable<any>;
-  private SideMenuIsActive = false;
+  private SideMenuIsActive = true;
   private netConnected: boolean;
   private previousLoginStatus = null;
 

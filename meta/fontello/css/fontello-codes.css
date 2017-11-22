@@ -39,4 +39,7 @@
 .icon-play:before { content: '\e825'; } /* '' */
 .icon-pause:before { content: '\e826'; } /* '' */
 .icon-stop-1:before { content: '\e827'; } /* '' */
+.icon-play-1:before { content: '\e828'; } /* '' */
+.icon-stop-2:before { content: '\e829'; } /* '' */
+.icon-plus-1:before { content: '\e82b'; } /* '' */
 .icon-bug:before { content: '\f188'; } /* '' */

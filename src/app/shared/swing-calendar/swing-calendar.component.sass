@@ -25,6 +25,8 @@ $calendar-today-color: $primary-light !default
     justify-content: space-between
     font-size: $size-7
     padding: .25rem
+    @media (max-width: 400px)
+      padding-top: 1rem
     .calendar-nav-left, .calendar-nav-right
       flex-basis: auto
       flex-grow: 0
@@ -78,6 +80,12 @@ $calendar-today-color: $primary-light !default
       vertical-align: middle
       white-space: nowrap
       width: 1.8rem
+      @media (max-width: 770px) and (min-width: 480px)
+        height: 3.2rem
+        width: 3.2rem
+      @media (max-width: 480px)
+        height: 3.5rem
+        width: 3.5rem
       &.is-today
         background: $calendar-today-background
         border-color: $calendar-today-border-color
