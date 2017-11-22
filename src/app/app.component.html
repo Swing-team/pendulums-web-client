@@ -1,6 +1,6 @@
 <toolbar *ngIf="(user | async).id" [user]="user | async" [projects]="projects | async" [currentActivity]="currentActivity"
          class="ps-toolbar" (onMenuItemClicked)="showSideMenu()" ></toolbar>
-<div class="columns ps-main-content" [ngClass]="{'ps-main-signed-in-content': (user | async).id}">
+<div class="columns ps-main-content" [ngClass]="{'ps-main-signed-in-content-with-side': (user | async).id, 'ps-main-signed-in-content-without-side': !SideMenuIsActive}">
   <side-menu *ngIf="(user | async).id" [user]="user | async" [netConnected]="netConnected" (onSignoutClicked)="signOut()"
              class="ps-side-menu" [ngClass]="{'ps-side-menu-show': SideMenuIsActive}"></side-menu>
   <div class="column has-text-centered">
