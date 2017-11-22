@@ -1,18 +1,36 @@
 @import "../../../sass/variables"
 @import "../../../../node_modules/bulma/sass/utilities/variables"
 
-.nav
-  @media (max-width: $ps-mobile)
-    justify-content: center
+.nav-right
+  @media (max-width: 330px)
+    padding-right: 45px
 
 .ps-nav-app-name
   font-size: 1.2em
   color: $primary-light
 
-.ps-nav-menu-icon
-  font-size: 1.2em
+.ps-nav-item-no-left-padding
+  padding-left: 0
+  @media (min-width: 1024px)
+    padding-left: 0.75rem
+
+.ps-nav-left
   color: $primary-light
   cursor: pointer
+  padding: 2px
+  max-width: 64px
+  min-width: 64px
+  &:hover
+    background-color: $primary-light
+    color: $paper
+  @media (max-width: $ps-mobile)
+    max-width: 56px
+    min-width: 56px
+
+.ps-nav-menu-icon
+  font-size: 1.5em
+  @media (max-width: $ps-mobile)
+    font-size: 1.2em
 
 .ps-nav-right-item
   background-color: $primary-light
@@ -21,6 +39,8 @@
   padding: 0 20px
   margin: 0 -5px 0 0
   color: $paper
+  @media (max-width: 560px)and (min-width: $ps-mobile)
+    max-width: 280px
   @media (max-width: $ps-mobile)
     max-height: 1.5rem
   .input
@@ -29,6 +49,8 @@
     border: none
     outline: none
     box-shadow: none
+    @media (max-width: 560px)and (min-width: $ps-mobile)
+      max-width: 120px
     @media (max-width: $ps-mobile)
       max-width: 90px
   .ps-toolbar-select
@@ -52,21 +74,21 @@
   background-color: $primary-light
   z-index: 2
   text-align: center
-  font-size: 1.5rem
+  font-size: 1.1rem
   line-height: 2.4rem
-  padding-left: 7px
+  padding-left: 5px
   color: $paper
   cursor: pointer
   @media (max-width: $ps-mobile)
     margin-right: 0
-    font-size: 1.25rem
-    line-height: 2rem
+    font-size: 1rem
+    line-height: 2.3rem
     height: 36px
     width: 36px
 
 .ps-toolbar-stop
   padding-left: 2px
-  font-size: 1.25rem
+  font-size: 1rem !important
 
 .ps-nav-display-item
   text-align: left

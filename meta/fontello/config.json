@@ -550,10 +550,10 @@
     },
     {
       "uid": "ab52492910b223b3f43996b18df79d75",
-      "css": "play",
-      "code": 59428,
+      "css": "play-1",
+      "code": 59432,
       "src": "custom_icons",
-      "selected": false,
+      "selected": true,
       "svg": {
         "path": "M0 875L0 125 625 500Z",
         "width": 625
@@ -564,10 +564,10 @@
     },
     {
       "uid": "c14ec8915a893452c1abcf93473dd95e",
-      "css": "stop",
-      "code": 59429,
+      "css": "stop-2",
+      "code": 59433,
       "src": "custom_icons",
-      "selected": false,
+      "selected": true,
       "svg": {
         "path": "M0 875L0 125 750 125 750 875 0 875Z",
         "width": 750
@@ -575,6 +575,12 @@
       "search": [
         "stop"
       ]
+    },
+    {
+      "uid": "70370693ada58ef0a60fa0984fe8d52a",
+      "css": "plus-1",
+      "code": 59435,
+      "src": "entypo"
     }
   ]
 }

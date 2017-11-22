@@ -26,7 +26,7 @@
 
 .ps-add-manually-calendar
   position: absolute
-  width: 400px
+  max-width: 400px
   top: 0
   left: 0
   z-index: 9
@@ -41,6 +41,9 @@
   z-index: 5
   margin-top: -10px
   margin-right: -10px
+  @media (max-width: 400px)
+    margin-top: 0
+    margin-right: 0
 
 .ps-submit-button
   position: absolute

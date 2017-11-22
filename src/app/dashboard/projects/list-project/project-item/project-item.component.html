@@ -66,20 +66,20 @@
                src="{{member.profileImage? config.imagesEndpoint + '/profile/' + member.profileImage :
                       '../../../../../assets/images/placeholder.png'}}">
         </span>
-        <span *ngIf="project.teamMembers.length > 1">
+        <span *ngIf="project.teamMembers.length > 4">
           <img class="ps-member-image"
                src='../../../../../assets/images/empty.png'>
         </span>
+        <span class="is-pulled-right">
+        <i class=" icon-group">
+          {{project.teamMembers.length}}
+        </i>
+      </span>
       </div>
       <!--<span class
         ed-left">-->
         <!--12 $/h-->
       <!--</span>-->
-      <span class="is-pulled-right">
-        <i class=" icon-group">
-          {{project.teamMembers.length}}
-        </i>
-      </span>
     </div>
   </div>
 </div>

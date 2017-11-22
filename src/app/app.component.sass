@@ -11,10 +11,13 @@ $side-menu-size: 64px
 
 .ps-main-content
   padding-top: $toolbar-size
-  &.ps-main-signed-in-content
+  &.ps-main-signed-in-content-with-side
     padding-left: $side-menu-size
     @media (max-width: $ps-mobile)
      padding-left: 0px
+  &.ps-main-signed-in-content-without-side
+    @media (max-width: 1200px)
+      padding-left: 0px
 
 .ps-side-menu
   position: fixed
@@ -22,7 +25,7 @@ $side-menu-size: 64px
   top: $toolbar-size
   height: 100vh
   z-index: 9
-  @media (max-width: $ps-mobile)
+  @media (max-width: 1024px)
     display: none
 
 .ps-side-menu-show

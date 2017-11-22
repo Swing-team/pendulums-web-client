@@ -153,7 +153,7 @@ export class ActivitiesComponent implements OnInit {
           this.updateActivities(param);
         }
       },
-      customStyles: {'width': '400px', 'overflow': 'initial'}
+      customStyles: {'width': '400px'}
     });
   }
 

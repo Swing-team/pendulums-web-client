@@ -1,19 +1,30 @@
+@import "../../../sass/variables"
+
 .ps-modal-card
+  overflow: initial
   @media (max-width: 480px)
     margin: unset
     max-height: unset
     height: 100%
   .ps-modal-body
+    padding-top: 35px
     padding-bottom: 50px
     @media (max-width: 480px)
-      padding: 10px
+      padding: 25px 10px 10px
       font-size: 0.87rem
     .ps-header-delete-button
       position: absolute
       top: 0
       right: 0
-      border-radius: 0 0 0 10px
+      border-radius: 100%
+      background-color: $red
+      color: $paper
       z-index: 5
+      margin-top: -10px
+      margin-right: -10px
+      @media (max-width: 480px)
+        margin-top: 0px
+        margin-right: 0px
 
 .ps-no-background
   background-color: unset
