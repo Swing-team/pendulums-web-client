@@ -11,25 +11,23 @@ $side-menu-size: 64px
 
 .ps-main-content
   padding-top: $toolbar-size
-  &.ps-main-signed-in-content-with-side
+  &.ps-main-signed-in-content
     padding-left: $side-menu-size
     @media (max-width: $ps-mobile)
      padding-left: 0px
-  &.ps-main-signed-in-content-without-side
-    @media (max-width: 1200px)
-      padding-left: 0px
 
 .ps-side-menu
   position: fixed
-  left: 0
+  left: -64px
   top: $toolbar-size
   height: 100vh
   z-index: 9
-  @media (max-width: 1024px)
-    display: none
+  transition: 0.5s
+  @media (min-width: 1024px)
+    left: 0
 
 .ps-side-menu-show
-  display: inherit
+  left: 0
 
 .offline-indicator
   background-color: $google-login
