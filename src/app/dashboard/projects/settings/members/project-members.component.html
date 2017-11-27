@@ -11,27 +11,33 @@
       {{getUserRole()}}
     </span>
   </div>
+
   <ng-container *ngIf="!readOnly">
-    <div *ngFor='let member of members;trackBy:let i = index' class="ps-team-members-item-container">
-      <div class="ps-profile-image-container">
+    <div *ngFor='let member of members;trackBy:let i = index'
+         class="columns is-gapless is-mobile ps-margin-bottom ps-team-members-item-container">
+      <div class="column is-2">
         <svg width="36" height="36" [identiconHash]="userEmailHash(member.email)">
         </svg>
       </div>
-      <i class="ps-user-email">
-        {{member.email}}
-      </i>
-      <span class="ps-user-role">
-      <swing-select
-        [items]="['team member','admin']"
-        [label]="member.role"
-        (onItemClicked)="changeTeamMemberRole(member.id, $event)"
-      ></swing-select>
-    </span>
-      <span class="icon-trash has-text-danger ps-body-button" (click)="removeMemberConfirmationViewIndex = i"></span>
-      <span class="ps-remove-member-confirmation" [class.ps-remove-member-confirmation-shown]="removeMemberConfirmationViewIndex === i">
-        <span class="icon-cancel" (click)="removeMemberConfirmationViewIndex = -1 "></span>
-        <span class="icon-check" (click)="removeMember(member.id)"></span>
-      </span>
+      <div class="column is-8 ps-padding-top">
+        <div class="has-text-left ps-user-email">
+          {{member.email}}
+        </div>
+        <div class="ps-user-role">
+          <swing-select
+            [items]="['team member','admin']"
+            [label]="member.role"
+            (onItemClicked)="changeTeamMemberRole(member.id, $event)">
+          </swing-select>
+        </div>
+      </div>
+      <div class="column is-2">
+        <span class="icon-trash has-text-danger ps-body-button" (click)="removeMemberConfirmationViewIndex = i"></span>
+        <span class="ps-remove-member-confirmation" [class.ps-remove-member-confirmation-shown]="removeMemberConfirmationViewIndex === i">
+          <span class="icon-cancel" (click)="removeMemberConfirmationViewIndex = -1 "></span>
+          <span class="icon-check" (click)="removeMember(member.id)"></span>
+        </span>
+      </div>
     </div>
   </ng-container>
 

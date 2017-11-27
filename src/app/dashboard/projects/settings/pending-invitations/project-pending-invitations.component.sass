@@ -23,6 +23,10 @@
   box-shadow: none
   border-radius: unset
   border: none
+  @media (max-width: 460px)
+    input
+    font-size: 0.72rem !important
+    padding-top: 10px
 
 .ps-left-border
   border-left: 1px solid $primary-light
@@ -34,9 +38,14 @@
   font-size: 25px
   transition: background-color 200ms ease-in
   border-radius: 100%
+  @media (max-width: 460px)
+    line-height: 1.75rem
   &:hover
     background-color: #dddddd
     cursor: pointer
+
+.ps-select:not(.is-multiple)::after
+  right: 0.7em
 
 .ps-cancel-invitation-confirmation
   height: 0
@@ -67,6 +76,11 @@
     font-size: 24px
     cursor: pointer
 
-
 .ps-cancel-invitation-confirmation-shown
   height: 59px
+
+.ps-padding-top
+  padding-top: 8px !important
+
+.ps-margin-bottom
+  margin-bottom: 0.5rem !important
