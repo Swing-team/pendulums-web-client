@@ -1,7 +1,7 @@
 <nav class="nav">
-  <div class="ps-nav-left nav-left ps-is-visible" (click)="showSideMenu()">
+  <div class="ps-nav-left nav-left ps-is-visible" (click)="showSideMenu($event)">
     <div class="nav-item">
-      <span class="icon-menu ps-nav-menu-icon"></span>
+      <span  #menuIcon class="icon-menu ps-nav-menu-icon"></span>
     </div>
   </div>
   <div class="nav-left is-hidden-mobile">

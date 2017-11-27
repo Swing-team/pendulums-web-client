@@ -18,14 +18,14 @@ import { ProjectsActions }               from '../../../shared/state/project/pro
 export class NotificationComponent implements OnInit {
   private pendingInvitations: Array<object>;
   @Input() user: User;
-  @Output() clickedOutside = new EventEmitter();
+  @Output() clickedOutSideOfNotification = new EventEmitter();
 
   constructor (@Inject(APP_CONFIG) private config,
                private NotificationService: NotificationService,
                private store: Store<AppState>,
                private userActions: UserActions,
                private projectsActions: ProjectsActions,
-               private eRef: ElementRef) {}
+               private ref: ElementRef) {}
 
   ngOnInit() {
     this.pendingInvitations = this.user.pendingInvitations;
@@ -62,11 +62,11 @@ export class NotificationComponent implements OnInit {
   }
 
   @HostListener('document:click', ['$event'])
-  clickOut(event) {
-    if (this.eRef.nativeElement.contains(event.target)) {
-      console.log('clicked inside');
+  clickOutOfNotification(event) {
+    if (this.ref.nativeElement.contains(event.target)) {
+      console.log('clicked inside notification.');
     } else {
-      this.clickedOutside.emit(event);
+      this.clickedOutSideOfNotification.emit(event);
     }
   }
 }
