@@ -1,11 +1,12 @@
 import {
-  Component, EventEmitter, Inject,
-  Input, OnInit, Output, ViewChild }     from '@angular/core';
+  Component, ElementRef, EventEmitter, HostListener, Inject,
+  Input, OnInit, Output, ViewChild
+}                                        from '@angular/core';
 import { User }                          from '../../shared/state/user/user.model';
 import { APP_CONFIG }                    from '../../app.config';
 import { Md5 }                           from 'ts-md5/dist/md5';
 import { Router }                        from '@angular/router';
-import {ErrorService} from "../error/error.service";
+import { ErrorService }                  from '../error/error.service';
 
 @Component({
   selector: 'side-menu',
@@ -15,6 +16,7 @@ import {ErrorService} from "../error/error.service";
 
 export class SideMenuComponent implements OnInit {
   @Output() onSignoutClicked = new EventEmitter();
+  @Output() clickedOutsideOfMenu = new EventEmitter();
   @Input() user: User;
   @Input() netConnected: boolean;
   @ViewChild('notifications') notifications;
@@ -25,7 +27,8 @@ export class SideMenuComponent implements OnInit {
 
   constructor (@Inject(APP_CONFIG) private config,
                private router: Router,
-               private errorService: ErrorService) {}
+               private errorService: ErrorService,
+               private eRef: ElementRef) {}
 
   ngOnInit() {
     this.emailHash = Md5.hashStr(this.user.email);
@@ -73,7 +76,7 @@ export class SideMenuComponent implements OnInit {
     }
   }
 
-  clickedOutSide(event) {
+  clickedOutSideOfNotification(event) {
     if (this.notifications.nativeElement.contains(event.target)) {
       console.log('clicked inside');
     } else {
@@ -84,6 +87,15 @@ export class SideMenuComponent implements OnInit {
       if (this.router.url === '/profile') {
         this.activeItemNumber = 1;
       }
+    }
+  }
+
+  @HostListener('document:click', ['$event'])
+  clickOutOfMenu(event) {
+    if (this.eRef.nativeElement.contains(event.target)) {
+      console.log('clicked inside menu of sideMenu.');
+    } else {
+      this.clickedOutsideOfMenu.emit(event);
     }
   }
 

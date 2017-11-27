@@ -11,7 +11,7 @@
     <div class="column is-5">
       <div class="field">
         <p class="control">
-          <span class="select is-fullwidth">
+          <span class="select ps-select is-fullwidth">
             <select class="ps-body-input ps-left-border"
                     [(ngModel)]="user.role" name="Role">
               <option *ngFor="let c of roles" [ngValue]="c"
@@ -21,7 +21,7 @@
         </p>
       </div>
     </div>
-    <div class="column is-1 ps-line-height">
+    <div class="column is-2 ps-line-height">
       <div class="field">
         <p class="control has-text-centered">
           <i class="icon-mail has-text-success ps-body-button" (click)="invite()"></i>
@@ -30,23 +30,26 @@
     </div>
   </div>
   <div *ngFor='let invited of project.invitedUsers;trackBy:let i = index'
-       class="columns is-gapless is-mobile ps-invited-user-item">
-    <svg width="36" height="36" [identiconHash]="userEmailHash(invited.email)">
-      Fallback text for browsers not supporting inline svg
-    </svg>
-    <span class="column ps-invited-user-email">
-      {{invited.email}}
-    </span>
-    <span class="column is-5 ps-invited-user-role">
-      {{invited.role}}
-    </span>
-    <span class="column is-1">
-      <span class="icon-trash has-text-danger ps-body-button" (click)="cancelInvitationConfirmationViewIndex = i">
-      </span>
+       class="columns is-gapless is-mobile ps-margin-bottom ps-invited-user-item">
+    <div class="column is-2">
+      <svg width="36" height="36" [identiconHash]="userEmailHash(invited.email)">
+        Fallback text for browsers not supporting inline svg
+      </svg>
+    </div>
+    <div class="column is-8 ps-padding-top">
+      <div class="has-text-left ps-invited-user-email">
+        {{invited.email}}
+      </div>
+      <div class="ps-invited-user-role">
+        {{invited.role}}
+      </div>
+    </div>
+    <div class="column is-2">
+      <span class="icon-trash has-text-danger ps-body-button" (click)="cancelInvitationConfirmationViewIndex = i"></span>
       <span class="ps-cancel-invitation-confirmation" [class.ps-cancel-invitation-confirmation-shown]="cancelInvitationConfirmationViewIndex === i">
         <span class="icon-cancel" (click)="cancelInvitationConfirmationViewIndex = -1"></span>
         <span class="icon-check" (click)="cancelInvitation(invited)"></span>
       </span>
-    </span>
+    </div>
   </div>
 </div>

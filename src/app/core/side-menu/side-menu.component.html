@@ -28,7 +28,7 @@
 </aside>
 
 <notification #notifications *ngIf="notificationIsActive" class="ps-notifications-container ps-notifications-container-top"
-              [user]="user" (clickedOutside)="clickedOutSide($event)"></notification>
+              [user]="user" (clickedOutSideOfNotification)="clickedOutSideOfNotification($event)"></notification>
 
 <article class="message is-info ps-notifications-container ps-alert-bottom" *ngIf="pendulumNotification">
   <div class="message-body">

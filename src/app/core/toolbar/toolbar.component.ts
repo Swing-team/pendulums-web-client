@@ -158,8 +158,8 @@ export class ToolbarComponent implements OnInit {
     }
   }
 
-  showSideMenu() {
-    this.onMenuItemClicked.emit();
+  showSideMenu(event) {
+    this.onMenuItemClicked.emit(event);
   }
 
   showError(error) {

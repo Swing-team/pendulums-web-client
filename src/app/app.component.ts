@@ -1,5 +1,9 @@
 import 'rxjs/add/operator/debounceTime';
-import {Component, OnInit, ViewContainerRef} from '@angular/core';
+import {
+  Component, ElementRef, OnInit, ViewChild,
+  ViewContainerRef
+} from '@angular/core';
+import { Router }                                 from '@angular/router';
 import { Observable }                             from 'rxjs/Observable';
 import { Store }                                  from '@ngrx/store';
 import { AppState }                               from './shared/state/appState';
@@ -26,6 +30,8 @@ export class AppComponent {
   private SideMenuIsActive = true;
   private netConnected: boolean;
   private previousLoginStatus = null;
+  @ViewChild('sideMenu', { read: ElementRef }) sideMenu: ElementRef;
+  @ViewChild('menuIcon', { read: ElementRef }) menuIcon: ElementRef;
 
   constructor(
     private authService: AuthenticationService,
@@ -79,7 +85,24 @@ export class AppComponent {
       .then(() => {});
   }
 
-  showSideMenu() {
+  clickedOutSideOfMenu(event) {
+    if (this.sideMenu.nativeElement.contains(event.target)) {
+      console.log('clicked inside menu in app component.');
+    } else {
+      if (this.menuIcon) {
+        if (event.target.contains(this.menuIcon)) {
+        } else {
+          this.SideMenuIsActive = false;
+        }
+        this.menuIcon = null;
+      } else {
+        this.SideMenuIsActive = false;
+      }
+    }
+  }
+
+  showSideMenu(event) {
+    this.menuIcon = event.target;
     this.SideMenuIsActive = !this.SideMenuIsActive;
   }
 }
