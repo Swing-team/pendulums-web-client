@@ -11,8 +11,9 @@ $side-menu-size: 64px
 
 .ps-main-content
   padding-top: $toolbar-size
-  &.ps-main-signed-in-content
-    padding-left: $side-menu-size
+  &.ps-main-signed-in-content-with-side
+    @media (min-width: 1024px)
+     padding-left: $side-menu-size !important
     @media (max-width: $ps-mobile)
      padding-left: 0px
 
