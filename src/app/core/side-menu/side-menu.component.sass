@@ -9,6 +9,9 @@ $item-size-mobile: 56px
   background-color: $primary-light
   @media (max-width: $ps-mobile)
     width: $item-size-mobile
+  .menu-list
+    height: 90% !important
+    position: relative
   .menu-list li a
     position: relative
     height: $item-size
@@ -44,7 +47,7 @@ $item-size-mobile: 56px
         transform: rotate(180deg)
 
 .ps-bug-report
-  position: fixed
+  position: absolute
   bottom: 0px
   @media (max-height: 320px)
     position: inherit
