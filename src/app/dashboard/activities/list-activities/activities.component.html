@@ -18,7 +18,7 @@
         </ng-container>
       </div>
       <div *ngFor='let group of projectActivities; trackBy: let j = index' class="ps-activity-item">
-        <ng-container *ngIf="group.activities.length>0">
+        <ng-container *ngIf="group.activities.length>0 && project">
           <div class="ps-header-container">
             <div class="ps-activity-header">
               {{group.date}} / {{group.duration}}
@@ -26,7 +26,7 @@
           </div>
           <div class="ps-card-container">
             <div *ngFor='let activity of group.activities; trackBy: let i = index'>
-              <activity-item [activity]="activity" (onDeleteClicked)="deleteActivity(activity, j, i)"></activity-item>
+              <activity-item [activity]="activity" [project]="project" [currentUser]="user | async" (onDeleteClicked)="deleteActivity(activity, j, i)"></activity-item>
             </div>
           </div>
         </ng-container>

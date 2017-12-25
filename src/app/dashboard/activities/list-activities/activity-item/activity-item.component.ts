@@ -6,6 +6,10 @@ import { APP_CONFIG }                      from '../../../../app.config';
 import { Activity }                        from '../../../../shared/state/current-activity/current-activity.model';
 import { ModalService }                    from '../../../../core/modal/modal.service';
 import { AddManuallyActivityComponent }    from '../../activity-add-edit-manually/activity-add-edit-manually.component';
+import { Project }                         from '../../../../shared/state/project/project.model';
+import { User }                            from '../../../../shared/state/user/user.model';
+import { userInProject }                   from '../../../shared/utils';
+import { Md5 }                             from 'ts-md5/dist/md5';
 
 @Component({
   selector: 'activity-item',
@@ -14,11 +18,14 @@ import { AddManuallyActivityComponent }    from '../../activity-add-edit-manuall
 })
 export class ActivityItemComponent implements OnInit {
   @Input() activity: Activity;
+  @Input() project: Project;
+  @Input() currentUser: User;
   @Output() onDeleteClicked = new EventEmitter();
   private from: string;
   private to: string;
   private duration: string;
   private deleteConfirmation = false;
+  private activityUser: User;
 
   constructor (@Inject(APP_CONFIG) private config,
                private modalService: ModalService,
@@ -41,6 +48,7 @@ export class ActivityItemComponent implements OnInit {
         this.duration = this.calculateActivityDuration(duration);
       }, 1000);
     }
+    this.activityUser = userInProject(this.project, this.activity.user);
   }
 
   initial() {
@@ -85,6 +93,10 @@ export class ActivityItemComponent implements OnInit {
       },
       customStyles: {'width': '400px', 'overflow': 'initial'}
     });
+  }
+
+  getEmailHash(email): any {
+    return Md5.hashStr(email);
   }
 
   calculateActivityDuration (duration) {

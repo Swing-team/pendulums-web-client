@@ -62,9 +62,12 @@
     <div class="ps-project-footer is-full">
       <div class="has-text-left ps-member-image-container">
         <span *ngFor="let member of project.teamMembers|slice:0:4">
-          <img class="ps-member-image"
+          <img class="ps-member-image" *ngIf="member.profileImage"
                src="{{member.profileImage? config.imagesEndpoint + '/profile/' + member.profileImage :
                       '../../../../../assets/images/placeholder.png'}}">
+          <svg *ngIf="!member.profileImage" class="ps-member-image ps-back-member-image" width="24" height="34" [identiconHash]="getEmailHash(member.email)">
+          Fallback text for browsers not supporting inline svg
+        </svg>
         </span>
         <span *ngIf="project.teamMembers.length > 4">
           <img class="ps-member-image"

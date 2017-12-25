@@ -5,6 +5,8 @@
   display: inline-block
   width: 100%
   position: relative
+  .ps-activity-item-inner-text
+    min-width: 80%
 
 .ps-activity-item-name
   @media (max-width: $ps-mobile)
@@ -16,14 +18,30 @@
   @media (max-width: $ps-mobile)
     font-size: 0.65rem
 
+.ps-activity-item-done-by-container
+  position: relative
+
+.ps-activity-item-done-by
+  position: absolute
+  top: 3px
+  left: 25px
+
+.ps-activity-member-image
+  width: 20px
+  height: 20px
+  border: 1px solid $ink
+  border-radius: 100%
+
+
 .ps-activity-item-button
   font-size: 1.4rem
-  line-height: 3rem
+  position: absolute
+  right: 0
+  bottom: 0
   i
     cursor: pointer
   @media (max-width: $ps-mobile)
     font-size: 1rem
-    line-height: 2.5rem
 
 .ps-activity-item-delete-confirmation
   height: 0
