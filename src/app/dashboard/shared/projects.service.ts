@@ -20,17 +20,20 @@ export class ProjectService {
       .catch(this.handleError);
   }
 
+  getProject(projectId): Promise<any> {
+    return this.http
+      .get(this.config.apiEndpoint + '/projects/' + projectId, {...this.config.httpOptions, responseType: 'json'})
+      .toPromise()
+      .then(response => response as Project)
+      .catch(this.handleError);
+  }
+
   update(project, projectId): Promise<any> {
     return this.http
       .put(this.config.apiEndpoint + '/projects/' + projectId, project, {withCredentials: true})
       .toPromise()
       .then(response => response as Project)
       .catch(this.handleError);
-  }
-
-  private handleError(error: any): Promise<any> {
-    console.error('An error occurred', error);
-    return Promise.reject(error);
   }
 
   removeMember(projectId, userId): Promise<any> {
@@ -91,5 +94,10 @@ export class ProjectService {
       .catch(error => {
         console.log(error);
       });
+  }
+
+  private handleError(error: any): Promise<any> {
+    console.error('An error occurred', error);
+    return Promise.reject(error);
   }
 }

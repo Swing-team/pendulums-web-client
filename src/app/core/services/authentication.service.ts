@@ -2,14 +2,9 @@ import 'rxjs/add/operator/toPromise';
 import { Inject, Injectable }                 from '@angular/core';
 import { HttpClient }                         from '@angular/common/http';
 import { APP_CONFIG, AppConfig }              from '../../app.config';
-import { UserActions }                        from 'app/shared/state/user/user.actions';
-import { ProjectsActions }                    from 'app/shared/state/project/projects.actions';
-import { Router }                             from '@angular/router';
-import { CurrentActivityActions }             from '../../shared/state/current-activity/current-activity.actions';
 import { StatusActions }                      from '../../shared/state/status/status.actions';
 import { Store }                              from '@ngrx/store';
 import { AppState }                           from '../../shared/state/appState';
-import { SyncService }                        from './sync.service';
 import { DatabaseService }                    from './database/database.service';
 
 @Injectable()

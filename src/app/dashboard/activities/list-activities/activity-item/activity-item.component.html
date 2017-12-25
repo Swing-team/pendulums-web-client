@@ -1,17 +1,36 @@
 <div class="ps-activity-item-inner">
-  <span class="is-pulled-left">
+  <div class="is-pulled-left ps-activity-item-inner-text">
     <p class="ps-activity-item-name" dir="auto">{{activity.name}}</p>
+    <div *ngIf="activityUser" class="has-text-left ps-activity-item-done-by-container">
+      <img class="ps-activity-member-image" *ngIf="activityUser.profileImage"
+           src="{{activityUser.profileImage? config.imagesEndpoint + '/profile/' + activityUser.profileImage :
+                  '../../../../../assets/images/placeholder.png'}}">
+      <svg *ngIf="!activityUser.profileImage" class="ps-activity-member-image" width="20" height="20" [identiconHash]="getEmailHash(activityUser.email)">
+        Fallback text for browsers not supporting inline svg
+      </svg>
+      <span class="ps-activity-item-text ps-activity-item-done-by">
+        <p *ngIf="activityUser.id != currentUser.id">Done by: &nbsp; {{activityUser.name ? activityUser.name : activityUser.email}}</p>
+        <p *ngIf="activityUser.id == currentUser.id">Done by: &nbsp; you!</p>
+      </span>
+    </div>
+    <div *ngIf="!activityUser" class="has-text-left ps-activity-item-done-by-container">
+      <img class="ps-activity-member-image"
+           src='../../../../../assets/images/placeholder.png'>
+      <span class="ps-activity-item-text ps-activity-item-done-by">
+        <p>Done by: &nbsp; who has left this project</p>
+      </span>
+    </div>
     <p class="ps-activity-item-text"><i class="icon-stopwatch"></i> from {{from}} to {{to}} / {{duration}}</p>
-  </span>
+  </div>
   <ng-container *ngIf="activity.stoppedAt">
-  <span class="ps-activity-item-button is-pulled-right" *ngIf="!deleteConfirmation">
+  <div class="ps-activity-item-button is-pulled-right" *ngIf="!deleteConfirmation">
     <i class="icon-pencil has-text-success" (click)="openEditManuallyModal()"></i>
     <i class="icon-trash has-text-danger" (click)="delete()"></i>
-  </span>
+  </div>
   </ng-container>
-  <span class="ps-activity-item-delete-confirmation" *ngIf="deleteConfirmation"
+  <div class="ps-activity-item-delete-confirmation" *ngIf="deleteConfirmation"
         [class.ps-ps-activity-item-delete-confirmation-shown]="deleteConfirmation">
     <span class="icon-cancel" (click)="cancelDelete()"></span>
     <span class="icon-check" (click)="confirmDelete()"></span>
-  </span>
+  </div>
 </div>
