@@ -1,7 +1,7 @@
 import 'rxjs/add/operator/switchMap';
 import * as _ from 'lodash';
 import {
-  Component, HostListener, Inject, Input,
+  Component, HostListener, Inject,
   OnInit, ViewContainerRef
 }                                           from '@angular/core';
 import { Observable }                       from 'rxjs/Observable';
@@ -15,6 +15,9 @@ import { AddManuallyActivityComponent }     from '../activity-add-edit-manually/
 import { ErrorService }                     from '../../../core/error/error.service';
 import { Store }                            from '@ngrx/store';
 import { AppState }                         from '../../../shared/state/appState';
+import { Project }                          from '../../../shared/state/project/project.model';
+import { ProjectService }                   from 'app/dashboard/shared/projects.service';
+import { User }                             from '../../../shared/state/user/user.model';
 
 @Component({
   selector: 'activities',
@@ -23,10 +26,12 @@ import { AppState }                         from '../../../shared/state/appState
 })
 export class ActivitiesComponent implements OnInit {
   private projectId: string;
+  private project: Project;
   private pageNumber = 0;
   private scrollEnable = true;
   private tempArray: Array<Activity>;
   private currentActivity: Observable<Activity>;
+  private user: Observable<User>;
   private currentActivityCopy: Activity;
   private projectActivities: {
     date: any
@@ -38,11 +43,13 @@ export class ActivitiesComponent implements OnInit {
                private store: Store<AppState>,
                private route: ActivatedRoute,
                private activityService: ActivityService,
+               private projectServices: ProjectService,
                private location: Location,
                private modalService: ModalService,
                private errorService: ErrorService,
                private viewContainerRef: ViewContainerRef) {
     this.currentActivity = store.select('currentActivity');
+    this.user = store.select('user');
   }
 
   ngOnInit() {
@@ -75,6 +82,20 @@ export class ActivitiesComponent implements OnInit {
         }
       });
     }
+
+    this.store.select('projects').subscribe((projects: any) => {
+      if (projects) {
+        this.project = projects.entities[this.projectId];
+      }
+      if (!this.project) {
+        this.projectServices.getProject(this.projectId).then((project) => {
+          this.project = project;
+        })
+          .catch(error => {
+            console.log('error is: ', error);
+          });
+      }
+    });
   }
 
   deleteActivity(activity , index1, index2) {

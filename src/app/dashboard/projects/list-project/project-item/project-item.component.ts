@@ -16,6 +16,7 @@ import { Router }                             from '@angular/router';
 import { ErrorService }                       from '../../../../core/error/error.service';
 import { UnSyncedActivityActions }            from '../../../../shared/state/unsynced-activities/unsynced-activities.actions';
 import { Status }                             from '../../../../shared/state/status/status.model';
+import { Md5 }                                from 'ts-md5/dist/md5';
 
 @Component({
   selector: 'project-item',
@@ -199,6 +200,10 @@ export class ProjectItemComponent implements OnInit {
     }
     this.activities.push(result);
   };
+
+  getEmailHash(email): any {
+    return Md5.hashStr(email);
+  }
 
   showSettings() {
     if (this.status.netStatus) {
