@@ -17,6 +17,7 @@ import { ErrorService }                       from '../../../../core/error/error
 import { UnSyncedActivityActions }            from '../../../../shared/state/unsynced-activities/unsynced-activities.actions';
 import { Status }                             from '../../../../shared/state/status/status.model';
 import { Md5 }                                from 'ts-md5/dist/md5';
+import { StatusActions }                      from '../../../../shared/state/status/status.actions';
 
 @Component({
   selector: 'project-item',
@@ -43,7 +44,8 @@ export class ProjectItemComponent implements OnInit {
                private modalService: ModalService,
                private viewContainerRef: ViewContainerRef,
                private errorService: ErrorService,
-               private UnSyncedActivityActions: UnSyncedActivityActions) {
+               private UnSyncedActivityActions: UnSyncedActivityActions,
+               private StatusActions: StatusActions) {
     this.taskName = 'Untitled task';
     this.activities = [];
   }
@@ -93,6 +95,7 @@ export class ProjectItemComponent implements OnInit {
         console.log('server error happened and it is: ', error);
         this.showError('Server communication error.');
         this.store.dispatch(this.CurrentActivityActions.loadCurrentActivity(this.activity));
+        this.store.dispatch(this.StatusActions.updateStateChanged(true));
       });
   }
 
@@ -111,6 +114,7 @@ export class ProjectItemComponent implements OnInit {
             console.log('current Activity will store as offline');
             this.showError('Server communication error.');
             this.store.dispatch(this.UnSyncedActivityActions.addUnSyncedActivity(this.currentActivityCopy));
+            this.store.dispatch(this.StatusActions.updateStateChanged(true));
             this.store.dispatch(this.projectsActions.updateProjectActivities(this.currentActivityCopy.project, this.currentActivityCopy));
             this.store.dispatch(this.CurrentActivityActions.clearCurrentActivity());
             this.taskName = null;
@@ -129,6 +133,7 @@ export class ProjectItemComponent implements OnInit {
             console.log('current Activity will store as offline ');
             this.showError('Server communication error.');
             this.store.dispatch(this.UnSyncedActivityActions.addUnSyncedActivity(this.currentActivityCopy));
+            this.store.dispatch(this.StatusActions.updateStateChanged(true));
             this.store.dispatch(this.projectsActions.updateProjectActivities(this.currentActivityCopy.project, this.currentActivityCopy));
             this.store.dispatch(this.CurrentActivityActions.clearCurrentActivity());
             this.taskName = null;
@@ -154,6 +159,7 @@ export class ProjectItemComponent implements OnInit {
           .catch(error => {
             console.log('server error happened and it is: ', error);
             this.store.dispatch(this.CurrentActivityActions.loadCurrentActivity(this.currentActivityCopy));
+            this.store.dispatch(this.StatusActions.updateStateChanged(true));
           });
       } else {
         console.log('activity has no id so it should go through the sync way');
@@ -166,6 +172,7 @@ export class ProjectItemComponent implements OnInit {
             console.log('server error happened and it is: ', error);
             console.log('your edit will store at db');
             this.store.dispatch(this.CurrentActivityActions.loadCurrentActivity(this.currentActivityCopy));
+            this.store.dispatch(this.StatusActions.updateStateChanged(true));
           });
       }
     }
