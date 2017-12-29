@@ -7,7 +7,8 @@ import { ActionWithPayload }  from '../action-with-payload';
 export class StatusActions {
   static LOAD_STATUS = 'LOAD_STATUS';
   static UPDATE_NET_STATUS = 'UPDATE_NET_STATUS';
-  static UPDATE_IS_LOGIN  = 'UPDATE_IS_LOGIN ';
+  static UPDATE_IS_LOGIN  = 'UPDATE_IS_LOGIN';
+  static UPDATE_STATE_CHANGED  = 'UPDATE_STATE_CHANGED';
   static CLEAR_STATUS = 'CLEAR_STATUS';
 
   loadStatus(netStatus: Status): ActionWithPayload<Status> {
@@ -21,6 +22,13 @@ export class StatusActions {
     return {
       type: StatusActions.UPDATE_NET_STATUS,
       payload: netStatus
+    };
+  }
+
+  updateStateChanged(stateChanged: boolean):  ActionWithPayload<boolean> {
+    return {
+      type: StatusActions.UPDATE_STATE_CHANGED,
+      payload: stateChanged
     };
   }
 
