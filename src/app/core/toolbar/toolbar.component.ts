@@ -7,12 +7,13 @@ import { Project }                          from '../../shared/state/project/pro
 import { Projects }                         from '../../shared/state/project/projects.model';
 import { ActivityService }                  from 'app/dashboard/shared/activity.service';
 import { Store }                            from '@ngrx/store';
-import { CurrentActivityActions }                  from 'app/shared/state/current-activity/current-activity.actions';
+import { CurrentActivityActions }           from 'app/shared/state/current-activity/current-activity.actions';
 import { AppState }                         from 'app/shared/state/appState';
 import { ProjectsActions }                  from '../../shared/state/project/projects.actions';
 import { ErrorService }                     from '../error/error.service';
 import { User }                             from '../../shared/state/user/user.model';
 import { UnSyncedActivityActions }          from '../../shared/state/unsynced-activities/unsynced-activities.actions';
+import { StatusActions }                    from '../../shared/state/status/status.actions';
 
 @Component({
   selector: 'toolbar',
@@ -36,7 +37,8 @@ export class ToolbarComponent implements OnInit {
                private CurrentActivityActions: CurrentActivityActions,
                private UnsyncedActivityActions: UnSyncedActivityActions,
                private projectsActions: ProjectsActions,
-               private errorService: ErrorService) {
+               private errorService: ErrorService,
+               private StatusActions: StatusActions) {
     this.selectedProject = new Project();
   }
 
@@ -109,6 +111,7 @@ export class ToolbarComponent implements OnInit {
           this.showError('Server communication error.');
           console.log('server error happened and it is: ', error);
           this.store.dispatch(this.CurrentActivityActions.loadCurrentActivity(activity));
+          this.store.dispatch(this.StatusActions.updateStateChanged(true));
         });
     } else {
       this.showError('Select a distinct project.');
@@ -131,6 +134,7 @@ export class ToolbarComponent implements OnInit {
             console.log('current Activity will store as offline');
             this.showError('Server communication error.');
             this.store.dispatch(this.UnsyncedActivityActions.addUnSyncedActivity(this.currentActivityCopy));
+            this.store.dispatch(this.StatusActions.updateStateChanged(true));
             this.store.dispatch(this.projectsActions.updateProjectActivities(this.currentActivityCopy.project, this.currentActivityCopy));
             this.store.dispatch(this.CurrentActivityActions.clearCurrentActivity());
             this.taskName = null;
@@ -149,6 +153,7 @@ export class ToolbarComponent implements OnInit {
             console.log('current Activity will store as offline ');
             this.showError('Server communication error.');
             this.store.dispatch(this.UnsyncedActivityActions.addUnSyncedActivity(this.currentActivityCopy));
+            this.store.dispatch(this.StatusActions.updateStateChanged(true));
             this.store.dispatch(this.projectsActions.updateProjectActivities(this.currentActivityCopy.project, this.currentActivityCopy));
             this.store.dispatch(this.CurrentActivityActions.clearCurrentActivity());
             this.taskName = null;

@@ -62,7 +62,7 @@ export class AppComponent implements OnInit {
         this.store.dispatch(this.userActions.clearUser());
         this.store.dispatch(this.projectsActions.clearProjects());
         this.store.dispatch(this.currentActivityActions.clearCurrentActivity());
-        this.store.dispatch(this.statusActions.loadStatus({netStatus: true, isLogin: null}));
+        this.store.dispatch(this.statusActions.loadStatus({netStatus: true, isLogin: null, stateChanged: false}));
         this.syncService.closeConnection();
         this.router.navigate(['signIn']);
       }
