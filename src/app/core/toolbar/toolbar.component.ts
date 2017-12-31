@@ -26,7 +26,7 @@ export class ToolbarComponent implements OnInit {
   @Input() projects: Projects;
   @Input() currentActivity: Observable<Activity>;
   @Output() onMenuItemClicked = new EventEmitter();
-  private currentActivityCopy: Activity;
+  currentActivityCopy: Activity;
   private selectedProject: Project;
   private taskName: string;
   private timeDuration: string;

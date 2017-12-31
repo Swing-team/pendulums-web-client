@@ -10,7 +10,7 @@ import { AppState }                         from '../shared/state/appState';
 import { UserActions }                      from '../shared/state/user/user.actions';
 import { UserService }                      from '../core/services/user.service';
 import { ModalService }                     from '../core/modal/modal.service';
-import { ImgCropperComponent }              from './image-cropper/image-cropper.component';
+import { PsImgCropperComponent }            from './image-cropper/image-cropper.component';
 import { Md5 }                              from 'ts-md5/dist/md5';
 import { Observable }                       from 'rxjs/Observable';
 
@@ -21,11 +21,10 @@ import { Observable }                       from 'rxjs/Observable';
   styleUrls: ['./profile-setting.component.sass'],
 })
 
-export class ProfileSettingComponent implements OnInit{
-  private data = {newPassword: null, oldPassword: null};
-  private rePassword: string;
-  private submitted = false;
-
+export class ProfileSettingComponent implements OnInit {
+  rePassword: string;
+  submitted = false;
+  data = {newPassword: null, oldPassword: null};
   user: User;
   userEdit: User;
   emailHash: any;
@@ -84,7 +83,7 @@ export class ProfileSettingComponent implements OnInit{
 
   openImageModal() {
     this.modalService.show({
-      component: ImgCropperComponent,
+      component: PsImgCropperComponent,
       containerRef: this.viewContainerRef,
       customStyles: {'width': '350px', 'overflow': 'initial'}
     });

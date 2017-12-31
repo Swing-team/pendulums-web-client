@@ -1,5 +1,6 @@
-import {Component, ElementRef, EventEmitter, HostListener, Input, Output} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
+import { Component, ElementRef, EventEmitter,
+         HostListener, Input, Output }              from '@angular/core';
+import { Observable }                               from 'rxjs/Observable';
 
 @Component({
   selector: 'swing-select',
@@ -10,7 +11,7 @@ export class SwingSelectComponent {
   @Input() items: Observable<any>;
   @Input() label: String = 'Select';
   @Input() selectedItemIndex: Number;
-  @Input() itemTextAttribute: String;
+  @Input() itemTextAttribute: any;
   @Output() onItemClicked = new EventEmitter();
 
   selectedItem: any;

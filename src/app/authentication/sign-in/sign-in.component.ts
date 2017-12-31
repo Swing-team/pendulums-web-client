@@ -15,9 +15,9 @@ const EMAIL_REGEX = /^(?=.{8,64}$)[\w!#$%&'*+/=?`{|}~^-]+(?:\.[\w!#$%&'*+/=?`{|}
 })
 
 export class SignInComponent {
-  private errorMessage: string;
-  private authUser = {email: null, password: null};
-  private submitted = false;
+  errorMessage: string;
+  authUser = {email: null, password: null};
+  submitted = false;
 
   constructor(
     private authService: AuthenticationService,

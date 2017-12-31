@@ -1,6 +1,5 @@
-import {Component} from '@angular/core';
-import {AuthenticationService} from '../../core/services/authentication.service';
-import {Router} from '@angular/router';
+import { Component }                from '@angular/core';
+import { AuthenticationService }    from '../../core/services/authentication.service';
 
 const EMAIL_REGEX = /^(?=.{8,64}$)[\w!#$%&'*+/=?`{|}~^-]+(?:\.[\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,6}$/;
 
@@ -11,9 +10,9 @@ const EMAIL_REGEX = /^(?=.{8,64}$)[\w!#$%&'*+/=?`{|}~^-]+(?:\.[\w!#$%&'*+/=?`{|}
 })
 
 export class SignUpComponent {
-  private errorMessage: string;
+  errorMessage: string;
   private newUser = {email: null, password: null};
-  private submitted = false;
+  submitted = false;
 
   constructor(
     private authService: AuthenticationService,

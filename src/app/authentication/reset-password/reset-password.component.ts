@@ -1,8 +1,6 @@
-import {Component, OnInit} from '@angular/core';
-import {AuthenticationService} from '../../core/services/authentication.service';
-import {ActivatedRoute, Router} from '@angular/router';
-
-const EMAIL_REGEX = /^(?=.{8,64}$)[\w!#$%&'*+/=?`{|}~^-]+(?:\.[\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,6}$/;
+import { Component, OnInit }        from '@angular/core';
+import { AuthenticationService }    from '../../core/services/authentication.service';
+import { ActivatedRoute, Router }   from '@angular/router';
 
 @Component({
   selector: 'reset-password',
@@ -11,10 +9,10 @@ const EMAIL_REGEX = /^(?=.{8,64}$)[\w!#$%&'*+/=?`{|}~^-]+(?:\.[\w!#$%&'*+/=?`{|}
 })
 
 export class ResetPasswordComponent implements OnInit {
-  private User = {password: null, token: null};
-  private rePassword: string;
-  private submitted = false;
-  private errorMessage: string;
+  User = {password: null, token: null};
+  rePassword: string;
+  submitted = false;
+  errorMessage: string;
   private sub: any;
 
   constructor(

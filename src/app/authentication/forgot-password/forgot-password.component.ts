@@ -1,7 +1,6 @@
-import {Component} from '@angular/core';
-import {AuthenticationService} from '../../core/services/authentication.service';
-import {Router} from '@angular/router';
-import { Location } from '@angular/common';
+import { Component }                  from '@angular/core';
+import { AuthenticationService }      from '../../core/services/authentication.service';
+import { Location }                   from '@angular/common';
 
 const EMAIL_REGEX = /^(?=.{8,64}$)[\w!#$%&'*+/=?`{|}~^-]+(?:\.[\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,6}$/;
 
@@ -14,7 +13,7 @@ const EMAIL_REGEX = /^(?=.{8,64}$)[\w!#$%&'*+/=?`{|}~^-]+(?:\.[\w!#$%&'*+/=?`{|}
 export class ForgotPasswordComponent {
   private errorMessage: string;
   private User = {email: null};
-  private submitted = false;
+  submitted = false;
 
   constructor(
     private authService: AuthenticationService,
