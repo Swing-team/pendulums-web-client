@@ -16,7 +16,7 @@ import { ProjectsActions }               from '../../../shared/state/project/pro
   styleUrls: ['./notification.component.sass'],
 })
 export class NotificationComponent implements OnInit {
-  private pendingInvitations: Array<object>;
+  pendingInvitations: Array<object>;
   @Input() user: User;
   @Output() clickedOutSideOfNotification = new EventEmitter();
 

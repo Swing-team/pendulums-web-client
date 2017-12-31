@@ -29,13 +29,13 @@ export class ProjectItemComponent implements OnInit {
   @Input() user: User;
   @Input() status: Status;
   @Input() currentActivity: Observable<Activity>;
+  activityStarted = false;
   private currentActivityCopy: Activity;
-  private activityStarted = false;
   private taskName: string;
   private activity: Activity;
   private activities: any;
 
-  constructor (@Inject(APP_CONFIG) private config,
+  constructor (@Inject(APP_CONFIG) public config,
                private activityService: ActivityService,
                private store: Store<AppState>,
                private CurrentActivityActions: CurrentActivityActions,

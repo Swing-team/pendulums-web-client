@@ -1,10 +1,13 @@
-import {Component, OnChanges, Input, EventEmitter, OnInit, Output} from '@angular/core';
-import * as moment from 'moment';
+import { Component, OnChanges, Input,
+  EventEmitter, OnInit, Output }          from '@angular/core';
+import * as moment                        from 'moment';
+
 @Component({
   selector: 'swing-calendar',
   templateUrl: './swing-calendar.component.html',
   styleUrls: ['./swing-calendar.component.sass'],
 })
+
 export class SwingCalendarComponent implements OnChanges, OnInit {
 
   @Input() minDate: string;
@@ -14,21 +17,20 @@ export class SwingCalendarComponent implements OnChanges, OnInit {
   @Input() toContainNextMonth = true;
   // value is used when we have input date
   @Input() value = '';
-
+  @Output() dateSelected = new EventEmitter();
   // below fields are needed in html UI
   private currDate = moment();
-  private daysOfWeek = [ 'Sa', 'Su', 'Mo', 'Tu', 'We', 'Th', 'Fr'];
+  daysOfWeek = [ 'Sa', 'Su', 'Mo', 'Tu', 'We', 'Th', 'Fr'];
   private months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-  private currMonth: string;
-  private currYear: number;
-  private dates: any = [];
   private completeDates: any;
   private tempArray: any;
   private prevMonth: string;
   private nextMonth: string
   private prevYear: number;
   private nextYear: number;
-  @Output() dateSelected = new EventEmitter();
+  currMonth: string;
+  currYear: number;
+  dates: any = [];
 
   constructor( ) {
   }
@@ -207,7 +209,7 @@ export class SwingCalendarComponent implements OnChanges, OnInit {
         nIndex++;
       }
     }
-    console.log(this.tempArray)
+    console.log(this.tempArray);
     return this.tempArray;
   }
 

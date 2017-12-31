@@ -1,12 +1,12 @@
-import {Component, ViewChild} from '@angular/core';
-import {Project} from '../../../shared/state/project/project.model';
 import * as _ from 'lodash';
-import {Md5} from 'ts-md5/dist/md5';
-import {ProjectService} from '../../shared/projects.service';
-import {Store} from '@ngrx/store';
-import {AppState} from '../../../shared/state/appState';
-import {ProjectsActions} from '../../../shared/state/project/projects.actions';
-import {ModalService} from '../../../core/modal/modal.service';
+import { Component, ViewChild }         from '@angular/core';
+import { Project }                      from '../../../shared/state/project/project.model';
+import { Md5 }                          from 'ts-md5/dist/md5';
+import { ProjectService }               from '../../shared/projects.service';
+import { Store }                        from '@ngrx/store';
+import { AppState }                     from '../../../shared/state/appState';
+import { ProjectsActions }              from '../../../shared/state/project/projects.actions';
+import { ModalService }                 from '../../../core/modal/modal.service';
 
 const EMAIL_REGEX = /^(?=.{8,64}$)[\w!#$%&'*+/=?`{|}~^-]+(?:\.[\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,6}$/;
 
@@ -17,12 +17,12 @@ const EMAIL_REGEX = /^(?=.{8,64}$)[\w!#$%&'*+/=?`{|}~^-]+(?:\.[\w!#$%&'*+/=?`{|}
 })
 
 export class CreateProjectComponent {
-  roles = ['team member', 'admin'];
-  private project: Project = new Project();
-  private user = {email: null, role: this.roles[0]};
-  private errorMessage: string;
   @ViewChild('projectImageCanvasElem') projectImageCanvasElem;
   @ViewChild('canvasPreviewImageElem') canvasPreviewImageElem;
+  private errorMessage: string;
+  roles = ['team member', 'admin'];
+  project: Project = new Project();
+  user = {email: null, role: this.roles[0]};
   previewImage: string;
   canvasPreviewImage: string;
   userSubmitted = false;

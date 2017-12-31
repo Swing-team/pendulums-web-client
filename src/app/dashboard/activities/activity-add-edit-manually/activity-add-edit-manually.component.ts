@@ -18,23 +18,23 @@ export class AddManuallyActivityComponent implements OnInit {
   @Input() currentActivity: Activity;
   @Input() activity: Activity;
   @Input() projectId: string;
-  private activityModel: Activity;
-  private fromCalenderShow = false;
-  private toCalenderShow = false;
+  activityModel: Activity;
+  fromCalenderShow = false;
+  toCalenderShow = false;
 
-  private toTimeError = false;
-  private fromTimeError = false;
-  private timeError: string;
+  toTimeError = false;
+  fromTimeError = false;
+  timeError: string;
 
-  private fromCalenderError = false;
-  private toCalenderError = false;
-  private dateError: string;
+  fromCalenderError = false;
+  toCalenderError = false;
+  dateError: string;
 
-  private toDate: string;
-  private toTime: string;
+  toDate: string;
+  toTime: string;
 
-  private fromDate: string;
-  private fromTime: string;
+  fromDate: string;
+  fromTime: string;
 
   constructor (@Inject(APP_CONFIG) private config,
                private activityService: ActivityService,
@@ -141,7 +141,7 @@ export class AddManuallyActivityComponent implements OnInit {
       const tempToDate = moment(this.toDate, 'dddd, MMMM Do YYYY').hours(0).minutes(0).seconds(0);
 
       // anyway timeCheck should run to check times are ok or not
-      const tempCheck = this.checkTime()
+      const tempCheck = this.checkTime();
       this.fromTimeError = tempCheck;
       this.toTimeError = tempCheck;
       if (tempCheck) {
@@ -234,7 +234,7 @@ export class AddManuallyActivityComponent implements OnInit {
         this.showError('To time is after than now!');
       }
       if (this.currentActivity.startedAt) {
-        console.log('this.currentActivity', this.currentActivity)
+        console.log('this.currentActivity', this.currentActivity);
         if (Number(this.currentActivity.startedAt) < tempFromDate) {
           finalCheck = false;
           console.log('From time cant be after than currentActivity started time');

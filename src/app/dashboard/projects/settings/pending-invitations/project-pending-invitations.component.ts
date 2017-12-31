@@ -1,10 +1,10 @@
-import {Component, Input} from '@angular/core';
-import {ProjectService} from '../../../shared/projects.service';
-import {Project} from '../../../../shared/state/project/project.model';
-import {AppState} from '../../../../shared/state/appState';
-import {Store} from '@ngrx/store';
-import {ProjectsActions} from '../../../../shared/state/project/projects.actions';
-import {Md5} from 'ts-md5/dist/md5';
+import { Component, Input }         from '@angular/core';
+import { ProjectService }           from '../../../shared/projects.service';
+import { Project }                  from '../../../../shared/state/project/project.model';
+import { AppState }                 from '../../../../shared/state/appState';
+import { Store }                    from '@ngrx/store';
+import { ProjectsActions }          from '../../../../shared/state/project/projects.actions';
+import { Md5 }                      from 'ts-md5/dist/md5';
 
 @Component({
   selector: 'project-pending-invitations',
@@ -16,7 +16,7 @@ export class ProjectPendingInvitationsComponent {
   @Input() project: Project;
   roles = ['team member', 'admin'];
   cancelInvitationConfirmationViewIndex: Number = -1;
-  private user = {email: null, role: this.roles[0]};
+  user = {email: null, role: this.roles[0]};
 
   constructor(private projectService: ProjectService,
               private store: Store<AppState>,
