@@ -21,11 +21,11 @@ export class ActivityItemComponent implements OnInit {
   @Input() project: Project;
   @Input() currentUser: User;
   @Output() onDeleteClicked = new EventEmitter();
-  private from: string;
-  private to: string;
-  private duration: string;
-  private deleteConfirmation = false;
-  private activityUser: User;
+  from: string;
+  to: string;
+  duration: string;
+  deleteConfirmation = false;
+  activityUser: User;
 
   constructor (@Inject(APP_CONFIG) private config,
                private modalService: ModalService,

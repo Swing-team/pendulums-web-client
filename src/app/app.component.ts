@@ -22,14 +22,15 @@ import { Router } from '@angular/router';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.sass']
 })
-export class AppComponent {
-  private user: Observable<any>;
+export class AppComponent implements OnInit {
+  user: Observable<any>;
   private projects: Observable<any>;
   private currentActivity: Observable<any>;
   private status: Observable<any>;
-  private SideMenuIsActive = true;
-  private netConnected: boolean;
   private previousLoginStatus = null;
+  SideMenuIsActive = true;
+  netConnected: boolean;
+
   @ViewChild('sideMenu', { read: ElementRef }) sideMenu: ElementRef;
   @ViewChild('menuIcon', { read: ElementRef }) menuIcon: ElementRef;
 

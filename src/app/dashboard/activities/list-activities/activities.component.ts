@@ -32,8 +32,8 @@ export class ActivitiesComponent implements OnInit {
   private tempArray: Array<Activity>;
   private currentActivity: Observable<Activity>;
   private user: Observable<User>;
-  private currentActivityCopy: Activity;
-  private projectActivities: {
+  currentActivityCopy: Activity;
+  projectActivities: {
     date: any
     activities: any
     duration: any

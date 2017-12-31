@@ -21,9 +21,9 @@ export class SideMenuComponent implements OnInit {
   @Input() netConnected: boolean;
   @ViewChild('notifications') notifications;
   emailHash: any;
-  private pendulumNotification: boolean;
-  private notificationIsActive = false;
-  private activeItemNumber = 0;
+  pendulumNotification: boolean;
+  notificationIsActive = false;
+  activeItemNumber = 0;
 
   constructor (@Inject(APP_CONFIG) private config,
                private router: Router,
