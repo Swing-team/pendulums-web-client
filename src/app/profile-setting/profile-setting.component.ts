@@ -10,7 +10,7 @@ import { AppState }                         from '../shared/state/appState';
 import { UserActions }                      from '../shared/state/user/user.actions';
 import { UserService }                      from '../core/services/user.service';
 import { ModalService }                     from '../core/modal/modal.service';
-import { PsImgCropperComponent }            from './image-cropper/image-cropper.component';
+import { ImgCropperComponent }            from './image-cropper/image-cropper.component';
 import { Md5 }                              from 'ts-md5/dist/md5';
 import { Observable }                       from 'rxjs/Observable';
 
@@ -53,12 +53,14 @@ export class ProfileSettingComponent implements OnInit {
   ngOnInit(): void {
     // To handle connection status
     this.status.subscribe((state) => {
-      if (!state.netStatus) {
-        this.netConnected = false;
-        this.showError('You cant change password in offline mod!');
-      }
-      if (state.netStatus) {
-        this.netConnected = true;
+      if (state) {
+        if (!state.netStatus) {
+          this.netConnected = false;
+          this.showError('You cant change password in offline mod!');
+        }
+        if (state.netStatus) {
+          this.netConnected = true;
+        }
       }
     });
   }
@@ -83,7 +85,7 @@ export class ProfileSettingComponent implements OnInit {
 
   openImageModal() {
     this.modalService.show({
-      component: PsImgCropperComponent,
+      component: ImgCropperComponent,
       containerRef: this.viewContainerRef,
       customStyles: {'width': '350px', 'overflow': 'initial'}
     });

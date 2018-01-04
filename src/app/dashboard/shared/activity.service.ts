@@ -7,10 +7,13 @@ import {Activity}             from '../../shared/state/current-activity/current-
 
 @Injectable()
 export class ActivityService {
+  private options;
   constructor(
     private http: HttpClient,
     @Inject(APP_CONFIG) private config: AppConfig
-  ) { }
+  ) {
+    this.options = {...this.config.httpOptions, responseType: 'text'};
+  }
 
   create(projectId, activity): Promise<any> {
     return this.http
@@ -53,9 +56,9 @@ export class ActivityService {
   getActivities(projectId , page: number = 0): Promise<Activity[]> {
     const httpParams = new HttpParams()
       .set('page', page.toString());
+    const optionsWithParams = {...this.config.httpOptions, params: httpParams};
     return this.http
-      .get(this.config.apiEndpoint + '/projects/' + projectId + '/activities',
-        {...this.config.httpOptions, params: httpParams})
+      .get(this.config.apiEndpoint + '/projects/' + projectId + '/activities', optionsWithParams)
       .toPromise()
       .then(response => response as Activity[])
       .catch(this.handleError);
@@ -63,7 +66,7 @@ export class ActivityService {
 
   delete(projectId, activityId): Promise<any> {
     return this.http
-      .delete(this.config.apiEndpoint + '/projects/' + projectId + '/activities/' + activityId , {...this.config.httpOptions, responseType: 'text'})
+      .delete(this.config.apiEndpoint + '/projects/' + projectId + '/activities/' + activityId , this.options)
       .toPromise()
       .then(response => response)
       .catch(this.handleError);
