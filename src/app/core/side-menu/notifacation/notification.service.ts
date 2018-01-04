@@ -8,10 +8,13 @@ import {Project} from '../../../shared/state/project/project.model';
 
 @Injectable()
 export class NotificationService {
+  private options;
   constructor(
     private http: HttpClient,
     @Inject(APP_CONFIG) private config: AppConfig
-  ) { }
+  ) {
+    this.options = {...this.config.httpOptions, responseType: 'text'};
+  }
 
   accept(projectId): Promise<Project> {
     return this.http
@@ -23,7 +26,7 @@ export class NotificationService {
 
   deny(projectId): Promise<Project> {
     return this.http
-      .get(this.config.apiEndpoint + '/projects/' + projectId + '/deny-invitation', {...this.config.httpOptions, responseType: 'text'})
+      .get(this.config.apiEndpoint + '/projects/' + projectId + '/deny-invitation', this.options)
       .toPromise()
       .then(response => projectId)
       .catch(this.handleError);

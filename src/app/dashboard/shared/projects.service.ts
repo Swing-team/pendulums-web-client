@@ -8,8 +8,10 @@ import {Project} from '../../shared/state/project/project.model';
 
 @Injectable()
 export class ProjectService {
+  private options;
   constructor(private http: HttpClient,
               @Inject(APP_CONFIG) private config: AppConfig) {
+    this.options = {...this.config.httpOptions, responseType: 'text'};
   }
 
   create(project): Promise<Project> {
@@ -22,7 +24,7 @@ export class ProjectService {
 
   getProject(projectId): Promise<any> {
     return this.http
-      .get(this.config.apiEndpoint + '/projects/' + projectId, {...this.config.httpOptions, responseType: 'json'})
+      .get(this.config.apiEndpoint + '/projects/' + projectId, this.config.httpOptions)
       .toPromise()
       .then(response => response as Project)
       .catch(this.handleError);
@@ -38,7 +40,7 @@ export class ProjectService {
 
   removeMember(projectId, userId): Promise<any> {
     return this.http
-      .delete(this.config.apiEndpoint + '/projects/' + projectId + '/team-members/' + userId, {...this.config.httpOptions, responseType: 'text'})
+      .delete(this.config.apiEndpoint + '/projects/' + projectId + '/team-members/' + userId, this.options)
       .toPromise()
       .then(response => {
       })
@@ -48,8 +50,7 @@ export class ProjectService {
   inviteMember(projectId, invitedUser): Promise<any> {
     return this.http
       .post(this.config.apiEndpoint + '/projects/' + projectId + '/invitation',
-        JSON.stringify(invitedUser), {...this.config.httpOptions, responseType: 'text'}
-      )
+        JSON.stringify(invitedUser), this.options)
       .toPromise()
       .then(response => {
 
@@ -71,7 +72,7 @@ export class ProjectService {
 
   delete(projectId): Promise<any> {
     return this.http
-      .delete(this.config.apiEndpoint + '/projects/' + projectId, {...this.config.httpOptions, responseType: 'text'})
+      .delete(this.config.apiEndpoint + '/projects/' + projectId, this.options)
       .toPromise()
       .then(response => {
       })
@@ -86,7 +87,7 @@ export class ProjectService {
             id: memberId,
             role: role
           }
-        }), {...this.config.httpOptions, responseType: 'text'})
+        }), this.options)
       .toPromise()
       .then(response => {
         console.log(response);

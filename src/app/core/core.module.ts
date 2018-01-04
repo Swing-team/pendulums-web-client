@@ -22,7 +22,7 @@ import { SideMenuComponent }            from './side-menu/side-menu.component';
 import { ModalComponent }               from './modal/modal.component';
 import { NotificationComponent }        from './side-menu/notifacation/notification.component';
 import { NotificationService }          from './side-menu/notifacation/notification.service';
-import { PsImgCropperComponent }        from '../profile-setting/image-cropper/image-cropper.component';
+import { ImgCropperComponent }        from '../profile-setting/image-cropper/image-cropper.component';
 import { ImageCropperModule }           from 'ng2-img-cropper';
 import { ErrorComponent }               from './error/error.component';
 import { ErrorService }                 from './error/error.service';
@@ -48,7 +48,7 @@ import { AnonymousGuardService }        from './services/router-guards/anonymous
     ErrorComponent,
     ModalComponent,
     NotificationComponent,
-    PsImgCropperComponent
+    ImgCropperComponent
   ],
   exports:      [
     ToolbarComponent,
@@ -76,7 +76,7 @@ import { AnonymousGuardService }        from './services/router-guards/anonymous
   entryComponents: [
     ModalComponent,
     ErrorComponent,
-    PsImgCropperComponent
+    ImgCropperComponent
   ]
 })
 export class CoreModule {

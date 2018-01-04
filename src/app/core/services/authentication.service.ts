@@ -9,17 +9,20 @@ import { DatabaseService }                    from './database/database.service'
 
 @Injectable()
 export class AuthenticationService {
+  private options;
   constructor(
     private http: HttpClient,
     @Inject(APP_CONFIG) private config: AppConfig,
     private store: Store<AppState>,
     private statusActions: StatusActions,
     private dBService: DatabaseService,
-  ) { }
+  ) {
+    this.options = {...this.config.httpOptions, responseType: 'text'};
+  }
 
   signIn(authUser): Promise<any> {
     return this.http
-      .post(this.config.apiEndpoint + '/auth/signin', JSON.stringify(authUser), {...this.config.httpOptions, responseType: 'text'})
+      .post(this.config.apiEndpoint + '/auth/signin', JSON.stringify(authUser), this.options)
       .toPromise()
       .then(() => console.log('signIn successful'))
       .catch(this.handleError);
@@ -27,7 +30,7 @@ export class AuthenticationService {
 
   signUp(newUser): Promise<any> {
     return this.http
-      .post(this.config.apiEndpoint + '/auth/signup', JSON.stringify(newUser), {...this.config.httpOptions, responseType: 'text'})
+      .post(this.config.apiEndpoint + '/auth/signup', JSON.stringify(newUser), this.options)
       .toPromise()
       .then(() => console.log('verification email has been sent'))
       .catch(this.handleError);
@@ -35,7 +38,7 @@ export class AuthenticationService {
 
   forgotPassword(UserEmail): Promise<any> {
     return this.http
-      .post(this.config.apiEndpoint + '/auth/recover-account', JSON.stringify(UserEmail), {...this.config.httpOptions, responseType: 'text'})
+      .post(this.config.apiEndpoint + '/auth/recover-account', JSON.stringify(UserEmail), this.options)
       .toPromise()
       .then(() => console.log('reset password request has been sent'))
       .catch(this.handleError);
@@ -43,7 +46,7 @@ export class AuthenticationService {
 
   resetPassword(passwordForm): Promise<any> {
     return this.http
-      .put(this.config.apiEndpoint + '/auth/reset-password', JSON.stringify(passwordForm), {...this.config.httpOptions, responseType: 'text'})
+      .put(this.config.apiEndpoint + '/auth/reset-password', JSON.stringify(passwordForm), this.options)
       .toPromise()
       .then(() => console.log('successfully changed the password'))
       .catch(this.handleError);
@@ -51,7 +54,7 @@ export class AuthenticationService {
 
   changePassword(passwordForm): Promise<any> {
     return this.http
-      .put(this.config.apiEndpoint + '/user/change-password', JSON.stringify(passwordForm), {...this.config.httpOptions, responseType: 'text'})
+      .put(this.config.apiEndpoint + '/user/change-password', JSON.stringify(passwordForm), this.options)
       .toPromise()
       .then(() => console.log('successfully changed the password'))
       .catch(this.handleError);
@@ -59,7 +62,7 @@ export class AuthenticationService {
 
   signOut(): Promise<any> {
     return this.http
-      .get(this.config.apiEndpoint + '/auth/signout', {...this.config.httpOptions, responseType: 'text'})
+      .get(this.config.apiEndpoint + '/auth/signout', this.options)
       .toPromise()
       .then((response) => {
         this.dBService

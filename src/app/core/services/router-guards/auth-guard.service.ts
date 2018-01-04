@@ -9,16 +9,14 @@ import { User }                                           from '../../../shared/
 @Injectable()
 export class AuthGuardService implements CanActivate {
   private user: Observable<User>;
-  private userId: string;
+  private userId: string = null;
 
   constructor(private router: Router,
               private store: Store<AppState>) {
     this.user = store.select('user');
     this.user.subscribe((user: User) => {
-      if (user.id) {
+      if (user) {
         this.userId = user.id;
-      } else {
-        this.userId =  null ;
       }
     });
   }

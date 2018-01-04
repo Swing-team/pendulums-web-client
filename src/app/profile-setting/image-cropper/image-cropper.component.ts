@@ -11,7 +11,7 @@ import {UserService} from '../../core/services/user.service';
   templateUrl: './image-cropper.component.html',
   styleUrls: ['./image-cropper.component.sass'],
 })
-export class PsImgCropperComponent {
+export class ImgCropperComponent {
   profileData: any;
   croppedImageFile: any;
   cropperSettings: CropperSettings;
