@@ -6,7 +6,7 @@ import { StoreModule }                  from '@ngrx/store';
 
 import { AppConfigModule }              from '../app.config';
 
-import { reducers }                     from '../shared/state/appState';
+import { reducerToken, reducers }                     from '../shared/state/appState';
 import { UserActions }                  from '../shared/state/user/user.actions';
 import { ProjectsActions }              from '../shared/state/project/projects.actions';
 import { CurrentActivityActions }       from '../shared/state/current-activity/current-activity.actions';
@@ -20,8 +20,8 @@ import { ToolbarComponent }             from './toolbar/toolbar.component';
 import { SharedModule }                 from '../shared/shared.module';
 import { SideMenuComponent }            from './side-menu/side-menu.component';
 import { ModalComponent }               from './modal/modal.component';
-import { NotificationComponent }        from './side-menu/notifacation/notification.component';
-import { NotificationService }          from './side-menu/notifacation/notification.service';
+import { NotificationComponent }        from './side-menu/notification/notification.component';
+import { NotificationService }          from './side-menu/notification/notification.service';
 import { ImgCropperComponent }        from '../profile-setting/image-cropper/image-cropper.component';
 import { ImageCropperModule }           from 'ng2-img-cropper';
 import { ErrorComponent }               from './error/error.component';
@@ -37,7 +37,7 @@ import { AnonymousGuardService }        from './services/router-guards/anonymous
 @NgModule({
   imports:      [
     SharedModule,
-    StoreModule.forRoot(reducers),
+    StoreModule.forRoot(reducerToken),
     RouterModule,
     AppConfigModule,
     ImageCropperModule
@@ -56,6 +56,7 @@ import { AnonymousGuardService }        from './services/router-guards/anonymous
   ],
   providers:    [
     RouterModule,
+    { provide: reducerToken, useValue: reducers },
     AuthGuardService,
     AnonymousGuardService,
     ErrorService,

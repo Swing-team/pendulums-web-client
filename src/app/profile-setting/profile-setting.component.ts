@@ -53,14 +53,12 @@ export class ProfileSettingComponent implements OnInit {
   ngOnInit(): void {
     // To handle connection status
     this.status.subscribe((state) => {
-      if (state) {
-        if (!state.netStatus) {
-          this.netConnected = false;
-          this.showError('You cant change password in offline mod!');
-        }
-        if (state.netStatus) {
-          this.netConnected = true;
-        }
+      if (!state.netStatus) {
+        this.netConnected = false;
+        this.showError('You cant change password in offline mod!');
+      }
+      if (state.netStatus) {
+        this.netConnected = true;
       }
     });
   }
