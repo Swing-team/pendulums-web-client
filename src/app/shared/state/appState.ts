@@ -1,4 +1,5 @@
 import {ActionReducerMap} from '@ngrx/store';
+import {InjectionToken} from '@angular/core';
 
 import userReducer                 from './user/user.reducer';
 import projectsReducer             from './project/projects.reducer';
@@ -25,6 +26,8 @@ export interface AppState {
 // turned this off by default as i found the logger kinda noisy
 
 // export default compose(storeLogger(), combineReducers)({
+
+export const reducerToken = new InjectionToken<ActionReducerMap<AppState>>('Registered Reducers');
 
 export const reducers: ActionReducerMap<AppState> = {
   user: userReducer,
