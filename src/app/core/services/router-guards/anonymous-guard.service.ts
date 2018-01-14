@@ -9,7 +9,7 @@ import { User }                                           from '../../../shared/
 @Injectable()
 export class AnonymousGuardService implements CanActivate {
   private user: Observable<User>;
-  private userId: string;
+  private userId: string = null;
 
   constructor(private router: Router,
               private store: Store<AppState>) {
@@ -17,8 +17,6 @@ export class AnonymousGuardService implements CanActivate {
     this.user.subscribe((user: User) => {
       if (user.id) {
         this.userId = user.id;
-      } else {
-        this.userId =  null ;
       }
     });
   }
