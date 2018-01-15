@@ -6,16 +6,22 @@ export class AppConfig {
   socketEndpoint: string;
   apiEndpoint: string;
   httpOptions: Object;
-  // imagesEndpoint: string;
   imagesEndpoint: string;
 }
 
 export const APP_DI_CONFIG: AppConfig = {
-  socketEndpoint: 'http://localhost:1337',
-  apiEndpoint: 'http://localhost:1337',
-  httpOptions: { withCredentials: true, responseType: 'json' },
-  // imagesEndpoint: 'http://websiteIp/images',
-  imagesEndpoint: 'http://localhost:1337/images',
+  // socketEndpoint: 'http://localhost:1337',
+  // production
+  socketEndpoint: 'https://pendulums.io/api',
+  // apiEndpoint: 'http://localhost:1337',
+  // production
+  apiEndpoint: 'https://pendulums.io/api',
+  // httpOptions: { withCredentials: true, responseType: 'json' },
+  // production
+  httpOptions: { responseType: 'json' },
+  // imagesEndpoint: 'http://localhost:1337/images',
+  // production
+  imagesEndpoint: 'https://pendulums.io/api/images',
 };
 
 @NgModule({
