@@ -17,7 +17,7 @@
       </a>
     </li>
     <li><a [ngClass]="{'is-active': activeItemNumber === 3 }" [routerLink]="['dashboard']" (click)="updateIndex(3)"><span class="icon-dashboard"></span></a></li>
-    <li><a [ngClass]="{'is-active': activeItemNumber === 4 , 'is-disabled': !netConnected}" title="{{ netConnected ? '' : 'Offline mod!'}}" (click)="signout()"><span class="icon-sign-out ps-reverse-icon"></span></a></li>
+    <li><a [ngClass]="{'is-active': activeItemNumber === 4 , 'is-disabled': !netConnected}" title="{{ netConnected ? '' : 'Offline mode!'}}" (click)="signout()"><span class="icon-sign-out ps-reverse-icon"></span></a></li>
     <li class="ps-bug-report" >
       <a [ngClass]="{'is-active': activeItemNumber === 5 }" (click)="togglePendulumNotifications()">
         <span class="icon-bug"></span>

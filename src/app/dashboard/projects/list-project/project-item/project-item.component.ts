@@ -223,7 +223,7 @@ export class ProjectItemComponent implements OnInit {
         }
       });
     } else {
-      this.showError('You cant edit project in offline mod!');
+      this.showError('You cant edit project in offline mode!');
     }
   }
 
@@ -231,7 +231,7 @@ export class ProjectItemComponent implements OnInit {
     if (this.status.netStatus) {
       this.router.navigate(['/activities', this.project.id]);
     } else {
-      this.showError('You cant get activities in offline mod!');
+      this.showError('You cant get activities in offline mode!');
     }
   }
 

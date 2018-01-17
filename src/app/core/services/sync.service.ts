@@ -41,10 +41,10 @@ export class SyncService {
   }
 
   init(): void {
+    this.socket = io(this.config.socketEndpoint, {path: this.config.socketPath, transports: ['websocket'], upgrade: true});
     this.getStateFromDb().then(() => {
       console.log('found data at db at initial level');
       this.initialAppOffline();
-      this.socket = io(this.config.socketEndpoint, {transports: ['websocket'], upgrade: true});
       this.socket.on('connect', () => {
         console.log('websocket connected!');
         if (this.stateChanged === true) {
@@ -66,14 +66,14 @@ export class SyncService {
           // listen to events
         });
       });
-
-      this.socket.on('disconnect', (error) => {
-        console.log('websocket disconnected!');
-        this.store.dispatch(this.StatusActions.updateNetStatus(false));
-      });
     }).catch(() => {
       console.log('no proper data at db at initial level');
       this.getSummaryOnline();
+    });
+
+    this.socket.on('disconnect', (error) => {
+      console.log('websocket disconnected!');
+      this.store.dispatch(this.StatusActions.updateNetStatus(false));
     });
   }
 
