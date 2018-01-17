@@ -55,7 +55,7 @@ export class ProfileSettingComponent implements OnInit {
     this.status.subscribe((state) => {
       if (!state.netStatus) {
         this.netConnected = false;
-        this.showError('You cant change password in offline mod!');
+        this.showError('You cant change password in offline mode!');
       }
       if (state.netStatus) {
         this.netConnected = true;

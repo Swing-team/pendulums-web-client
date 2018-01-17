@@ -6,12 +6,12 @@
     [ngStyle]="{'background-image': project.image ? 'url(' + config.imagesEndpoint + '/projects/' + project.image + ')' :
          'url(../../../../../assets/images/placeholder.png)'}">
     <div class="ps-image-caption">
-      <a [ngClass]="{'is-disabled': !status.netStatus}" title="{{ status.netStatus ? '' : 'Offline mod!'}}" (click)="showSettings()">
+      <a [ngClass]="{'is-disabled': !status.netStatus}" title="{{ status.netStatus ? '' : 'Offline mode!'}}" (click)="showSettings()">
         <span class="is-pulled-left">
         <i class="icon-settings ps-picture-icon" ></i>
       </span>
       </a>
-      <a [ngClass]="{'is-disabled': !status.netStatus}" title="{{ status.netStatus ? '' : 'Offline mod!'}}" (click)="goToActivities()">
+      <a [ngClass]="{'is-disabled': !status.netStatus}" title="{{ status.netStatus ? '' : 'Offline mode!'}}" (click)="goToActivities()">
         <span class="is-pulled-right">
          <i class="icon-statistic ps-picture-icon" ></i>
         </span>
