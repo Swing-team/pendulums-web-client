@@ -34,7 +34,7 @@ export class ListOfProjectComponent {
         containerRef: this.viewContainerRef
       });
     } else {
-      this.showError('You cant create project in offline mod!');
+      this.showError('You cant create project in offline mode!');
     }
   }
 
