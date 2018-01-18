@@ -112,8 +112,15 @@ export default function reducer(state = initialState, action: ActionWithPayload<
 
     case ProjectsActions.UPDATE_PROJECT_ACTIVITIES: {
       const newState = JSON.parse(JSON.stringify(state));
-      newState.entities[action.payload.projectId].activities =
-        [action.payload.currentActivity, newState.entities[action.payload.projectId].activities[0]];
+      if (newState.entities[action.payload.projectId].activities) {
+        newState.entities[action.payload.projectId].activities.unshift(action.payload.currentActivity);
+        if (newState.entities[action.payload.projectId].activities.length > 2) {
+          const tempArray = newState.entities[action.payload.projectId].activities.slice(0, 2);
+          newState.entities[action.payload.projectId].activities = tempArray;
+        }
+      } else {
+        newState.entities[action.payload.projectId].activities = [action.payload.currentActivity];
+      }
       return newState;
     }
 
