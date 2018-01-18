@@ -15,7 +15,7 @@ export class AnonymousGuardService implements CanActivate {
               private store: Store<AppState>) {
     this.user = store.select('user');
     this.user.subscribe((user: User) => {
-      if (user.id) {
+      if (user) {
         this.userId = user.id;
       }
     });
