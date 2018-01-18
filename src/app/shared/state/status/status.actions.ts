@@ -8,7 +8,7 @@ export class StatusActions {
   static LOAD_STATUS = 'LOAD_STATUS';
   static UPDATE_NET_STATUS = 'UPDATE_NET_STATUS';
   static UPDATE_IS_LOGIN  = 'UPDATE_IS_LOGIN';
-  static UPDATE_STATE_CHANGED  = 'UPDATE_STATE_CHANGED';
+  static UPDATE_UNCYNCED_DATA_CHANGED  = 'UPDATE_UNCYNCED_DATA_CHANGED';
   static CLEAR_STATUS = 'CLEAR_STATUS';
 
   loadStatus(netStatus: Status): ActionWithPayload<Status> {
@@ -25,10 +25,10 @@ export class StatusActions {
     };
   }
 
-  updateStateChanged(stateChanged: boolean):  ActionWithPayload<boolean> {
+  updateUnsyncedDataChanged(unsyncedDataChanged: boolean):  ActionWithPayload<boolean> {
     return {
-      type: StatusActions.UPDATE_STATE_CHANGED,
-      payload: stateChanged
+      type: StatusActions.UPDATE_UNCYNCED_DATA_CHANGED,
+      payload: unsyncedDataChanged
     };
   }
 
