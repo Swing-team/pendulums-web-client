@@ -68,7 +68,7 @@ export class AuthenticationService {
         this.dBService
           .removeAll('activeUser')
           .then(() => {
-            this.store.dispatch(this.statusActions.loadStatus({netStatus: true, isLogin: false, stateChanged: false}));
+            this.store.dispatch(this.statusActions.loadStatus({netStatus: true, isLogin: false, unsyncedDataChanged: false}));
           });
       })
       .catch(this.handleError);

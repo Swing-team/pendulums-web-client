@@ -21,7 +21,7 @@ export class SyncService {
   private socket = null;
   private tempState: any;
   private status: Observable<any>;
-  private stateChanged: boolean;
+  private unsyncedDataChanged: boolean;
 
   constructor(@Inject(APP_CONFIG) private config,
               private http: HttpClient,
@@ -36,7 +36,7 @@ export class SyncService {
               private unSyncedActivityActions: UnSyncedActivityActions) {
     this.status = store.select('status');
     this.status.subscribe((status: Status) => {
-      this.stateChanged = status.stateChanged;
+      this.unsyncedDataChanged = status.unsyncedDataChanged;
     });
   }
 
@@ -47,7 +47,7 @@ export class SyncService {
       this.initialAppOffline();
       this.socket.on('connect', () => {
         console.log('websocket connected!');
-        if (this.stateChanged === true) {
+        if (this.unsyncedDataChanged === true) {
           this.getStateFromDb().then(() => {
             console.log('found data at db at update level');
             this.autoSync();
@@ -160,7 +160,7 @@ export class SyncService {
         this.store.dispatch(this.userActions.loadUser(user));
         this.store.dispatch(this.projectsActions.loadProjects(user.projects));
         this.store.dispatch(this.currentActivityActions.loadCurrentActivity(user.currentActivity));
-        this.store.dispatch(this.StatusActions.loadStatus({netStatus: true, isLogin: true, stateChanged: false}));
+        this.store.dispatch(this.StatusActions.loadStatus({netStatus: true, isLogin: true, unsyncedDataChanged: false}));
         this.dBService
           .removeAll('activeUser')
           .then(() => {

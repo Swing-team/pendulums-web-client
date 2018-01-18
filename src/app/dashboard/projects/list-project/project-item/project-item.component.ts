@@ -89,13 +89,14 @@ export class ProjectItemComponent implements OnInit {
       this.store.dispatch(this.CurrentActivityActions.loadCurrentActivity(activity));
     })
       .catch(error => {
+        // todo: check errors
         // we need two below fields for offline logic
         this.activity.project = this.project.id;
         this.activity.user = this.user.id;
         console.log('server error happened and it is: ', error);
         this.showError('Server communication error.');
         this.store.dispatch(this.CurrentActivityActions.loadCurrentActivity(this.activity));
-        this.store.dispatch(this.StatusActions.updateStateChanged(true));
+        this.store.dispatch(this.StatusActions.updateUnsyncedDataChanged(true));
       });
   }
 
@@ -114,7 +115,7 @@ export class ProjectItemComponent implements OnInit {
             console.log('current Activity will store as offline');
             this.showError('Server communication error.');
             this.store.dispatch(this.UnSyncedActivityActions.addUnSyncedActivity(this.currentActivityCopy));
-            this.store.dispatch(this.StatusActions.updateStateChanged(true));
+            this.store.dispatch(this.StatusActions.updateUnsyncedDataChanged(true));
             this.store.dispatch(this.projectsActions.updateProjectActivities(this.currentActivityCopy.project, this.currentActivityCopy));
             this.store.dispatch(this.CurrentActivityActions.clearCurrentActivity());
             this.taskName = null;
@@ -133,7 +134,7 @@ export class ProjectItemComponent implements OnInit {
             console.log('current Activity will store as offline ');
             this.showError('Server communication error.');
             this.store.dispatch(this.UnSyncedActivityActions.addUnSyncedActivity(this.currentActivityCopy));
-            this.store.dispatch(this.StatusActions.updateStateChanged(true));
+            this.store.dispatch(this.StatusActions.updateUnsyncedDataChanged(true));
             this.store.dispatch(this.projectsActions.updateProjectActivities(this.currentActivityCopy.project, this.currentActivityCopy));
             this.store.dispatch(this.CurrentActivityActions.clearCurrentActivity());
             this.taskName = null;
@@ -159,7 +160,7 @@ export class ProjectItemComponent implements OnInit {
           .catch(error => {
             console.log('server error happened and it is: ', error);
             this.store.dispatch(this.CurrentActivityActions.loadCurrentActivity(this.currentActivityCopy));
-            this.store.dispatch(this.StatusActions.updateStateChanged(true));
+            this.store.dispatch(this.StatusActions.updateUnsyncedDataChanged(true));
           });
       } else {
         console.log('activity has no id so it should go through the sync way');
@@ -172,7 +173,7 @@ export class ProjectItemComponent implements OnInit {
             console.log('server error happened and it is: ', error);
             console.log('your edit will store at db');
             this.store.dispatch(this.CurrentActivityActions.loadCurrentActivity(this.currentActivityCopy));
-            this.store.dispatch(this.StatusActions.updateStateChanged(true));
+            this.store.dispatch(this.StatusActions.updateUnsyncedDataChanged(true));
           });
       }
     }
