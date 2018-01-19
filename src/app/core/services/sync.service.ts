@@ -21,7 +21,7 @@ export class SyncService {
   private socket = null;
   private tempState: any;
   private status: Observable<any>;
-  private stateChanged: boolean;
+  private unsyncedDataChanged: boolean;
 
   constructor(@Inject(APP_CONFIG) private config,
               private http: HttpClient,
@@ -36,44 +36,18 @@ export class SyncService {
               private unSyncedActivityActions: UnSyncedActivityActions) {
     this.status = store.select('status');
     this.status.subscribe((status: Status) => {
-      this.stateChanged = status.stateChanged;
+      this.unsyncedDataChanged = status.unsyncedDataChanged;
     });
   }
 
   init(): void {
-    this.socket = io(this.config.socketEndpoint, {path: this.config.socketPath, transports: ['websocket'], upgrade: true});
     this.getStateFromDb().then(() => {
       console.log('found data at db at initial level');
       this.initialAppOffline();
-      this.socket.on('connect', () => {
-        console.log('websocket connected!');
-        if (this.stateChanged === true) {
-          this.getStateFromDb().then(() => {
-            console.log('found data at db at update level');
-            this.autoSync();
-          }).catch(() => {
-            console.log('no proper data at db at update level');
-            this.getSummaryOnline();
-          });
-        } else {
-          console.log('nothing to update');
-        }
-        this.store.dispatch(this.StatusActions.updateNetStatus(true));
-        this.socket.emit('get', {
-          method: 'get',
-          url: '/socket/subscribe-to-events',
-        }, () => {
-          // listen to events
-        });
-      });
+      this.connectSocket();
     }).catch(() => {
       console.log('no proper data at db at initial level');
-      this.getSummaryOnline();
-    });
-
-    this.socket.on('disconnect', (error) => {
-      console.log('websocket disconnected!');
-      this.store.dispatch(this.StatusActions.updateNetStatus(false));
+      this.connectSocket();
     });
   }
 
@@ -153,6 +127,36 @@ export class SyncService {
     }
   }
 
+  connectSocket() {
+    this.socket = io(this.config.socketEndpoint, {path: this.config.socketPath, transports: ['websocket'], upgrade: true});
+    this.socket.on('connect', () => {
+      console.log('websocket connected!');
+      if (this.unsyncedDataChanged === true) {
+        this.getStateFromDb().then(() => {
+          console.log('found data at db at update level');
+          this.autoSync();
+        }).catch(() => {
+          console.log('no proper data at db at update level');
+          this.getSummaryOnline();
+        });
+      } else {
+        console.log('nothing to update');
+        this.getSummaryOnline();
+      }
+      this.store.dispatch(this.StatusActions.updateNetStatus(true));
+      this.socket.emit('get', {
+        method: 'get',
+        url: '/socket/subscribe-to-events',
+      }, () => {
+        // listen to events
+      });
+    });
+    this.socket.on('disconnect', (error) => {
+      console.log('websocket disconnected!');
+      this.store.dispatch(this.StatusActions.updateNetStatus(false));
+    });
+  }
+
   getSummaryOnline() {
     this.userService.getSummary()
       .then((user) => {
@@ -160,7 +164,7 @@ export class SyncService {
         this.store.dispatch(this.userActions.loadUser(user));
         this.store.dispatch(this.projectsActions.loadProjects(user.projects));
         this.store.dispatch(this.currentActivityActions.loadCurrentActivity(user.currentActivity));
-        this.store.dispatch(this.StatusActions.loadStatus({netStatus: true, isLogin: true, stateChanged: false}));
+        this.store.dispatch(this.StatusActions.loadStatus({netStatus: true, isLogin: true, unsyncedDataChanged: false}));
         this.dBService
           .removeAll('activeUser')
           .then(() => {

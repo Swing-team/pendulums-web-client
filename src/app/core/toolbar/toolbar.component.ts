@@ -111,7 +111,7 @@ export class ToolbarComponent implements OnInit {
           this.showError('Server communication error.');
           console.log('server error happened and it is: ', error);
           this.store.dispatch(this.CurrentActivityActions.loadCurrentActivity(activity));
-          this.store.dispatch(this.StatusActions.updateStateChanged(true));
+          this.store.dispatch(this.StatusActions.updateUnsyncedDataChanged(true));
         });
     } else {
       this.showError('Select a distinct project.');
@@ -134,7 +134,7 @@ export class ToolbarComponent implements OnInit {
             console.log('current Activity will store as offline');
             this.showError('Server communication error.');
             this.store.dispatch(this.UnsyncedActivityActions.addUnSyncedActivity(this.currentActivityCopy));
-            this.store.dispatch(this.StatusActions.updateStateChanged(true));
+            this.store.dispatch(this.StatusActions.updateUnsyncedDataChanged(true));
             this.store.dispatch(this.projectsActions.updateProjectActivities(this.currentActivityCopy.project, this.currentActivityCopy));
             this.store.dispatch(this.CurrentActivityActions.clearCurrentActivity());
             this.taskName = null;
@@ -153,7 +153,7 @@ export class ToolbarComponent implements OnInit {
             console.log('current Activity will store as offline ');
             this.showError('Server communication error.');
             this.store.dispatch(this.UnsyncedActivityActions.addUnSyncedActivity(this.currentActivityCopy));
-            this.store.dispatch(this.StatusActions.updateStateChanged(true));
+            this.store.dispatch(this.StatusActions.updateUnsyncedDataChanged(true));
             this.store.dispatch(this.projectsActions.updateProjectActivities(this.currentActivityCopy.project, this.currentActivityCopy));
             this.store.dispatch(this.CurrentActivityActions.clearCurrentActivity());
             this.taskName = null;
