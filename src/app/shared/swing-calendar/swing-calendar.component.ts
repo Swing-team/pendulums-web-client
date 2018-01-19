@@ -39,8 +39,8 @@ export class SwingCalendarComponent implements OnChanges, OnInit {
     this.currMonth = this.months[new Date().getMonth()].toString();
     this.currYear = new Date().getFullYear();
     // Set previous and next months
-    this.prevMonth = this.months[new Date().getMonth() - 1].toString();
-    this.nextMonth = this.months[new Date().getMonth() + 1].toString();
+    this.prevMonth = this.months[(12 + (new Date().getMonth() - 1)) % 12].toString();
+    this.nextMonth = this.months[(12 + (new Date().getMonth() + 1)) % 12].toString();
     this.prevYear = (this.currYear - 1);
     this.nextYear = (this.currYear + 1);
     // Set Date Array
