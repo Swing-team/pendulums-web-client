@@ -17,6 +17,8 @@ export class AnonymousGuardService implements CanActivate {
     this.user.subscribe((user: User) => {
       if (user.id) {
         this.userId = user.id;
+      } else {
+        this.userId = null;
       }
     });
   }
