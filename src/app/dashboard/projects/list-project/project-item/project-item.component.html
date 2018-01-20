@@ -39,8 +39,8 @@
         </span>
       </div>
     </div>
-    <div class="ps-title">
-      <table *ngIf="project.activities" class="table ps-item-table">
+    <div *ngIf="project.activities" class="ps-title">
+      <table *ngIf="project.activities.length > 0" class="table ps-item-table">
         <tbody>
         <tr *ngFor="let activity of activities">
           <td>{{activity.name}}</td>
@@ -51,10 +51,12 @@
         </tr>
         </tbody>
       </table>
+    </div>
+    <div class="ps-empty-item">
       <table *ngIf="!project.activities || project.activities.length === 0" class="table ps-item-table">
         <tbody>
         <tr>
-          <td>There is no activity yet!</td>
+          <td class="has-text-centered">There is no activity yet!</td>
         </tr>
         </tbody>
       </table>
