@@ -4,7 +4,7 @@
     <div *ngIf="activityUser" class="has-text-left ps-activity-item-done-by-container">
       <img class="ps-activity-member-image" *ngIf="activityUser.profileImage"
            src="{{activityUser.profileImage? config.imagesEndpoint + '/profile/' + activityUser.profileImage :
-                  '../../../../../assets/images/placeholder.png'}}">
+                  '../../../../../assets/images/placeholder.jpg'}}">
       <svg *ngIf="!activityUser.profileImage" class="ps-activity-member-image" width="20" height="20" [identiconHash]="getEmailHash(activityUser.email)">
         Fallback text for browsers not supporting inline svg
       </svg>
@@ -15,7 +15,7 @@
     </div>
     <div *ngIf="!activityUser" class="has-text-left ps-activity-item-done-by-container">
       <img class="ps-activity-member-image"
-           src='../../../../../assets/images/placeholder.png'>
+           src='../../../../../assets/images/placeholder.jpg'>
       <span class="ps-activity-item-text ps-activity-item-done-by">
         <p>Done by: &nbsp; who has left this project</p>
       </span>
