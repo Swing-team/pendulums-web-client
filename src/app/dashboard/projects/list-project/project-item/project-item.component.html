@@ -39,8 +39,8 @@
         </span>
       </div>
     </div>
-    <div *ngIf="project.activities" class="ps-title">
-      <table *ngIf="project.activities.length > 0" class="table ps-item-table">
+    <div *ngIf="project.activities && project.activities.length > 0" class="ps-title">
+      <table class="table ps-item-table">
         <tbody>
         <tr *ngFor="let activity of activities">
           <td>{{activity.name}}</td>
