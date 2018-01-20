@@ -33,6 +33,14 @@ export class SideMenuComponent implements OnInit {
   ngOnInit() {
     this.emailHash = Md5.hashStr(this.user.email);
     this.pendulumNotification = false;
+
+    // initial active item in side menu by router
+    if (this.router.url === '/dashboard') {
+      this.activeItemNumber = 3;
+    }
+    if (this.router.url === '/profile') {
+      this.activeItemNumber = 1;
+    }
   }
 
   signout() {

@@ -17,6 +17,8 @@ export class AuthGuardService implements CanActivate {
     this.user.subscribe((user: User) => {
       if (user) {
         this.userId = user.id;
+      } else {
+        this.userId = null;
       }
     });
   }
