@@ -6,7 +6,7 @@
           <span>
             <img *ngIf="userEdit.profileImage" class="ps-user-image" (click)="openImageModal()"
                  src="{{userEdit.profileImage? config.imagesEndpoint + '/profile/' + userEdit.profileImage :
-                          '../../assets/images/placeholder.png'}}">
+                          '../../assets/images/placeholder.jpg'}}">
             <svg *ngIf="!userEdit.profileImage" class="ps-user-image" (click)="openImageModal()"
                  width="36" height="36" [identiconHash]="emailHash">
               Fallback text for browsers not supporting inline svg

@@ -7,7 +7,7 @@
             <a (click)="projectImageElem.click()">
               <figure class="image is-1by1">
                 <input #projectImageElem type="file" name="projectImage" style="display:none" (change)="getFiles($event)" accept="image/">
-                <img [src]="previewImage ? previewImage : '../../../../assets/images/placeholder.png'">
+                <img [src]="previewImage ? previewImage : '../../../../assets/images/placeholder.jpg'">
               </figure>
             </a>
           </div>
