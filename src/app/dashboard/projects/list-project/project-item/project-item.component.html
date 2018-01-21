@@ -27,8 +27,8 @@
       </span>
       <span class="is-pulled-right is-inline-block ps-item-card-button"
             [ngClass]="{'ps-item-card-stop': activityStarted}">
-        <span *ngIf="activityStarted" class="icon-stop"  (click)="stopActivity()"></span>
-        <span *ngIf="!activityStarted" class="icon-play"  (click)="startActivity()"></span>
+        <span *ngIf="activityStarted" class="icon-stop ps-play-stop-size"  (click)="stopActivity()"></span>
+        <span *ngIf="!activityStarted" class="icon-play ps-play-stop-size"  (click)="startActivity()"></span>
       </span>
     </div>
     <div>
