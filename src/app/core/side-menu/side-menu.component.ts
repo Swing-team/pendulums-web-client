@@ -17,6 +17,7 @@ import { ErrorService }                  from '../error/error.service';
 export class SideMenuComponent implements OnInit {
   @Output() onSignoutClicked = new EventEmitter();
   @Output() clickedOutsideOfMenu = new EventEmitter();
+  @Output() clickedToCloseMenu = new EventEmitter();
   @Input() user: User;
   @Input() netConnected: boolean;
   @ViewChild('notifications') notifications;
@@ -55,6 +56,7 @@ export class SideMenuComponent implements OnInit {
   updateIndex(number) {
     this.activeItemNumber = number;
     this.pendulumNotification = false;
+    this.clickedToCloseMenu.emit();
   }
 
   toggleNotifications() {
