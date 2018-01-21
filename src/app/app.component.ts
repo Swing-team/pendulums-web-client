@@ -105,6 +105,10 @@ export class AppComponent implements OnInit {
     this.menuIcon = event.target;
     this.SideMenuIsActive = !this.SideMenuIsActive;
   }
+
+  closeMenu() {
+    this.SideMenuIsActive = false;
+  }
 }
 
 
