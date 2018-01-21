@@ -12,7 +12,7 @@
           </div>
           <div class="ps-card-container">
             <div>
-              <activity-item [activity]="currentActivityCopy"></activity-item>
+              <activity-item [activity]="currentActivityCopy" [project]="project" [currentUser]="user | async"></activity-item>
             </div>
           </div>
         </ng-container>
