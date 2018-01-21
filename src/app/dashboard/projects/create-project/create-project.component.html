@@ -1,13 +1,13 @@
 <form (ngSubmit)="createProject()" #createProjectForm="ngForm" novalidate>
   <div class="is-centered">
     <div dir="auto">
-      <div class="columns is-gapless is-mobile ">
+      <div class="columns is-gapless is-mobile">
         <div class="column is-2">
           <div class="column" style="padding: unset">
             <a (click)="projectImageElem.click()">
               <figure class="image is-1by1">
                 <input #projectImageElem type="file" name="projectImage" style="display:none" (change)="getFiles($event)" accept="image/">
-                <img [src]="previewImage ? previewImage : '../../../../assets/images/placeholder.png'">
+                <img [src]="previewImage ? previewImage : '../../../../assets/images/placeholder.jpg'">
               </figure>
             </a>
           </div>
@@ -16,13 +16,9 @@
             <canvas #projectImageCanvasElem></canvas>
           </div>
         </div>
-        <div class="column is-10">
-          <div class="field">
-            <p class="control">
-              <input [(ngModel)]="project.name" name="name" class="input ps-header-input"
-                     placeholder="untitled project..." type="text">
-            </p>
-          </div>
+        <div class="column is-10 ps-header-vertical-align">
+          <input [(ngModel)]="project.name" name="name" class="input ps-header-input"
+                 placeholder="untitled project..." type="text">
         </div>
       </div>
       <div class="columns is-gapless is-mobile ps-inviting-user">

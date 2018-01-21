@@ -4,7 +4,7 @@
        'ps-back-yellow': project.id.charCodeAt(project.id.length - 1) % 3 == 2}">
   <figure class="image ps-project-image-container"
     [ngStyle]="{'background-image': project.image ? 'url(' + config.imagesEndpoint + '/projects/' + project.image + ')' :
-         'url(../../../../../assets/images/placeholder.png)'}">
+         'url(../../../../../assets/images/placeholder.jpg)'}">
     <div class="ps-image-caption">
       <a [ngClass]="{'is-disabled': !status.netStatus}" title="{{ status.netStatus ? '' : 'Offline mode!'}}" (click)="showSettings()">
         <span class="is-pulled-left">
@@ -39,8 +39,8 @@
         </span>
       </div>
     </div>
-    <div class="ps-title">
-      <table *ngIf="project.activities" class="table ps-item-table">
+    <div *ngIf="project.activities && project.activities.length > 0" class="ps-title">
+      <table class="table ps-item-table">
         <tbody>
         <tr *ngFor="let activity of activities">
           <td>{{activity.name}}</td>
@@ -51,10 +51,12 @@
         </tr>
         </tbody>
       </table>
+    </div>
+    <div class="ps-empty-item">
       <table *ngIf="!project.activities || project.activities.length === 0" class="table ps-item-table">
         <tbody>
         <tr>
-          <td>There is no activity yet!</td>
+          <td class="has-text-centered">There is no activity yet!</td>
         </tr>
         </tbody>
       </table>
@@ -64,7 +66,7 @@
         <span *ngFor="let member of project.teamMembers|slice:0:4">
           <img class="ps-member-image" *ngIf="member.profileImage"
                src="{{member.profileImage? config.imagesEndpoint + '/profile/' + member.profileImage :
-                      '../../../../../assets/images/placeholder.png'}}">
+                      '../../../../../assets/images/placeholder.jpg'}}">
           <svg *ngIf="!member.profileImage" class="ps-member-image ps-back-member-image" width="24" height="34" [identiconHash]="getEmailHash(member.email)">
           Fallback text for browsers not supporting inline svg
         </svg>
