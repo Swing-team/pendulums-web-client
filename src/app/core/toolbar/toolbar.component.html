@@ -1,6 +1,6 @@
 <nav class="nav">
   <div class="ps-nav-left nav-left ps-is-visible" (click)="showSideMenu($event)">
-    <div class="nav-item">
+    <div class="nav-item ps-nav-item-menu">
       <span  #menuIcon class="icon-menu ps-nav-menu-icon"></span>
     </div>
   </div>
@@ -27,8 +27,8 @@
         <span class="ps-display-span-time">/&nbsp;{{timeDuration}}</span>
       </div>
       <div class="ps-toolbar-play" [ngClass]="{'ps-toolbar-stop': currentActivityCopy.startedAt}">
-        <span *ngIf="!currentActivityCopy.startedAt" class="icon-play" (click)="startActivity()"></span>
-        <span *ngIf="currentActivityCopy.startedAt" class="icon-stop" (click)="stopActivity()"></span>
+        <span *ngIf="!currentActivityCopy.startedAt" class="icon-play ps-play-stop-size" (click)="startActivity()"></span>
+        <span *ngIf="currentActivityCopy.startedAt" class="icon-stop ps-play-stop-size" (click)="stopActivity()"></span>
       </div>
     </div>
   </div>
