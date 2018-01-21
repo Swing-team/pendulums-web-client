@@ -23,7 +23,7 @@ export class AppComponent implements OnInit {
   private currentActivity: Observable<any>;
   private status: Observable<any>;
   private previousLoginStatus = null;
-  SideMenuIsActive = true;
+  SideMenuIsActive = false;
   netConnected: boolean;
 
   @ViewChild('sideMenu', { read: ElementRef }) sideMenu: ElementRef;
