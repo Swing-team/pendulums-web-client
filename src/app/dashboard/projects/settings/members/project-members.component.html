@@ -1,22 +1,32 @@
 <div dir="auto" class="ps-container">
-  <div class="box ps-section-you-container">
-    <div class="ps-profile-image-container">
-      <svg width="36" height="36" [identiconHash]="userEmailHash('armingh.ghoreishi@gmail.com')">
+  <div class="box columns is-mobile ps-section-you-container">
+    <div class="column is-2">
+      <img class="ps-project-member-image" *ngIf="user.profileImage"
+           src="{{user.profileImage? config.imagesEndpoint + '/profile/' + user.profileImage :
+                  '../../../../../assets/images/placeholder.jpg'}}">
+      <svg *ngIf="!user.profileImage" class="ps-project-member-image" width="36" height="36" [identiconHash]="userEmailHash(user.email)">
+        Fallback text for browsers not supporting inline svg
       </svg>
     </div>
-    <i class="ps-user-email">
-      {{user.email}}
-    </i>
-    <span class="ps-section-you-role">
-      {{getUserRole()}}
-    </span>
+    <div class="column is-10">
+      <div class="ps-user-email">
+        <i>{{user.email}}</i>
+      </div>
+      <div class="ps-user-role">
+        {{getUserRole()}}
+      </div>
+    </div>
   </div>
 
   <ng-container *ngIf="!readOnly">
     <div *ngFor='let member of members;trackBy:let i = index'
          class="columns is-gapless is-mobile ps-margin-bottom ps-team-members-item-container">
       <div class="column is-2">
-        <svg width="36" height="36" [identiconHash]="userEmailHash(member.email)">
+        <img class="ps-project-member-image" *ngIf="member.profileImage"
+             src="{{member.profileImage? config.imagesEndpoint + '/profile/' + member.profileImage :
+                  '../../../../../assets/images/placeholder.jpg'}}">
+        <svg *ngIf="!member.profileImage" class="ps-project-member-image" width="36" height="36" [identiconHash]="userEmailHash(member.email)">
+          Fallback text for browsers not supporting inline svg
         </svg>
       </div>
       <div class="column is-8 ps-padding-top">
@@ -25,6 +35,7 @@
         </div>
         <div *ngIf="member.role !== 'owner'" class="ps-user-role">
           <swing-select
+            [width]="'auto'"
             [items]="['team member','admin']"
             [label]="member.role"
             (onItemClicked)="changeTeamMemberRole(member.id, $event)">
@@ -45,17 +56,23 @@
   </ng-container>
 
   <ng-container *ngIf="readOnly">
-    <div *ngFor='let member of members;trackBy:let i = index' class="ps-team-members-item-container">
-      <div class="ps-profile-image-container">
-        <svg width="36" height="36" [identiconHash]="userEmailHash(member.email)">
+    <div *ngFor='let member of members;trackBy:let i = index' class="columns is-gapless  is-mobile ps-margin-bottom ps-team-members-item-container">
+      <div class="column is-2">
+        <img class="ps-project-member-image" *ngIf="member.profileImage"
+             src="{{member.profileImage? config.imagesEndpoint + '/profile/' + member.profileImage :
+                  '../../../../../assets/images/placeholder.jpg'}}">
+        <svg *ngIf="!member.profileImage" class="ps-project-member-image" width="36" height="36" [identiconHash]="userEmailHash(member.email)">
+          Fallback text for browsers not supporting inline svg
         </svg>
       </div>
-      <i class="ps-user-email">
-        {{member.email}}
-      </i>
-      <span class="ps-user-role">
-      {{member.role}}
-    </span>
+      <div class="column is-10">
+        <div class="ps-user-email">
+          <i>{{member.email}}</i>
+        </div>
+        <div class="ps-user-role">
+          {{member.role}}
+        </div>
+      </div>
     </div>
   </ng-container>
 </div>
