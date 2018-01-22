@@ -7,6 +7,7 @@ import { Store }                        from '@ngrx/store';
 import { AppState }                     from '../../../shared/state/appState';
 import { ProjectsActions }              from '../../../shared/state/project/projects.actions';
 import { ModalService }                 from '../../../core/modal/modal.service';
+import { ErrorService }                 from '../../../core/error/error.service';
 
 const EMAIL_REGEX = /^(?=.{8,64}$)[\w!#$%&'*+/=?`{|}~^-]+(?:\.[\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,6}$/;
 
@@ -19,7 +20,6 @@ const EMAIL_REGEX = /^(?=.{8,64}$)[\w!#$%&'*+/=?`{|}~^-]+(?:\.[\w!#$%&'*+/=?`{|}
 export class CreateProjectComponent {
   @ViewChild('projectImageCanvasElem') projectImageCanvasElem;
   @ViewChild('canvasPreviewImageElem') canvasPreviewImageElem;
-  private errorMessage: string;
   roles = ['team member', 'admin'];
   project: Project = new Project();
   user = {email: null, role: this.roles[0]};
@@ -32,13 +32,15 @@ export class CreateProjectComponent {
   constructor(private projectServices: ProjectService,
               private store: Store<AppState>,
               private projectsActions: ProjectsActions,
-              private modalService: ModalService) {
+              private modalService: ModalService,
+              private errorService: ErrorService) {
     this.md5 = new Md5();
   }
 
   createProject() {
     if (!this.project.name || /^\s*$/.test(this.project.name) || !this.project.name.trim()) {
       console.log('error is: ', 'name is empty!');
+      this.showError('Project name is empty.');
     } else {
       this.formSubmitted = true;
       delete this.project['id'];
@@ -49,7 +51,7 @@ export class CreateProjectComponent {
         console.log('picture size is:', blob.size);
         if (blob.size > 500000) {
           this.formSubmitted = false;
-          this.errorMessage = 'Picture size exceeded from 500KB';
+          this.showError('Picture size exceeded from 500KB.');
           return;
         }
         // check whether image has been changed or not
@@ -59,12 +61,14 @@ export class CreateProjectComponent {
         this.projectServices.create(formData).then((project) => {
           this.store.dispatch(this.projectsActions.addProject(project));
           console.log('project added successfully');
+          this.showError('project added successfully');
           this.project = new Project();
           this.modalService.close();
         })
           .catch(error => {
             this.formSubmitted = false;
             console.log('error is: ', error);
+            this.showError('Server communication error.');
           });
         this.formSubmitted = false;
       }, 'image/jpeg', 0.90);
@@ -100,23 +104,10 @@ export class CreateProjectComponent {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => callBack(reader.result);
-    reader.onerror = (error) => console.log('Error: ', error);
-  }
-
-  validateInvitedUser() {
-    if (!EMAIL_REGEX.test(this.user.email)) {
-      this.errorMessage = 'please enter correct email address';
-      console.log('error:', this.errorMessage);
-      return false;
+    reader.onerror = (error) => {
+      console.log('Error: ', error);
+      this.showError('Failed to upload file.');
     }
-    for (let i = 0; i < this.project.invitedUsers.length; i++) {
-      if (this.project.invitedUsers[i].email === this.user.email) {
-        this.errorMessage = 'email address is duplicated';
-        console.log('error:', this.errorMessage);
-        return false;
-      }
-    }
-    return true;
   }
 
   resizeImage() {
@@ -144,5 +135,27 @@ export class CreateProjectComponent {
     context = this.projectImageCanvasElem.nativeElement.getContext('2d');
     context.drawImage(this.canvasPreviewImageElem.nativeElement, 0, 0, width, height);
     this.previewImage = this.projectImageCanvasElem.nativeElement.toDataURL('image/png');
+  }
+
+  validateInvitedUser() {
+    if (!EMAIL_REGEX.test(this.user.email)) {
+      console.log('error:', 'please enter correct email address');
+      this.showError('please enter correct email address');
+      return false;
+    }
+    for (let i = 0; i < this.project.invitedUsers.length; i++) {
+      if (this.project.invitedUsers[i].email === this.user.email) {
+        console.log('error:', 'email address is duplicated');
+        this.showError('email address is duplicated');
+        return false;
+      }
+    }
+    return true;
+  }
+
+  showError(error) {
+    this.errorService.show({
+      input: error
+    });
   }
 }

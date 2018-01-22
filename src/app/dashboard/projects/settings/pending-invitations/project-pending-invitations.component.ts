@@ -5,6 +5,10 @@ import { AppState }                 from '../../../../shared/state/appState';
 import { Store }                    from '@ngrx/store';
 import { ProjectsActions }          from '../../../../shared/state/project/projects.actions';
 import { Md5 }                      from 'ts-md5/dist/md5';
+import { ErrorService }             from '../../../../core/error/error.service';
+
+const EMAIL_REGEX = /^(?=.{8,64}$)[\w!#$%&'*+/=?`{|}~^-]+(?:\.[\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,6}$/;
+
 
 @Component({
   selector: 'project-pending-invitations',
@@ -20,7 +24,8 @@ export class ProjectPendingInvitationsComponent {
 
   constructor(private projectService: ProjectService,
               private store: Store<AppState>,
-              private projectsActions: ProjectsActions) {
+              private projectsActions: ProjectsActions,
+              private errorService: ErrorService) {
   }
 
   invite() {
@@ -28,16 +33,21 @@ export class ProjectPendingInvitationsComponent {
       email: this.user.email,
       role: this.user.role
     };
-    this.projectService.inviteMember(this.project.id,
-      {
-        invitedUser
-      }
-    )
-      .then(response => {
-        this.store.dispatch(this.projectsActions.addInvitedUser(this.project.id, this.user));
-        this.user = {email: null, role: this.roles[0]};
-      }).catch(error => {
-    });
+
+    if (this.validateInvitedUser()) {
+      this.projectService.inviteMember(this.project.id,
+        {
+          invitedUser
+        }
+      )
+        .then(response => {
+          this.store.dispatch(this.projectsActions.addInvitedUser(this.project.id, this.user));
+          this.user = {email: null, role: this.roles[0]};
+          this.showError('User invited successfully.');
+        }).catch(error => {
+        this.showError('Server Communication error.');
+      });
+    }
   }
 
   userEmailHash(email) {
@@ -48,7 +58,31 @@ export class ProjectPendingInvitationsComponent {
     this.projectService.cancelInvitation(this.project.id, {invitedUser})
       .then(response => {
         this.store.dispatch(this.projectsActions.removeInvitedUser(this.project.id, invitedUser));
+        this.showError('Invitation cancelled successfully.');
       }).catch(error => {
+      this.showError('Server Communication error.');
+    });
+  }
+
+  validateInvitedUser() {
+    if (!EMAIL_REGEX.test(this.user.email)) {
+      console.log('error:', 'please enter correct email address');
+      this.showError('please enter correct email address');
+      return false;
+    }
+    for (let i = 0; i < this.project.invitedUsers.length; i++) {
+      if (this.project.invitedUsers[i].email === this.user.email) {
+        console.log('error:', 'email address is duplicated');
+        this.showError('email address is duplicated');
+        return false;
+      }
+    }
+    return true;
+  }
+
+  showError(error) {
+    this.errorService.show({
+      input: error
     });
   }
 }
