@@ -9,6 +9,7 @@ import { TeamMember }                 from '../../../../shared/state/team-member
 import { AppState }                   from '../../../../shared/state/appState';
 import { Store }                      from '@ngrx/store';
 import { ProjectsActions }            from '../../../../shared/state/project/projects.actions';
+import { ErrorService }               from '../../../../core/error/error.service';
 
 @Component({
   selector: 'project-members',
@@ -25,7 +26,8 @@ export class ProjectMembersComponent implements OnInit {
 
   constructor(private projectServices: ProjectService,
               private store: Store<AppState>,
-              private projectsAction: ProjectsActions) {
+              private projectsAction: ProjectsActions,
+              private errorService: ErrorService) {
   }
 
   ngOnInit(): void {
@@ -88,6 +90,7 @@ export class ProjectMembersComponent implements OnInit {
       })
       .catch(error => {
         console.log('error is: ', error);
+        this.showError('Server communication error.');
       });
   }
 
@@ -98,6 +101,14 @@ export class ProjectMembersComponent implements OnInit {
         this.store.dispatch(this.projectsAction.changeMemberRole(this.project.id, memberId, event.selectedItem));
       })
       .catch(error => {
+        console.log('error is: ', error);
+        this.showError('Server communication error.');
       });
+  }
+
+  showError(error) {
+    this.errorService.show({
+      input: error
+    });
   }
 }
