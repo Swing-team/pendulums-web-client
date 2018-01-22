@@ -1,15 +1,16 @@
-import { Component, Input, OnInit }   from '@angular/core';
-import { Project }                    from '../../../../shared/state/project/project.model';
-import { ProjectService }             from '../../../shared/projects.service';
-import { userRoleInProject }          from '../../../shared/utils';
-import { cloneDeep }                  from 'lodash';
-import { User }                       from '../../../../shared/state/user/user.model';
-import { Md5 }                        from 'ts-md5/dist/md5';
-import { TeamMember }                 from '../../../../shared/state/team-member/team-member.model';
-import { AppState }                   from '../../../../shared/state/appState';
-import { Store }                      from '@ngrx/store';
-import { ProjectsActions }            from '../../../../shared/state/project/projects.actions';
-import { ErrorService }               from '../../../../core/error/error.service';
+import {Component, Inject, Input, OnInit}   from '@angular/core';
+import { Project }                          from '../../../../shared/state/project/project.model';
+import { ProjectService }                   from '../../../shared/projects.service';
+import { userRoleInProject }                from '../../../shared/utils';
+import { cloneDeep }                        from 'lodash';
+import { User }                             from '../../../../shared/state/user/user.model';
+import { Md5 }                              from 'ts-md5/dist/md5';
+import { TeamMember }                       from '../../../../shared/state/team-member/team-member.model';
+import { AppState }                         from '../../../../shared/state/appState';
+import { Store }                            from '@ngrx/store';
+import { ProjectsActions }                  from '../../../../shared/state/project/projects.actions';
+import { ErrorService }                     from '../../../../core/error/error.service';
+import { APP_CONFIG }                       from '../../../../app.config';
 
 @Component({
   selector: 'project-members',
@@ -24,7 +25,8 @@ export class ProjectMembersComponent implements OnInit {
   members: Array<TeamMember> = [];
   removeMemberConfirmationViewIndex: Number = -1;
 
-  constructor(private projectServices: ProjectService,
+  constructor(@Inject(APP_CONFIG) private config,
+              private projectServices: ProjectService,
               private store: Store<AppState>,
               private projectsAction: ProjectsActions,
               private errorService: ErrorService) {

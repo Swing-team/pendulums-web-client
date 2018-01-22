@@ -12,6 +12,7 @@ export class SwingSelectComponent {
   @Input() label: String = 'Select';
   @Input() selectedItemIndex: Number;
   @Input() itemTextAttribute: any;
+  @Input() width: String = '100%';
   @Output() onItemClicked = new EventEmitter();
 
   selectedItem: any;
