@@ -19,7 +19,16 @@
   height: 56px
   justify-content: flex-start
   align-items: center
-  padding: 10px 5px
+  @media (max-width: 350px)
+    padding: 10px 5px
+
+.ps-project-member-image
+  width: 36px
+  height: 36px
+  min-width: 36px
+  min-height: 36px
+  border: 1px solid $ink
+  border-radius: 100%
 
 .ps-section-you-role
   flex-basis: 45%
@@ -27,9 +36,15 @@
   margin-right: 10px
 
 .ps-team-members-item-container
+  width: 100%
+  height: 56px
+  justify-content: flex-start
+  align-items: center
   position: relative
   border-bottom: 1px solid #dedfcb
-  width: 100%
+  padding: 10px 5px
+  @media (max-width: 350px)
+    padding: 10px 2px
   &:nth-child(2)
     border-top: 1px solid #dedfcb
   svg
@@ -49,6 +64,10 @@
     width: 50%
   @media (max-width: 478px) and (min-width: 350px)
     width: 75%
+
+swing-select
+  .ps-select
+    width: auto !important
 
 .ps-owner-role
   font-size: 0.75rem !important
