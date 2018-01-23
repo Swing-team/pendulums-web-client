@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { Component, ViewChild }         from '@angular/core';
+import { Component, Input, ViewChild }  from '@angular/core';
 import { Project }                      from '../../../shared/state/project/project.model';
 import { Md5 }                          from 'ts-md5/dist/md5';
 import { ProjectService }               from '../../shared/projects.service';
@@ -8,6 +8,7 @@ import { AppState }                     from '../../../shared/state/appState';
 import { ProjectsActions }              from '../../../shared/state/project/projects.actions';
 import { ModalService }                 from '../../../core/modal/modal.service';
 import { ErrorService }                 from '../../../core/error/error.service';
+import { User }                         from '../../../shared/state/user/user.model';
 
 const EMAIL_REGEX = /^(?=.{8,64}$)[\w!#$%&'*+/=?`{|}~^-]+(?:\.[\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,6}$/;
 
@@ -20,6 +21,7 @@ const EMAIL_REGEX = /^(?=.{8,64}$)[\w!#$%&'*+/=?`{|}~^-]+(?:\.[\w!#$%&'*+/=?`{|}
 export class CreateProjectComponent {
   @ViewChild('projectImageCanvasElem') projectImageCanvasElem;
   @ViewChild('canvasPreviewImageElem') canvasPreviewImageElem;
+  @Input() currentUser: User;
   roles = ['team member', 'admin'];
   project: Project = new Project();
   user = {email: null, role: this.roles[0]};
@@ -149,6 +151,11 @@ export class CreateProjectComponent {
         this.showError('email address is duplicated');
         return false;
       }
+    }
+    if (this.user.email === this.currentUser.email) {
+      console.log('error:', 'you can not invite your self as a team member.');
+      this.showError('you can not invite your self as a team member.');
+      return false;
     }
     return true;
   }
