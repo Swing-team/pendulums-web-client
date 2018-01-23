@@ -178,6 +178,36 @@ export class ActivitiesComponent implements OnInit {
     });
   }
 
+  openEditManuallyModal(activity) {
+    let tempCurrentActivity: any;
+    if (this.currentActivity) {
+      this.currentActivity.subscribe(currentActivity => {
+        tempCurrentActivity = currentActivity;
+      });
+    }
+    this.modalService.show({
+      component:  AddManuallyActivityComponent,
+      containerRef: this.viewContainerRef,
+      inputs: {
+        activity: activity,
+        projectId: this.projectId,
+        currentActivity: tempCurrentActivity ? tempCurrentActivity : null,
+      },
+      outputs: {
+        responseActivity: (param) => {
+          // Maybe by editing an activity date's change so we should delete previous activity and push
+          // new activity to tempArray and sort it again
+          const Removed = this.tempArray .filter(function(el) {
+            return el.id !== activity.id ;
+          });
+          this.tempArray = Removed;
+          this.updateActivities(param);
+        }
+      },
+      customStyles: {'width': '400px', 'overflow': 'initial'}
+    });
+  }
+
   showError(error) {
     this.errorService.show({
       input: error

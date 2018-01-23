@@ -21,6 +21,7 @@ export class ActivityItemComponent implements OnInit {
   @Input() project: Project;
   @Input() currentUser: User;
   @Output() onDeleteClicked = new EventEmitter();
+  @Output() onEditClicked = new EventEmitter();
   from: string;
   to: string;
   duration: string;
@@ -73,26 +74,8 @@ export class ActivityItemComponent implements OnInit {
     this.deleteConfirmation = false;
   }
 
-  updateActivity(param) {
-    this.activity = param;
-    this.initial();
-  }
-
   openEditManuallyModal() {
-    this.modalService.show({
-      component:  AddManuallyActivityComponent,
-      containerRef: this.viewContainerRef,
-      inputs: {
-        activity: this.activity,
-        projectId: this.activity.project,
-      },
-      outputs: {
-        responseActivity: (param) => {
-          this.updateActivity(param);
-        }
-      },
-      customStyles: {'width': '400px', 'overflow': 'initial'}
-    });
+    this.onEditClicked.emit();
   }
 
   getEmailHash(email): any {
