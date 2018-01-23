@@ -72,8 +72,15 @@ export class ProjectPendingInvitationsComponent {
     }
     for (let i = 0; i < this.project.invitedUsers.length; i++) {
       if (this.project.invitedUsers[i].email === this.user.email) {
-        console.log('error:', 'email address is duplicated');
-        this.showError('email address is duplicated');
+        console.log('error:', 'this user has been invited to the project previously!');
+        this.showError('this user has been invited to the project previously!');
+        return false;
+      }
+    }
+    for (let i = 0; i < this.project.teamMembers.length; i++) {
+      if (this.project.teamMembers[i].email === this.user.email) {
+        console.log('error:', 'this user is already a member of this project!');
+        this.showError('this user is already a member of this project!');
         return false;
       }
     }

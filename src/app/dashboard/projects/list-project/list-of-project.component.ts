@@ -31,7 +31,10 @@ export class ListOfProjectComponent {
     if (this.status.netStatus) {
       this.modalService.show({
         component: CreateProjectComponent,
-        containerRef: this.viewContainerRef
+        containerRef: this.viewContainerRef,
+        inputs: {
+          currentUser: this.user
+        }
       });
     } else {
       this.showError('You cant create project in offline mode!');
