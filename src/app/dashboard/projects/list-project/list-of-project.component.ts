@@ -37,7 +37,7 @@ export class ListOfProjectComponent {
         }
       });
     } else {
-      this.showError('You cant create project in offline mode!');
+      this.showError('This feature is not available in offline mode');
     }
   }
 

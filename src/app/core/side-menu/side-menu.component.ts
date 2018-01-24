@@ -49,7 +49,7 @@ export class SideMenuComponent implements OnInit {
       this.onSignoutClicked.emit();
       this.activeItemNumber = 4;
     } else {
-      this.showError('You can not singOut offline!' );
+      this.showError('This feature is not available in offline mode' );
     }
   }
 
@@ -88,7 +88,6 @@ export class SideMenuComponent implements OnInit {
 
   clickedOutSideOfNotification(event) {
     if (this.notifications.nativeElement.contains(event.target)) {
-      console.log('clicked inside');
     } else {
       this.notificationIsActive = false;
       if (this.router.url === '/dashboard') {

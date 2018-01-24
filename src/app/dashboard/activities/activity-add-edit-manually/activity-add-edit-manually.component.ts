@@ -72,7 +72,7 @@ export class AddManuallyActivityComponent implements OnInit {
   updateToTime() {
     this.toTimeError = this.checkTime();
     if (this.toTimeError) {
-      this.timeError = 'To cant be before From';
+      this.timeError = 'End time could not be before start time';
     } else {
       this.fromTimeError = false;
     }
@@ -81,7 +81,7 @@ export class AddManuallyActivityComponent implements OnInit {
   updateFromTime() {
     this.fromTimeError = this.checkTime();
     if (this.fromTimeError) {
-      this.timeError = 'From cant be after To';
+      this.timeError = 'Start time could not be after end time';
     } else {
       this.toTimeError = false;
     }
@@ -115,8 +115,7 @@ export class AddManuallyActivityComponent implements OnInit {
     this.toDate = event.format('dddd, MMMM Do YYYY');
     this.toCalenderError = this.checkDate();
     if (this.toCalenderError) {
-      this.dateError = 'selected date is before From';
-      console.log('you cant select date before From date.');
+      this.dateError = 'End date could not be before start date';
     } else {
       this.fromCalenderError = false;
     }
@@ -127,8 +126,7 @@ export class AddManuallyActivityComponent implements OnInit {
     this.fromDate = event.format('dddd, MMMM Do YYYY');
     this.fromCalenderError = this.checkDate();
     if (this.fromCalenderError) {
-      this.dateError = 'selected date is after To';
-      console.log('you cant select date after To date.');
+      this.dateError = 'Start date could not be after end date';
     } else {
       this.toCalenderError = false;
     }
@@ -145,11 +143,10 @@ export class AddManuallyActivityComponent implements OnInit {
       this.fromTimeError = tempCheck;
       this.toTimeError = tempCheck;
       if (tempCheck) {
-        this.timeError = 'check times again';
+        this.timeError = 'Please check chosen times';
       }
 
       if (tempToDate.isBefore(tempFromDate)) {
-        console.log('selected date is invalid.');
         return true;
       }
     }
@@ -161,24 +158,22 @@ export class AddManuallyActivityComponent implements OnInit {
     if (validation) {
       if (this.activity) {
         this.activityService.editOldActivity(this.projectId,  this.activityModel).then((activity) => {
-          this.showError('Activity edited successfully');
-          console.log('Activity edited successfully');
+          this.showError('Activity was edited');
           this.responseActivity.emit(activity);
           this.modalService.close();
         })
           .catch(error => {
-            this.showError('Server error happened.');
+            this.showError('Server error happened');
             console.log('error is: ', error);
           });
       } else {
         this.activityService.createManually(this.projectId,  this.activityModel).then((activity) => {
-          this.showError('Activity added successfully');
-          console.log('Activity added successfully');
+          this.showError('Activity was created');
           this.responseActivity.emit(activity);
           this.modalService.close();
         })
           .catch(error => {
-            this.showError('Server error happened.');
+            this.showError('Server error happened');
             console.log('error is: ', error);
           });
       }
@@ -196,23 +191,23 @@ export class AddManuallyActivityComponent implements OnInit {
         finalCheck = false;
         this.toCalenderError = tempCheck;
         this.fromCalenderError = tempCheck;
-        this.dateError = 'Dates have conflict.';
+        this.dateError = 'Please check chosen dates';
       }
       if (this.toTimeError || this.toTimeError) {
         finalCheck = false;
-        this.timeError = 'check times again';
+        this.timeError = 'Please check chosen times';
       }
     }
     if (!this.fromDate || !this.toDate) {
       this.fromCalenderError = !this.fromDate;
       this.toCalenderError = !this.toDate;
-      this.dateError = 'Specify this date.';
+      this.dateError = 'Please choose a date';
       finalCheck = false;
     }
     if (!this.fromTime || !this.toTime) {
       this.fromTimeError = !this.fromTime;
       this.toTimeError = !this.toTime;
-      this.timeError = 'Specify this time.';
+      this.timeError = 'Please choose a time';
       finalCheck = false;
     }
     if (finalCheck) {
@@ -225,13 +220,11 @@ export class AddManuallyActivityComponent implements OnInit {
         .minutes(Number(toTimeArray[1])).seconds(0).valueOf();
       if (now < tempFromDate) {
         finalCheck = false;
-        console.log('From time is after than now');
-        this.showError('From time is after than now!');
+        this.showError('Start time could not be later now');
       }
       if (now < tempToDate) {
         finalCheck = false;
-        console.log('To time is after than now');
-        this.showError('To time is after than now!');
+        this.showError('End time could not be after now');
       }
       if (this.currentActivity) {
         if (this.currentActivity.startedAt) {
