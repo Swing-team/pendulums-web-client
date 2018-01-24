@@ -27,6 +27,7 @@ export class CreateProjectComponent {
   user = {email: null, role: this.roles[0]};
   previewImage: string;
   canvasPreviewImage: string;
+  fileTypeString: string;
   userSubmitted = false;
   formSubmitted = false;
   md5: any;
@@ -47,6 +48,7 @@ export class CreateProjectComponent {
       this.formSubmitted = true;
       delete this.project['id'];
       delete this.project['image'];
+      delete this.project['activities'];
       const formData = new FormData();
       formData.append('project', JSON.stringify(this.project));
       this.projectImageCanvasElem.nativeElement.toBlob(blob => {
@@ -73,7 +75,7 @@ export class CreateProjectComponent {
             this.showError('Server communication error.');
           });
         this.formSubmitted = false;
-      }, 'image/jpeg', 0.90);
+      }, this.fileTypeString, 0.90);
     }
   }
 
@@ -98,6 +100,7 @@ export class CreateProjectComponent {
     if (fileInput.target.files && fileInput.target.files[0]) {
       this.getBase64(fileInput.target.files[0], (base64) => {
         this.canvasPreviewImage = base64;
+        console.log('base64: ', base64);
       });
     }
   }
@@ -105,10 +108,21 @@ export class CreateProjectComponent {
   getBase64(file, callBack) {
     const reader = new FileReader();
     reader.readAsDataURL(file);
+
     reader.onload = () => callBack(reader.result);
     reader.onerror = (error) => {
       console.log('Error: ', error);
       this.showError('Failed to upload file.');
+    }
+    const fileType = file['type'];
+    console.log('fileType', fileType);
+    const validImageTypes = ['image/jpeg', 'image/png'];
+    if (validImageTypes.includes(fileType)) {
+      this.fileTypeString = file['type'];
+      console.log('fileType', this.fileTypeString);
+    } else {
+      console.log('File type is not supported!');
+      this.showError('Picture did no upload. File type is not supported!');
     }
   }
 
