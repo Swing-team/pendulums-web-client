@@ -43,7 +43,7 @@ export class ProjectPendingInvitationsComponent {
         .then(response => {
           this.store.dispatch(this.projectsActions.addInvitedUser(this.project.id, this.user));
           this.user = {email: null, role: this.roles[0]};
-          this.showError('User invited successfully.');
+          this.showError('User is invited.');
         }).catch(error => {
         this.showError('Server Communication error.');
       });
@@ -58,7 +58,7 @@ export class ProjectPendingInvitationsComponent {
     this.projectService.cancelInvitation(this.project.id, {invitedUser})
       .then(response => {
         this.store.dispatch(this.projectsActions.removeInvitedUser(this.project.id, invitedUser));
-        this.showError('Invitation cancelled successfully.');
+        this.showError('Invitation is cancelled');
       }).catch(error => {
       this.showError('Server Communication error.');
     });
@@ -66,14 +66,12 @@ export class ProjectPendingInvitationsComponent {
 
   validateInvitedUser() {
     if (!EMAIL_REGEX.test(this.user.email)) {
-      console.log('error:', 'please enter correct email address');
-      this.showError('please enter correct email address');
+      this.showError('Invalid email address');
       return false;
     }
     for (let i = 0; i < this.project.invitedUsers.length; i++) {
       if (this.project.invitedUsers[i].email === this.user.email) {
-        console.log('error:', 'email address is duplicated');
-        this.showError('email address is duplicated');
+        this.showError('You have already entered this email address');
         return false;
       }
     }

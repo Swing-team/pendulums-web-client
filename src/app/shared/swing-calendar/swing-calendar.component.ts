@@ -209,7 +209,6 @@ export class SwingCalendarComponent implements OnChanges, OnInit {
         nIndex++;
       }
     }
-    console.log(this.tempArray);
     return this.tempArray;
   }
 
@@ -244,7 +243,6 @@ export class SwingCalendarComponent implements OnChanges, OnInit {
          // Set the new date array with active date
         const selectedDate = moment().year(this.currYear).month(tempMonth).date(sDate.date);
         if (selectedDate.isSameOrBefore(moment())) {
-          // console.log('selected Date:', selectedDate)
           this.dateSelected.next(selectedDate);
         }
       }

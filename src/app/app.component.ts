@@ -71,10 +71,8 @@ export class AppComponent implements OnInit {
 
       // To handle connection indicator
       if (status.netStatus === false) {
-        console.log('net is not connected!');
         this.netConnected = false;
       } else {
-        console.log('net is connected!');
         this.netConnected = true;
       }
     });
@@ -87,7 +85,6 @@ export class AppComponent implements OnInit {
 
   clickedOutSideOfMenu(event) {
     if (this.sideMenu.nativeElement.contains(event.target)) {
-      console.log('clicked inside menu in app component.');
     } else {
       if (this.menuIcon) {
         if (event.target.contains(this.menuIcon)) {
