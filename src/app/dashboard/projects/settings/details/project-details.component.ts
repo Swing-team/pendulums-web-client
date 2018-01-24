@@ -23,6 +23,7 @@ export class ProjectDetailsComponent implements OnInit {
   @ViewChild('canvasPreviewImageElem') canvasPreviewImageElem;
   previewImage: String;
   canvasPreviewImage: string;
+  fileTypeString: string;
   imageIsEdited: boolean;
 
   constructor(private projectServices: ProjectService,
@@ -69,7 +70,7 @@ export class ProjectDetailsComponent implements OnInit {
             console.log('error is: ', error);
             this.showError('Server communication error.');
           });
-      }, 'image/jpeg', 0.90);
+      }, this.fileTypeString, 0.90);
     }
   }
 
@@ -77,7 +78,6 @@ export class ProjectDetailsComponent implements OnInit {
     if (fileInput.target.files && fileInput.target.files[0]) {
       this.getBase64(fileInput.target.files[0], (base64) => {
         this.canvasPreviewImage = base64;
-        this.imageIsEdited = true;
       });
     }
   }
@@ -89,6 +89,18 @@ export class ProjectDetailsComponent implements OnInit {
     reader.onerror = (error) => {
       console.log('Error: ', error);
       this.showError('Failed to upload file.');
+    }
+    const fileType = file['type'];
+    console.log('fileType', fileType)
+    const validImageTypes = ['image/jpeg', 'image/png'];
+    if (validImageTypes.includes(fileType)) {
+      this.fileTypeString = file['type'];
+      this.imageIsEdited = true;
+      console.log('fileType', this.fileTypeString);
+    } else {
+      this.imageIsEdited = false;
+      console.log('File type is not supported!');
+      this.showError('Picture did no upload. File type is not supported!');
     }
   }
 
