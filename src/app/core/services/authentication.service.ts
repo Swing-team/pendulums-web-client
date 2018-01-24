@@ -24,7 +24,7 @@ export class AuthenticationService {
     return this.http
       .post(this.config.apiEndpoint + '/auth/signin', JSON.stringify(authUser), this.options)
       .toPromise()
-      .then(() => console.log('signIn successful'))
+      .then(() => {})
       .catch(this.handleError);
   }
 
@@ -32,7 +32,7 @@ export class AuthenticationService {
     return this.http
       .post(this.config.apiEndpoint + '/auth/signup', JSON.stringify(newUser), this.options)
       .toPromise()
-      .then(() => console.log('verification email has been sent'))
+      .then(() => {})
       .catch(this.handleError);
   }
 
@@ -40,7 +40,7 @@ export class AuthenticationService {
     return this.http
       .post(this.config.apiEndpoint + '/auth/recover-account', JSON.stringify(UserEmail), this.options)
       .toPromise()
-      .then(() => console.log('reset password request has been sent'))
+      .then(() => {})
       .catch(this.handleError);
   }
 
@@ -48,7 +48,7 @@ export class AuthenticationService {
     return this.http
       .put(this.config.apiEndpoint + '/auth/reset-password', JSON.stringify(passwordForm), this.options)
       .toPromise()
-      .then(() => console.log('successfully changed the password'))
+      .then(() => {})
       .catch(this.handleError);
   }
 
@@ -56,7 +56,7 @@ export class AuthenticationService {
     return this.http
       .put(this.config.apiEndpoint + '/user/change-password', JSON.stringify(passwordForm), this.options)
       .toPromise()
-      .then(() => console.log('successfully changed the password'))
+      .then(() => {})
       .catch(this.handleError);
   }
 

@@ -42,11 +42,9 @@ export class SyncService {
 
   init(): void {
     this.getStateFromDb().then(() => {
-      console.log('found data at db at initial level');
       this.initialAppOffline();
       this.connectSocket();
     }).catch(() => {
-      console.log('no proper data at db at initial level');
       this.connectSocket();
     });
   }
@@ -56,7 +54,6 @@ export class SyncService {
       .put(this.config.apiEndpoint + '/sync/activities', JSON.stringify(data), {...this.config.httpOptions, responseType: 'text'})
       .toPromise()
       .then(() => {
-      console.log('Offline activities has been sync with server successfully :)');
     })
       .catch(this.handleError);
   }
@@ -101,8 +98,6 @@ export class SyncService {
         syncData.currentActivity = this.tempState.currentActivity;
       }
       if (syncData.currentActivity || syncData.activities) {
-        console.log('sync call');
-        console.log('syncData', syncData);
         this.syncData(syncData)
           .then(() => {
             this.store.dispatch(this.unSyncedActivityActions.clearUnSyncedActivity());
@@ -133,14 +128,11 @@ export class SyncService {
       console.log('websocket connected!');
       if (this.unsyncedDataChanged === true) {
         this.getStateFromDb().then(() => {
-          console.log('found data at db at update level');
           this.autoSync();
         }).catch(() => {
-          console.log('no proper data at db at update level');
           this.getSummaryOnline();
         });
       } else {
-        console.log('nothing to update');
         this.getSummaryOnline();
       }
       this.store.dispatch(this.StatusActions.updateNetStatus(true));
@@ -160,7 +152,6 @@ export class SyncService {
   getSummaryOnline() {
     this.userService.getSummary()
       .then((user) => {
-        console.log('loaded from server!');
         this.store.dispatch(this.userActions.loadUser(user));
         this.store.dispatch(this.projectsActions.loadProjects(user.projects));
         this.store.dispatch(this.currentActivityActions.loadCurrentActivity(user.currentActivity));
@@ -188,7 +179,6 @@ export class SyncService {
 
   initialAppOffline() {
     if (this.tempState) {
-      console.log('loaded from index db');
       this.store.dispatch(this.userActions.loadUser(this.tempState.user));
       this.store.dispatch(this.projectsActions.loadDbProjects(this.tempState.projects.entities));
       this.store.dispatch(this.currentActivityActions.loadCurrentActivity(this.tempState.currentActivity));
