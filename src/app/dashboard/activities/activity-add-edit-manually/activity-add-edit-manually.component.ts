@@ -226,17 +226,19 @@ export class AddManuallyActivityComponent implements OnInit {
         finalCheck = false;
         this.showError('End time could not be after now');
       }
-      if (this.currentActivity.startedAt) {
-        console.log('this.currentActivity', this.currentActivity);
-        if (Number(this.currentActivity.startedAt) < tempFromDate) {
-          finalCheck = false;
-          console.log('From time cant be after than currentActivity started time');
-          this.showError('From time is after currentActivity startedAt!');
-        }
-        if (Number(this.currentActivity.startedAt) < tempToDate) {
-          finalCheck = false;
-          console.log('To time cant be after than currentActivity started time');
-          this.showError('To time is after than currentActivity startedAt!');
+      if (this.currentActivity) {
+        if (this.currentActivity.startedAt) {
+          console.log('this.currentActivity', this.currentActivity);
+          if (Number(this.currentActivity.startedAt) < tempFromDate) {
+            finalCheck = false;
+            console.log('From time cant be after than currentActivity started time');
+            this.showError('From time is after currentActivity startedAt!');
+          }
+          if (Number(this.currentActivity.startedAt) < tempToDate) {
+            finalCheck = false;
+            console.log('To time cant be after than currentActivity started time');
+            this.showError('To time is after than currentActivity startedAt!');
+          }
         }
       }
       this.activityModel.startedAt = tempFromDate.toString();

@@ -71,7 +71,13 @@ export class ProjectPendingInvitationsComponent {
     }
     for (let i = 0; i < this.project.invitedUsers.length; i++) {
       if (this.project.invitedUsers[i].email === this.user.email) {
-        this.showError('You have already entered this email address');
+        this.showError('This user has been invited to the project previously');
+        return false;
+      }
+    }
+    for (let i = 0; i < this.project.teamMembers.length; i++) {
+      if (this.project.teamMembers[i].email === this.user.email) {
+        this.showError('This user is already a member of this project');
         return false;
       }
     }
