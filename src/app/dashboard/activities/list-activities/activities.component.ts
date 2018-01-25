@@ -106,7 +106,7 @@ export class ActivitiesComponent implements OnInit {
         return el.id !== activity.id ;
       });
       this.tempArray = Removed;
-      this.showError('Activity was deleted');
+      this.showError('Activity was deleted successfully');
     })
       .catch(error => {
         this.showError('Server communication error');

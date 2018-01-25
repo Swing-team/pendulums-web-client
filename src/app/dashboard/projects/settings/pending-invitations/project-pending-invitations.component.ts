@@ -43,7 +43,7 @@ export class ProjectPendingInvitationsComponent {
         .then(response => {
           this.store.dispatch(this.projectsActions.addInvitedUser(this.project.id, this.user));
           this.user = {email: null, role: this.roles[0]};
-          this.showError('User is invited.');
+          this.showError('User is invited');
         }).catch(error => {
         this.showError('Server Communication error.');
       });
@@ -58,7 +58,7 @@ export class ProjectPendingInvitationsComponent {
     this.projectService.cancelInvitation(this.project.id, {invitedUser})
       .then(response => {
         this.store.dispatch(this.projectsActions.removeInvitedUser(this.project.id, invitedUser));
-        this.showError('Invitation is cancelled');
+        this.showError('Invitation was cancelled successfully');
       }).catch(error => {
       this.showError('Server Communication error.');
     });

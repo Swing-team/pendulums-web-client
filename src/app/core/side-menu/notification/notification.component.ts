@@ -62,8 +62,7 @@ export class NotificationComponent implements OnInit {
 
   @HostListener('document:click', ['$event'])
   clickOutOfNotification(event) {
-    if (this.ref.nativeElement.contains(event.target)) {
-    } else {
+    if (!this.ref.nativeElement.contains(event.target)) {
       this.clickedOutSideOfNotification.emit(event);
     }
   }

@@ -102,7 +102,7 @@ export class ToolbarComponent implements OnInit {
       activity.name = this.taskName;
       activity.startedAt = Date.now().toString();
       this.activityService.create(this.selectedProject.id, activity).then((resActivity) => {
-        this.showError('Activity is started');
+        this.showError('The activity was started');
         delete resActivity.createdAt;
         delete resActivity.updatedAt;
         this.store.dispatch(this.CurrentActivityActions.loadCurrentActivity(resActivity));
@@ -114,7 +114,7 @@ export class ToolbarComponent implements OnInit {
           this.store.dispatch(this.StatusActions.updateUnsyncedDataChanged(true));
         });
     } else {
-      this.showError('Select a distinct project');
+      this.showError('Select a project');
     }
   }
 
@@ -126,7 +126,7 @@ export class ToolbarComponent implements OnInit {
           this.store.dispatch(this.CurrentActivityActions.clearCurrentActivity());
           this.store.dispatch(this.projectsActions.updateProjectActivities(activity.project, activity));
           this.taskName = null;
-          this.showError('Activity is stopped');
+          this.showError('The activity was stopped');
         })
           .catch(error => {
             console.log('server error happened', error);
@@ -136,14 +136,14 @@ export class ToolbarComponent implements OnInit {
             this.store.dispatch(this.projectsActions.updateProjectActivities(this.currentActivityCopy.project, this.currentActivityCopy));
             this.store.dispatch(this.CurrentActivityActions.clearCurrentActivity());
             this.taskName = null;
-            this.showError('Activity is stopped');
+            this.showError('The activity was stopped');
           });
       } else {
         this.activityService.createManually(this.currentActivityCopy.project, this.currentActivityCopy).then((activity) => {
           this.store.dispatch(this.projectsActions.updateProjectActivities(activity.project, activity));
           this.store.dispatch(this.CurrentActivityActions.clearCurrentActivity());
           this.taskName = null;
-          this.showError('Activity is stopped');
+          this.showError('The activity was stopped');
         })
           .catch(error => {
             console.log('server error happened', error);
@@ -153,7 +153,7 @@ export class ToolbarComponent implements OnInit {
             this.store.dispatch(this.projectsActions.updateProjectActivities(this.currentActivityCopy.project, this.currentActivityCopy));
             this.store.dispatch(this.CurrentActivityActions.clearCurrentActivity());
             this.taskName = null;
-            this.showError('Activity is stopped');
+            this.showError('The activity was stopped');
           });
       }
     }

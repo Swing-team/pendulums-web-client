@@ -115,7 +115,7 @@ export class AddManuallyActivityComponent implements OnInit {
     this.toDate = event.format('dddd, MMMM Do YYYY');
     this.toCalenderError = this.checkDate();
     if (this.toCalenderError) {
-      this.dateError = 'End date could not be before start date';
+      this.dateError = 'The end date could not be before start date';
     } else {
       this.fromCalenderError = false;
     }
@@ -126,7 +126,7 @@ export class AddManuallyActivityComponent implements OnInit {
     this.fromDate = event.format('dddd, MMMM Do YYYY');
     this.fromCalenderError = this.checkDate();
     if (this.fromCalenderError) {
-      this.dateError = 'Start date could not be after end date';
+      this.dateError = 'The start date could not be after end date';
     } else {
       this.toCalenderError = false;
     }
@@ -158,7 +158,7 @@ export class AddManuallyActivityComponent implements OnInit {
     if (validation) {
       if (this.activity) {
         this.activityService.editOldActivity(this.projectId,  this.activityModel).then((activity) => {
-          this.showError('Activity was edited');
+          this.showError('Activity was edited successfully');
           this.responseActivity.emit(activity);
           this.modalService.close();
         })
@@ -168,7 +168,7 @@ export class AddManuallyActivityComponent implements OnInit {
           });
       } else {
         this.activityService.createManually(this.projectId,  this.activityModel).then((activity) => {
-          this.showError('Activity was created');
+          this.showError('Activity was created successfully');
           this.responseActivity.emit(activity);
           this.modalService.close();
         })
@@ -220,24 +220,22 @@ export class AddManuallyActivityComponent implements OnInit {
         .minutes(Number(toTimeArray[1])).seconds(0).valueOf();
       if (now < tempFromDate) {
         finalCheck = false;
-        this.showError('Start time could not be later now');
+        this.showError('The start time could not be after now');
       }
       if (now < tempToDate) {
         finalCheck = false;
-        this.showError('End time could not be after now');
+        this.showError('The end time could not be after now');
       }
       if (this.currentActivity) {
         if (this.currentActivity.startedAt) {
           console.log('this.currentActivity', this.currentActivity);
           if (Number(this.currentActivity.startedAt) < tempFromDate) {
             finalCheck = false;
-            console.log('From time cant be after than currentActivity started time');
-            this.showError('From time is after currentActivity startedAt!');
+            this.showError('The start time could not be after current activity start time');
           }
           if (Number(this.currentActivity.startedAt) < tempToDate) {
             finalCheck = false;
-            console.log('To time cant be after than currentActivity started time');
-            this.showError('To time is after than currentActivity startedAt!');
+            this.showError('The end time could not be after current activity start time');
           }
         }
       }
