@@ -39,34 +39,30 @@ export class ProjectDetailsComponent implements OnInit {
 
   updateProject() {
     if (!this.clonedProject.name || /^\s*$/.test(this.clonedProject.name) || !this.clonedProject.name.trim()) {
-      console.log('error is: ', 'name is empty!');
-      this.showError('Project name is empty.');
+      this.showError('Project name is empty');
     } else {
       this.formSubmitted = true;
       const formData = new FormData();
       formData.append('project', JSON.stringify({name: this.clonedProject.name}));
       this.projectImageCanvasElem.nativeElement.toBlob(blob => {
-        console.log('picture size is:', blob.size);
         if (blob.size > 500000) {
           this.formSubmitted = false;
-          console.log('Picture size exceeded from 500KB');
-          this.showError('Picture size exceeded from 500KB.');
+          this.showError('Image size exceeded from 500KB');
           return;
         }
         if (this.imageIsEdited) {
           formData.append('image', blob);
-          console.log('Project image has been edited');
           this.showError('Project image has been edited');
         }
         this.projectServices.update(formData, this.project.id).then((response) => {
-          this.showError('project edited successfully');
+          this.showError('The project was edited successfully');
           this.clonedProject.image = response[0].image;
           this.store.dispatch(this.projectsAction.updateProject(this.clonedProject))
           this.formSubmitted = false;
         })
           .catch(error => {
             this.formSubmitted = false;
-            console.log('error is: ', error);
+            console.log('error is:', error);
             this.showError('Server communication error.');
           });
       }, 'image/jpeg', 0.90);

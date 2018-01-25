@@ -43,7 +43,7 @@ export class ProjectPendingInvitationsComponent {
         .then(response => {
           this.store.dispatch(this.projectsActions.addInvitedUser(this.project.id, this.user));
           this.user = {email: null, role: this.roles[0]};
-          this.showError('User invited successfully.');
+          this.showError('User is invited');
         }).catch(error => {
         this.showError('Server Communication error.');
       });
@@ -58,7 +58,7 @@ export class ProjectPendingInvitationsComponent {
     this.projectService.cancelInvitation(this.project.id, {invitedUser})
       .then(response => {
         this.store.dispatch(this.projectsActions.removeInvitedUser(this.project.id, invitedUser));
-        this.showError('Invitation cancelled successfully.');
+        this.showError('Invitation was cancelled successfully');
       }).catch(error => {
       this.showError('Server Communication error.');
     });
@@ -66,21 +66,18 @@ export class ProjectPendingInvitationsComponent {
 
   validateInvitedUser() {
     if (!EMAIL_REGEX.test(this.user.email)) {
-      console.log('error:', 'please enter correct email address');
-      this.showError('please enter correct email address');
+      this.showError('Invalid email address');
       return false;
     }
     for (let i = 0; i < this.project.invitedUsers.length; i++) {
       if (this.project.invitedUsers[i].email === this.user.email) {
-        console.log('error:', 'this user has been invited to the project previously!');
-        this.showError('this user has been invited to the project previously!');
+        this.showError('This user has been invited to the project previously');
         return false;
       }
     }
     for (let i = 0; i < this.project.teamMembers.length; i++) {
       if (this.project.teamMembers[i].email === this.user.email) {
-        console.log('error:', 'this user is already a member of this project!');
-        this.showError('this user is already a member of this project!');
+        this.showError('This user is already a member of this project');
         return false;
       }
     }

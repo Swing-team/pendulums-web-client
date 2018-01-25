@@ -55,7 +55,7 @@ export class ProfileSettingComponent implements OnInit {
     this.status.subscribe((state) => {
       if (!state.netStatus) {
         this.netConnected = false;
-        this.showError('You cant change password in offline mode!');
+        this.showError('This feature is not available in offline mode');
       }
       if (state.netStatus) {
         this.netConnected = true;
@@ -95,16 +95,12 @@ export class ProfileSettingComponent implements OnInit {
       this.authService.changePassword(this.data)
         .then(() => {
           this.submitted = false;
-          this.showError('password changed successfully');
+          this.showError('The password changed successfully');
         })
         .catch(error => {
           this.submitted = false;
           console.log('error is: ', error);
-          if (error.status === 400) {
-            this.showError('your information not found');
-          } else {
-            this.showError('Server communication error');
-          }
+          this.showError('Server communication error');
         });
     } else {
       this.submitted = false;
@@ -115,11 +111,11 @@ export class ProfileSettingComponent implements OnInit {
     if (!User.newPassword
       || User.newPassword.length < 6
       || User.newPassword.length > 12) {
-      this.showError('please choose password with 6 to 12 characters');
+      this.showError('Password length must be between 6 and 12 characters');
       return false;
     }
     if (User.newPassword !== this.rePassword) {
-      this.showError('passwords miss match');
+      this.showError('Passwords are missmatched');
       return false;
     }
     return true;

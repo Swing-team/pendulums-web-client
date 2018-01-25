@@ -33,7 +33,6 @@ export class ProjectMembersComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log('this.project:', this.project);
     let userIndexInMembersList = null;
     const projectMembers = cloneDeep(this.project.teamMembers);
     const adminsAndOwnerIds = [];

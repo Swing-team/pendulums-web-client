@@ -28,17 +28,14 @@ export class DangerousActionsComponent {
 
   confirm() {
     if (this.projectNameInput.valueOf() === this.project.name.valueOf()) {
-      console.log('deletion confirmed');
       this.projectService.delete(this.project.id)
         .then(response => {
           this.store.dispatch(this.projectsAction.removeProject(this.project));
-          this.showError('Project deleted successfully.');
+          this.showError('The project was deleted successfully');
         })
         .catch(error => {
-          this.showError('Server communication error.');
+          this.showError('Server communication error');
         });
-    } else {
-      console.log('deletion ignored');
     }
   }
 

@@ -83,7 +83,7 @@ export class ProjectItemComponent implements OnInit {
     this.activity.name = this.taskName;
     this.activity.startedAt = Date.now().toString();
     this.activityService.create(this.project.id, this.activity).then((activity) => {
-      this.showError('Activity started successfully!');
+      this.showError('The activity was started');
       delete activity.createdAt;
       delete activity.updatedAt;
       this.store.dispatch(this.CurrentActivityActions.loadCurrentActivity(activity));
@@ -93,7 +93,7 @@ export class ProjectItemComponent implements OnInit {
         // we need two below fields for offline logic
         this.activity.project = this.project.id;
         this.activity.user = this.user.id;
-        console.log('server error happened and it is: ', error);
+        console.log('server error happened', error);
         this.showError('Server communication error.');
         this.store.dispatch(this.CurrentActivityActions.loadCurrentActivity(this.activity));
         this.store.dispatch(this.StatusActions.updateUnsyncedDataChanged(true));
@@ -108,37 +108,34 @@ export class ProjectItemComponent implements OnInit {
           this.store.dispatch(this.CurrentActivityActions.clearCurrentActivity());
           this.store.dispatch(this.projectsActions.updateProjectActivities(this.project.id, activity));
           this.taskName = 'Untitled task';
-          this.showError('Activity stopped successfully!');
+          this.showError('The activity was stopped');
         })
           .catch(error => {
-            console.log('server error happened and it is: ', error);
-            console.log('current Activity will store as offline');
+            console.log('server error happened', error);
             this.showError('Server communication error.');
             this.store.dispatch(this.UnSyncedActivityActions.addUnSyncedActivity(this.currentActivityCopy));
             this.store.dispatch(this.StatusActions.updateUnsyncedDataChanged(true));
             this.store.dispatch(this.projectsActions.updateProjectActivities(this.currentActivityCopy.project, this.currentActivityCopy));
             this.store.dispatch(this.CurrentActivityActions.clearCurrentActivity());
             this.taskName = null;
-            this.showError('Activity stopped successfully!');
+            this.showError('The activity was stopped');
           });
       } else {
-        console.log('activity has no id so it should go through the sync way');
         this.activityService.createManually(this.project.id, this.currentActivityCopy).then((activity) => {
           this.store.dispatch(this.CurrentActivityActions.clearCurrentActivity());
           this.store.dispatch(this.projectsActions.updateProjectActivities(this.project.id, activity));
           this.taskName = 'Untitled task';
-          this.showError('Activity stopped successfully!');
+          this.showError('The activity was stopped');
         })
           .catch(error => {
-            console.log('server error happened and it is: ', error);
-            console.log('current Activity will store as offline ');
+            console.log('server error happened', error);
             this.showError('Server communication error.');
             this.store.dispatch(this.UnSyncedActivityActions.addUnSyncedActivity(this.currentActivityCopy));
             this.store.dispatch(this.StatusActions.updateUnsyncedDataChanged(true));
             this.store.dispatch(this.projectsActions.updateProjectActivities(this.currentActivityCopy.project, this.currentActivityCopy));
             this.store.dispatch(this.CurrentActivityActions.clearCurrentActivity());
             this.taskName = null;
-            this.showError('Activity stopped successfully!');
+            this.showError('The activity was stopped');
           });
         }
       }
@@ -158,20 +155,18 @@ export class ProjectItemComponent implements OnInit {
           this.store.dispatch(this.CurrentActivityActions.loadCurrentActivity(activity));
         })
           .catch(error => {
-            console.log('server error happened and it is: ', error);
+            console.log('server error happened', error);
             this.store.dispatch(this.CurrentActivityActions.loadCurrentActivity(this.currentActivityCopy));
             this.store.dispatch(this.StatusActions.updateUnsyncedDataChanged(true));
           });
       } else {
-        console.log('activity has no id so it should go through the sync way');
         this.activityService.create(this.project.id, this.currentActivityCopy).then((activity) => {
           delete activity.createdAt;
           delete activity.updatedAt;
           this.store.dispatch(this.CurrentActivityActions.loadCurrentActivity(activity));
         })
           .catch(error => {
-            console.log('server error happened and it is: ', error);
-            console.log('your edit will store at db');
+            console.log('server error happened', error);
             this.store.dispatch(this.CurrentActivityActions.loadCurrentActivity(this.currentActivityCopy));
             this.store.dispatch(this.StatusActions.updateUnsyncedDataChanged(true));
           });
@@ -224,7 +219,7 @@ export class ProjectItemComponent implements OnInit {
         }
       });
     } else {
-      this.showError('You cant edit project in offline mode!');
+      this.showError('This feature is not available in offline mode');
     }
   }
 
@@ -232,7 +227,7 @@ export class ProjectItemComponent implements OnInit {
     if (this.status.netStatus) {
       this.router.navigate(['/activities', this.project.id]);
     } else {
-      this.showError('You cant get activities in offline mode!');
+      this.showError('This feature is not available in offline mode');
     }
   }
 

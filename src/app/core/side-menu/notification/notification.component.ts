@@ -34,7 +34,6 @@ export class NotificationComponent implements OnInit {
   accept(projectId) {
     this.NotificationService.accept(projectId).then((project) => {
       this.store.dispatch(this.projectsActions.addProject(project));
-      console.log('project added successfully');
       this.user.pendingInvitations.map((obj, index) => {
         if (obj.id === projectId) {
           this.user.pendingInvitations.splice(index, 1);
@@ -63,9 +62,7 @@ export class NotificationComponent implements OnInit {
 
   @HostListener('document:click', ['$event'])
   clickOutOfNotification(event) {
-    if (this.ref.nativeElement.contains(event.target)) {
-      console.log('clicked inside notification.');
-    } else {
+    if (!this.ref.nativeElement.contains(event.target)) {
       this.clickedOutSideOfNotification.emit(event);
     }
   }
