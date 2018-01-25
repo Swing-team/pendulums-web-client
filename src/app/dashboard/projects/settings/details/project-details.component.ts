@@ -48,7 +48,7 @@ export class ProjectDetailsComponent implements OnInit {
       this.projectImageCanvasElem.nativeElement.toBlob(blob => {
         if (blob.size > 500000) {
           this.formSubmitted = false;
-          this.showError('Picture size exceeded from 500KB');
+          this.showError('Image size exceeded from 500KB');
           return;
         }
         if (this.imageIsEdited) {
@@ -56,7 +56,7 @@ export class ProjectDetailsComponent implements OnInit {
           this.showError('Project image has been edited');
         }
         this.projectServices.update(formData, this.project.id).then((response) => {
-          this.showError('Project was edited');
+          this.showError('The project was edited successfully');
           this.clonedProject.image = response[0].image;
           this.store.dispatch(this.projectsAction.updateProject(this.clonedProject))
           this.formSubmitted = false;
