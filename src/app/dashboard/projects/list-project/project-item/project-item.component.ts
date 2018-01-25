@@ -83,7 +83,7 @@ export class ProjectItemComponent implements OnInit {
     this.activity.name = this.taskName;
     this.activity.startedAt = Date.now().toString();
     this.activityService.create(this.project.id, this.activity).then((activity) => {
-      this.showError('Activity is started');
+      this.showError('The activity was started');
       delete activity.createdAt;
       delete activity.updatedAt;
       this.store.dispatch(this.CurrentActivityActions.loadCurrentActivity(activity));
@@ -108,7 +108,7 @@ export class ProjectItemComponent implements OnInit {
           this.store.dispatch(this.CurrentActivityActions.clearCurrentActivity());
           this.store.dispatch(this.projectsActions.updateProjectActivities(this.project.id, activity));
           this.taskName = 'Untitled task';
-          this.showError('Activity is stopped');
+          this.showError('The activity was stopped');
         })
           .catch(error => {
             console.log('server error happened', error);
@@ -118,14 +118,14 @@ export class ProjectItemComponent implements OnInit {
             this.store.dispatch(this.projectsActions.updateProjectActivities(this.currentActivityCopy.project, this.currentActivityCopy));
             this.store.dispatch(this.CurrentActivityActions.clearCurrentActivity());
             this.taskName = null;
-            this.showError('Activity is stopped');
+            this.showError('The activity was stopped');
           });
       } else {
         this.activityService.createManually(this.project.id, this.currentActivityCopy).then((activity) => {
           this.store.dispatch(this.CurrentActivityActions.clearCurrentActivity());
           this.store.dispatch(this.projectsActions.updateProjectActivities(this.project.id, activity));
           this.taskName = 'Untitled task';
-          this.showError('Activity is stopped');
+          this.showError('The activity was stopped');
         })
           .catch(error => {
             console.log('server error happened', error);
@@ -135,7 +135,7 @@ export class ProjectItemComponent implements OnInit {
             this.store.dispatch(this.projectsActions.updateProjectActivities(this.currentActivityCopy.project, this.currentActivityCopy));
             this.store.dispatch(this.CurrentActivityActions.clearCurrentActivity());
             this.taskName = null;
-            this.showError('Activity is stopped');
+            this.showError('The activity was stopped');
           });
         }
       }

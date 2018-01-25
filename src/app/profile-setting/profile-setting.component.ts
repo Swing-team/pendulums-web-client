@@ -95,7 +95,7 @@ export class ProfileSettingComponent implements OnInit {
       this.authService.changePassword(this.data)
         .then(() => {
           this.submitted = false;
-          this.showError('Your password is changed');
+          this.showError('The password changed successfully');
         })
         .catch(error => {
           this.submitted = false;

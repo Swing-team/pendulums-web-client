@@ -51,10 +51,9 @@ export class CreateProjectComponent {
       const formData = new FormData();
       formData.append('project', JSON.stringify(this.project));
       this.projectImageCanvasElem.nativeElement.toBlob(blob => {
-        console.log('picture size is:', blob.size);
         if (blob.size > 500000) {
           this.formSubmitted = false;
-          this.showError('Picture size exceeded from 500KB');
+          this.showError('Image size exceeded from 500KB');
           return;
         }
         // check whether image has been changed or not
@@ -63,7 +62,7 @@ export class CreateProjectComponent {
         }
         this.projectServices.create(formData).then((project) => {
           this.store.dispatch(this.projectsActions.addProject(project));
-          this.showError('Project was created');
+          this.showError('The project was created successfully');
           this.project = new Project();
           this.modalService.close();
         })
@@ -110,7 +109,7 @@ export class CreateProjectComponent {
     reader.onload = () => callBack(reader.result);
     reader.onerror = (error) => {
       console.log('Error: ', error);
-      this.showError('Failed to upload file');
+      this.showError('Failed to upload the image');
     }
     const fileType = file['type'];
     console.log('fileType', fileType);

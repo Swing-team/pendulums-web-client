@@ -31,7 +31,7 @@ export class DangerousActionsComponent {
       this.projectService.delete(this.project.id)
         .then(response => {
           this.store.dispatch(this.projectsAction.removeProject(this.project));
-          this.showError('Project was deleted');
+          this.showError('The project was deleted successfully');
         })
         .catch(error => {
           this.showError('Server communication error');
