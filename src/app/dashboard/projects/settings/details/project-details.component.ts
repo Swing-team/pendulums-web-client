@@ -8,6 +8,7 @@ import { AppState }                       from '../../../../shared/state/appStat
 import { Store }                          from '@ngrx/store';
 import { ProjectsActions }                from '../../../../shared/state/project/projects.actions';
 import { ErrorService }                   from '../../../../core/error/error.service';
+import { ModalService }                   from '../../../../core/modal/modal.service';
 
 @Component({
   selector: 'project-details',
@@ -30,7 +31,8 @@ export class ProjectDetailsComponent implements OnInit {
               @Inject(APP_CONFIG) private config,
               private store: Store<AppState>,
               private projectsAction: ProjectsActions,
-              private errorService: ErrorService) {
+              private errorService: ErrorService,
+              private modalService: ModalService) {
   }
 
   ngOnInit(): void {
@@ -60,6 +62,7 @@ export class ProjectDetailsComponent implements OnInit {
           this.clonedProject.image = response[0].image;
           this.store.dispatch(this.projectsAction.updateProject(this.clonedProject))
           this.formSubmitted = false;
+          this.modalService.close();
         })
           .catch(error => {
             this.formSubmitted = false;

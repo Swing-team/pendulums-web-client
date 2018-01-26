@@ -8,7 +8,9 @@ import { Observable }                             from 'rxjs/Observable';
 import { Store }                                  from '@ngrx/store';
 import { AppState }                               from './shared/state/appState';
 import { AuthenticationService }                  from './core/services/authentication.service';
-import { ErrorService }                           from './core/error/error.service';
+import { ProjectsActions }                        from './shared/state/project/projects.actions';
+import { StatusActions }                          from './shared/state/status/status.actions';
+import { CurrentActivityActions }                 from './shared/state/current-activity/current-activity.actions';
 import { SyncService }                            from './core/services/sync.service';
 import { Status }                                 from './shared/state/status/status.model';
 
@@ -37,9 +39,9 @@ export class AppComponent implements OnInit {
     private currentActivityActions: CurrentActivityActions,
     private statusActions: StatusActions,
     private router: Router,
-    private viewContainerRef: ViewContainerRef,
-    private errorService: ErrorService,
-    private syncService: SyncService
+    private syncService: SyncService,
+    // needed for dynamically loaded components
+    public viewContainerRef: ViewContainerRef
   ) {
     // to initialize state
     this.user = store.select('user');
@@ -49,7 +51,6 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.errorService.setViewContainerRef(this.viewContainerRef);
     // to initialize webSocket connection
     this.syncService.init();
 
