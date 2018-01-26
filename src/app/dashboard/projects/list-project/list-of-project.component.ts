@@ -1,4 +1,4 @@
-import {Component, Input, ViewContainerRef}           from '@angular/core';
+import {Component, Input}                             from '@angular/core';
 import { Observable }                                 from 'rxjs/Observable';
 import { ModalService }                               from '../../../core/modal/modal.service';
 import { CreateProjectComponent }                     from '../create-project/create-project.component';
@@ -23,7 +23,6 @@ export class ListOfProjectComponent {
   constructor (
     private store: Store<AppState>,
     private modalService: ModalService,
-    private viewContainerRef: ViewContainerRef,
     private errorService: ErrorService,
   ) {}
 
@@ -31,7 +30,6 @@ export class ListOfProjectComponent {
     if (this.status.netStatus) {
       this.modalService.show({
         component: CreateProjectComponent,
-        containerRef: this.viewContainerRef,
         inputs: {
           currentUser: this.user
         }

@@ -1,5 +1,5 @@
 import { Component, Inject, Input,
-         OnInit, ViewContainerRef }           from '@angular/core';
+         OnInit }                             from '@angular/core';
 import { APP_CONFIG }                         from '../../../../app.config';
 import { Project }                            from '../../../../shared/state/project/project.model';
 import { ActivityService }                    from '../../../shared/activity.service';
@@ -42,7 +42,6 @@ export class ProjectItemComponent implements OnInit {
                private projectsActions: ProjectsActions,
                private router: Router,
                private modalService: ModalService,
-               private viewContainerRef: ViewContainerRef,
                private errorService: ErrorService,
                private UnSyncedActivityActions: UnSyncedActivityActions,
                private StatusActions: StatusActions) {
@@ -212,7 +211,6 @@ export class ProjectItemComponent implements OnInit {
     if (this.status.netStatus) {
       this.modalService.show({
         component: ProjectSettingsModalComponent,
-        containerRef: this.viewContainerRef,
         inputs: {
           project: this.project,
           user: this.user

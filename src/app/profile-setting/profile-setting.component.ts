@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 import { Component, Inject,
-         OnInit, ViewContainerRef }         from '@angular/core';
+         OnInit }                           from '@angular/core';
 import { APP_CONFIG }                       from '../app.config';
 import { AuthenticationService }            from '../core/services/authentication.service';
 import { ErrorService }                     from '../core/error/error.service';
@@ -10,7 +10,7 @@ import { AppState }                         from '../shared/state/appState';
 import { UserActions }                      from '../shared/state/user/user.actions';
 import { UserService }                      from '../core/services/user.service';
 import { ModalService }                     from '../core/modal/modal.service';
-import { ImgCropperComponent }            from './image-cropper/image-cropper.component';
+import { ImgCropperComponent }              from './image-cropper/image-cropper.component';
 import { Md5 }                              from 'ts-md5/dist/md5';
 import { Observable }                       from 'rxjs/Observable';
 
@@ -38,8 +38,7 @@ export class ProfileSettingComponent implements OnInit {
                private store: Store<AppState>,
                private userActions: UserActions,
                private UserService: UserService,
-               private modalService: ModalService,
-               private viewContainerRef: ViewContainerRef) {
+               private modalService: ModalService) {
     store.select('user').subscribe((user: User) => {
       this.user = user;
       this.userEdit = _.cloneDeep(user);
@@ -84,7 +83,6 @@ export class ProfileSettingComponent implements OnInit {
   openImageModal() {
     this.modalService.show({
       component: ImgCropperComponent,
-      containerRef: this.viewContainerRef,
       customStyles: {'width': '350px', 'overflow': 'initial'}
     });
   }
@@ -115,7 +113,7 @@ export class ProfileSettingComponent implements OnInit {
       return false;
     }
     if (User.newPassword !== this.rePassword) {
-      this.showError('Passwords are missmatched');
+      this.showError('Passwords mismatched');
       return false;
     }
     return true;

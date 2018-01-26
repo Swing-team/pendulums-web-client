@@ -1,17 +1,17 @@
-import {ComponentFactoryResolver, Injectable, ViewContainerRef} from '@angular/core';
+import {ComponentFactoryResolver, Injectable, ViewContainerRef, ApplicationRef} from '@angular/core';
 import { ErrorComponent } from './error.component';
 
 @Injectable()
 export class ErrorService {
   private errorComponentRef;
-  private viewContainerRef;
+  private rootViewContainerRef: ViewContainerRef;
 
   constructor(
-    private componentFactoryResolver: ComponentFactoryResolver
-  ) {}
-
-  setViewContainerRef(vcRef: ViewContainerRef) {
-    this.viewContainerRef = vcRef;
+    private componentFactoryResolver: ComponentFactoryResolver,
+    private applicationRef: ApplicationRef
+  ) {
+      // get root viewContainerRef
+      this.rootViewContainerRef = this.applicationRef.components[0].instance.viewContainerRef;
   }
 
   show(errorConfig: ErrorConfig) {
@@ -22,7 +22,7 @@ export class ErrorService {
 
     const errorFactory = this.componentFactoryResolver.resolveComponentFactory(ErrorComponent);
 
-    this.errorComponentRef = this.viewContainerRef.createComponent(errorFactory);
+    this.errorComponentRef = this.rootViewContainerRef.createComponent(errorFactory, 1);
 
 
     if (errorConfig.input) {
