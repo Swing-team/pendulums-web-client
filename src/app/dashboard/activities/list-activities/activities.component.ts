@@ -2,7 +2,7 @@ import 'rxjs/add/operator/switchMap';
 import * as _ from 'lodash';
 import {
   Component, HostListener, Inject,
-  OnInit, ViewContainerRef
+  OnInit
 }                                           from '@angular/core';
 import { Observable }                       from 'rxjs/Observable';
 import { APP_CONFIG }                       from '../../../app.config';
@@ -46,8 +46,7 @@ export class ActivitiesComponent implements OnInit {
                private projectServices: ProjectService,
                private location: Location,
                private modalService: ModalService,
-               private errorService: ErrorService,
-               private viewContainerRef: ViewContainerRef) {
+               private errorService: ErrorService) {
     this.currentActivity = store.select('currentActivity');
     this.user = store.select('user');
   }
@@ -163,7 +162,6 @@ export class ActivitiesComponent implements OnInit {
     }
     this.modalService.show({
       component:  AddManuallyActivityComponent,
-      containerRef: this.viewContainerRef,
       inputs: {
         projectId: this.projectId,
         currentActivity: tempCurrentActivity ? tempCurrentActivity : null,
@@ -186,7 +184,6 @@ export class ActivitiesComponent implements OnInit {
     }
     this.modalService.show({
       component:  AddManuallyActivityComponent,
-      containerRef: this.viewContainerRef,
       inputs: {
         activity: activity,
         projectId: this.projectId,
