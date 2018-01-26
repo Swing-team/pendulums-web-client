@@ -27,7 +27,7 @@ export class SignUpComponent {
           this.submitted = false;
           console.log('error is: ', error);
           if (error.status === 400) {
-            this.errorMessage = 'Email or password miss match';
+            this.errorMessage = 'Email or password mismatch';
           } else {
             this.errorMessage = 'Server communication error';
           }
