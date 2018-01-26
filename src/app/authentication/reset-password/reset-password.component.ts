@@ -54,7 +54,7 @@ export class ResetPasswordComponent implements OnInit {
       return false;
     }
     if (User.password !== this.rePassword) {
-      this.errorMessage = 'passwords miss match ';
+      this.errorMessage = 'passwords mismatched ';
       return false;
     }
     return true;
