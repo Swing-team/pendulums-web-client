@@ -73,11 +73,28 @@ export class ToolbarComponent implements OnInit {
     x /= 60;
     const hours = Math.floor(x);
 
-    result = hours + ' : ' + minutes + ' : ' + seconds ;
-
-    if (minutes !== 0 && hours === 0) {
-      result = minutes + ' : ' + seconds ;
+    let tempMinutes: string ;
+    let tempSeconds: string ;
+    let tempHours: string ;
+    if (minutes < 10) {
+      tempMinutes = '0' + minutes;
+    } else {
+      tempMinutes = '' + minutes;
     }
+    if (seconds < 10) {
+      tempSeconds = '0' + seconds;
+    } else {
+      tempSeconds = '' + seconds;
+    }
+    if (hours < 10) {
+      tempHours = '0' + hours;
+    } else {
+      tempHours = '' + hours;
+    }
+
+    result = tempHours + ':' + tempMinutes + ':' + tempSeconds;
+
+
 
     if (minutes === 0 && hours === 0) {
       result = seconds + ' sec';
