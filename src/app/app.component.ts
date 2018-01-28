@@ -12,7 +12,6 @@ import { AuthenticationService }                  from './core/services/authenti
 import { ProjectsActions }                        from './shared/state/project/projects.actions';
 import { StatusActions }                          from './shared/state/status/status.actions';
 import { CurrentActivityActions }                 from './shared/state/current-activity/current-activity.actions';
-import { ErrorService }                           from './core/error/error.service';
 import { SyncService }                            from './core/services/sync.service';
 import { Status }                                 from './shared/state/status/status.model';
 
@@ -41,9 +40,9 @@ export class AppComponent implements OnInit {
     private currentActivityActions: CurrentActivityActions,
     private statusActions: StatusActions,
     private router: Router,
-    private viewContainerRef: ViewContainerRef,
-    private errorService: ErrorService,
-    private syncService: SyncService
+    private syncService: SyncService,
+    // needed for dynamically loaded components
+    public viewContainerRef: ViewContainerRef
   ) {
     // to initialize state
     this.user = store.select('user');
@@ -53,7 +52,6 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.errorService.setViewContainerRef(this.viewContainerRef);
     // to initialize webSocket connection
     this.syncService.init();
 
@@ -71,10 +69,8 @@ export class AppComponent implements OnInit {
 
       // To handle connection indicator
       if (status.netStatus === false) {
-        console.log('net is not connected!');
         this.netConnected = false;
       } else {
-        console.log('net is connected!');
         this.netConnected = true;
       }
     });
@@ -87,7 +83,6 @@ export class AppComponent implements OnInit {
 
   clickedOutSideOfMenu(event) {
     if (this.sideMenu.nativeElement.contains(event.target)) {
-      console.log('clicked inside menu in app component.');
     } else {
       if (this.menuIcon) {
         if (event.target.contains(this.menuIcon)) {

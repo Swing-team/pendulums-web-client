@@ -5,6 +5,7 @@ import { AppState }                   from '../../../../shared/state/appState';
 import { Store }                      from '@ngrx/store';
 import { ProjectsActions }            from '../../../../shared/state/project/projects.actions';
 import { ErrorService }               from '../../../../core/error/error.service';
+import { ModalService }               from '../../../../core/modal/modal.service';
 
 @Component({
   selector: 'dangerous-actions',
@@ -23,22 +24,21 @@ export class DangerousActionsComponent {
     private projectService: ProjectService,
     private store: Store<AppState>,
     private projectsAction: ProjectsActions,
-    private errorService: ErrorService) {
+    private errorService: ErrorService,
+    private modalService: ModalService) {
   }
 
   confirm() {
     if (this.projectNameInput.valueOf() === this.project.name.valueOf()) {
-      console.log('deletion confirmed');
       this.projectService.delete(this.project.id)
         .then(response => {
           this.store.dispatch(this.projectsAction.removeProject(this.project));
-          this.showError('Project deleted successfully.');
+          this.showError('The project was deleted successfully');
+          this.modalService.close();
         })
         .catch(error => {
-          this.showError('Server communication error.');
+          this.showError('Server communication error');
         });
-    } else {
-      console.log('deletion ignored');
     }
   }
 

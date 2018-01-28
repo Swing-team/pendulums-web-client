@@ -26,13 +26,11 @@ export class AnonymousGuardService implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     if (this.userId) {
       // logged in so return true
-      console.log('you are login!');
       this.router.navigate(['/dashboard']);
       return false;
     }
 
     // not logged in so redirect to login page with the return url and return false
-    console.log('you are not login!')
     return true;
   }
 }

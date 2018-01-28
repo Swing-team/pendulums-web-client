@@ -42,8 +42,7 @@ export class CreateProjectComponent {
 
   createProject() {
     if (!this.project.name || /^\s*$/.test(this.project.name) || !this.project.name.trim()) {
-      console.log('error is: ', 'name is empty!');
-      this.showError('Project name is empty.');
+      this.showError('Project name is empty');
     } else {
       this.formSubmitted = true;
       delete this.project['id'];
@@ -52,10 +51,9 @@ export class CreateProjectComponent {
       const formData = new FormData();
       formData.append('project', JSON.stringify(this.project));
       this.projectImageCanvasElem.nativeElement.toBlob(blob => {
-        console.log('picture size is:', blob.size);
         if (blob.size > 500000) {
           this.formSubmitted = false;
-          this.showError('Picture size exceeded from 500KB.');
+          this.showError('Image size exceeded from 500KB');
           return;
         }
         // check whether image has been changed or not
@@ -64,15 +62,14 @@ export class CreateProjectComponent {
         }
         this.projectServices.create(formData).then((project) => {
           this.store.dispatch(this.projectsActions.addProject(project));
-          console.log('project added successfully');
-          this.showError('project added successfully');
+          this.showError('The project was created successfully');
           this.project = new Project();
           this.modalService.close();
         })
           .catch(error => {
             this.formSubmitted = false;
             console.log('error is: ', error);
-            this.showError('Server communication error.');
+            this.showError('Server communication error');
           });
         this.formSubmitted = false;
       }, this.fileTypeString, 0.90);
@@ -112,7 +109,7 @@ export class CreateProjectComponent {
     reader.onload = () => callBack(reader.result);
     reader.onerror = (error) => {
       console.log('Error: ', error);
-      this.showError('Failed to upload file.');
+      this.showError('Failed to upload the image');
     }
     const fileType = file['type'];
     console.log('fileType', fileType);
@@ -155,14 +152,12 @@ export class CreateProjectComponent {
 
   validateInvitedUser() {
     if (!EMAIL_REGEX.test(this.user.email)) {
-      console.log('error:', 'please enter correct email address');
-      this.showError('please enter correct email address');
+      this.showError('Invalid email address');
       return false;
     }
     for (let i = 0; i < this.project.invitedUsers.length; i++) {
       if (this.project.invitedUsers[i].email === this.user.email) {
-        console.log('error:', 'email address is duplicated');
-        this.showError('email address is duplicated');
+        this.showError('You have already entered this email address');
         return false;
       }
     }

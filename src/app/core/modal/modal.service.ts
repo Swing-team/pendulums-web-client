@@ -1,21 +1,27 @@
-import {ComponentFactoryResolver, Injectable, ViewContainerRef} from '@angular/core';
+import {ComponentFactoryResolver, Injectable, ViewContainerRef, ApplicationRef} from '@angular/core';
 import {ModalComponent} from './modal.component';
 
 @Injectable()
 export class ModalService {
   private modalComponentRef;
   private contentComponentRef;
+  private rootViewContainerRef: ViewContainerRef;
 
   constructor(
     private componentFactoryResolver: ComponentFactoryResolver,
-  ) {}
+    private applicationRef: ApplicationRef
+  ) {
+    // get root viewContainerRef
+    this.rootViewContainerRef = this.applicationRef.components[0].instance.viewContainerRef;
+  }
 
   show(modalConfig: ModalConfig) {
     const contentFactory = this.componentFactoryResolver.resolveComponentFactory(modalConfig.component);
     const modalFactory = this.componentFactoryResolver.resolveComponentFactory(ModalComponent);
 
-    this.contentComponentRef = modalConfig.containerRef.createComponent(contentFactory);
-    this.modalComponentRef = modalConfig.containerRef.createComponent(modalFactory,
+    const viewContainerRef = modalConfig.containerRef ? modalConfig.containerRef : this.rootViewContainerRef
+    this.contentComponentRef = viewContainerRef.createComponent(contentFactory);
+    this.modalComponentRef = viewContainerRef.createComponent(modalFactory,
       0, undefined, [[this.contentComponentRef.location.nativeElement]]);
 
     if (modalConfig.customStyles) {
@@ -53,7 +59,12 @@ export class ModalService {
 
 interface ModalConfig {
   component: any;
-  containerRef: ViewContainerRef;
+  /**
+   * EXPERIMENTAL: provide {containerRef} only if you need to put modal inside a specific container but
+   * be aware that any state change can cause rerender the parent and the modal would be destroyed!
+   * we still don't know if it's an issue in our code or Angular it self... so this property is experimental.
+   */
+  containerRef?: ViewContainerRef;
   inputs?:  Object;
   outputs?: Object;
   customStyles?: Object;
