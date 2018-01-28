@@ -68,6 +68,14 @@ export class ProjectItemComponent implements OnInit {
     }
   }
 
+  toggleStopStart() {
+    if (this.activityStarted) {
+      this.stopActivity();
+    } else {
+      this.startActivity();
+    }
+  }
+
   startActivity() {
     if (this.currentActivityCopy.startedAt) {
       this.stopActivity();
