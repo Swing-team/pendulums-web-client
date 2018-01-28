@@ -26,9 +26,9 @@
         <span class="ps-display-span">/&nbsp;{{selectedProject.name ? selectedProject.name : ''}}</span>
         <span class="ps-display-span-time">/&nbsp;{{timeDuration}}</span>
       </div>
-      <div class="ps-toolbar-play" [ngClass]="{'ps-toolbar-stop': currentActivityCopy.startedAt}">
-        <span *ngIf="!currentActivityCopy.startedAt" class="icon-play ps-play-stop-size" (click)="startActivity()"></span>
-        <span *ngIf="currentActivityCopy.startedAt" class="icon-stop ps-play-stop-size" (click)="stopActivity()"></span>
+      <div class="ps-toolbar-play" [ngClass]="{'ps-toolbar-stop': currentActivityCopy.startedAt}" (click)="toggleStopStart()">
+        <span *ngIf="!currentActivityCopy.startedAt" class="icon-play ps-play-stop-size"></span>
+        <span *ngIf="currentActivityCopy.startedAt" class="icon-stop ps-play-stop-size"></span>
       </div>
     </div>
   </div>
