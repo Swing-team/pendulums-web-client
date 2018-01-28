@@ -30,6 +30,7 @@ export class ToolbarComponent implements OnInit {
   private selectedProject: Project;
   private taskName: string;
   private timeDuration: string;
+  private activityStarted = false;
 
   constructor (@Inject(APP_CONFIG) private config,
                private activityService: ActivityService,
@@ -48,6 +49,7 @@ export class ToolbarComponent implements OnInit {
         this.currentActivityCopy = currentActivity;
         this.selectedProject = this.projects.entities[currentActivity.project];
         if (this.currentActivityCopy.startedAt) {
+          this.activityStarted = true;
           let startedAt;
           let now;
           let duration;
@@ -57,6 +59,8 @@ export class ToolbarComponent implements OnInit {
             duration = now - startedAt;
             this.timeDuration = this.getTime(duration);
           }, 1000);
+        } else {
+          this.activityStarted = false;
         }
       });
     }
@@ -108,8 +112,17 @@ export class ToolbarComponent implements OnInit {
     console.log(event.selectedItem);
   }
 
+  toggleStopStart() {
+    if (this.activityStarted) {
+      this.stopActivity();
+    } else {
+      this.startActivity();
+    }
+  }
+
   startActivity() {
     if (this.selectedProject) {
+      this.activityStarted = true;
       if (!this.taskName) {
         this.taskName = 'Untiteld name';
       }
@@ -137,6 +150,7 @@ export class ToolbarComponent implements OnInit {
 
   stopActivity() {
     if (this.currentActivity) {
+      this.activityStarted = false;
       this.currentActivityCopy.stoppedAt = Date.now().toString();
       if (this.currentActivityCopy.id) {
         this.activityService.editCurrentActivity(this.currentActivityCopy.project, this.currentActivityCopy).then((activity) => {
