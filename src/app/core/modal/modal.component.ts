@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, Output, ViewChild, ViewContainerRef} from '@angular/core';
 
 @Component({
   selector: 'modal',
@@ -9,6 +9,8 @@ import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
 export class ModalComponent {
   @Input() customStyles: Object;
   @Output() close = new EventEmitter();
+  // used in modal service
+  @ViewChild('contentContainer', { read: ViewContainerRef }) contentContainer: ViewContainerRef;
 
   closeModal() {
     this.close.emit();
