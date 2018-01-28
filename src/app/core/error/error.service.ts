@@ -21,8 +21,7 @@ export class ErrorService {
     }
 
     const errorFactory = this.componentFactoryResolver.resolveComponentFactory(ErrorComponent);
-
-    this.errorComponentRef = this.rootViewContainerRef.createComponent(errorFactory, 1);
+    this.errorComponentRef = this.rootViewContainerRef.createComponent(errorFactory);
 
 
     if (errorConfig.input) {

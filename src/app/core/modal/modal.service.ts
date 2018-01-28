@@ -20,9 +20,8 @@ export class ModalService {
     const modalFactory = this.componentFactoryResolver.resolveComponentFactory(ModalComponent);
 
     const viewContainerRef = modalConfig.containerRef ? modalConfig.containerRef : this.rootViewContainerRef
-    this.contentComponentRef = viewContainerRef.createComponent(contentFactory);
-    this.modalComponentRef = viewContainerRef.createComponent(modalFactory,
-      0, undefined, [[this.contentComponentRef.location.nativeElement]]);
+    this.modalComponentRef = viewContainerRef.createComponent(modalFactory);
+    this.contentComponentRef = this.modalComponentRef.instance.contentContainer.createComponent(contentFactory)
 
     if (modalConfig.customStyles) {
       console.log(modalConfig.customStyles);
