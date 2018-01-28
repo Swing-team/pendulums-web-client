@@ -190,7 +190,7 @@ export class ProjectItemComponent implements OnInit {
     const hours = Math.floor(x);
 
     if (hours !== 0) {
-      result.hour = hours + ':' + minutes ;
+      result.hour = hours + 'h ' + minutes + 'm';
     }
 
     if (minutes !== 0 && hours === 0) {
