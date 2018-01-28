@@ -52,9 +52,9 @@ export class ActivityItemComponent implements OnInit {
 
   initial() {
     const fromDate = new Date(Number(this.activity.startedAt));
-    this.from = fromDate.getHours() + ':' + fromDate.getMinutes();
+    this.from = ('0' + fromDate.getHours()).slice(-2)   + ':' + ('0' + fromDate.getMinutes()).slice(-2);
     const toDate = new Date(Number(this.activity.stoppedAt));
-    this.to = toDate.getHours() + ':' + toDate.getMinutes();
+    this.to = ('0' + toDate.getHours()).slice(-2)   + ':' + ('0' + toDate.getMinutes()).slice(-2);
     const tempDuration = Number(this.activity.stoppedAt) - Number(this.activity.startedAt);
     this.duration = this.calculateActivityDuration(tempDuration);
   }
@@ -92,11 +92,7 @@ export class ActivityItemComponent implements OnInit {
     const hours = Math.floor(x);
 
     if (hours !== 0) {
-      if (minutes < 10) {
-        result = hours + ':0' + minutes ;
-      } else {
-        result = hours + ':' + minutes ;
-      }
+      result = hours + 'h ' + minutes + 'min';
     }
 
     if (minutes !== 0 && hours === 0) {
