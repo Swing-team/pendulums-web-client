@@ -1,37 +1,28 @@
 @import "../../../sass/variables"
 @import "../../../../node_modules/bulma/sass/utilities/variables"
 
+.ps-hidden
+  display: none
+
 .nav-right
   overflow: inherit
   @media (max-width: 330px)
-    padding-right: 45px
+    padding-right: 0
 
 .ps-nav-app-name
   font-size: 1.2em
   color: $primary-light
 
-.ps-nav-item-no-left-padding
-  padding-left: 0
-  @media (min-width: 1024px)
-    padding-left: 0.75rem
-
 .ps-nav-left
   color: $primary-light
   cursor: pointer
   padding: 2px
-  max-width: 64px
-  min-width: 64px
   &:hover
     background-color: $primary-light
     color: $paper
-  @media (max-width: $ps-mobile)
-    max-width: 56px
-    min-width: 56px
-
-.ps-nav-menu-icon
-  font-size: 2rem
-  @media (max-width: $ps-mobile)
-    font-size: 1.5em
+  @media (max-width: 1020px) and (min-width: 770px)
+    max-width: 64px
+    min-width: 64px
 
 .ps-nav-item-menu
   padding: 0
@@ -40,39 +31,30 @@
     padding: 0
     margin: 0.5rem
 
+.ps-nav-menu-icon
+  font-size: 2rem
+  @media (max-width: $ps-mobile)
+    font-size: 1.5em
+
+.ps-nav-item-logo
+  padding-left: 0
+  @media (min-width: 1024px)
+    padding-left: 0.75rem
+
+.ps-nav-logo
+  max-height: 48px
+
 .ps-nav-right-item
   background-color: $primary-light
   border-top-left-radius: 20px
   width: auto
-  padding: 0 20px
   margin: 0 -5px 0 0
   color: $paper
-  @media (max-width: 560px)and (min-width: $ps-mobile)
-    max-width: 280px
   @media (max-width: $ps-mobile)
-    max-height: 1.5rem
-  .input
-    background-color: transparent
-    color: $paper
-    border: none
-    outline: none
-    box-shadow: none
-    @media (max-width: 560px)and (min-width: $ps-mobile)
-      max-width: 120px
-    @media (max-width: $ps-mobile)
-      max-width: 90px
+    max-height: 1.6rem
+    padding-right: 5px
   .ps-toolbar-select
     display: inline-flex
-    width: 120px
-    min-width: 120px
-    margin-left: 16px
-    @media (max-width: $ps-mobile)
-      width: 90px
-      min-width: 90px
-      margin-left: 4px
-
-.ps-nav-logo
-  max-height: 48px
 
 .ps-toolbar-play
   border-radius: 100%
@@ -98,30 +80,59 @@
   padding-left: 2px
   font-size: 1rem !important
 
+.ps-nav-center
+  width: 33%
+  .nav-item
+    width: 100%
+  input
+    border-color: $primary-light
+    text-align: center
+  @media (max-width: 768px)
+    width: 50%
+  @media (max-width: 400px)
+    display: none
+
 .ps-nav-display-item
-  text-align: left
-  width: 370px
-  min-width: 370px
+  border-radius: $radius
+  background-color: $primary-light
+  color: $paper
+  padding: 0 1rem
+  text-align: center
   max-height: 1.8em
   font-size: 0.9rem
   line-height: 1.8rem
+  width: 100% !important
+  display: inline-flex
+  .ps-display-span
+    overflow: hidden
+    white-space: nowrap
+    text-overflow: ellipsis
+    display: inline-block
+  .ps-task-name
+    width: 50% !important
+    text-align: right
+    @media (min-width: 400px) and (max-width: 768px)
+      text-align: center
+      width: 100% !important
+  .ps-project-name
+    text-align: left
+    width: 50% !important
+    @media (min-width: 400px) and (max-width: 768px)
+      width: 0 !important
+
+.ps-nav-display-time
+  text-align: left
+  max-height: 1.8em
+  font-size: 0.9rem
+  line-height: 1.8rem
+  padding-left: 1rem
   .ps-display-span-time
     display: inline-block
     overflow: hidden
     white-space: nowrap
     text-overflow: ellipsis
     width: 70px
-  .ps-display-span
-    display: inline-block
-    overflow: hidden
-    white-space: nowrap
-    text-overflow: ellipsis
-    width: 100px
-    @media (max-width: $ps-mobile)
-      width: 50px
   @media (max-width: $ps-mobile)
-    min-width: 220px
-    width: 220px
     line-height: 1.5rem
 
 .ps-play-stop-size
