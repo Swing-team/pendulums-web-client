@@ -5,26 +5,34 @@
     </div>
   </div>
   <div class="nav-left is-hidden-mobile">
-    <div class="nav-item ps-nav-item-no-left-padding">
+    <div class="nav-item ps-nav-item-logo">
       <img class="ps-nav-logo" src="assets/images/logo-small.png" >
       <div class="ps-nav-app-name">Pendulums</div>
     </div>
   </div>
+  <div class="nav-center ps-nav-center" *ngIf="currentActivityCopy.startedAt">
+    <div class="nav-item" [ngClass]="{'ps-hidden': currentActivityCopy.startedAt && !showTaskNameInput}">
+      <input #taskNameInput class="input is-small" [(ngModel)]="taskName" placeholder="Task name" type="text"
+             (blur)="toggleShowTaskNameInput()" (change)="nameActivity()"/>
+    </div>
+    <div class="nav-item" *ngIf="currentActivityCopy.startedAt && !showTaskNameInput" (click)="toggleShowTaskNameInput()">
+      <div class="ps-nav-display-item">
+        <span class="ps-display-span ps-task-name">{{currentActivityCopy.name}}&nbsp;</span>
+        <span class="ps-display-span ps-project-name is-hidden-mobile">-&nbsp;{{selectedProject.name ? selectedProject.name : ''}}</span>
+      </div>
+    </div>
+  </div>
   <div class="nav-right">
     <div class="nav-item nav-right-padding">
-      <div *ngIf="!currentActivityCopy.startedAt" class="ps-nav-right-item columns is-mobile">
-        <input class="input is-small" [(ngModel)]="taskName" placeholder="Task name" type="text">
-        <span>/</span>
+      <div *ngIf="!currentActivityCopy.startedAt" class="ps-nav-right-item">
         <swing-select [items]="projects.entities | objectKeys"
                       [itemTextAttribute]="'name'"
                       (onItemClicked)="projectSelected($event)"
                       [label]="'Select Project'"
                       class="ps-toolbar-select"></swing-select>
       </div>
-      <div *ngIf="currentActivityCopy.startedAt" class="ps-nav-right-item ps-nav-display-item is-mobile">
-        <span class="ps-display-span">{{currentActivityCopy.name}}</span>
-        <span class="ps-display-span">/&nbsp;{{selectedProject.name ? selectedProject.name : ''}}</span>
-        <span class="ps-display-span-time">/&nbsp;{{timeDuration}}</span>
+      <div *ngIf="currentActivityCopy.startedAt" class="ps-nav-right-item ps-nav-display-time">
+        <span class="ps-display-span-time">{{timeDuration}}</span>
       </div>
       <div class="ps-toolbar-play" [ngClass]="{'ps-toolbar-stop': currentActivityCopy.startedAt}" (click)="toggleStopStart()">
         <span *ngIf="!currentActivityCopy.startedAt" class="icon-play ps-play-stop-size"></span>

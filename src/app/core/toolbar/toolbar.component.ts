@@ -1,5 +1,7 @@
-import { Component, EventEmitter, Inject,
-         Input, Output, OnInit }            from '@angular/core';
+import {
+  Component, EventEmitter, Inject,
+  Input, Output, OnInit, ViewChild,
+} from '@angular/core';
 import { Observable }                       from 'rxjs/Observable';
 import { APP_CONFIG }                       from '../../app.config';
 import { Activity }                         from '../../shared/state/current-activity/current-activity.model';
@@ -21,12 +23,14 @@ import { StatusActions }                    from '../../shared/state/status/stat
   styleUrls: ['./toolbar.component.sass']
 })
 
-export class ToolbarComponent implements OnInit {
+export class ToolbarComponent implements OnInit  {
   @Input() user: User;
   @Input() projects: Projects;
   @Input() currentActivity: Observable<Activity>;
   @Output() onMenuItemClicked = new EventEmitter();
+  @ViewChild('taskNameInput') taskNameInput;
   currentActivityCopy: Activity;
+  showTaskNameInput = false;
   private selectedProject: Project;
   private taskName: string;
   private timeDuration: string;
@@ -47,6 +51,7 @@ export class ToolbarComponent implements OnInit {
     if (this.currentActivity) {
       this.currentActivity.subscribe(currentActivity => {
         this.currentActivityCopy = currentActivity;
+        this.taskName = currentActivity.name;
         this.selectedProject = this.projects.entities[currentActivity.project];
         if (this.currentActivityCopy.startedAt) {
           this.activityStarted = true;
@@ -192,6 +197,47 @@ export class ToolbarComponent implements OnInit {
 
   showSideMenu(event) {
     this.onMenuItemClicked.emit(event);
+  }
+
+  toggleShowTaskNameInput() {
+    this.showTaskNameInput = !this.showTaskNameInput;
+    if (this.showTaskNameInput) {
+      // just for focus the input
+      setTimeout(_ => {
+        this.taskNameInput.nativeElement.focus();
+      });
+    }
+  }
+
+  nameActivity() {
+    this.showTaskNameInput = false;
+
+    if (this.currentActivity) {
+      this.currentActivityCopy.name = this.taskName;
+      if (this.currentActivityCopy.id) {
+        this.activityService.editCurrentActivity(this.currentActivityCopy.project, this.currentActivityCopy).then((activity) => {
+          delete activity.createdAt;
+          delete activity.updatedAt;
+          this.store.dispatch(this.CurrentActivityActions.loadCurrentActivity(activity));
+        })
+          .catch(error => {
+            console.log('server error happened', error);
+            this.store.dispatch(this.CurrentActivityActions.loadCurrentActivity(this.currentActivityCopy));
+            this.store.dispatch(this.StatusActions.updateUnsyncedDataChanged(true));
+          });
+      } else {
+        this.activityService.create(this.currentActivityCopy.project, this.currentActivityCopy).then((activity) => {
+          delete activity.createdAt;
+          delete activity.updatedAt;
+          this.store.dispatch(this.CurrentActivityActions.loadCurrentActivity(activity));
+        })
+          .catch(error => {
+            console.log('server error happened', error);
+            this.store.dispatch(this.CurrentActivityActions.loadCurrentActivity(this.currentActivityCopy));
+            this.store.dispatch(this.StatusActions.updateUnsyncedDataChanged(true));
+          });
+      }
+    }
   }
 
   showError(error) {
