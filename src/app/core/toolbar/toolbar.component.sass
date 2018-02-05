@@ -1,9 +1,6 @@
 @import "../../../sass/variables"
 @import "../../../../node_modules/bulma/sass/utilities/variables"
 
-.ps-hidden
-  display: none
-
 .nav-right
   overflow: inherit
   @media (max-width: 330px)
@@ -20,9 +17,12 @@
   &:hover
     background-color: $primary-light
     color: $paper
-  @media (max-width: 1020px) and (min-width: 770px)
+  @media (max-width: 1020px) and (min-width: 481px)
     max-width: 64px
     min-width: 64px
+  @media (max-width: 480px)
+    max-width: 56px
+    min-width: 56px
 
 .ps-nav-item-menu
   padding: 0
@@ -60,65 +60,63 @@
   border-radius: 100%
   height: 40px
   width: 40px
-  margin-right: 0.75rem
   background-color: $primary-light
   z-index: 2
   text-align: center
-  font-size: 1.1rem
+  font-size: 1.5rem
   line-height: 2.4rem
   padding-left: 5px
   color: $paper
   cursor: pointer
+  position: relative
   @media (max-width: $ps-mobile)
-    margin-right: 0
-    font-size: 1rem
-    line-height: 2.3rem
     height: 36px
     width: 36px
 
 .ps-toolbar-stop
   padding-left: 2px
-  font-size: 1rem !important
 
-.ps-nav-center
-  width: 33%
-  .nav-item
-    width: 100%
-  input
-    border-color: $primary-light
-    text-align: center
-  @media (max-width: 768px)
-    width: 50%
-  @media (max-width: 400px)
+.ps-toolbar-time-tooltip
+  background-color: $primary-light
+  position: absolute
+  font-size: 0.75rem
+  bottom: -32px
+  left: -32px
+  border-radius: $radius
+  line-height: 1.5rem
+  padding-left: 5px
+  padding-right: 5px
+  min-width: 60px
+  @media (min-width: $ps-mobile)
+    display: none
+  &:before
+    content: ' '
+    position: absolute
+    bottom: 100%
+    left: 50%
+    margin-left: -5px
+    border-width: 5px
+    border-style: solid
+    border-color: transparent transparent $primary-light transparent
+
+.ps-toolbar-time-icon
+  background-color: $red
+  position: absolute
+  font-size: 0.75rem
+  bottom: -5px
+  left: -15px
+  border-radius: 100%
+  @media (min-width: $ps-mobile)
     display: none
 
-.ps-nav-display-item
-  border-radius: $radius
-  background-color: $primary-light
-  color: $paper
-  padding: 0 1rem
-  text-align: center
-  max-height: 1.8em
-  font-size: 0.9rem
-  line-height: 1.8rem
-  width: 100% !important
-  display: inline-flex
-  .ps-display-span
-    overflow: hidden
-    white-space: nowrap
-    text-overflow: ellipsis
-    display: inline-block
-  .ps-task-name
-    width: 50% !important
-    text-align: right
-    @media (min-width: 400px) and (max-width: 768px)
-      text-align: center
-      width: 100% !important
-  .ps-project-name
-    text-align: left
-    width: 50% !important
-    @media (min-width: 400px) and (max-width: 768px)
-      width: 0 !important
+#rotate
+  -webkit-animation: rotation 2s infinite linear
+
+@-webkit-keyframes rotation
+  from
+    -webkit-transform: rotate(0deg)
+  to
+    -webkit-transform: rotate(359deg)
 
 .ps-nav-display-time
   text-align: left
@@ -132,8 +130,44 @@
     white-space: nowrap
     text-overflow: ellipsis
     width: 70px
+    @media (max-width: $ps-mobile)
+      display: none
   @media (max-width: $ps-mobile)
     line-height: 1.5rem
 
-.ps-play-stop-size
-  font-size: 1.5rem
+.ps-nav-center
+  position: relative
+  width: 33%
+  .nav-item
+    width: 100%
+  @media (max-width: 768px)
+    width: 60%
+
+input
+  width: 100%
+  background: none
+  position: relative
+  z-index: 1
+  outline: 0
+  border-color: $primary-light
+  text-align: center
+  &:not(:focus) + label
+    background: $primary-light
+    color: white
+    font-size: 0.7rem
+    padding: 6px
+    z-index: 2
+    text-transform: uppercase
+
+label
+  width: 94%
+  height: 2.5em
+  position: absolute
+  color: $paper
+  border-radius: $radius
+  display: inline-block
+  overflow: hidden
+  white-space: nowrap
+  text-overflow: ellipsis
+
+
