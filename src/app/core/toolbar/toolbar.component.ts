@@ -1,6 +1,6 @@
 import {
   Component, EventEmitter, Inject,
-  Input, Output, OnInit, ViewChild,
+  Input, Output, OnInit,
 } from '@angular/core';
 import { Observable }                       from 'rxjs/Observable';
 import { APP_CONFIG }                       from '../../app.config';
@@ -28,9 +28,8 @@ export class ToolbarComponent implements OnInit  {
   @Input() projects: Projects;
   @Input() currentActivity: Observable<Activity>;
   @Output() onMenuItemClicked = new EventEmitter();
-  @ViewChild('taskNameInput') taskNameInput;
   currentActivityCopy: Activity;
-  showTaskNameInput = false;
+  showTimeDuration = false;
   private selectedProject: Project;
   private taskName: string;
   private timeDuration: string;
@@ -117,6 +116,10 @@ export class ToolbarComponent implements OnInit  {
     console.log(event.selectedItem);
   }
 
+  toggleShowTimeDuration() {
+    this.showTimeDuration = !this.showTimeDuration;
+  }
+
   toggleStopStart() {
     if (this.activityStarted) {
       this.stopActivity();
@@ -199,19 +202,7 @@ export class ToolbarComponent implements OnInit  {
     this.onMenuItemClicked.emit(event);
   }
 
-  toggleShowTaskNameInput() {
-    this.showTaskNameInput = !this.showTaskNameInput;
-    if (this.showTaskNameInput) {
-      // just for focus the input
-      setTimeout(_ => {
-        this.taskNameInput.nativeElement.focus();
-      });
-    }
-  }
-
-  nameActivity() {
-    this.showTaskNameInput = false;
-
+  nameActivity($event) {
     if (this.currentActivity) {
       this.currentActivityCopy.name = this.taskName;
       if (this.currentActivityCopy.id) {
@@ -238,6 +229,9 @@ export class ToolbarComponent implements OnInit  {
           });
       }
     }
+    // just for blur out the input
+    const target = $event.target;
+    target.blur();
   }
 
   showError(error) {
