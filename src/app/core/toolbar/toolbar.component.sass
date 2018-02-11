@@ -50,6 +50,7 @@
   width: auto
   margin: 0 -5px 0 0
   color: $paper
+  padding-left: 1rem
   @media (max-width: $ps-mobile)
     max-height: 1.6rem
     padding-right: 5px
@@ -106,7 +107,7 @@
   bottom: -5px
   left: -15px
   border-radius: 100%
-  @media (min-width: $ps-mobile)
+  @media (min-width: $ps-mobile + 1px)
     display: none
 
 #rotate
@@ -123,7 +124,8 @@
   max-height: 1.8em
   font-size: 0.9rem
   line-height: 1.8rem
-  padding-left: 1rem
+  padding-left: 1.7rem !important
+  position: relative
   .ps-display-span-time
     display: inline-block
     overflow: hidden
@@ -132,8 +134,20 @@
     width: 70px
     @media (max-width: $ps-mobile)
       display: none
+  .ps-time-indicator
+    border-radius: 100%
+    width: 12px
+    height: 12px
+    background-color: $red
+    border-color: $red
+    position: absolute
+    bottom: 0.3rem
+    left: 0.7rem
+    @media (max-width: $ps-mobile)
+      display: none
   @media (max-width: $ps-mobile)
     line-height: 1.5rem
+    padding-left: 0 !important
 
 .ps-nav-center
   position: relative
@@ -142,6 +156,8 @@
     width: 100%
   @media (max-width: 768px)
     width: 60%
+  @media (min-width: 481px) and (max-width: 530px)
+    width: 55%
 
 input
   width: 100%
@@ -160,7 +176,7 @@ input
     text-transform: uppercase
 
 label
-  width: 94%
+  width: 95%
   height: 2.5em
   position: absolute
   color: $paper
