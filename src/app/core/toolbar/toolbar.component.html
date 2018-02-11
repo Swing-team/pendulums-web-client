@@ -18,7 +18,7 @@
     </div>
   </div>
   <div class="nav-right">
-    <div class="nav-item nav-right-padding">
+    <div class="nav-item">
       <div *ngIf="!currentActivityCopy.startedAt" class="ps-nav-right-item">
         <swing-select [items]="projects.entities | objectKeys"
                       [itemTextAttribute]="'name'"
@@ -27,6 +27,7 @@
                       class="ps-toolbar-select"></swing-select>
       </div>
       <div *ngIf="currentActivityCopy.startedAt" class="ps-nav-right-item ps-nav-display-time">
+        <span class="ps-time-indicator"></span>
         <span class="ps-display-span-time">{{timeDuration}}</span>
       </div>
       <div class="ps-toolbar-play" [ngClass]="{'ps-toolbar-stop': currentActivityCopy.startedAt}">
