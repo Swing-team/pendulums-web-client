@@ -23,6 +23,8 @@ export class SignUpComponent {
     this.errorMessage = null;
     if (this.validation(this.newUser)) {
       this.authService.signUp(this.newUser)
+        .then(() => {
+        })
         .catch(error => {
           this.submitted = false;
           console.log('error is: ', error);
@@ -36,6 +38,7 @@ export class SignUpComponent {
       this.submitted = false;
     }
   };
+
   validation(newUser): boolean {
     if (!EMAIL_REGEX.test(newUser.email)) {
       this.errorMessage = 'please enter valid email address';
