@@ -55,10 +55,11 @@ export class ProjectPendingInvitationsComponent {
     return Md5.hashStr(email);
   }
 
-  cancelInvitation(invitedUser) {
+  cancelInvitation(invitedUser, index) {
     this.projectService.cancelInvitation(this.project.id, {invitedUser})
       .then(response => {
         this.store.dispatch(this.projectsActions.removeInvitedUser(this.project.id, invitedUser));
+        this.project.invitedUsers.splice(index, 1)
         this.showError('Invitation was cancelled successfully');
       }).catch(error => {
       this.showError('Server Communication error.');
