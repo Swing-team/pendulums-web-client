@@ -210,10 +210,9 @@ export class ActivitiesComponent implements OnInit {
     });
   }
 
-  @HostListener('window:scroll', [])
-  onWindowScroll() {
-    const listLength = (window.screen.height * 95 / 100) * (this.pageNumber + 1);
-    if (window.scrollY > listLength && this.scrollEnable) {
+  @HostListener('window:scroll', ['$event'])
+  onWindowScroll($event) {
+      if ((window.scrollY + window.screen.height) / document.body.offsetHeight >= 0.90 && this.scrollEnable) {
       this.scrollEnable = false;
       this.pageNumber++;
       console.log('page number:', this.pageNumber);
