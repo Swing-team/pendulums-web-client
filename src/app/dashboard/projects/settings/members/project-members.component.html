@@ -38,7 +38,7 @@
             [width]="'auto'"
             [items]="['team member','admin']"
             [label]="member.role"
-            (onItemClicked)="changeTeamMemberRole(member.id, $event)">
+            (onItemClicked)="changeTeamMemberRole(member.id, i, $event)">
           </swing-select>
         </div>
         <div *ngIf="member.role === 'owner'" class="ps-user-role ps-owner-role">
@@ -49,7 +49,7 @@
         <span class="icon-trash has-text-danger ps-body-button" (click)="removeMemberConfirmationViewIndex = i"></span>
         <span class="ps-remove-member-confirmation" [class.ps-remove-member-confirmation-shown]="removeMemberConfirmationViewIndex === i">
           <span class="icon-cancel" (click)="removeMemberConfirmationViewIndex = -1 "></span>
-          <span class="icon-check" (click)="removeMember(member.id)"></span>
+          <span class="icon-check" (click)="removeMember(member.id, i)"></span>
         </span>
       </div>
     </div>
