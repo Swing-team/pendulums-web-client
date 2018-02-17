@@ -84,10 +84,11 @@ export class ProjectMembersComponent implements OnInit {
     return userRoleInProject(this.project, this.user.id);
   }
 
-  removeMember(memberId) {
+  removeMember(memberId, index) {
     this.projectServices.removeMember(this.project.id, memberId)
       .then(response => {
         this.store.dispatch(this.projectsAction.removeMember(this.project.id, memberId));
+        this.members.splice(index, 1)
       })
       .catch(error => {
         console.log('error is: ', error);
@@ -95,11 +96,12 @@ export class ProjectMembersComponent implements OnInit {
       });
   }
 
-  changeTeamMemberRole(memberId, event) {
+  changeTeamMemberRole(memberId, index, event) {
     console.log(event);
     this.projectServices.changeTeamMemberRole(this.project.id, memberId, event.selectedItem)
       .then(response => {
         this.store.dispatch(this.projectsAction.changeMemberRole(this.project.id, memberId, event.selectedItem));
+        this.members[index].role = event.selectedItem;
       })
       .catch(error => {
         console.log('error is: ', error);

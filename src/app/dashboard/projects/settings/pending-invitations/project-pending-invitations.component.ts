@@ -42,6 +42,7 @@ export class ProjectPendingInvitationsComponent {
       )
         .then(response => {
           this.store.dispatch(this.projectsActions.addInvitedUser(this.project.id, this.user));
+          this.project.invitedUsers.push(invitedUser);
           this.user = {email: null, role: this.roles[0]};
           this.showError('User is invited');
         }).catch(error => {
