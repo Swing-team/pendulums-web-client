@@ -1,8 +1,13 @@
 <div class="ps-activities-container">
   <span class="ps-activity-top-button icon-plus" (click)="openAddManuallyModal()"></span>
   <span class="ps-activity-top-button ps-activity-back icon-back" (click)="goBack()"></span>
+  <div class="columns" style="padding-top: 100px">
+    <div class="column is-offset-1 is-10" style="background-color: white">
+      <chart></chart>
+    </div>
+  </div>
   <div class="columns">
-    <div class="column is-offset-4-widescreen is-4-widescreen is-4-desktop is-offset-4-desktop   is-6-tablet is-offset-3-tablet">
+    <div class="column is-offset-4-widescreen is-4-widescreen is-4-desktop is-offset-4-desktop is-6-tablet is-offset-3-tablet">
       <div *ngIf="currentActivityCopy" class="ps-activity-item">
         <ng-container>
           <div class="ps-header-container">

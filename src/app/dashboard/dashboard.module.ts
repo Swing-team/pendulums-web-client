@@ -1,7 +1,6 @@
-import { NgModule }               from '@angular/core';
-import { AppRoutingModule }       from '../app-routing.module';
-import { SharedModule }           from '../shared/shared.module';
-
+import { NgModule }                           from '@angular/core';
+import { AppRoutingModule }                   from '../app-routing.module';
+import { SharedModule }                       from '../shared/shared.module';
 import { ProjectService }                     from './shared/projects.service';
 import { ProjectItemComponent }               from './projects/list-project/project-item/project-item.component';
 import { ActivitiesComponent }                from './activities/list-activities/activities.component';
@@ -16,14 +15,15 @@ import { ListOfProjectComponent }             from './projects/list-project/list
 import { DashboardComponent }                 from './dashboard.component';
 import { ProjectSettingsModalComponent }      from './projects/settings/modal/project-settings-modal.component';
 import { ProfileSettingComponent }            from '../profile-setting/profile-setting.component';
-import { BrowserModule }                      from '@angular/platform-browser';
+import { ChartComponent }                     from './activities/list-activities/chart-statistics/chart.component';
+import { NgxChartsModule }                    from '@swimlane/ngx-charts';
 import { BrowserAnimationsModule }            from '@angular/platform-browser/animations';
 
 @NgModule({
   imports: [
     AppRoutingModule,
     SharedModule,
-    BrowserModule,
+    NgxChartsModule,
     BrowserAnimationsModule
   ],
   declarations: [
@@ -37,6 +37,7 @@ import { BrowserAnimationsModule }            from '@angular/platform-browser/an
     ProjectItemComponent,
     ActivitiesComponent,
     ActivityItemComponent,
+    ChartComponent,
     AddManuallyActivityComponent,
     DashboardComponent,
     ProfileSettingComponent
