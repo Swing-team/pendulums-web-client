@@ -1,4 +1,5 @@
 @import "../../../sass/variables"
+@import "../../../sass/swing-checkradio.component"
 
 =arrow()
   border: 1px solid
@@ -28,16 +29,17 @@
     top: 50%
     z-index: 4
     @media (max-width: $ps-mobile)
-      right: 0em
+      right: 0.5em
   .ps-select-label
     padding-right: 2.5em
     cursor: pointer
     line-height: 2.25em
     text-overflow: ellipsis
-    width: 120px
-    min-width: 120px
     overflow: hidden
     white-space: nowrap
+    width: 100%
+    text-align: left
+    margin-left: 5px
   .ps-select-items-list
     display: none
     position: absolute
@@ -58,4 +60,9 @@
       &:hover
         background-color: lighten($primary-light, 10)
         color: $paper
+
+.ps-close-swing-select
+  border-top: 1px solid #e5e5e5
+  .field
+    margin-left: 0.5rem
 

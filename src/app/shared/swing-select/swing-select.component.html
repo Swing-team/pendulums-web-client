@@ -1,5 +1,5 @@
 <div class="ps-select" [ngStyle]="{'width' : width}">
-  <div class="ps-select-label" (click)="toggleIsExpanded()">
+  <div *ngIf="type === 'singleSelect'" class="ps-select-label" (click)="toggleIsExpanded()">
     {{
     (selectedItem || selectedItem === 0) ? (
         itemTextAttribute ?
@@ -10,10 +10,40 @@
     }}
   </div>
 
-  <ul class="ps-select-items-list" [ngClass]="{'ps-show-items': isExpanded}">
+  <ul *ngIf="type === 'singleSelect'" class="ps-select-items-list" [ngClass]="{'ps-show-items': isExpanded}">
     <li *ngFor="let item of items; trackBy: let i = index" (click)="itemClicked(i, item)"
         [ngClass]="{'ps-selected-item': selectedItemIndex === i}">
       {{itemTextAttribute ? item[itemTextAttribute] : item}}
     </li>
+  </ul>
+
+  <div *ngIf="type === 'multiSelect'" class="ps-select-label" (click)="toggleIsExpanded()">
+    <swing-tag-input *ngIf="selectItemsListOutput.length > 0" [items]="selectItemsListTags"></swing-tag-input>
+    {{selectItemsListOutput.length === 0 ? label : ''}}
+  </div>
+
+  <ul *ngIf="type === 'multiSelect'" class="ps-select-items-list" [ngClass]="{'ps-show-items': isExpanded}">
+    <li *ngFor="let item of selectItemsList; trackBy: let i = index">
+      <div class="field">
+        <input class="is-checkradio" [attr.id]="'checkradio' + i" type="checkbox" name="rtlCheckbox"
+               [checked]="item.selected" (change)="addItemToOutputList($event, i)">
+        <label [attr.for]="'checkradio' + i">
+          {{
+          itemTextAttribute ? (
+              item.item[itemTextAttribute] ?
+                    item.item[itemTextAttribute]
+                    : (alternativeItemTextAttribute ?
+                        item.item[alternativeItemTextAttribute]
+                            : 'no name!' )
+          )
+          : item
+          }}
+        </label>
+      </div>
+    </li>
+    <li class="ps-close-swing-select">
+      <div class="field" (click)="toggleIsExpanded()">
+        Close
+      </div>
   </ul>
 </div>
