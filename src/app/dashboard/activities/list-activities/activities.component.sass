@@ -2,6 +2,10 @@
 
 .ps-activities-container
   position: relative
+  .ps-activities-stat-wrapper
+    padding-top: 100px
+    @media (max-width: 480px)
+      padding-top: 140px
 
 .ps-activity-item
   &:before
@@ -46,6 +50,7 @@
   color: $primary-light
   background-color: $paper
   border-radius: 100%
+  border: none
   height: 50px
   width: 50px
   z-index: 5
@@ -67,3 +72,17 @@
   left: 50px !important
   @media (max-width: 700px)
     left: 5px !important
+
+.ps-stat-user-filter-wrapper
+  background-color: $paper
+  position: absolute
+  top: 40px
+  right: 25%
+  width: 50%
+  @media (max-width: 700px)
+    top: 30px
+    right: 25%
+  @media (max-width: 400px)
+    top: 80px
+    right: 5%
+    width: 90%

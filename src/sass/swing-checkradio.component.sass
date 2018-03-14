@@ -1,0 +1,240 @@
+@import "../../node_modules/bulma/bulma"
+
+$checkbox-radius: $radius !default
+$checkbox-border: .1rem solid $grey-lighter !default
+$checkbox-block-background: $white-ter !default
+$checkradio-focus: 1px dotted $grey-light !default
+$checkradio-top-offset: 0.3rem !default
+$ps-size-normal: 0.75rem !default
+$ps-size-small: 0.35rem !default
+$ps-size-medium: 0.75rem !default
+$ps-size-large: 1rem !default
+
+=checkbox-size($size)
+  $newSize: $size * 1.5
+  $height: $newSize / 2.5
+  $width: $newSize / 4
+
+  + label
+    font-size: $size
+    // line-height: $newSize
+    padding-left: $size * 2
+    &::before
+      width: $newSize
+      height: $newSize
+    &::after
+      width: $width
+      height: $height
+      top: ( ( $newSize / 2 ) - ( $height / 2 ) ) * 0.9
+      left: $height
+
+  &.is-block
+    + label
+      &::after
+        top: ( ( ( $newSize / 2 ) - ( $height / 2 ) ) * 1.3 ) + 0.2
+        left: $height * 1.3
+
+  &.is-rtl
+    + label
+      padding-left: 0
+      padding-right: $size * 2
+      &::after
+        left: auto
+        right: $height
+
+// Use a mixin to define all ratios in the same spot
+=radio-size($size)
+  $newSize: $size * 1.5
+  $height: $newSize
+  $width: $newSize
+
+  + label
+    font-size: $size
+    line-height: $newSize
+    padding-left: $size * 2
+    &::before, &::after
+      width: $width
+      height: $height
+  &.is-rtl
+    + label
+      padding-right: $size * 2
+
+.is-checkradio[type="checkbox"]
+  outline: 0
+  user-select: none
+  display: inline-block
+  position: absolute
+  opacity: 0
+
+  + label
+    position: relative
+    display: inline-block
+    cursor: pointer
+    vertical-align: middle
+    margin: .5em
+    padding: .2rem .5rem .2rem 0
+    border-radius: $checkbox-radius
+    overflow: hidden
+    text-overflow: ellipsis
+    width: 90%
+    &:hover
+      &::before
+        animation-duration: 0.4s
+        animation-fill-mode: both
+        animation-name: hover-color
+
+    &::before
+      position: absolute
+      left: 0
+      top: $checkradio-top-offset
+      content: ''
+      border: $checkbox-border
+
+    &::after
+      position: absolute
+      display: none
+      content: ''
+      top: $checkradio-top-offset + 0.2 !important
+
+  &.is-rtl
+    + label
+      margin-right: 0rem
+      margin-left: 0.5rem
+      &::before
+        left: auto
+        right: 0
+
+  &:focus
+    + label
+      &::before
+        outline: $checkradio-focus
+
+  &:hover:not([disabled])
+    + label
+      &::before
+        border-color: $primary !important
+
+  &:checked
+    + label
+      &::before
+        border: $checkbox-border
+    &[disabled]
+      cursor: not-allowed
+      + label
+        opacity: 0.5
+    + label
+      &::before
+        animation-name: none
+      &::after
+        display: inline-block
+
+  &[disabled]
+    cursor: not-allowed
+    + label
+      opacity: 0.5
+      cursor: not-allowed
+      &:hover,
+      &:before,
+      &:after
+        cursor: not-allowed
+
+    &:hover
+      cursor: not-allowed
+      &::before
+        animation-name: none
+
+    &::before
+      cursor: not-allowed
+
+    &::after
+      cursor: not-allowed
+
+  &.has-no-border
+    + label
+      &::before
+        border: none !important
+
+  &.is-block
+    display: none !important
+    + label
+      width: 100% !important
+      background: $checkbox-block-background
+      color: findColorInvert( $checkbox-block-background )
+      padding-right: .75em
+      &::before
+        border: none !important
+
+.is-checkradio[type="checkbox"]
+  + label
+    &::before
+      border-radius: $checkbox-radius
+
+    &::after
+      box-sizing: border-box
+      transform: rotate(45deg)
+      border-width: .1rem
+      border-style: solid
+      border-color: $primary
+      border-top: 0
+      border-left: 0
+
+  &.is-circle
+    + label
+      &::before
+        border-radius: 50%
+
+  +checkbox-size($ps-size-normal)
+  &.is-small
+    +checkbox-size($ps-size-small)
+  &.is-medium
+    +checkbox-size($ps-size-medium)
+  &.is-large
+    +checkbox-size($ps-size-large)
+
+  @each $name, $pair in $colors
+    $color: nth($pair, 1)
+    $color-invert: nth($pair, 2)
+    &.is-#{$name}
+      &.has-background-color
+        + label
+          &::before
+            border-color: transparent !important
+            background-color: $color !important
+      &:hover:not([disabled])
+        + label
+          &::before
+            border-color: $color !important
+      &:checked
+        + label
+          &::after
+            border-color: $color !important
+        &.has-background-color
+          + label
+            &::before
+              border-color: transparent !important
+              background-color: $color !important
+            &::after
+              border-color: $color-invert !important
+              background-color: $color !important
+        &.is-block
+          + label
+            color: $color-invert
+            border-color: $color !important
+            background: $color
+            &::after
+              border-color: $color-invert !important
+
+  &:indeterminate
+    + label
+      &::after
+        display: inline-block
+        transform: rotate(90deg)
+        border-bottom: none
+    @each $name, $pair in $colors
+      $color: nth($pair, 1)
+      $color-invert: nth($pair, 2)
+      &.is-#{$name}
+        + label
+          &::after
+            border-color: $color
+

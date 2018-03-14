@@ -263,7 +263,11 @@ export class ActivitiesComponent implements OnInit {
       result = seconds + ' sec';
     }
     return result;
-  };
+  }
+
+  usersSelected (event) {
+    console.log(event);
+  }
 }
 
 

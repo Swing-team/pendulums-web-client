@@ -10,7 +10,7 @@ import { User }                             from '../../../../shared/state/user/
 })
 
 export class ChartComponent {
-  @Input() user: Array<User>;
+  @Input() teamMembers: Array<User>;
   toDate: string;
   fromDate: string;
   calenderShow = false;
