@@ -20,7 +20,8 @@
   <div class="nav-right">
     <div class="nav-item">
       <div *ngIf="!currentActivityCopy.startedAt" class="ps-nav-right-item">
-        <swing-select [items]="projects.entities | objectKeys"
+        <swing-select [width]="'120px'"
+                      [items]="projects.entities | objectKeys"
                       [itemTextAttribute]="'name'"
                       (onItemClicked)="projectSelected($event)"
                       [label]="'Select Project'"

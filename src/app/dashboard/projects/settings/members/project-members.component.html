@@ -35,7 +35,7 @@
         </div>
         <div *ngIf="member.role !== 'owner'" class="ps-user-role">
           <swing-select
-            [width]="'auto'"
+            [width]="'120px'"
             [items]="['team member','admin']"
             [label]="member.role"
             (onItemClicked)="changeTeamMemberRole(member.id, i, $event)">
