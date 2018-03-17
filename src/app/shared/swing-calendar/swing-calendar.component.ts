@@ -275,18 +275,26 @@ export class SwingCalendarComponent implements OnInit {
         })
       } else if (this.startRange) {
         this.endRange = sDate;
-        const tempStartDate =  new Date(this.startRange.year, this.startRange.month, this.startRange.date, 0, 0, 0, 0).getTime();
-        const tempEndDate = new Date(this.endRange.year, this.endRange.month, this.endRange.date, 0, 0, 0, 0).getTime();
+        const tempStartDate =  moment()
+          .year(this.startRange.year)
+          .month(this.startRange.month - 1 )
+          .date(this.startRange.date)
+          .startOf('day');
+        const tempEndDate = moment()
+          .year(this.endRange.year)
+          .month(this.endRange.month - 1 )
+          .date(this.endRange.date)
+          .endOf('day');
         let result: any;
-        if (tempStartDate < tempEndDate) {
+        if (tempStartDate.isBefore(tempEndDate)) {
           result = {
-            'start' : moment(tempStartDate),
-            'end' : moment(tempEndDate),
+            'start': tempStartDate,
+            'end': tempEndDate,
           }
         } else {
           result = {
-            'start' : moment(tempEndDate),
-            'end' : moment(tempStartDate)
+            'start': tempEndDate,
+            'end': tempStartDate
           }
         }
 

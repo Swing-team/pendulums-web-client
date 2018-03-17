@@ -16,15 +16,15 @@ import { DashboardComponent }                 from './dashboard.component';
 import { ProjectSettingsModalComponent }      from './projects/settings/modal/project-settings-modal.component';
 import { ProfileSettingComponent }            from '../profile-setting/profile-setting.component';
 import { ChartComponent }                     from './activities/list-activities/chart-statistics/chart.component';
-import { NgxChartsModule }                    from '@swimlane/ngx-charts';
-import { BrowserAnimationsModule }            from '@angular/platform-browser/animations';
+import { NvD3Module } from 'ng2-nvd3';
+import 'd3';
+import 'nvd3';
 
 @NgModule({
   imports: [
     AppRoutingModule,
     SharedModule,
-    NgxChartsModule,
-    BrowserAnimationsModule
+    NvD3Module
   ],
   declarations: [
     CreateProjectComponent,

@@ -1,270 +1,141 @@
 import 'rxjs/add/operator/switchMap';
-import { Component, Inject, Input }         from '@angular/core';
+import {
+  Component, Inject, Input, OnChanges,
+  OnInit, SimpleChange, ViewEncapsulation
+} from '@angular/core';
 import { APP_CONFIG }                       from '../../../../app.config';
-import { User }                             from '../../../../shared/state/user/user.model';
+import { ActivityService }                  from '../../../shared/activity.service';
+import { Project }                          from 'app/shared/state/project/project.model';
+import * as moment                          from 'moment';
+
+declare const d3: any;
 
 @Component({
   selector: 'chart',
   templateUrl: './chart.component.html',
-  styleUrls: ['./chart.component.sass']
+  styleUrls: ['./chart.component.sass'],
+  encapsulation: ViewEncapsulation.None
 })
 
-export class ChartComponent {
-  @Input() teamMembers: Array<User>;
-  toDate: string;
-  fromDate: string;
+export class ChartComponent implements OnInit, OnChanges {
+  @Input() project: Project;
+  @Input() selectedUsers: string[];
+  private toDate: Number;
+  private fromDate: Number;
+  private dateRange: any;
+  dateString: string;
   calenderShow = false;
 
-  multi = [
-    {
-      "name": "Germany",
-      "series": [
-        {
-          "name": "2010",
-          "value": 7
+  multiLevelData = [];
+  options;
+
+  constructor (@Inject(APP_CONFIG) private config,
+               private activityService: ActivityService) {
+  }
+
+  ngOnInit() {
+    // configure date range for first api call
+    this.fromDate = moment().subtract(7, 'days').endOf('day').valueOf();
+    this.toDate = moment().startOf('day').valueOf();
+    this.dateString = moment().subtract(7, 'days').format('MMM Do') + ' - ' + moment().format('MMM Do') ;
+
+    // get data from server
+    this.getStatAndPrepareData();
+
+    // configure ng2-nvd3 chart
+    this.options = {
+      chart: {
+        type: 'multiBarChart',
+        height: 450,
+        margin : {
+          top: 60,
+          right: 20,
+          bottom: 30,
+          left: 45
         },
-        {
-          "name": "2011",
-          "value": 5
+        clipEdge: true,
+        // staggerLabels: true,
+        duration: 500,
+        stacked: true,
+        x: function(d){ return d.x; },
+        y: function(d){ return d.y; },
+        useInteractiveGuideline: true,
+        showControls: false,
+        xAxis: {
+          showMaxMin: false
         },
-        {
-          "name": "2012",
-          "value": 6
+        yAxis: {
+          axisLabelDistance: 0,
+          tickFormat: function(d){
+            return d3.format('.02f')(d);
+          }
         }
-      ]
-    },
-    {
-      "name": "USA",
-      "series": [
-        {
-          "name": "2010",
-          "value": 7
-        },
-        {
-          "name": "2011",
-          "value": 8
-        },
-        {
-          "name": "2012",
-          "value": 5
-        }
-      ]
-    },
-    {
-      "name": "France11",
-      "series": [
-        {
-          "name": "2010",
-          "value": 5
-        },
-        {
-          "name": "2011",
-          "value": 6
-        },
-        {
-          "name": "2012",
-          "value": 5
-        }
-      ]
-    },
-    {
-      "name": "Germanjjy12",
-      "series": [
-        {
-          "name": "2010",
-          "value": 7
-        },
-        {
-          "name": "2011",
-          "value": 5
-        },
-        {
-          "name": "2012",
-          "value": 5
-        }
-      ]
-    },
-    {
-      "name": "UjjSA9",
-      "series": [
-        {
-          "name": "2010",
-          "value": 7
-        },
-        {
-          "name": "2011",
-          "value": 8
-        },
-        {
-          "name": "2012",
-          "value": 5
-        }
-      ]
-    },
-    {
-      "name": "Frajjnce8",
-      "series": [
-        {
-          "name": "2010",
-          "value": 5
-        },
-        {
-          "name": "2011",
-          "value": 5
-        },
-        {
-          "name": "2012",
-          "value": 5
-        }
-      ]
-    },
-    {
-      "name": "Germany777",
-      "series": [
-        {
-          "name": "2010",
-          "value": 7.3
-        },
-        {
-          "name": "2011",
-          "value": 5.8
-        },
-        {
-          "name": "2012",
-          "value": 5.8
-        }
-      ]
-    },
-    {
-      "name": "USA666",
-      "series": [
-        {
-          "name": "2010",
-          "value": 7
-        },
-        {
-          "name": "2011",
-          "value": 8
-        },
-        {
-          "name": "2012",
-          "value": 5
-        }
-      ]
-    },
-    {
-      "name": "Fradsdnce66",
-      "series": [
-        {
-          "name": "2010",
-          "value": 5
-        },
-        {
-          "name": "2011",
-          "value": 4
-        },
-        {
-          "name": "2012",
-          "value": 5.5
-        }
-      ]
-    },
-    {
-      "name": "Gersdasasamanjjy55",
-      "series": [
-        {
-          "name": "2010",
-          "value": 7.3
-        },
-        {
-          "name": "2012",
-          "value": 5
-        }
-      ]
-    },
-    {
-      "name": "UjsdsdjSA5",
-      "series": [
-        {
-          "name": "2010",
-          "value": 7.8
-        },
-        {
-          "name": "2011",
-          "value": 8
-        },
-        {
-          "name": "2012",
-          "value": 5
-        }
-      ]
-    },
-    {
-      "name": "Frasdsdjjnce444",
-      "series": [
-        {
-          "name": "2010",
-          "value": 5
-        },
-        {
-          "name": "2011",
-          "value": 9
-        },
-        {
-          "name": "2012",
-          "value": 6
-        }
-      ]
-    },
-    {
-      "name": "UjsdsdjSA33",
-      "series": [
-        {
-          "name": "2010",
-          "value": 7
-        },
-        {
-          "name": "2011",
-          "value": 8
-        },
-        {
-          "name": "2012",
-          "value": 5
-        }
-      ]
-    },
-    {
-      "name": "Frassdjjnce22",
-      "series": [
-        {
-          "name": "2010",
-          "value": 5
-        },
-        {
-          "name": "2011",
-          "value": 6
-        },
-        {
-          "name": "2012",
-          "value": 4
-        }
-      ]
+      }
+    };
+  }
+
+  ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
+    if (changes.selectedUsers && changes.selectedUsers.currentValue && !changes.selectedUsers.firstChange) {
+      this.getStatAndPrepareData();
     }
-  ];
+  }
 
+  getStatAndPrepareData() {
+    this.multiLevelData = [];
+    if (this.selectedUsers.length > 0) {
+      this.activityService.getStat(this.project.id, this.selectedUsers, this.fromDate, this.toDate).then( (res) => {
+        const temInputStatArray = res.result;
+        temInputStatArray.map((data) => {
+          const series = [];
+          let userName = '';
+          const user = this.project.teamMembers.filter(x => x.id === data._id)[0];
 
-  // options
-  showXAxis = true;
-  showYAxis = true;
-  showLegend = true;
-  showXAxisLabel = false;
-  showYAxisLabel = false;
+          if (user.name !== '') {
+            userName = user.name;
+          } else {
+            userName = user.email;
+          }
+          data.stats.map((userStat, index) => {
+            if (index === 0 && this.dateRange > 0 && this.dateRange < 4) {
+              series.push({
+                'x': ' ',
+                'y': 0
+              });
+              series.push({
+                'x': '  ',
+                'y': 0
+              })
+            }
+            let xAxisName =  moment(Number(userStat.id)).format('MMM Do');
 
-  colorScheme = {
-    domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
-  };
+            if (index + 2 <= data.stats.length) {
+              xAxisName = xAxisName + '-' + moment(Number(data.stats[index + 1].id)).format('MMM Do');
+            }
+            const duration = moment.duration(userStat.value, 'ms').asHours();
+            series.push({
+              'x': xAxisName,
+              'y': duration
+            });
+            if (index === data.stats.length -1 && this.dateRange > 0 && this.dateRange < 4) {
+              series.push({
+                'x': '   ',
+                'y': 0
+              });
+              series.push({
+                'x': '    ',
+                'y': 0
+              })
+            }
+          });
 
-  constructor (@Inject(APP_CONFIG) private config) {
+          this.multiLevelData.push({
+            'key': userName,
+            'values': series
+            // color: ps-colors array
+          });
+        })
+      });
+    }
   }
 
   showCalender() {
@@ -276,9 +147,13 @@ export class ChartComponent {
   }
 
   updateDates(event) {
-    console.log('result:', event);
+    this.fromDate = event.start.valueOf();
+    this.toDate = event.end.valueOf();
+    this.getStatAndPrepareData();
+    this.dateString = event.start.format('MMM Do') + ' - ' + event.end.format('MMM Do');
+    this.dateRange = moment.duration(Number(this.toDate) - Number(this.fromDate)).asDays();
+    console.log('this.dateRange', this.dateRange)
     this.calenderShow = false;
-
   }
 }
 
