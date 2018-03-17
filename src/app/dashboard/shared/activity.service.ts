@@ -64,6 +64,19 @@ export class ActivityService {
       .catch(this.handleError);
   }
 
+  getStat(projectId, users, fromDate, toDate): Promise<any> {
+    const httpParams = new HttpParams()
+      .set('users', JSON.stringify(users))
+      .set('from', JSON.stringify(fromDate))
+      .set('to', JSON.stringify(toDate));
+    const optionsWithParams = {...this.config.httpOptions, params: httpParams};
+    return this.http
+      .get(this.config.apiEndpoint + '/projects/' + projectId + '/stats/hours', optionsWithParams)
+      .toPromise()
+      .then(response => response)
+      .catch(this.handleError);
+  }
+
   delete(projectId, activityId): Promise<any> {
     return this.http
       .delete(this.config.apiEndpoint + '/projects/' + projectId + '/activities/' + activityId , this.options)
