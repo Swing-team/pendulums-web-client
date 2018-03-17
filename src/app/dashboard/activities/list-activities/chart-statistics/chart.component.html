@@ -9,13 +9,13 @@
       <swing-calendar (rangeSelected)="updateDates($event)" calendarType="range"></swing-calendar>
     </div>
   </div>
-  <div style="height: 500px;">
-    <div *ngIf="multiLevelData.length > 0">
-      <nvd3 [options]="options" [data]="multiLevelData"></nvd3>
-    </div>
-
+  <div *ngIf="multiLevelData.length > 0">
+    <nvd3 [options]="options" [data]="multiLevelData"></nvd3>
+  </div>
+  <div *ngIf="multiLevelData.length === 0" class="ps-chart-placeholder">
+    <figure class="image">
+      <img src="../../../../../assets/images/placeholder.jpg">
+    </figure>
+    <p>Please select a member to show statistics</p>
   </div>
 </div>
-
-
-
