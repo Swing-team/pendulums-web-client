@@ -52,11 +52,20 @@
   top: 0
   right: 0
   background-color: $primary
-  color: $paper
-  border-radius: 100%
+  color: $paper !important
+  border-radius: 100% !important
   z-index: 5
   margin-top: -10px
   margin-right: -10px
   @media (max-width: 400px)
     margin-top: 0
     margin-right: 0
+
+.ps-chart-placeholder
+  background-color: #4E9F67
+  .image
+    max-width: 320px
+    max-height: 320px
+    margin: 20px auto
+  p
+    padding-bottom: 10px
