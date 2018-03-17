@@ -147,12 +147,12 @@ export class ChartComponent implements OnInit, OnChanges {
   }
 
   updateDates(event) {
-    this.fromDate = event.start.valueOf();
-    this.toDate = event.end.valueOf();
-    this.getStatAndPrepareData();
     this.dateString = event.start.format('MMM Do') + ' - ' + event.end.format('MMM Do');
     this.dateRange = moment.duration(Number(this.toDate) - Number(this.fromDate)).asDays();
-    console.log('this.dateRange', this.dateRange)
+    this.fromDate = event.start.startOf('day').valueOf();
+    this.toDate = (event.end.add(1, 'days')).startOf('day').valueOf();
+    this.getStatAndPrepareData();
+    console.log('event', event)
     this.calenderShow = false;
   }
 }
