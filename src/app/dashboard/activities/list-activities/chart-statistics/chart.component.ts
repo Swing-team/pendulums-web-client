@@ -35,9 +35,18 @@ export class ChartComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     // configure date range for first api call
-    this.fromDate = moment().subtract(7, 'days').endOf('day').valueOf();
+    this.fromDate = moment().subtract(7, 'days').startOf('day').valueOf();
     this.toDate = moment().startOf('day').valueOf();
-    this.dateString = moment().subtract(7, 'days').format('MMM Do') + ' - ' + moment().format('MMM Do') ;
+    this.dateString = moment().subtract(7, 'days').format('MMM Do');
+    const firstIdsMonth =  moment().subtract(7, 'days').month();
+    const secondIdsMonth =  moment().month();
+    let temp = '';
+    if (firstIdsMonth === secondIdsMonth) {
+      temp = moment().format('Do');
+    } else {
+      temp = moment().format('MMM Do');
+    }
+    this.dateString = this.dateString + ' - ' + temp;
 
     // get data from server
     this.getStatAndPrepareData();
@@ -47,11 +56,21 @@ export class ChartComponent implements OnInit, OnChanges {
       chart: {
         type: 'multiBarChart',
         height: 450,
+        // color: d3.scale.category10().range(),
+        // color: ['red', 'darkorange', 'green', 'darkred', 'darkviolet'],
         margin : {
           top: 60,
           right: 20,
           bottom: 30,
           left: 45
+        },
+        legend: {
+          margin: {
+            top: 5,
+            right: 0,
+            bottom: 5,
+            left: 0
+          }
         },
         clipEdge: true,
         // staggerLabels: true,
@@ -96,6 +115,7 @@ export class ChartComponent implements OnInit, OnChanges {
             userName = user.email;
           }
           data.stats.map((userStat, index) => {
+            // push empty column when total columns are less than 4
             if (index === 0 && this.dateRange > 0 && this.dateRange < 4) {
               series.push({
                 'x': ' ',
@@ -106,17 +126,32 @@ export class ChartComponent implements OnInit, OnChanges {
                 'y': 0
               })
             }
-            let xAxisName =  moment(Number(userStat.id)).format('MMM Do');
 
-            if (index + 2 <= data.stats.length) {
-              xAxisName = xAxisName + '-' + moment(Number(data.stats[index + 1].id)).format('MMM Do');
+            // prepare xAxis name base on ids
+            let xAxisName =  moment(Number(userStat.id)).format('MMM Do');
+            if (res.columnSize !== 1) {
+              if (index + 2 <= data.stats.length) {
+                const firstIdsMonth =  moment(Number(userStat.id)).month();
+                const secondIdsMonth =  moment(Number(data.stats[index + 1].id) - 1).month();
+                let temp = '';
+                if (firstIdsMonth === secondIdsMonth) {
+                  temp = moment(Number(data.stats[index + 1].id) - 1).format('Do');
+                } else {
+                  temp = moment(Number(data.stats[index + 1].id) - 1).format('MMM Do');
+                }
+                xAxisName = xAxisName + '-' + temp;
+              }
             }
+
+            // calculate time duration of ids
             const duration = moment.duration(userStat.value, 'ms').asHours();
             series.push({
               'x': xAxisName,
               'y': duration
             });
-            if (index === data.stats.length -1 && this.dateRange > 0 && this.dateRange < 4) {
+
+            // push empty column when total columns are less than 4
+            if (index === data.stats.length - 1 && this.dateRange > 0 && this.dateRange < 4) {
               series.push({
                 'x': '   ',
                 'y': 0
@@ -147,7 +182,17 @@ export class ChartComponent implements OnInit, OnChanges {
   }
 
   updateDates(event) {
-    this.dateString = event.start.format('MMM Do') + ' - ' + event.end.format('MMM Do');
+    this.dateString = event.start.format('MMM Do');
+    const firstIdsMonth =  event.start.month();
+    const secondIdsMonth =  event.end.month();
+    let temp = '';
+    if (firstIdsMonth === secondIdsMonth) {
+      temp = event.end.format('Do');
+    } else {
+      temp = event.end.format('MMM Do');
+    }
+    this.dateString = this.dateString + ' - ' + temp;
+
     this.dateRange = moment.duration(Number(this.toDate) - Number(this.fromDate)).asDays();
     this.fromDate = event.start.startOf('day').valueOf();
     this.toDate = (event.end.add(1, 'days')).startOf('day').valueOf();
