@@ -350,36 +350,37 @@ export class SwingCalendarComponent implements OnInit {
     switch (range) {
       case 'last7days': {
         result = {
-          'start' : moment(),
-          'end' : moment().subtract(7, 'days')
+          'start' : moment().subtract(7, 'days'),
+          'end' : moment()
         };
         break;
       }
       case 'currentWeek': {
         result = {
-          'start' : moment(),
-          'end' : moment().startOf('week')
+          'start' : moment().startOf('week'),
+          'end' : moment()
         };
         break;
       }
       case 'currentMonth': {
         result = {
-          'start' : moment(),
-          'end' : moment().startOf('month')
+          'start' : moment().startOf('month'),
+          'end' : moment()
+
         };
         break;
       }
       case 'last3months': {
         result = {
-          'start' : moment(),
-          'end' : moment().subtract(3, 'months')
+          'start' : moment().subtract(3, 'months'),
+          'end' : moment()
         };
         break;
       }
       default: {
         result = {
-          'start' : moment(),
-          'end' : moment().startOf('month')
+          'start' : moment().startOf('month'),
+          'end' : moment()
         };
         break;
       }
