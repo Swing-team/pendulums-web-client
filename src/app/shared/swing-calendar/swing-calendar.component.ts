@@ -311,7 +311,7 @@ export class SwingCalendarComponent implements OnInit {
         if (!date.disabled) {
           const tempDate = new Date(date.year, date.month, date.date, 0, 0, 0, 0).getTime();
 
-          if (tempStartDate < tempEndDate) {
+          if (tempStartDate <= tempEndDate) {
             if (tempStartDate <= tempDate && tempDate <= tempEndDate ) {
               date.calendarRange = true;
             } else {
