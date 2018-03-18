@@ -4,7 +4,7 @@
 $calendar-border: .1rem solid $white-ter !default
 $calendar-border-radius: $radius-small !default
 $calendar-header-color: $primary-light !default
-$calendar-date-hover: $white-ter !default
+$calendar-date-hover: lighten($primary-light, 10%) !default
 $calendar-today-background: transparent !default
 $calendar-today-border-color: $primary-light !default
 $calendar-today-color: $primary-light !default
@@ -34,9 +34,17 @@ $calendar-today-color: $primary-light !default
       .button
         text-decoration: none
         color: $white
-        &:hover
-          background: transparent
-          color: $white-ter
+        &.is-link
+          &:hover,
+          &:active,
+          &.is-active
+            background: lighten($primary-light, 10%) !important
+            color: $white-ter
+          &:focus,
+          &.is-focused,
+          &.is-hovered
+            background-color: $calendar-header-color !important
+            color: $white-ter
     .calendar-nav-left
       align-items: center
       justify-content: flex-start
@@ -61,7 +69,7 @@ $calendar-today-color: $primary-light !default
     background: $paper !important
   .calendar-date
     border: 0
-    padding: .4rem
+    padding: .2rem
     .date-item
       appearance: none
       background: transparent
@@ -82,8 +90,8 @@ $calendar-today-color: $primary-light !default
       width: 1.8rem
       &.is-today
         background: $calendar-today-background
-        border-color: $calendar-today-border-color
-        color: $calendar-today-color
+        border-color: $calendar-today-border-color !important
+        color: $calendar-today-color !important
       &:focus
         background: $calendar-date-hover
         border-color: $calendar-date-hover
@@ -108,7 +116,7 @@ $calendar-today-color: $primary-light !default
     &::before
       background: lighten($primary-light, 10%)
       content: ""
-      height: 2.8rem
+      height: 2.25rem
       left: 0
       position: absolute
       right: 0
@@ -123,10 +131,10 @@ $calendar-today-color: $primary-light !default
 
 .ps-date-item
   @media (max-width: 770px) and (min-width: 480px)
-    height: 2.9rem !important
+    height: 2.7rem !important
     width: 2.7rem !important
   @media (max-width: 480px)
-    height: 3.2rem !important
+    height: 3rem !important
     width: 3rem !important
 
 .ps-date-picker-shortcuts
