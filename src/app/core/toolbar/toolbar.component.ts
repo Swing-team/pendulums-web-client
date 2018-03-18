@@ -132,7 +132,7 @@ export class ToolbarComponent implements OnInit  {
     if (this.selectedProject) {
       this.activityStarted = true;
       if (!this.taskName) {
-        this.taskName = 'Untiteld name';
+        this.taskName = 'untitled activity';
       }
       const activity = new Activity();
       activity.project = this.selectedProject.id;

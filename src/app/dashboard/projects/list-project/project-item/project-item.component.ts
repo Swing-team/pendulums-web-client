@@ -45,7 +45,7 @@ export class ProjectItemComponent implements OnInit {
                private errorService: ErrorService,
                private UnSyncedActivityActions: UnSyncedActivityActions,
                private StatusActions: StatusActions) {
-    this.taskName = 'Untitled task';
+    this.taskName = 'untitled activity';
     this.activities = [];
   }
 
@@ -114,7 +114,7 @@ export class ProjectItemComponent implements OnInit {
         this.activityService.editCurrentActivity(this.project.id, this.currentActivityCopy).then((activity) => {
           this.store.dispatch(this.CurrentActivityActions.clearCurrentActivity());
           this.store.dispatch(this.projectsActions.updateProjectActivities(this.project.id, activity));
-          this.taskName = 'Untitled task';
+          this.taskName = 'untitled activity';
           this.showError('The activity was stopped');
         })
           .catch(error => {
@@ -131,7 +131,7 @@ export class ProjectItemComponent implements OnInit {
         this.activityService.createManually(this.project.id, this.currentActivityCopy).then((activity) => {
           this.store.dispatch(this.CurrentActivityActions.clearCurrentActivity());
           this.store.dispatch(this.projectsActions.updateProjectActivities(this.project.id, activity));
-          this.taskName = 'Untitled task';
+          this.taskName = 'untitled activity';
           this.showError('The activity was stopped');
         })
           .catch(error => {
