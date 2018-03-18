@@ -14,12 +14,8 @@
   display: flex
   position: absolute
   top: 100%
-  right: 30%
+  right: calc(50% - 215px)
   width: 430px
-  @media(max-width: 1024px)
-    right: 25%
-  @media(max-width: 620px)
-    right: 15%
   @media(max-width: 520px)
     right: 5%
     left: 5%
@@ -40,12 +36,12 @@
     pointer-events: none
   &:before
     border-bottom-color: #e4e7ea
-    border-width: 11px
-    right: 90px
+    border-width: 13px
+    right: 50%
   &:after
     border-bottom-color: #fff
     border-width: 10px
-    right: 91px
+    right: 51%
 
 .ps-close-calender-button
   position: absolute
