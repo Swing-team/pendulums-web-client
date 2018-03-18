@@ -53,9 +53,10 @@ export class ActivityService {
       .catch(this.handleError);
   }
 
-  getActivities(projectId , page: number = 0): Promise<Activity[]> {
+  getActivities(projectId , users, page: number = 0): Promise<Activity[]> {
     const httpParams = new HttpParams()
-      .set('page', page.toString());
+      .set('page', page.toString())
+      .set('users', JSON.stringify(users));
     const optionsWithParams = {...this.config.httpOptions, params: httpParams};
     return this.http
       .get(this.config.apiEndpoint + '/projects/' + projectId + '/activities', optionsWithParams)

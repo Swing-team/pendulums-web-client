@@ -3,7 +3,7 @@ import * as _ from 'lodash';
 import {
   Component, HostListener,
   Inject, OnInit,
-} from '@angular/core';
+}                                           from '@angular/core';
 import { Observable }                       from 'rxjs/Observable';
 import { APP_CONFIG }                       from '../../../app.config';
 import { ActivityService }                  from '../../shared/activity.service';
@@ -16,9 +16,7 @@ import { ErrorService }                     from '../../../core/error/error.serv
 import { Store }                            from '@ngrx/store';
 import { AppState }                         from '../../../shared/state/appState';
 import { Project }                          from '../../../shared/state/project/project.model';
-import { ProjectService }                   from 'app/dashboard/shared/projects.service';
 import { User }                             from '../../../shared/state/user/user.model';
-import { userRoleInProject }                from '../../shared/utils';
 
 @Component({
   selector: 'activities',
@@ -47,7 +45,6 @@ export class ActivitiesComponent implements OnInit {
                private store: Store<AppState>,
                private route: ActivatedRoute,
                private activityService: ActivityService,
-               private projectServices: ProjectService,
                private location: Location,
                private modalService: ModalService,
                private errorService: ErrorService) {
@@ -64,19 +61,7 @@ export class ActivitiesComponent implements OnInit {
 
   ngOnInit() {
     this.tempArray = [];
-    this.route.paramMap
-      .switchMap((params: ParamMap) => {
-      this.projectId = params.get('projectId');
-      return this.activityService.getActivities(params.get('projectId'));
-    })
-      .subscribe((activities) => {
-      activities.map((activity) => {
-        if (activity.stoppedAt) {
-          this.tempArray.push(activity);
-        }
-      });
-        this.groupByActivities();
-    });
+    this.getActivitiesFromServer();
 
     this.store.select('projects').subscribe((projects: any) => {
       if (projects) {
@@ -248,24 +233,28 @@ export class ActivitiesComponent implements OnInit {
       this.scrollEnable = false;
       this.pageNumber++;
       console.log('page number:', this.pageNumber);
-      this.route.paramMap
-        .switchMap((params: ParamMap) => {
-          this.projectId = params.get('projectId');
-          return this.activityService.getActivities(params.get('projectId'), this.pageNumber);
-        })
-        .subscribe((activities) => {
-        console.log('activities', activities)
+      this.getActivitiesFromServer();
+    }
+  }
+
+  getActivitiesFromServer() {
+    this.route.paramMap
+      .switchMap((params: ParamMap) => {
+        this.projectId = params.get('projectId');
+        return this.activityService.getActivities(params.get('projectId'), this.selectedUsers, this.pageNumber);
+      })
+      .subscribe((activities) => {
+        console.log('activities', activities);
         if (activities.length > 0) {
           this.scrollEnable = true;
         }
-          activities.map((activity) => {
-            if (activity.stoppedAt) {
-              this.tempArray.push(activity);
-            }
-          });
-          this.groupByActivities();
+        activities.map((activity) => {
+          if (activity.stoppedAt) {
+            this.tempArray.push(activity);
+          }
         });
-    }
+        this.groupByActivities();
+      });
   }
 
   calculateTimeDuration (duration) {
@@ -298,10 +287,13 @@ export class ActivitiesComponent implements OnInit {
   }
 
   getSelectedUsers (event) {
-    this.selectedUsers = []
+    this.selectedUsers = [];
     event.map((user) => {
       this.selectedUsers.push(user.item.id);
     });
+    this.tempArray = [];
+    this.pageNumber = 0;
+    this.getActivitiesFromServer();
   }
 }
 
