@@ -6,16 +6,16 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
   styleUrls: ['./error.component.sass'],
 })
 
-export class ErrorComponent implements OnInit {
+export class ErrorComponent {
   @Input() errorMessages = [];
   @Output() close = new EventEmitter();
 
-  ngOnInit() {
-    if (this.errorMessages.length > 0) {
-      setInterval(() => {
-        this.errorMessages.splice(0, 1);
-      }, 3000);
-    }
+  constructor() {}
+
+  setTime() {
+    setTimeout(() => {
+      this.errorMessages.splice(0, 1);
+    }, 4000);
   }
 
   closeModal() {

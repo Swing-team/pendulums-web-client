@@ -17,6 +17,7 @@ export class ErrorService {
   show(errorConfig: ErrorConfig) {
     if (this.errorComponentRef) {
       this.errorComponentRef.instance['errorMessages'].push(errorConfig.input);
+      this.errorComponentRef.instance.setTime();
       return;
     }
 
@@ -26,6 +27,7 @@ export class ErrorService {
 
     if (errorConfig.input) {
      this.errorComponentRef.instance['errorMessages'].push(errorConfig.input);
+      this.errorComponentRef.instance.setTime();
     }
 
     this.errorComponentRef.instance['close'].subscribe(() => this.close());
