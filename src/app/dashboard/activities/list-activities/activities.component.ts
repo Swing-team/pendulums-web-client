@@ -1,8 +1,8 @@
 import 'rxjs/add/operator/switchMap';
 import * as _ from 'lodash';
 import {
-  Component, HostListener, Inject,
-  OnInit
+  Component, HostListener,
+  Inject, OnInit,
 }                                           from '@angular/core';
 import { Observable }                       from 'rxjs/Observable';
 import { APP_CONFIG }                       from '../../../app.config';
@@ -16,22 +16,24 @@ import { ErrorService }                     from '../../../core/error/error.serv
 import { Store }                            from '@ngrx/store';
 import { AppState }                         from '../../../shared/state/appState';
 import { Project }                          from '../../../shared/state/project/project.model';
-import { ProjectService }                   from 'app/dashboard/shared/projects.service';
 import { User }                             from '../../../shared/state/user/user.model';
 
 @Component({
   selector: 'activities',
   templateUrl: './activities.component.html',
-  styleUrls: ['./activities.component.sass']
+  styleUrls: ['./activities.component.sass'],
 })
 export class ActivitiesComponent implements OnInit {
-  private projectId: string;
+  projectId: string;
   private project: Project;
   private pageNumber = 0;
   private scrollEnable = true;
   private tempArray: Array<Activity>;
   private currentActivity: Observable<Activity>;
   private user: Observable<User>;
+  private userId: string;
+  userAccess = false;
+  selectedUsers = [];
   currentActivityCopy: Activity;
   projectActivities: {
     date: any
@@ -43,29 +45,44 @@ export class ActivitiesComponent implements OnInit {
                private store: Store<AppState>,
                private route: ActivatedRoute,
                private activityService: ActivityService,
-               private projectServices: ProjectService,
                private location: Location,
                private modalService: ModalService,
                private errorService: ErrorService) {
     this.currentActivity = store.select('currentActivity');
     this.user = store.select('user');
+    this.user.subscribe(user => {
+      this.userId = user.id;
+      if (user.id && this.selectedUsers.length === 0) {
+        this.selectedUsers = [];
+        this.selectedUsers.push(user.id);
+      }
+    });
   }
 
   ngOnInit() {
     this.tempArray = [];
-    this.route.paramMap
-      .switchMap((params: ParamMap) => {
-      this.projectId = params.get('projectId');
-      return this.activityService.getActivities(params.get('projectId'));
-    })
-      .subscribe((activities) => {
-      activities.map((activity) => {
-        if (activity.stoppedAt) {
-          this.tempArray.push(activity);
+    this.getActivitiesFromServer();
+
+    this.store.select('projects').subscribe((projects: any) => {
+      if (projects) {
+        this.project = projects.entities[this.projectId];
+        if (this.userId && this.project) {
+          this.userAccess = this.userRoleInProject(this.project, this.userId)
         }
-      });
-        this.groupByActivities();
+
+      }
+      // todo mahsa: please find a way that we need this block of code and why this block is needed
+      // if (!this.project) {
+      //   this.projectServices.getProject(this.projectId).then((project) => {
+      //     this.project = project;
+      //     console.log('this.projectServices', this.project)
+      //   })
+      //     .catch(error => {
+      //       console.log('error is: ', error);
+      //     });
+      // }
     });
+
     if (this.currentActivity) {
       this.currentActivity.subscribe(currentActivity => {
         if (currentActivity.project === this.projectId) {
@@ -80,22 +97,22 @@ export class ActivitiesComponent implements OnInit {
           this.currentActivityCopy = null;
         }
       });
-    }
-
-    this.store.select('projects').subscribe((projects: any) => {
-      if (projects) {
-        this.project = projects.entities[this.projectId];
-      }
-      if (!this.project) {
-        this.projectServices.getProject(this.projectId).then((project) => {
-          this.project = project;
-        })
-          .catch(error => {
-            console.log('error is: ', error);
-          });
-      }
-    });
+    };
   }
+
+  userRoleInProject(project, userId)  {
+    let role = false;
+    if (project.owner.id === userId) {
+      role = true;
+    } else {
+      project.admins.map(user => {
+        if (user.id === userId) {
+          role = true;
+        }
+      });
+    }
+    return role;
+  };
 
   deleteActivity(activity , index1, index2) {
     this.activityService.delete(activity.project, activity.id).then(() => {
@@ -216,24 +233,28 @@ export class ActivitiesComponent implements OnInit {
       this.scrollEnable = false;
       this.pageNumber++;
       console.log('page number:', this.pageNumber);
-      this.route.paramMap
-        .switchMap((params: ParamMap) => {
-          this.projectId = params.get('projectId');
-          return this.activityService.getActivities(params.get('projectId'), this.pageNumber);
-        })
-        .subscribe((activities) => {
-        console.log('activities', activities)
+      this.getActivitiesFromServer();
+    }
+  }
+
+  getActivitiesFromServer() {
+    this.route.paramMap
+      .switchMap((params: ParamMap) => {
+        this.projectId = params.get('projectId');
+        return this.activityService.getActivities(params.get('projectId'), this.selectedUsers, this.pageNumber);
+      })
+      .subscribe((activities) => {
+        console.log('activities', activities);
         if (activities.length > 0) {
           this.scrollEnable = true;
         }
-          activities.map((activity) => {
-            if (activity.stoppedAt) {
-              this.tempArray.push(activity);
-            }
-          });
-          this.groupByActivities();
+        activities.map((activity) => {
+          if (activity.stoppedAt) {
+            this.tempArray.push(activity);
+          }
         });
-    }
+        this.groupByActivities();
+      });
   }
 
   calculateTimeDuration (duration) {
@@ -263,7 +284,17 @@ export class ActivitiesComponent implements OnInit {
       result = seconds + ' sec';
     }
     return result;
-  };
+  }
+
+  getSelectedUsers (event) {
+    this.selectedUsers = [];
+    event.map((user) => {
+      this.selectedUsers.push(user.item.id);
+    });
+    this.tempArray = [];
+    this.pageNumber = 0;
+    this.getActivitiesFromServer();
+  }
 }
 
 

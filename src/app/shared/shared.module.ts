@@ -10,6 +10,7 @@ import { ObjectKeysPipe }         from './object-keys.pipe';
 import { ActivityService }        from '../dashboard/shared/activity.service';
 import { SwingCalendarComponent } from './swing-calendar/swing-calendar.component';
 import { RestrictInputDirective } from './restrict-input.directive';
+import { SwingTagInputComponent }  from './swing-tag-input/swing-tag-input.component';
 
 @NgModule({
   imports:      [ CommonModule ],
@@ -19,6 +20,7 @@ import { RestrictInputDirective } from './restrict-input.directive';
     SwingSwitchComponent,
     SwingSelectComponent,
     SwingCalendarComponent,
+    SwingTagInputComponent,
     ObjectKeysPipe
   ],
   exports:      [
@@ -30,7 +32,8 @@ import { RestrictInputDirective } from './restrict-input.directive';
     ObjectKeysPipe,
     SwingCalendarComponent,
     SwingSelectComponent,
-    SwingSwitchComponent
+    SwingSwitchComponent,
+    SwingTagInputComponent
   ],
   providers:    [
     ActivityService

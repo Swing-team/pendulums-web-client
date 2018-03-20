@@ -8,8 +8,11 @@ import * as moment                        from 'moment';
   styleUrls: ['./swing-calendar.component.sass'],
 })
 
-export class SwingCalendarComponent implements OnChanges, OnInit {
+export class SwingCalendarComponent implements OnInit {
 
+  @Input() calendarType = 'date';
+  @Input() startRangeInput: string;
+  @Input() endRangeInput: string;
   @Input() minDate: string;
   @Input() maxDate: string;
   @Input() disableDays = [];
@@ -18,6 +21,7 @@ export class SwingCalendarComponent implements OnChanges, OnInit {
   // value is used when we have input date
   @Input() value = '';
   @Output() dateSelected = new EventEmitter();
+  @Output() rangeSelected = new EventEmitter();
   // below fields are needed in html UI
   private currDate = moment();
   daysOfWeek = [ 'Sa', 'Su', 'Mo', 'Tu', 'We', 'Th', 'Fr'];
@@ -31,6 +35,8 @@ export class SwingCalendarComponent implements OnChanges, OnInit {
   currMonth: string;
   currYear: number;
   dates: any = [];
+  startRange: any;
+  endRange: any;
 
   constructor( ) {
   }
@@ -52,10 +58,6 @@ export class SwingCalendarComponent implements OnChanges, OnInit {
     } else {
       this.dates = this.setDateArray(this.currMonth, this.currYear, '');
     }
-  }
-
-  ngOnChanges() {
-
   }
 
   setPrevMonth() {
@@ -120,6 +122,10 @@ export class SwingCalendarComponent implements OnChanges, OnInit {
       if (this.maxDate && currentDate.isAfter(moment(this.maxDate).add(1, 'd'))) {
         dbld = true;
       }
+      if (currentDate.isAfter(moment())) {
+        dbld = true;
+      }
+
       if (i !== date) {
         temp.push({
           'month': this.months.indexOf(month) + 1,
@@ -127,7 +133,10 @@ export class SwingCalendarComponent implements OnChanges, OnInit {
           'disabled': dbld,
           'selected': false,
           'empty': false,
-          'year': this.currYear
+          'year': this.currYear,
+          'calendarRange': false,
+          'rangeStart': false,
+          'rangeEnd': false
         });
       } else {
         temp.push({
@@ -136,7 +145,10 @@ export class SwingCalendarComponent implements OnChanges, OnInit {
           'disabled': dbld,
           'selected': true,
           'empty': false,
-          'year': this.currYear
+          'year': this.currYear,
+          'calendarRange': false,
+          'rangeStart': false,
+          'rangeEnd': false
         });
       }
     }
@@ -161,7 +173,10 @@ export class SwingCalendarComponent implements OnChanges, OnInit {
             'disabled': true,
             'selected': false,
             'empty': false,
-            'year': this.currYear
+            'year': this.currYear,
+            'calendarRange': false,
+            'rangeStart': false,
+            'rangeEnd': false
           });
         } else {
           spaceArray.push({
@@ -170,7 +185,10 @@ export class SwingCalendarComponent implements OnChanges, OnInit {
             'disabled': false,
             'selected': false,
             'empty': true ,
-            'year': this.currYear
+            'year': this.currYear,
+            'calendarRange': false,
+            'rangeStart': false,
+            'rangeEnd': false
           });
         }
         prevLast--;
@@ -194,7 +212,10 @@ export class SwingCalendarComponent implements OnChanges, OnInit {
             'disabled': true,
             'selected': false,
             'empty': false,
-            'year': this.currYear
+            'year': this.currYear,
+            'calendarRange': false,
+            'rangeStart': false,
+            'rangeEnd': false
           });
         } else {
           this.tempArray.push({
@@ -203,7 +224,10 @@ export class SwingCalendarComponent implements OnChanges, OnInit {
             'disabled': false,
             'selected': false,
             'empty': true,
-            'year': this.currYear
+            'year': this.currYear,
+            'calendarRange': false,
+            'rangeStart': false,
+            'rangeEnd': false
           });
         }
         nIndex++;
@@ -236,6 +260,77 @@ export class SwingCalendarComponent implements OnChanges, OnInit {
     return last;
   }
 
+  dayClicked (sDate) {
+    if (this.calendarType === 'date') {
+      this.setDate(sDate);
+    } else if (this.calendarType === 'range' && !sDate.disabled) {
+      if (!this.startRange) {
+        this.startRange = sDate;
+        this.dates.map((date) => {
+          if (date.year === this.startRange.year && date.month === this.startRange.month && date.date === this.startRange.date) {
+            date.rangeStart = true;
+          } else {
+            date.rangeStart = false;
+          }
+        })
+      } else if (this.startRange) {
+        this.endRange = sDate;
+        const tempStartDate =  moment()
+          .year(this.startRange.year)
+          .month(this.startRange.month - 1 )
+          .date(this.startRange.date);
+        const tempEndDate = moment()
+          .year(this.endRange.year)
+          .month(this.endRange.month - 1 )
+          .date(this.endRange.date);
+        let result: any;
+        if (tempStartDate.isBefore(tempEndDate)) {
+          result = {
+            'start': tempStartDate,
+            'end': tempEndDate,
+          }
+        } else {
+          result = {
+            'start': tempEndDate,
+            'end': tempStartDate
+          }
+        }
+
+        this.rangeSelected.next(result);
+      }
+
+    }
+  }
+
+  dayHovered (sDate) {
+    if (this.calendarType === 'range' && this.startRange) {
+      const tempStartDate =  new Date(this.startRange.year, this.startRange.month, this.startRange.date, 0, 0, 0, 0).getTime();
+      const tempEndDate = new Date(sDate.year, sDate.month, sDate.date, 0, 0, 0, 0).getTime();
+
+      this.dates.map((date) => {
+        if (!date.disabled) {
+          const tempDate = new Date(date.year, date.month, date.date, 0, 0, 0, 0).getTime();
+
+          if (tempStartDate <= tempEndDate) {
+            if (tempStartDate <= tempDate && tempDate <= tempEndDate ) {
+              date.calendarRange = true;
+            } else {
+              date.calendarRange = false;
+            }
+          }
+
+          if (tempStartDate > tempEndDate) {
+            if (tempStartDate >= tempDate && tempDate >= tempEndDate) {
+              date.calendarRange = true;
+            } else {
+              date.calendarRange = false;
+            }
+          }
+        }
+      })
+    }
+  }
+
   setDate(sDate) {
     if (!sDate.disabled) {
       if (sDate.date !== '') {
@@ -249,4 +344,48 @@ export class SwingCalendarComponent implements OnChanges, OnInit {
     }
   }
 
+  setSpecificRange(range) {
+    let result: any;
+
+    switch (range) {
+      case 'last7days': {
+        result = {
+          'start' : moment().subtract(7, 'days'),
+          'end' : moment()
+        };
+        break;
+      }
+      case 'currentWeek': {
+        result = {
+          'start' : moment().startOf('week'),
+          'end' : moment()
+        };
+        break;
+      }
+      case 'currentMonth': {
+        result = {
+          'start' : moment().startOf('month'),
+          'end' : moment()
+
+        };
+        break;
+      }
+      case 'last3months': {
+        result = {
+          'start' : moment().subtract(3, 'months'),
+          'end' : moment()
+        };
+        break;
+      }
+      default: {
+        result = {
+          'start' : moment().startOf('month'),
+          'end' : moment()
+        };
+        break;
+      }
+    }
+
+    this.rangeSelected.next(result);
+  }
 }

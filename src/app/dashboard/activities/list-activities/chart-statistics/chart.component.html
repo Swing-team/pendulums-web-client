@@ -1,0 +1,21 @@
+<div style="display: inline-block;width: 100%;">
+  <div style="position: relative;">
+    <input [(ngModel)]="dateString" type="text" (focus)="showCalender()" >
+    <div class="ps-calendar-range-wrapper" *ngIf="calenderShow">
+      <button class="button is-pulled-right is-small ps-close-calender-button"
+              (click)="closeCalender()">
+        <span class="icon is-small">X</span>
+      </button>
+      <swing-calendar (rangeSelected)="updateDates($event)" calendarType="range"></swing-calendar>
+    </div>
+  </div>
+  <div *ngIf="multiLevelData.length > 0">
+    <nvd3 [options]="options" [data]="multiLevelData"></nvd3>
+  </div>
+  <div *ngIf="multiLevelData.length === 0" class="ps-chart-placeholder">
+    <figure class="image">
+      <img src="../../../../../assets/images/placeholder.jpg">
+    </figure>
+    <p>Please select a member to show statistics</p>
+  </div>
+</div>

@@ -1,0 +1,67 @@
+@import "../../../../../sass/variables"
+@import "swing-ng-nv-d3"
+
+.ps-calendar-range-wrapper
+  background: #fff
+  border: 1px solid #e5e5e5
+  border-radius: 5px
+  box-shadow: 0 3px 5px rgba(0,0,0,.08)
+  z-index: 9
+  padding: 25px
+  margin-top: 10px
+  display: -webkit-box
+  display: -ms-flexbox
+  display: flex
+  position: absolute
+  top: 100%
+  right: calc(50% - 215px)
+  width: 430px
+  @media(max-width: 520px)
+    right: 5%
+    left: 5%
+    width: auto
+    padding: 5px
+  @media(max-width: 400px)
+    left: 0
+    right: 0
+    width: auto
+    padding: 0
+  &:before, &:after
+    position: absolute
+    bottom: 100%
+    border: solid transparent
+    content: ""
+    height: 0
+    width: 0
+    pointer-events: none
+  &:before
+    border-bottom-color: #e4e7ea
+    border-width: 13px
+    right: 50%
+  &:after
+    border-bottom-color: #fff
+    border-width: 10px
+    right: 51%
+
+.ps-close-calender-button
+  position: absolute
+  top: 0
+  right: 0
+  background-color: $primary
+  color: $paper !important
+  border-radius: 100% !important
+  z-index: 5
+  margin-top: -10px
+  margin-right: -10px
+  @media (max-width: 400px)
+    margin-top: 0
+    margin-right: 0
+
+.ps-chart-placeholder
+  background-color: #4E9F67
+  .image
+    max-width: 320px
+    max-height: 320px
+    margin: 20px auto
+  p
+    padding-bottom: 10px

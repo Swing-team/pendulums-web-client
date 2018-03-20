@@ -4,7 +4,7 @@
 $calendar-border: .1rem solid $white-ter !default
 $calendar-border-radius: $radius-small !default
 $calendar-header-color: $primary-light !default
-$calendar-date-hover: $white-ter !default
+$calendar-date-hover: lighten($primary-light, 10%) !default
 $calendar-today-background: transparent !default
 $calendar-today-border-color: $primary-light !default
 $calendar-today-color: $primary-light !default
@@ -34,9 +34,17 @@ $calendar-today-color: $primary-light !default
       .button
         text-decoration: none
         color: $white
-        &:hover
-          background: transparent
-          color: $white-ter
+        &.is-link
+          &:hover,
+          &:active,
+          &.is-active
+            background: lighten($primary-light, 10%) !important
+            color: $white-ter
+          &:focus,
+          &.is-focused,
+          &.is-hovered
+            background-color: $calendar-header-color !important
+            color: $white-ter
     .calendar-nav-left
       align-items: center
       justify-content: flex-start
@@ -61,7 +69,7 @@ $calendar-today-color: $primary-light !default
     background: $paper !important
   .calendar-date
     border: 0
-    padding: .4rem
+    padding: .2rem
     .date-item
       appearance: none
       background: transparent
@@ -80,16 +88,10 @@ $calendar-today-color: $primary-light !default
       vertical-align: middle
       white-space: nowrap
       width: 1.8rem
-      @media (max-width: 770px) and (min-width: 480px)
-        height: 3.2rem
-        width: 3.2rem
-      @media (max-width: 480px)
-        height: 3.5rem
-        width: 3.5rem
       &.is-today
         background: $calendar-today-background
-        border-color: $calendar-today-border-color
-        color: $calendar-today-color
+        border-color: $calendar-today-border-color !important
+        color: $calendar-today-color !important
       &:focus
         background: $calendar-date-hover
         border-color: $calendar-date-hover
@@ -112,9 +114,9 @@ $calendar-today-color: $primary-light !default
   .calendar-range
     position: relative
     &::before
-      background: lighten($primary, 50%)
+      background: lighten($primary-light, 10%)
       content: ""
-      height: 2.8rem
+      height: 2.25rem
       left: 0
       position: absolute
       right: 0
@@ -125,55 +127,58 @@ $calendar-today-color: $primary-light !default
     &.range-end::before
       right: 50%
     .date-item
-      color: $primary
+      color: $paper
 
-  &.is-large
-    .calendar-body
-      .calendar-date
-        border-bottom: $calendar-border
-        border-right: $calendar-border
-        display: flex
-        flex-direction: column
-        height: 11rem
-        padding: 0
-        &:nth-child(7n)
-          border-right: 0
-        &:nth-last-child(-n+7)
-          border-bottom: 0
-    .date-item
-      align-self: flex-end
-      height: 2.8rem
-      margin-right: .5rem
-      margin-top: .5rem
-    .calendar-range
-      &::before
-        top: 1.9rem
-      &.range-start::before
-        left: auto
-        width: 1.9rem
-      &.range-end::before
-        right: 1.9rem
-    .calendar-events
-      flex-grow: 1
-      line-height: 1
-      overflow-y: auto
-      padding: .5rem
-    .calendar-event
-      background-color: $grey
-      border-radius: $radius-small
-      color: $white
-      display: block
-      font-size: 1rem
-      margin: .2rem auto
-      overflow: hidden
-      padding: .3rem .4rem
-      text-align: left
-      text-overflow: ellipsis
-      vertical-align: baseline
-      white-space: nowrap
-      @each $name, $pair in $colors
-        $color: nth($pair, 1)
-        $color-invert: nth($pair, 2)
-        &.is-#{$name}
-          background-color: $color
-          color: $color-invert
+.ps-date-item
+  @media (max-width: 770px) and (min-width: 480px)
+    height: 2.7rem !important
+    width: 2.7rem !important
+  @media (max-width: 480px)
+    height: 3rem !important
+    width: 3rem !important
+
+.ps-date-picker-shortcuts
+  -ms-flex-preferred-size: 100px
+  flex-basis: 100px
+  max-width: 100px
+  margin: 40px 5px 0 0
+  display: -webkit-box
+  display: -ms-flexbox
+  display: flex
+  -webkit-box-orient: vertical
+  -webkit-box-direction: normal
+  -ms-flex-direction: column
+  flex-direction: column
+  -webkit-box-pack: end
+  -ms-flex-pack: end
+  justify-content: flex-end
+  li
+    display: block
+    margin-bottom: 8px
+    line-height: 2.8
+    cursor: pointer
+    font-size: 0.85rem
+    border-radius: $radius
+    &:hover
+      color: $primary-light
+  @media(max-width: 769px)
+    -webkit-box-orient: horizontal
+    -webkit-box-direction: normal
+    -ms-flex-direction: row
+    flex-direction: row
+    flex-wrap: wrap
+    margin: 20px 0 0 0
+    max-width: inherit
+    -ms-flex-preferred-size: auto
+    flex-basis: auto
+    -webkit-box-pack: center
+    -ms-flex-pack: center
+    justify-content: center
+    li
+      border: solid #e5e5e5 1px
+      line-height: 1rem
+      font-size: 0.7rem
+      padding: 5px
+      margin: 2px
+  @media(max-width: 400px)
+    margin: 40px 0 0 0
