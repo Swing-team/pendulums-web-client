@@ -65,54 +65,23 @@
   @media (max-width: 478px) and (min-width: 350px)
     width: 75%
 
+.ps-member-item-button
+  overflow: hidden
+  font-size: 1.4rem
+  position: absolute
+  right: 0
+  bottom: 0
+  i
+    cursor: pointer
+  @media (max-width: $ps-mobile)
+    font-size: 1rem
+
 swing-select
   .ps-select
     width: auto !important
 
 .ps-owner-role
   font-size: 0.75rem !important
-
-.ps-body-button
-  flex-basis: 20%
-  font-size: 25px
-  transition: background-color 200ms ease-in
-  text-align: right
-  border-radius: 100%
-  margin-right: 10px
-  &:hover
-    cursor: pointer
-
-.ps-remove-member-confirmation
-  height: 0
-  display: flex
-  overflow: hidden
-  align-items: center
-  position: absolute
-  top: 0
-  right: 0
-  -webkit-transition: height 0.3s /* For Safari 3.1 to 6.0 */
-  transition: height 0.3s
-  .icon-cancel
-    width: 54px
-    height: 54px
-    flex-basis: 50%
-    color: $paper
-    line-height: 54px
-    background-color: #005580
-    font-size: 24px
-    cursor: pointer
-  .icon-check
-    width: 54px
-    height: 54px
-    flex-basis: 50%
-    color: $paper
-    line-height: 54px
-    background-color: $red
-    font-size: 24px
-    cursor: pointer
-
-.ps-remove-member-confirmation-shown
-  height: 54px
 
 .ps-padding-top
   padding-top: 8px !important

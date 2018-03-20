@@ -46,11 +46,13 @@
         </div>
       </div>
       <div class="column is-2">
-        <span class="icon-trash has-text-danger ps-body-button" (click)="removeMemberConfirmationViewIndex = i"></span>
-        <span class="ps-remove-member-confirmation" [class.ps-remove-member-confirmation-shown]="removeMemberConfirmationViewIndex === i">
-          <span class="icon-cancel" (click)="removeMemberConfirmationViewIndex = -1 "></span>
-          <span class="icon-check" (click)="removeMember(member.id, i)"></span>
-        </span>
+        <div class="ps-member-item-button" *ngIf="removeMemberConfirmationViewIndex !== i">
+          <i class="icon-trash has-text-danger" (click)="removeMemberConfirmationViewIndex = i"></i>
+        </div>
+        <div class="ps-member-item-button" *ngIf="removeMemberConfirmationViewIndex === i" [@slideInOut]>
+          <span class="icon-cancel has-text-danger" (click)="removeMemberConfirmationViewIndex = -1"></span>
+          <span class="icon-check has-text-success" (click)="removeMember(member.id, i)"></span>
+        </div>
       </div>
     </div>
   </ng-container>

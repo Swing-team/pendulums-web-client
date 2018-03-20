@@ -37,6 +37,7 @@
 
 
 .ps-activity-item-button
+  overflow: hidden
   font-size: 1.4rem
   position: absolute
   right: 0
@@ -45,36 +46,3 @@
     cursor: pointer
   @media (max-width: $ps-mobile)
     font-size: 1rem
-
-.ps-activity-item-delete-confirmation
-  height: 0
-  display: flex
-  overflow: hidden
-  align-items: center
-  position: absolute
-  text-align: center
-  top: 0
-  right: 0
-  -webkit-transition: height 0.3s /* For Safari 3.1 to 6.0 */
-  transition: height 0.3s
-  .icon-cancel
-    height: 60px
-    width: 54px
-    flex-basis: 50%
-    color: $paper
-    line-height: 54px
-    background-color: #005580
-    font-size: 24px
-    cursor: pointer
-  .icon-check
-    width: 54px
-    height: 60px
-    flex-basis: 50%
-    color: $paper
-    line-height: 54px
-    background-color: $red
-    font-size: 24px
-    cursor: pointer
-
-.ps-ps-activity-item-delete-confirmation-shown
-  height: 60px

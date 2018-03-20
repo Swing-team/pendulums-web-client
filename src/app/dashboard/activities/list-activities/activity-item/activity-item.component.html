@@ -28,9 +28,8 @@
     <i class="icon-trash has-text-danger" (click)="delete()"></i>
   </div>
   </ng-container>
-  <div class="ps-activity-item-delete-confirmation" *ngIf="deleteConfirmation"
-        [class.ps-ps-activity-item-delete-confirmation-shown]="deleteConfirmation">
-    <span class="icon-cancel" (click)="cancelDelete()"></span>
-    <span class="icon-check" (click)="confirmDelete()"></span>
+  <div class="ps-activity-item-button is-pulled-right" *ngIf="deleteConfirmation" [@slideInOut]>
+    <i class="icon-cancel has-text-danger" (click)="cancelDelete()"></i>
+    <i class="icon-check has-text-success" (click)="confirmDelete()"></i>
   </div>
 </div>

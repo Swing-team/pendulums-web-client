@@ -28,56 +28,25 @@
     font-size: 0.72rem !important
     padding-top: 10px
 
+.ps-invitation-item-button
+  overflow: hidden
+  font-size: 1.4rem
+  position: absolute
+  right: 0
+  bottom: 0 !important
+  i
+    cursor: pointer
+  @media (max-width: $ps-mobile)
+    font-size: 1rem
+
 .ps-left-border
   border-left: 1px solid $primary-light
 
 .ps-line-height
   line-height: 36px
 
-.ps-body-button
-  font-size: 25px
-  transition: background-color 200ms ease-in
-  border-radius: 100%
-  @media (max-width: 460px)
-    line-height: 1.75rem
-  &:hover
-    background-color: #dddddd
-    cursor: pointer
-
 .ps-select:not(.is-multiple)::after
   right: 0.7em
-
-.ps-cancel-invitation-confirmation
-  height: 0
-  display: flex
-  overflow: hidden
-  align-items: center
-  position: absolute
-  top: 0
-  right: 0
-  -webkit-transition: height 0.3s /* For Safari 3.1 to 6.0 */
-  transition: height 0.3s
-  .icon-cancel
-    width: 59px
-    height: 59px
-    flex-basis: 50%
-    color: $paper
-    line-height: 59px
-    background-color: #005580
-    font-size: 24px
-    cursor: pointer
-  .icon-check
-    width: 54px
-    height: 59px
-    flex-basis: 50%
-    color: $paper
-    line-height: 59px
-    background-color: $red
-    font-size: 24px
-    cursor: pointer
-
-.ps-cancel-invitation-confirmation-shown
-  height: 59px
 
 .ps-padding-top
   padding-top: 8px !important

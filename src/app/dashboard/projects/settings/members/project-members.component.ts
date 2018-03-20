@@ -1,19 +1,31 @@
-import {Component, Inject, Input, OnInit}   from '@angular/core';
-import { Project }                          from '../../../../shared/state/project/project.model';
-import { ProjectService }                   from '../../../shared/projects.service';
-import { userRoleInProject }                from '../../../shared/utils';
-import { cloneDeep }                        from 'lodash';
-import { User }                             from '../../../../shared/state/user/user.model';
-import { Md5 }                              from 'ts-md5/dist/md5';
-import { TeamMember }                       from '../../../../shared/state/team-member/team-member.model';
-import { AppState }                         from '../../../../shared/state/appState';
-import { Store }                            from '@ngrx/store';
-import { ProjectsActions }                  from '../../../../shared/state/project/projects.actions';
-import { ErrorService }                     from '../../../../core/error/error.service';
-import { APP_CONFIG }                       from '../../../../app.config';
+import {Component, Inject, Input, OnInit}       from '@angular/core';
+import { trigger, style, transition, animate }  from '@angular/animations';
+import { Project }                              from '../../../../shared/state/project/project.model';
+import { ProjectService }                       from '../../../shared/projects.service';
+import { userRoleInProject }                    from '../../../shared/utils';
+import { cloneDeep }                            from 'lodash';
+import { User }                                 from '../../../../shared/state/user/user.model';
+import { Md5 }                                  from 'ts-md5/dist/md5';
+import { TeamMember }                           from '../../../../shared/state/team-member/team-member.model';
+import { AppState }                             from '../../../../shared/state/appState';
+import { Store }                                from '@ngrx/store';
+import { ProjectsActions }                      from '../../../../shared/state/project/projects.actions';
+import { ErrorService }                         from '../../../../core/error/error.service';
+import { APP_CONFIG }                           from '../../../../app.config';
 
 @Component({
   selector: 'project-members',
+  animations: [
+    trigger('slideInOut', [
+      transition(':enter', [
+        style({transform: 'translateY(-100%)'}),
+        animate('200ms ease-in', style({transform: 'translateY(0%)'}))
+      ]),
+      transition(':leave', [
+        animate('200ms ease-in', style({transform: 'translateY(-100%)'}))
+      ])
+    ])
+  ],
   templateUrl: './project-members.component.html',
   styleUrls: ['./project-members.component.sass']
 })

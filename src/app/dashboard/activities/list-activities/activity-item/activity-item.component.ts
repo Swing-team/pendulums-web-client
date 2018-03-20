@@ -2,16 +2,27 @@ import {
   Component, EventEmitter,
   Inject, Input, OnInit, Output, ViewContainerRef
 } from '@angular/core';
-import { APP_CONFIG }                      from '../../../../app.config';
-import { Activity }                        from '../../../../shared/state/current-activity/current-activity.model';
-import { AddManuallyActivityComponent }    from '../../activity-add-edit-manually/activity-add-edit-manually.component';
-import { Project }                         from '../../../../shared/state/project/project.model';
-import { User }                            from '../../../../shared/state/user/user.model';
-import { userInProject }                   from '../../../shared/utils';
-import { Md5 }                             from 'ts-md5/dist/md5';
+import { trigger, style, transition, animate }  from '@angular/animations';
+import { APP_CONFIG }                           from '../../../../app.config';
+import { Activity }                             from '../../../../shared/state/current-activity/current-activity.model';
+import { Project }                              from '../../../../shared/state/project/project.model';
+import { User }                                 from '../../../../shared/state/user/user.model';
+import { userInProject }                        from '../../../shared/utils';
+import { Md5 }                                  from 'ts-md5/dist/md5';
 
 @Component({
   selector: 'activity-item',
+  animations: [
+    trigger('slideInOut', [
+      transition(':enter', [
+        style({transform: 'translateY(-100%)'}),
+        animate('200ms ease-in', style({transform: 'translateY(0%)'}))
+      ]),
+      transition(':leave', [
+        animate('200ms ease-in', style({transform: 'translateY(-100%)'}))
+      ])
+    ])
+  ],
   templateUrl: './activity-item.component.html',
   styleUrls: ['./activity-item.component.sass']
 })
