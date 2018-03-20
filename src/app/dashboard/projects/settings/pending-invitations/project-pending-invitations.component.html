@@ -45,11 +45,13 @@
       </div>
     </div>
     <div class="column is-2">
-      <span class="icon-trash has-text-danger ps-body-button" (click)="cancelInvitationConfirmationViewIndex = i"></span>
-      <span class="ps-cancel-invitation-confirmation" [class.ps-cancel-invitation-confirmation-shown]="cancelInvitationConfirmationViewIndex === i">
-        <span class="icon-cancel" (click)="cancelInvitationConfirmationViewIndex = -1"></span>
-        <span class="icon-check" (click)="cancelInvitation(invited, i)"></span>
-      </span>
+      <div class="ps-invitation-item-button" *ngIf="cancelInvitationConfirmationViewIndex !== i">
+        <i class="icon-trash has-text-danger" (click)="cancelInvitationConfirmationViewIndex = i"></i>
+      </div>
+      <div class="ps-invitation-item-button" *ngIf="cancelInvitationConfirmationViewIndex === i" [@slideInOut]>
+        <i class="icon-cancel has-text-danger" (click)="cancelInvitationConfirmationViewIndex = -1"></i>
+        <i class="icon-check has-text-success" (click)="removeMember(invited, i)"></i>
+      </div>
     </div>
   </div>
 </div>

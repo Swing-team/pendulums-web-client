@@ -1,17 +1,29 @@
-import { Component, Input }         from '@angular/core';
-import { ProjectService }           from '../../../shared/projects.service';
-import { Project }                  from '../../../../shared/state/project/project.model';
-import { AppState }                 from '../../../../shared/state/appState';
-import { Store }                    from '@ngrx/store';
-import { ProjectsActions }          from '../../../../shared/state/project/projects.actions';
-import { Md5 }                      from 'ts-md5/dist/md5';
-import { ErrorService }             from '../../../../core/error/error.service';
+import { Component, Input }                     from '@angular/core';
+import { trigger, style, transition, animate }  from '@angular/animations';
+import { ProjectService }                       from '../../../shared/projects.service';
+import { Project }                              from '../../../../shared/state/project/project.model';
+import { AppState }                             from '../../../../shared/state/appState';
+import { Store }                                from '@ngrx/store';
+import { ProjectsActions }                      from '../../../../shared/state/project/projects.actions';
+import { Md5 }                                  from 'ts-md5/dist/md5';
+import { ErrorService }                         from '../../../../core/error/error.service';
 
 const EMAIL_REGEX = /^(?=.{8,64}$)[\w!#$%&'*+/=?`{|}~^-]+(?:\.[\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,6}$/;
 
 
 @Component({
   selector: 'project-pending-invitations',
+  animations: [
+    trigger('slideInOut', [
+      transition(':enter', [
+        style({transform: 'translateY(-100%)'}),
+        animate('200ms ease-in', style({transform: 'translateY(0%)'}))
+      ]),
+      transition(':leave', [
+        animate('200ms ease-in', style({transform: 'translateY(-100%)'}))
+      ])
+    ])
+  ],
   templateUrl: './project-pending-invitations.component.html',
   styleUrls: ['./project-pending-invitations.component.sass']
 })
