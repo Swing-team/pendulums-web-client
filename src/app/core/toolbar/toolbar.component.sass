@@ -112,15 +112,15 @@
   border-radius: 100%
   @media (min-width: $ps-mobile + 1px)
     display: none
+  animation: rotation 2s infinite linear
 
-#rotate
-  -webkit-animation: rotation 2s infinite linear
-
-@-webkit-keyframes rotation
-  from
-    -webkit-transform: rotate(0deg)
-  to
-    -webkit-transform: rotate(359deg)
+@keyframes rotation
+  0%, 25%
+    transform: rotate(0deg)
+  50%, 75%
+    transform: rotate(180deg)
+  100%
+    transform: rotate(360deg)
 
 .ps-nav-display-time
   text-align: left
