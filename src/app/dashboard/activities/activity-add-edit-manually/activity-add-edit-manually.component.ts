@@ -31,9 +31,11 @@ export class AddManuallyActivityComponent implements OnInit {
   dateError: string;
 
   toDate: string;
+  toDateValue: string;
   toTime: string;
 
   fromDate: string;
+  fromDateValue: string;
   fromTime: string;
 
   constructor (@Inject(APP_CONFIG) private config,
@@ -45,7 +47,9 @@ export class AddManuallyActivityComponent implements OnInit {
     if (this.activity) {
       this.activityModel = _.cloneDeep(this.activity);
       this.fromDate = moment(Number(this.activityModel.startedAt)).format('dddd, MMMM Do YYYY');
+      this.fromDateValue = this.activityModel.startedAt;
       this.toDate = moment(Number(this.activityModel.stoppedAt)).format('dddd, MMMM Do YYYY');
+      this.toDateValue = this.activityModel.stoppedAt;
       this.fromTime = moment(Number(this.activityModel.startedAt)).format('HH:mm');
       this.toTime = moment(Number(this.activityModel.stoppedAt)).format('HH:mm');
     } else {
@@ -113,6 +117,7 @@ export class AddManuallyActivityComponent implements OnInit {
 
   updateToDate(event) {
     this.toDate = event.format('dddd, MMMM Do YYYY');
+    this.toDateValue = event.valueOf();
     this.toCalenderError = this.checkDate();
     if (this.toCalenderError) {
       this.dateError = 'The end date could not be before start date';
@@ -124,6 +129,7 @@ export class AddManuallyActivityComponent implements OnInit {
 
   updateFromDate(event) {
     this.fromDate = event.format('dddd, MMMM Do YYYY');
+    this.fromDateValue = event.valueOf();
     this.fromCalenderError = this.checkDate();
     if (this.fromCalenderError) {
       this.dateError = 'The start date could not be after end date';
@@ -135,8 +141,8 @@ export class AddManuallyActivityComponent implements OnInit {
 
   checkDate(): boolean {
     if (this.fromDate && this.toDate) {
-      const tempFromDate = moment(this.fromDate, 'dddd, MMMM Do YYYY').hours(0).minutes(0).seconds(0);
-      const tempToDate = moment(this.toDate, 'dddd, MMMM Do YYYY').hours(0).minutes(0).seconds(0);
+      const tempFromDate = moment(this.fromDate, 'dddd, MMMM Do YYYY').startOf('day');
+      const tempToDate = moment(this.toDate, 'dddd, MMMM Do YYYY').startOf('day');
 
       // anyway timeCheck should run to check times are ok or not
       const tempCheck = this.checkTime();

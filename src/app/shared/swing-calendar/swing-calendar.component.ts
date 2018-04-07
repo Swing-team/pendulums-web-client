@@ -1,5 +1,5 @@
-import { Component, OnChanges, Input,
-  EventEmitter, OnInit, Output }          from '@angular/core';
+import { Component, Input, EventEmitter,
+  OnInit, Output }                        from '@angular/core';
 import * as moment                        from 'moment';
 
 @Component({
@@ -11,15 +11,15 @@ import * as moment                        from 'moment';
 export class SwingCalendarComponent implements OnInit {
 
   @Input() calendarType = 'date';
-  @Input() startRangeInput: string;
-  @Input() endRangeInput: string;
   @Input() minDate: string;
   @Input() maxDate: string;
   @Input() disableDays = [];
   @Input() toContainPrevMonth = true;
   @Input() toContainNextMonth = true;
   // value is used when we have input date
-  @Input() value = '';
+  @Input() inputDate: any;
+  @Input() startRangeInput: string;
+  @Input() endRangeInput: string;
   @Output() dateSelected = new EventEmitter();
   @Output() rangeSelected = new EventEmitter();
   // below fields are needed in html UI
@@ -29,9 +29,10 @@ export class SwingCalendarComponent implements OnInit {
   private completeDates: any;
   private tempArray: any;
   private prevMonth: string;
-  private nextMonth: string
+  private nextMonth: string;
   private prevYear: number;
   private nextYear: number;
+  private inputDateCopy: any;
   currMonth: string;
   currYear: number;
   dates: any = [];
@@ -42,22 +43,40 @@ export class SwingCalendarComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.currMonth = this.months[new Date().getMonth()].toString();
+    this.currMonth = this.months[new Date().getMonth()];
     this.currYear = new Date().getFullYear();
+
+    if (this.startRangeInput) {
+      const tempInputDate = moment(Number(this.startRangeInput));
+      this.inputDateCopy = {
+        'month': tempInputDate.month(),
+        'date': tempInputDate.date(),
+        'year': tempInputDate.year()
+      };
+      this.currMonth = this.months[tempInputDate.month()];
+      this.currYear = tempInputDate.year();
+      this.dates = this.setDateArray(this.currMonth, this.currYear, this.inputDateCopy);
+    } else if (this.inputDate) {
+      // Set Date Array
+      const tempInputDate = moment(Number(this.inputDate));
+      this.inputDateCopy = {
+        'month': tempInputDate.month(),
+        'date': tempInputDate.date(),
+        'year': tempInputDate.year()
+      };
+      this.currMonth = this.months[this.inputDateCopy.month];
+      this.currYear = this.inputDateCopy.year;
+      this.dates = this.setDateArray(this.currMonth, this.currYear, this.inputDateCopy);
+    } else {
+      this.dates = this.setDateArray(this.currMonth, this.currYear);
+    }
+
     // Set previous and next months
-    this.prevMonth = this.months[(12 + (new Date().getMonth() - 1)) % 12].toString();
-    this.nextMonth = this.months[(12 + (new Date().getMonth() + 1)) % 12].toString();
+    const tempCurrMonthIndex = this.months.indexOf(this.currMonth);
+    this.prevMonth = this.months[(12 + (tempCurrMonthIndex - 1)) % 12];
+    this.nextMonth = this.months[(12 + (tempCurrMonthIndex + 1)) % 12];
     this.prevYear = (this.currYear - 1);
     this.nextYear = (this.currYear + 1);
-    // Set Date Array
-    if (this.value !== '') {
-      const givenDate = moment(this.value, 'MM/DD/YYYY', true);
-      this.currMonth = this.months[givenDate.month()].toString();
-      this.currYear = givenDate.year();
-      this.dates = this.setDateArray(this.currMonth, this.currYear, givenDate.date());
-    } else {
-      this.dates = this.setDateArray(this.currMonth, this.currYear, '');
-    }
   }
 
   setPrevMonth() {
@@ -78,7 +97,11 @@ export class SwingCalendarComponent implements OnInit {
       this.nextYear = (this.currYear + 1);
     }
      // Set Date Array to previous month
-    this.dates = this.setDateArray(this.currMonth, this.currYear, '');
+    if (this.inputDate !== '') {
+      this.dates = this.setDateArray(this.currMonth, this.currYear, this.inputDateCopy);
+    } else {
+      this.dates = this.setDateArray(this.currMonth, this.currYear);
+    }
   }
 
   setNextMonth() {
@@ -99,14 +122,18 @@ export class SwingCalendarComponent implements OnInit {
       this.nextYear = (this.currYear + 1);
     }
      // Set Date Array to next month
-    this.dates = this.setDateArray(this.currMonth, this.currYear, '');
+    if (this.inputDate !== '') {
+      this.dates = this.setDateArray(this.currMonth, this.currYear, this.inputDateCopy);
+    } else {
+      this.dates = this.setDateArray(this.currMonth, this.currYear);
+    }
   }
 
-  setDateArray(month, year, date): any {
-
+  setDateArray(month, year, date?): any {
     const tempLastDate = this.decideDate(month, year);
     const temp = [];
     for (let i = 1; i <= tempLastDate; i++) {
+      const tempRangeStatus = this.decideDateRangeStatus(i, this.months.indexOf(month), year);
       const currentDate = moment().year(year).month(month).date(i);
       let dbld = false;
       // To disable Days - Index based 0-6
@@ -125,8 +152,19 @@ export class SwingCalendarComponent implements OnInit {
       if (currentDate.isAfter(moment())) {
         dbld = true;
       }
-
-      if (i !== date) {
+      if (date) {
+        temp.push({
+          'month': this.months.indexOf(month) + 1,
+          'date': i,
+          'disabled': dbld,
+          'selected': i === date.date && this.months.indexOf(month) === date.month && year === date.year,
+          'empty': false,
+          'year': this.currYear,
+          'calendarRange': tempRangeStatus.calendarRange,
+          'rangeStart': tempRangeStatus.rangeStart,
+          'rangeEnd': tempRangeStatus.rangeEnd,
+        });
+      } else {
         temp.push({
           'month': this.months.indexOf(month) + 1,
           'date': i,
@@ -134,21 +172,9 @@ export class SwingCalendarComponent implements OnInit {
           'selected': false,
           'empty': false,
           'year': this.currYear,
-          'calendarRange': false,
-          'rangeStart': false,
-          'rangeEnd': false
-        });
-      } else {
-        temp.push({
-          'month': this.months.indexOf(month) + 1,
-          'date': i,
-          'disabled': dbld,
-          'selected': true,
-          'empty': false,
-          'year': this.currYear,
-          'calendarRange': false,
-          'rangeStart': false,
-          'rangeEnd': false
+          'calendarRange': tempRangeStatus.calendarRange,
+          'rangeStart': tempRangeStatus.rangeStart,
+          'rangeEnd': tempRangeStatus.rangeEnd,
         });
       }
     }
@@ -166,6 +192,7 @@ export class SwingCalendarComponent implements OnInit {
       let prevLast = this.decideDate(this.months[pMonth], year);
       // Fix it to display last date last
       for (let i = -1; i < firstDate.getDay(); i++) {
+        const tempRangeStatus = this.decideDateRangeStatus(prevLast, this.months.indexOf(month) - 1, year);
         if (this.toContainPrevMonth) {
           spaceArray.push({
             'month': this.months.indexOf(month),
@@ -174,9 +201,9 @@ export class SwingCalendarComponent implements OnInit {
             'selected': false,
             'empty': false,
             'year': this.currYear,
-            'calendarRange': false,
-            'rangeStart': false,
-            'rangeEnd': false
+            'calendarRange': tempRangeStatus.calendarRange,
+            'rangeStart': tempRangeStatus.rangeStart,
+            'rangeEnd': tempRangeStatus.rangeEnd,
           });
         } else {
           spaceArray.push({
@@ -186,9 +213,9 @@ export class SwingCalendarComponent implements OnInit {
             'selected': false,
             'empty': true ,
             'year': this.currYear,
-            'calendarRange': false,
-            'rangeStart': false,
-            'rangeEnd': false
+            'calendarRange': tempRangeStatus.calendarRange,
+            'rangeStart': tempRangeStatus.rangeStart,
+            'rangeEnd': tempRangeStatus.rangeEnd,
           });
         }
         prevLast--;
@@ -205,6 +232,7 @@ export class SwingCalendarComponent implements OnInit {
         dayCount = 6 ;
       }
       for (let i = dayCount; i > 0 ; i--) {
+        const tempRangeStatus = this.decideDateRangeStatus(nIndex, this.months.indexOf(month) + 1, year);
         if (this.toContainNextMonth) {
           this.tempArray.push({
             'month': this.months.indexOf(month) + 2,
@@ -213,9 +241,9 @@ export class SwingCalendarComponent implements OnInit {
             'selected': false,
             'empty': false,
             'year': this.currYear,
-            'calendarRange': false,
-            'rangeStart': false,
-            'rangeEnd': false
+            'calendarRange': tempRangeStatus.calendarRange,
+            'rangeStart': tempRangeStatus.rangeStart,
+            'rangeEnd': tempRangeStatus.rangeEnd,
           });
         } else {
           this.tempArray.push({
@@ -225,9 +253,9 @@ export class SwingCalendarComponent implements OnInit {
             'selected': false,
             'empty': true,
             'year': this.currYear,
-            'calendarRange': false,
-            'rangeStart': false,
-            'rangeEnd': false
+            'calendarRange': tempRangeStatus.calendarRange,
+            'rangeStart': tempRangeStatus.rangeStart,
+            'rangeEnd': tempRangeStatus.rangeEnd,
           });
         }
         nIndex++;
@@ -260,10 +288,48 @@ export class SwingCalendarComponent implements OnInit {
     return last;
   }
 
+  decideDateRangeStatus (day, month, year) {
+    const result = {
+      'calendarRange': false,
+      'rangeStart': false,
+      'rangeEnd': false
+    };
+    if (this.startRangeInput && this.endRangeInput) {
+      const tempDate = moment({
+        'year': year,
+        'month': month,
+        'date': day,
+        'hour': 0,
+        'minute': 0,
+        'second': 0,
+        'millisecond': 0
+      }).valueOf();
+      if (Number(this.startRangeInput) <= tempDate && tempDate <= Number(this.endRangeInput)) {
+        result.calendarRange = true;
+      }
+      if (Number(this.startRangeInput) === tempDate) {
+        result.rangeStart = true;
+      }
+      if (Number(this.endRangeInput) === tempDate) {
+        result.rangeEnd = true;
+        console.log('starttt', moment(this.startRangeInput))
+        console.log('end', moment(this.endRangeInput))
+        console.log('tiikme', moment(tempDate))
+      }
+    }
+    return result;
+  }
+
   dayClicked (sDate) {
     if (this.calendarType === 'date') {
       this.setDate(sDate);
     } else if (this.calendarType === 'range' && !sDate.disabled) {
+      if (this.startRangeInput) {
+        this.startRangeInput = null;
+        this.endRangeInput = null;
+        this.dates = this.setDateArray(this.currMonth, this.currYear);
+      }
+
       if (!this.startRange) {
         this.startRange = sDate;
         this.dates.map((date) => {
@@ -295,10 +361,8 @@ export class SwingCalendarComponent implements OnInit {
             'end': tempStartDate
           }
         }
-
         this.rangeSelected.next(result);
       }
-
     }
   }
 

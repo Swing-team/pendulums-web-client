@@ -27,8 +27,10 @@
           <div class="calendar-date" *ngFor='let day of daysOfWeek'>{{day}}</div>
         </div>
         <div class="calendar-body">
-          <div class="calendar-date" [ngClass]="{'is-disabled': day.disabled,
-                                             'calendar-range': day.calendarRange}"
+          <div class="calendar-date" [ngClass]="{'is-disabled': day.disabled && !(day.rangeStart || day.rangeEnd),
+                                                 'calendar-range': day.calendarRange,
+                                                 'range-start': day.rangeStart,
+                                                 'range-end': day.rangeEnd}"
                *ngFor='let day of dates'>
             <button class="date-item"
                     [ngClass]="{'is-active': day.selected,
