@@ -24,7 +24,7 @@
               (click)="closeFromCalender()">
         <span class="icon is-small">X</span>
       </button>
-      <swing-calendar (dateSelected)="updateFromDate($event)" calendarType="date"></swing-calendar>
+      <swing-calendar (dateSelected)="updateFromDate($event)" calendarType="date" [inputDate]="fromDateValue"></swing-calendar>
     </div>
   </div>
 </div>
@@ -48,7 +48,7 @@
               (click)="closeToCalender()">
        <span class="icon is-small">X</span>
       </button>
-      <swing-calendar (dateSelected)="updateToDate($event)" calendarType="date"></swing-calendar>
+      <swing-calendar (dateSelected)="updateToDate($event)" calendarType="date" [inputDate]="toDateValue"></swing-calendar>
     </div>
   </div>
 </div>

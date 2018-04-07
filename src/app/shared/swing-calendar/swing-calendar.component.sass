@@ -103,8 +103,8 @@ $calendar-today-color: $primary-light !default
         color: findColorInvert( $calendar-date-hover )
         text-decoration: none
       &.is-active
-        background: $primary
-        border-color: $primary
+        background: lighten($primary-light, 20%) !important
+        border-color: lighten($primary-light, 20%) !important
         color: findColorInvert( $primary )
     &.is-disabled
       .date-item, .calendar-event
@@ -114,28 +114,26 @@ $calendar-today-color: $primary-light !default
   .calendar-range
     position: relative
     &::before
-      background: lighten($primary-light, 10%)
+      background: lighten($primary-light, 20%)
       content: ""
-      height: 2.25rem
+      height: 1.8rem
       left: 0
       position: absolute
       right: 0
       top: 50%
       transform: translateY(-50%)
+    &.range-start, &.range-end
+      .date-item
+        background: $calendar-date-hover !important
+        border-color: $calendar-date-hover !important
+        color: findColorInvert( $calendar-date-hover ) !important
+        text-decoration: none !important
     &.range-start::before
       left: 50%
     &.range-end::before
       right: 50%
     .date-item
       color: $paper
-
-.ps-date-item
-  @media (max-width: 770px) and (min-width: 480px)
-    height: 2.7rem !important
-    width: 2.7rem !important
-  @media (max-width: 480px)
-    height: 3rem !important
-    width: 3rem !important
 
 .ps-date-picker-shortcuts
   -ms-flex-preferred-size: 100px

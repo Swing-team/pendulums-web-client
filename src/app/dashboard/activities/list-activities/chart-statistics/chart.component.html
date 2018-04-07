@@ -6,7 +6,8 @@
               (click)="closeCalender()">
         <span class="icon is-small">X</span>
       </button>
-      <swing-calendar (rangeSelected)="updateDates($event)" calendarType="range"></swing-calendar>
+      <swing-calendar (rangeSelected)="updateDates($event)" calendarType="range"
+                      [startRangeInput]="fromDate" [endRangeInput]="toDate - 86400000"></swing-calendar>
     </div>
   </div>
   <div *ngIf="multiLevelData.length > 0">

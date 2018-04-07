@@ -20,8 +20,8 @@ declare const d3: any;
 export class ChartComponent implements OnInit, OnChanges {
   @Input() project: Project;
   @Input() selectedUsers: string[];
-  private toDate: Number;
-  private fromDate: Number;
+  toDate: Number;
+  fromDate: Number;
   private dateRange: any;
   dateString: string;
   calenderShow = false;
@@ -36,7 +36,7 @@ export class ChartComponent implements OnInit, OnChanges {
   ngOnInit() {
     // configure date range for first api call
     this.fromDate = moment().subtract(7, 'days').startOf('day').valueOf();
-    this.toDate = moment().startOf('day').valueOf();
+    this.toDate = moment().add(1, 'days').startOf('day').valueOf();
     this.dateString = moment().subtract(7, 'days').format('MMM Do');
     const firstIdsMonth =  moment().subtract(7, 'days').month();
     const secondIdsMonth =  moment().month();
