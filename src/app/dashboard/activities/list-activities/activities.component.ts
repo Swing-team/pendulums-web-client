@@ -8,7 +8,7 @@ import { Observable }                       from 'rxjs/Observable';
 import { APP_CONFIG }                       from '../../../app.config';
 import { ActivityService }                  from '../../shared/activity.service';
 import { Activity }                         from '../../../shared/state/current-activity/current-activity.model';
-import { ActivatedRoute, ParamMap }         from '@angular/router';
+import { ActivatedRoute, Params }           from '@angular/router';
 import { Location }                         from '@angular/common';
 import { ModalService }                     from '../../../core/modal/modal.service';
 import { AddManuallyActivityComponent }     from '../activity-add-edit-manually/activity-add-edit-manually.component';
@@ -17,6 +17,7 @@ import { Store }                            from '@ngrx/store';
 import { AppState }                         from '../../../shared/state/appState';
 import { Project }                          from '../../../shared/state/project/project.model';
 import { User }                             from '../../../shared/state/user/user.model';
+import { cloneDeep }                        from 'lodash';
 
 @Component({
   selector: 'activities',
@@ -29,17 +30,19 @@ export class ActivitiesComponent implements OnInit {
   private pageNumber = 0;
   private scrollEnable = true;
   private tempArray: Array<Activity>;
+  private user: User;
+  // we need currentActivity itself in add/edit component to check added/edited activity has
+  // no conflict with currentActivity
   private currentActivity: Observable<Activity>;
-  private user: Observable<User>;
-  private userId: string;
+  // we need copy of currentActivity to show it in list of activities if it is belong to current project
+  currentActivityCopy: Activity;
   userAccess = false;
   selectedUsers = [];
-  currentActivityCopy: Activity;
   projectActivities: {
     date: any
     activities: any
     duration: any
-  }[];
+  }[] = [];
 
   constructor (@Inject(APP_CONFIG) private config,
                private store: Store<AppState>,
@@ -49,40 +52,38 @@ export class ActivitiesComponent implements OnInit {
                private modalService: ModalService,
                private errorService: ErrorService) {
     this.currentActivity = store.select('currentActivity');
-    this.user = store.select('user');
-    this.user.subscribe(user => {
-      this.userId = user.id;
-      if (user.id && this.selectedUsers.length === 0) {
-        this.selectedUsers = [];
-        this.selectedUsers.push(user.id);
-      }
+    store.select('user').subscribe((user: any) => {
+      this.user = cloneDeep(user);
     });
   }
 
   ngOnInit() {
-    this.tempArray = [];
-    this.getActivitiesFromServer();
-
+    this.route.params.subscribe((params: Params) => {
+      this.projectId = params['projectId'];
+    });
     this.store.select('projects').subscribe((projects: any) => {
       if (projects) {
         this.project = projects.entities[this.projectId];
-        if (this.userId && this.project) {
-          this.userAccess = this.userRoleInProject(this.project, this.userId)
+        if (this.user.id && this.project) {
+          this.userAccess = this.userRoleInProject(this.project, this.user.id);
+          if (this.userAccess) {
+            this.selectedUsers = [];
+            this.project.teamMembers.map((member) => {
+              this.selectedUsers.push(member.id);
+            })
+          } else {
+            if (this.user.id && this.selectedUsers.length === 0) {
+              this.selectedUsers = [];
+              this.selectedUsers.push(this.user.id);
+            }
+          }
+          if ( this.selectedUsers.length > 0) {
+            this.tempArray = [];
+            this.getActivitiesFromServer();
+          }
         }
-
       }
-      // todo mahsa: please find a way that we need this block of code and why this block is needed
-      // if (!this.project) {
-      //   this.projectServices.getProject(this.projectId).then((project) => {
-      //     this.project = project;
-      //     console.log('this.projectServices', this.project)
-      //   })
-      //     .catch(error => {
-      //       console.log('error is: ', error);
-      //     });
-      // }
     });
-
     if (this.currentActivity) {
       this.currentActivity.subscribe(currentActivity => {
         if (currentActivity.project === this.projectId) {
@@ -238,12 +239,8 @@ export class ActivitiesComponent implements OnInit {
   }
 
   getActivitiesFromServer() {
-    this.route.paramMap
-      .switchMap((params: ParamMap) => {
-        this.projectId = params.get('projectId');
-        return this.activityService.getActivities(params.get('projectId'), this.selectedUsers, this.pageNumber);
-      })
-      .subscribe((activities) => {
+    if (this.selectedUsers.length > 0) {
+      this.activityService.getActivities(this.projectId, this.selectedUsers, this.pageNumber).then((activities) => {
         console.log('activities', activities);
         if (activities.length > 0) {
           this.scrollEnable = true;
@@ -255,6 +252,10 @@ export class ActivitiesComponent implements OnInit {
         });
         this.groupByActivities();
       });
+    } else {
+      this.tempArray = [];
+      this.groupByActivities();
+    }
   }
 
   calculateTimeDuration (duration) {

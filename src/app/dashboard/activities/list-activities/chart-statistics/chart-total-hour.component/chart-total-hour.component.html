@@ -1,0 +1,11 @@
+<div *ngIf="inputArray" class="ps-chart-total-hour-wrapper">
+  <ng-container *ngFor="let data of inputArray">
+    <div *ngIf="!data.disabled" class="ps-chart-total-hour-item">
+      <span class="ps-chart-total-hour-user-name"> {{data.userName}}</span>
+      <span> : {{data.totalHoursPerUser}} h </span>
+    </div>
+  </ng-container>
+</div>
+<div class="is-pulled-left ps-chart-total-hour">
+  Total Hours : {{totalHours}}
+</div>
