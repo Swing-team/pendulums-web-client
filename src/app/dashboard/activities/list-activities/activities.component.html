@@ -12,9 +12,22 @@
     </div>
   </ng-container>
   <div class="columns ps-activities-stat-wrapper">
-    <div class="column is-offset-1 is-10" style="background-color: white">
-      <chart *ngIf="project" [project]="project" [selectedUsers]="selectedUsers"></chart>
-    </div>
+    <ng-container *ngIf="projectActivities.length > 0">
+      <div class="column is-offset-1 is-10" style="background-color: white">
+        <chart *ngIf="project" [project]="project" [selectedUsers]="selectedUsers"></chart>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="projectActivities === 0 || !currentActivityCopy">
+      <div class="column is-offset-1 is-10" style="background-color: white">
+        <div *ngIf="projectActivities.length === 0 && !currentActivityCopy" class="ps-activities-placeholder">
+          <figure class="image">
+            <img src="../../../../assets/images/placeholder.jpg">
+          </figure>
+          <p *ngIf="selectedUsers.length > 0 ">There is no activity yet!</p>
+          <p *ngIf="selectedUsers.length === 0 ">Please select a member to show statistics</p>
+        </div>
+      </div>
+    </ng-container>
   </div>
   <div class="columns">
     <div class="column is-offset-4-widescreen is-4-widescreen is-4-desktop is-offset-4-desktop is-6-tablet is-offset-3-tablet">
@@ -27,13 +40,13 @@
           </div>
           <div class="ps-card-container">
             <div>
-              <activity-item [activity]="currentActivityCopy" [project]="project" [currentUser]="user | async"></activity-item>
+              <activity-item [activity]="currentActivityCopy" [project]="project" [currentUser]="user"></activity-item>
             </div>
           </div>
         </ng-container>
       </div>
       <div *ngFor='let group of projectActivities; trackBy: let j = index' class="ps-activity-item">
-        <ng-container *ngIf="group.activities.length>0 && project">
+        <ng-container *ngIf="group.activities.length > 0 && project">
           <div class="ps-header-container">
             <div class="ps-activity-header">
               {{group.date}} / {{group.duration}}
@@ -41,7 +54,7 @@
           </div>
           <div class="ps-card-container">
             <div *ngFor='let activity of group.activities; trackBy: let i = index'>
-              <activity-item [activity]="activity" [project]="project" [currentUser]="user | async"
+              <activity-item [activity]="activity" [project]="project" [currentUser]="user"
                              (onDeleteClicked)="deleteActivity(activity, j, i)" (onEditClicked)="openEditManuallyModal(activity)"></activity-item>
             </div>
           </div>

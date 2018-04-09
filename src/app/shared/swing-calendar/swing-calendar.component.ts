@@ -312,9 +312,6 @@ export class SwingCalendarComponent implements OnInit {
       }
       if (Number(this.endRangeInput) === tempDate) {
         result.rangeEnd = true;
-        console.log('starttt', moment(this.startRangeInput))
-        console.log('end', moment(this.endRangeInput))
-        console.log('tiikme', moment(tempDate))
       }
     }
     return result;

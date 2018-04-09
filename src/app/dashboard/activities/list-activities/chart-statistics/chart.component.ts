@@ -4,6 +4,7 @@ import {
   OnInit, SimpleChange, ViewEncapsulation
 } from '@angular/core';
 import { APP_CONFIG }                       from '../../../../app.config';
+import { cloneDeep }                        from 'lodash';
 import { ActivityService }                  from '../../../shared/activity.service';
 import { Project }                          from 'app/shared/state/project/project.model';
 import * as moment                          from 'moment';
@@ -26,6 +27,7 @@ export class ChartComponent implements OnInit, OnChanges {
   dateString: string;
   calenderShow = false;
 
+  usersWithTotal: any;
   multiLevelData = [];
   options;
 
@@ -70,6 +72,11 @@ export class ChartComponent implements OnInit, OnChanges {
             right: 0,
             bottom: 5,
             left: 0
+          },
+          dispatch: {
+            legendClick: (series) => {
+              this.updateUsersWithTotal(series);
+            },
           }
         },
         clipEdge: true,
@@ -101,11 +108,13 @@ export class ChartComponent implements OnInit, OnChanges {
 
   getStatAndPrepareData() {
     this.multiLevelData = [];
+    const tempUsersWithTotal = [];
     if (this.selectedUsers.length > 0) {
       this.activityService.getStat(this.project.id, this.selectedUsers, this.fromDate, this.toDate).then( (res) => {
         const temInputStatArray = res.result;
         temInputStatArray.map((data) => {
           const series = [];
+          let totalHourPerUser = 0;
           let userName = '';
           const user = this.project.teamMembers.filter(x => x.id === data._id)[0];
 
@@ -144,12 +153,14 @@ export class ChartComponent implements OnInit, OnChanges {
             }
 
             // calculate time duration of ids
-            const duration = moment.duration(userStat.value, 'ms').asHours();
-            series.push({
-              'x': xAxisName,
-              'y': duration
-            });
-
+            if (userStat.value >= 0) {
+              const duration = moment.duration(userStat.value, 'ms').asHours();
+              series.push({
+                'x': xAxisName,
+                'y': duration
+              });
+              totalHourPerUser = totalHourPerUser + duration;
+            }
             // push empty column when total columns are less than 4
             if (index === data.stats.length - 1 && this.dateRange > 0 && this.dateRange < 4) {
               series.push({
@@ -168,9 +179,20 @@ export class ChartComponent implements OnInit, OnChanges {
             'values': series
             // color: ps-colors array
           });
-        })
+
+          const x = {
+            disabled: false,
+            userName: userName,
+            userId: data._id,
+            totalHoursPerUser: Number((totalHourPerUser).toFixed(2))
+          };
+          tempUsersWithTotal.push(x);
+        });
       });
     }
+
+    // we should initial usersWithTotal array and not push in it
+    this.usersWithTotal = tempUsersWithTotal;
   }
 
   showCalender() {
@@ -179,6 +201,25 @@ export class ChartComponent implements OnInit, OnChanges {
 
   closeCalender() {
     this.calenderShow = false;
+  }
+
+  updateUsersWithTotal(series) {
+    const tempArray = cloneDeep(this.usersWithTotal);
+    this.usersWithTotal = [];
+    if (!series.disabled) {
+      tempArray.map((item) => {
+        if (item.userName === series.key) {
+          item.disabled = true;
+        }
+      })
+    } else if (series.disabled) {
+      tempArray.map((item) => {
+        if (item.userName === series.key) {
+          item.disabled = false;
+        }
+      })
+    }
+    this.usersWithTotal = tempArray;
   }
 
   updateDates(event) {
@@ -197,7 +238,6 @@ export class ChartComponent implements OnInit, OnChanges {
     this.fromDate = event.start.startOf('day').valueOf();
     this.toDate = (event.end.add(1, 'days')).startOf('day').valueOf();
     this.getStatAndPrepareData();
-    console.log('event', event)
     this.calenderShow = false;
   }
 }

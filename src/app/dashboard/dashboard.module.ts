@@ -16,6 +16,7 @@ import { DashboardComponent }                 from './dashboard.component';
 import { ProjectSettingsModalComponent }      from './projects/settings/modal/project-settings-modal.component';
 import { ProfileSettingComponent }            from '../profile-setting/profile-setting.component';
 import { ChartComponent }                     from './activities/list-activities/chart-statistics/chart.component';
+import { ChartTotalHourComponent }            from './activities/list-activities/chart-statistics/chart-total-hour.component/chart-total-hour.component';
 import { NvD3Module } from 'ng2-nvd3';
 import 'd3';
 import 'nvd3';
@@ -38,6 +39,7 @@ import 'nvd3';
     ActivitiesComponent,
     ActivityItemComponent,
     ChartComponent,
+    ChartTotalHourComponent,
     AddManuallyActivityComponent,
     DashboardComponent,
     ProfileSettingComponent
