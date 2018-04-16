@@ -18,6 +18,7 @@ import { UnSyncedActivityActions }            from '../../../../shared/state/uns
 import { Status }                             from '../../../../shared/state/status/status.model';
 import { Md5 }                                from 'ts-md5/dist/md5';
 import { StatusActions }                      from '../../../../shared/state/status/status.actions';
+import * as moment from 'moment';
 
 @Component({
   selector: 'project-item',
@@ -109,43 +110,95 @@ export class ProjectItemComponent implements OnInit {
 
   stopActivity() {
     if (this.currentActivity) {
-      this.currentActivityCopy.stoppedAt = Date.now().toString();
+      const dividedActivitiesArray = [];
+      const stoppedAtDay = moment().startOf('day');
+      const startedAtDay = moment(Number(this.currentActivityCopy.startedAt)).startOf('day');
+      if (stoppedAtDay.isSame(startedAtDay)) {
+        this.currentActivityCopy.stoppedAt = moment().valueOf().toString();
+        dividedActivitiesArray.push(this.currentActivityCopy)
+      } else {
+        const diff = stoppedAtDay.diff(startedAtDay, 'days');
+        let startedAt = this.currentActivityCopy.startedAt;
+        let stoppedAt = moment(Number(this.currentActivityCopy.startedAt)).endOf('day').valueOf();
+        this.currentActivityCopy.stoppedAt = stoppedAt.toString();
+        for (let i = 0; i < diff; i++) {
+          startedAt = (stoppedAt + 1).toString();
+          if ( i < diff - 1) {
+            stoppedAt = moment(stoppedAt + 1).endOf('day').valueOf();
+          } else if (i === diff - 1) {
+            stoppedAt = moment().valueOf();
+          }
+          const tempResult = {
+            name: this.currentActivityCopy.name,
+            user: this.currentActivityCopy.user,
+            project: this.currentActivityCopy.project,
+            startedAt: startedAt,
+            stoppedAt: stoppedAt.toString(),
+          };
+          dividedActivitiesArray.push(tempResult);
+        }
+      }
+
       if (this.currentActivityCopy.id) {
         this.activityService.editCurrentActivity(this.project.id, this.currentActivityCopy).then((activity) => {
-          this.store.dispatch(this.CurrentActivityActions.clearCurrentActivity());
-          this.store.dispatch(this.projectsActions.updateProjectActivities(this.project.id, activity));
-          this.taskName = 'untitled activity';
-          this.showError('The activity was stopped');
+          this.updateStateInSuccess(activity, dividedActivitiesArray);
         })
           .catch(error => {
-            console.log('server error happened', error);
-            this.showError('Server communication error.');
-            this.store.dispatch(this.UnSyncedActivityActions.addUnSyncedActivity(this.currentActivityCopy));
-            this.store.dispatch(this.StatusActions.updateUnsyncedDataChanged(true));
-            this.store.dispatch(this.projectsActions.updateProjectActivities(this.currentActivityCopy.project, this.currentActivityCopy));
-            this.store.dispatch(this.CurrentActivityActions.clearCurrentActivity());
-            this.taskName = null;
-            this.showError('The activity was stopped');
+            this.updateStateInCatch (error, dividedActivitiesArray);
           });
       } else {
         this.activityService.createManually(this.project.id, this.currentActivityCopy).then((activity) => {
-          this.store.dispatch(this.CurrentActivityActions.clearCurrentActivity());
-          this.store.dispatch(this.projectsActions.updateProjectActivities(this.project.id, activity));
-          this.taskName = 'untitled activity';
-          this.showError('The activity was stopped');
+          this.updateStateInSuccess(activity, dividedActivitiesArray);
         })
-          .catch(error => {
-            console.log('server error happened', error);
-            this.showError('Server communication error.');
-            this.store.dispatch(this.UnSyncedActivityActions.addUnSyncedActivity(this.currentActivityCopy));
-            this.store.dispatch(this.StatusActions.updateUnsyncedDataChanged(true));
-            this.store.dispatch(this.projectsActions.updateProjectActivities(this.currentActivityCopy.project, this.currentActivityCopy));
-            this.store.dispatch(this.CurrentActivityActions.clearCurrentActivity());
-            this.taskName = null;
-            this.showError('The activity was stopped');
+          .catch((error) => {
+            this.updateStateInCatch (error, dividedActivitiesArray);
           });
         }
-      }
+    }
+  }
+
+  pushDividedActivitiesToServer (dividedActivitiesResult) {
+    dividedActivitiesResult.map((item) => {
+      this.activityService.createManually(this.project.id, item).then((activity) => {
+        this.store.dispatch(this.projectsActions.updateProjectActivities(this.project.id, activity));
+      })
+        .catch(error => {
+          console.log('server error happened', error);
+          this.store.dispatch(this.UnSyncedActivityActions.addUnSyncedActivity(item));
+          this.store.dispatch(this.StatusActions.updateUnsyncedDataChanged(true));
+          this.store.dispatch(this.projectsActions.updateProjectActivities(item.project, item));
+        });
+    });
+  }
+
+  pushDividedActivitiesToDb (dividedActivitiesResult) {
+    dividedActivitiesResult.map((item) => {
+      this.store.dispatch(this.UnSyncedActivityActions.addUnSyncedActivity(item));
+      this.store.dispatch(this.projectsActions.updateProjectActivities(item.project, item));
+    });
+  }
+
+  updateStateInCatch (error, dividedActivitiesResult) {
+    console.log('server error happened', error);
+    this.showError('Server communication error.');
+    this.store.dispatch(this.UnSyncedActivityActions.addUnSyncedActivity(this.currentActivityCopy));
+    this.store.dispatch(this.projectsActions.updateProjectActivities(this.currentActivityCopy.project, this.currentActivityCopy));
+    // we must save divided activities in db
+    this.pushDividedActivitiesToDb(dividedActivitiesResult);
+    this.store.dispatch(this.StatusActions.updateUnsyncedDataChanged(true));
+    this.store.dispatch(this.CurrentActivityActions.clearCurrentActivity());
+    this.taskName = null;
+    this.showError('The activity was stopped');
+  }
+
+  updateStateInSuccess (activity, dividedActivitiesArray) {
+    this.store.dispatch(this.CurrentActivityActions.clearCurrentActivity());
+    this.store.dispatch(this.projectsActions.updateProjectActivities(this.project.id, activity));
+    this.taskName = 'untitled activity';
+    // we send divided activities to server after original activity because
+    // The stop time of activity cannot be older than start time in current activity!
+    this.pushDividedActivitiesToServer(dividedActivitiesArray);
+    this.showError('The activity was stopped');
   }
 
   nameActivity($event) {
