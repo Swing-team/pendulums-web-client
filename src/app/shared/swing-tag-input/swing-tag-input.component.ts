@@ -8,8 +8,10 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 
 export class SwingTagInputComponent implements OnInit{
   @Input() items: Array<any>;
+  @Input() length = 0;
 
   constructor() {}
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 }

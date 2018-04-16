@@ -38,6 +38,7 @@ export class ActivitiesComponent implements OnInit {
   currentActivityCopy: Activity;
   userAccess = false;
   selectedUsers = [];
+  selectedItemIndex = [];
   projectActivities: {
     date: any
     activities: any
@@ -68,8 +69,9 @@ export class ActivitiesComponent implements OnInit {
           this.userAccess = this.userRoleInProject(this.project, this.user.id);
           if (this.userAccess) {
             this.selectedUsers = [];
-            this.project.teamMembers.map((member) => {
+            this.project.teamMembers.map((member, index) => {
               this.selectedUsers.push(member.id);
+              this.selectedItemIndex.push(index);
             })
           } else {
             if (this.user.id && this.selectedUsers.length === 0) {

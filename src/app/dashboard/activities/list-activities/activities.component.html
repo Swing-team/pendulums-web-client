@@ -5,10 +5,10 @@
     <div *ngIf="project" class="ps-stat-user-filter-wrapper">
       <swing-select [type]="'multiSelect'"
                     [items]="project.teamMembers | objectKeys"
-                    [itemTextAttribute]="'name'"
-                    [alternativeItemTextAttribute]="'email'"
+                    [itemTextAttribute]="['name', 'email']"
                     (onItemClicked)="getSelectedUsers($event)"
-                    [label]="'Select Users'"></swing-select>
+                    [label]="'Select Users'"
+                    [selectedItemIndex]="selectedItemIndex"></swing-select>
     </div>
   </ng-container>
   <div class="columns ps-activities-stat-wrapper">

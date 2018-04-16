@@ -18,8 +18,8 @@
   </ul>
 
   <div *ngIf="type === 'multiSelect'" class="ps-select-label" (click)="toggleIsExpanded()">
-    <swing-tag-input *ngIf="selectItemsListOutput.length > 0" [items]="selectItemsListTags"></swing-tag-input>
-    {{selectItemsListOutput.length === 0 ? label : ''}}
+    <swing-tag-input *ngIf="selectItemsListTags.length > 0" [items]="selectItemsListTags" [length]="items.length"></swing-tag-input>
+    {{selectItemsListTags.length === 0 ? label : ''}}
   </div>
 
   <ul *ngIf="type === 'multiSelect'" class="ps-select-items-list" [ngClass]="{'ps-show-items': isExpanded}">
@@ -30,11 +30,11 @@
         <label [attr.for]="'checkradio' + i">
           {{
           itemTextAttribute ? (
-              item.item[itemTextAttribute] ?
-                    item.item[itemTextAttribute]
-                    : (alternativeItemTextAttribute ?
-                        item.item[alternativeItemTextAttribute]
-                            : 'no name!' )
+              item.item[itemTextAttribute[0]] ?
+                    item.item[itemTextAttribute[0]]
+                    : ([itemTextAttribute[1]] ?
+                        item.item[itemTextAttribute[1]]
+                            : 'no name!')
           )
           : item
           }}
