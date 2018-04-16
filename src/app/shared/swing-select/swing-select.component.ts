@@ -12,10 +12,8 @@ export class SwingSelectComponent implements OnInit {
   @Input() type: String = 'singleSelect';
   @Input() items: Array<any>;
   @Input() label: String = 'Select';
-  @Input() selectedItemIndex: Number;
+  @Input() selectedItemIndex: Array<number>;
   @Input() itemTextAttribute: any;
-  // Use alternative itemTextAttribute if that is Nullable
-  @Input() alternativeItemTextAttribute: any;
   @Input() width: String = '100%';
   @Output() onItemClicked = new EventEmitter();
 
@@ -32,14 +30,19 @@ export class SwingSelectComponent implements OnInit {
     if (this.type === 'multiSelect') {
       this.selectItemsList.push({
         index: 0,
-        selected: false,
+        selected: this.selectedItemIndex.length ===  this.items.length ? true : false,
         item: {name: 'Select All'}});
 
       this.items.map((item, index) => {
-        this.selectItemsList.push({
+        const tempItem = {
           index: index + 1,
-          selected: false,
-          item: item});
+          selected: this.selectedItemIndex.indexOf(index) > -1 ? true : false,
+          item: item};
+        this.selectItemsList.push(tempItem);
+        if (tempItem.selected === true) {
+          // preparing tags list and check null attributes like as view
+          this.prepareTagsList(tempItem);
+        }
       });
     }
   }
@@ -53,7 +56,7 @@ export class SwingSelectComponent implements OnInit {
 
   itemClicked(index, selectedItem) {
     if (this.type === 'singleSelect')  {
-      this.selectedItemIndex = index;
+      this.selectedItemIndex = [index];
       this.selectedItem = selectedItem;
       this.toggleIsExpanded();
       this.onItemClicked.emit({index, selectedItem});
@@ -97,27 +100,31 @@ export class SwingSelectComponent implements OnInit {
           index: item.index - 1,
           item: item.item
         };
-        this.selectItemsListOutput.push(tempItem)
+        this.selectItemsListOutput.push(tempItem);
 
         // preparing tags list and check null attributes like as view
-        if (this.itemTextAttribute) {
-          if (item.item[this.itemTextAttribute]) {
-            this.selectItemsListTags.push(item.item[this.itemTextAttribute]);
-          } else if (this.alternativeItemTextAttribute) {
-            if (item.item[this.alternativeItemTextAttribute]) {
-              this.selectItemsListTags.push(item.item[this.alternativeItemTextAttribute]);
-            } else {
-              this.selectItemsListTags.push('no name!');
-            }
-          } else {
-            this.selectItemsListTags.push(item);
-          }
-        } else {
-          this.selectItemsListTags.push(item);
-        }
+        this.prepareTagsList(item);
       }
     });
     this.onItemClicked.emit(this.selectItemsListOutput)
+  }
+
+  prepareTagsList(item) {
+    if (this.itemTextAttribute) {
+      if (item.item[this.itemTextAttribute[0]]) {
+        this.selectItemsListTags.push(item.item[this.itemTextAttribute[0]]);
+      } else if (this.itemTextAttribute[1]) {
+        if (item.item[this.itemTextAttribute[1]]) {
+          this.selectItemsListTags.push(item.item[this.itemTextAttribute[1]]);
+        } else {
+          this.selectItemsListTags.push('no name!');
+        }
+      } else {
+        this.selectItemsListTags.push('no name!');
+      }
+    } else {
+      this.selectItemsListTags.push(item);
+    }
   }
 
   toggleIsExpanded() {
