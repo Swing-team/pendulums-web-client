@@ -165,7 +165,6 @@ export class ToolbarComponent implements OnInit  {
       const startedAtDay = moment(Number(this.currentActivityCopy.startedAt)).startOf('day');
       if (stoppedAtDay.isSame(startedAtDay)) {
         this.currentActivityCopy.stoppedAt = moment().valueOf().toString();
-        dividedActivitiesArray.push(this.currentActivityCopy)
       } else {
         const diff = stoppedAtDay.diff(startedAtDay, 'days');
         let startedAt = this.currentActivityCopy.startedAt;
