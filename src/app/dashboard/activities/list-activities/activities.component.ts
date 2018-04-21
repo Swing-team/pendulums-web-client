@@ -137,8 +137,8 @@ export class ActivitiesComponent implements OnInit {
     this.location.back();
   }
 
-  updateActivities(param) {
-    this.tempArray.push(param);
+  updateActivities(params) {
+    this.tempArray = this.tempArray.concat(params);
     this.sortArrayByDate();
     this.groupByActivities();
   }
@@ -187,8 +187,8 @@ export class ActivitiesComponent implements OnInit {
         currentActivity: tempCurrentActivity ? tempCurrentActivity : null,
       },
       outputs: {
-        responseActivity: (param) => {
-          this.updateActivities(param);
+        responseActivity: (params) => {
+          this.updateActivities(params);
         }
       },
       customStyles: {'width': '400px'}
@@ -210,14 +210,14 @@ export class ActivitiesComponent implements OnInit {
         currentActivity: tempCurrentActivity ? tempCurrentActivity : null,
       },
       outputs: {
-        responseActivity: (param) => {
+        responseActivity: (params) => {
           // Maybe by editing an activity date's change so we should delete previous activity and push
           // new activity to tempArray and sort it again
           const Removed = this.tempArray .filter(function(el) {
             return el.id !== activity.id ;
           });
           this.tempArray = Removed;
-          this.updateActivities(param);
+          this.updateActivities(params);
         }
       },
       customStyles: {'width': '400px', 'overflow': 'initial'}
