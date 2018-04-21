@@ -1,6 +1,5 @@
 import 'rxjs/add/operator/switchMap';
-import {Component, Input, OnChanges, OnInit, SimpleChange} from '@angular/core';
-
+import { Component, Input, OnChanges, SimpleChange } from '@angular/core';
 @Component({
   selector: 'chart-total-hour',
   templateUrl: './chart-total-hour.component.html',
@@ -10,11 +9,13 @@ import {Component, Input, OnChanges, OnInit, SimpleChange} from '@angular/core';
 export class ChartTotalHourComponent implements OnChanges {
   @Input() inputArray: Array<{
     disabled: any,
-    userName: any
-    userId: any
-    totalHoursPerUser: number
+    userName: any,
+    userId: any,
+    totalHoursPerUser: number,
+    humanizedHour: string
   }> = [];
   totalHours = 0;
+  result = ''
 
   constructor() {
   }
@@ -30,7 +31,25 @@ export class ChartTotalHourComponent implements OnChanges {
     this.inputArray.map((data) => {
       if (!data.disabled) {
         this.totalHours = this.totalHours + data.totalHoursPerUser;
+        data.humanizedHour = this.humanizeHours(data.totalHoursPerUser)
       }
-    })
+    });
+    this.result = this.humanizeHours(this.totalHours);
+  }
+
+  humanizeHours (time) {
+    time = time / 1000;
+    const hours = Math.floor(time / 3600);
+    const minutes = Math.floor((time - (hours * 3600)) / 60);
+
+    let hoursString = hours.toString();
+    let minutesString = minutes.toString();
+
+    if (hours   < 10) {hoursString   = '0' + hours; }
+    if (minutes < 10) {minutesString = '0' + minutes; }
+    const result = hoursString + ': ' + minutesString;
+    return result;
   }
 }
+
+

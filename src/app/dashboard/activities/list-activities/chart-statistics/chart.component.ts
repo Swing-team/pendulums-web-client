@@ -92,8 +92,14 @@ export class ChartComponent implements OnInit, OnChanges {
         },
         yAxis: {
           axisLabelDistance: 0,
-          tickFormat: function(d){
-            return d3.format('.02f')(d);
+          tickFormat: function formatDateTick(time) {
+            let minutes = time / 1000 / 60;
+            const hours = Math.floor(minutes / 60);
+            minutes = minutes % 60;
+            const date = new Date();
+            date.setHours(hours);
+            date.setMinutes(minutes);
+            return d3.time.format('%H:%M')(date);
           }
         }
       }
@@ -154,7 +160,7 @@ export class ChartComponent implements OnInit, OnChanges {
 
             // calculate time duration of ids
             if (userStat.value >= 0) {
-              const duration = moment.duration(userStat.value, 'ms').asHours();
+              const duration = userStat.value;
               series.push({
                 'x': xAxisName,
                 'y': duration
@@ -184,7 +190,8 @@ export class ChartComponent implements OnInit, OnChanges {
             disabled: false,
             userName: userName,
             userId: data._id,
-            totalHoursPerUser: Number((totalHourPerUser).toFixed(2))
+            totalHoursPerUser: Number((totalHourPerUser)),
+            humanizedHour: ''
           };
           tempUsersWithTotal.push(x);
         });
