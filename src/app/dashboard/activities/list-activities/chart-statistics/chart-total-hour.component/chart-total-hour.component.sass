@@ -4,25 +4,23 @@
   margin-bottom: 0.5rem !important
   display: flex
   flex-wrap: wrap
-  .ps-chart-total-hour-item
-    display: inherit
-    font-size: 0.8rem !important
-    text-align: left
-    width: 160px
-    flex: none
-    padding: 0.2rem
-    border: 1px solid $aluminum
-    border-radius: $radius
-    margin-left: 0.5rem
-    margin-top: 0.5rem !important
-    @media (max-width: 338px)
-      width: 300px
-    .ps-chart-total-hour-user-name
-      overflow: hidden
-      text-overflow: ellipsis
-      width: 65% !important
-      white-space: nowrap
-      display: inline-block
+
+.ps-chart-total-hour-item-container
+  position: relative
+  display: flex
+  flex-wrap: wrap
+
+.ps-chart-total-hour-member-image
+  width: 20px
+  height: 20px
+  border: 1px solid $ink
+  border-radius: 100%
+
+.ps-chart-total-hour-item-text
+  font-size: 0.7rem
+  color:  gray
+  @media (max-width: $ps-mobile)
+    font-size: 0.65rem
 
 .ps-chart-total-hour
   padding-left: 0.5rem

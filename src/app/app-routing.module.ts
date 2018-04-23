@@ -23,14 +23,17 @@ const appRoutes: Routes = [
   },
   {
     path: 'signUp',
+    canActivate: [AnonymousGuardService],
     component: SignUpComponent
   },
   {
     path: 'forgotPassword',
+    canActivate: [AnonymousGuardService],
     component: ForgotPasswordComponent
   },
   {
     path: 'resetPassword/:token',
+    canActivate: [AnonymousGuardService],
     component: ResetPasswordComponent
   },
   {
@@ -40,10 +43,12 @@ const appRoutes: Routes = [
   },
   {
     path: 'activities/:projectId',
+    canActivate: [AuthGuardService],
     component: ActivitiesComponent
   },
   {
     path: 'profile',
+    canActivate: [AuthGuardService],
     component: ProfileSettingComponent
   },
 ];
