@@ -46,7 +46,6 @@ export class ProjectItemComponent implements OnInit {
                private errorService: ErrorService,
                private UnSyncedActivityActions: UnSyncedActivityActions,
                private StatusActions: StatusActions) {
-    this.taskName = 'untitled activity';
     this.activities = [];
   }
 
@@ -62,11 +61,14 @@ export class ProjectItemComponent implements OnInit {
         this.currentActivityCopy = currentActivity;
       });
     }
+
     if (this.project.activities) {
       this.project.activities.map((activity) => {
         this.calculateActivityDuration(activity);
       });
     }
+
+    this.taskName = this.project.recentActivityName;
   }
 
   toggleStopStart() {
@@ -87,6 +89,9 @@ export class ProjectItemComponent implements OnInit {
   }
 
   startActivityAtServer() {
+    if (!this.taskName) {
+      this.taskName = 'untitled activity';
+    }
     this.activity = new Activity();
     this.activity.name = this.taskName;
     this.activity.startedAt = Date.now().toString();
@@ -186,14 +191,12 @@ export class ProjectItemComponent implements OnInit {
     this.pushDividedActivitiesToDb(dividedActivitiesResult);
     this.store.dispatch(this.StatusActions.updateUnsyncedDataChanged(true));
     this.store.dispatch(this.CurrentActivityActions.clearCurrentActivity());
-    this.taskName = null;
     this.showError('The activity was stopped');
   }
 
   updateStateInSuccess (activity, dividedActivitiesArray) {
     this.store.dispatch(this.CurrentActivityActions.clearCurrentActivity());
     this.store.dispatch(this.projectsActions.updateProjectActivities(this.project.id, activity));
-    this.taskName = 'untitled activity';
     // we send divided activities to server after original activity because
     // The stop time of activity cannot be older than start time in current activity!
     this.pushDividedActivitiesToServer(dividedActivitiesArray);
