@@ -9,6 +9,7 @@ export class Project {
   owner: TeamMember;
   teamMembers: Array<TeamMember>;
   admins: Array<TeamMember>;
+  recentActivityName: string = null;
 
   constructor() {}
 }

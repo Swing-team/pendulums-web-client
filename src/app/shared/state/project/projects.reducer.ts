@@ -121,6 +121,7 @@ export default function reducer(state = initialState, action: ActionWithPayload<
       } else {
         newState.entities[action.payload.projectId].activities = [action.payload.currentActivity];
       }
+      newState.entities[action.payload.projectId].recentActivityName = action.payload.currentActivity.name;
       return newState;
     }
 

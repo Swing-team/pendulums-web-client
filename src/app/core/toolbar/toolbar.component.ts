@@ -114,6 +114,7 @@ export class ToolbarComponent implements OnInit  {
   projectSelected(event) {
     console.log(event.index);
     this.selectedProject = event.selectedItem;
+    this.taskName = this.selectedProject.recentActivityName;
     console.log(event.selectedItem);
   }
 
@@ -236,14 +237,12 @@ export class ToolbarComponent implements OnInit  {
     this.pushDividedActivitiesToDb(dividedActivitiesResult);
     this.store.dispatch(this.StatusActions.updateUnsyncedDataChanged(true));
     this.store.dispatch(this.CurrentActivityActions.clearCurrentActivity());
-    this.taskName = null;
     this.showError('The activity was stopped');
   }
 
   updateStateInSuccess (activity, dividedActivitiesArray) {
     this.store.dispatch(this.CurrentActivityActions.clearCurrentActivity());
     this.store.dispatch(this.projectsActions.updateProjectActivities(activity.project, activity));
-    this.taskName = 'untitled activity';
     // we send divided activities to server after original activity because
     // The stop time of activity cannot be older than start time in current activity!
     this.pushDividedActivitiesToServer(dividedActivitiesArray);
