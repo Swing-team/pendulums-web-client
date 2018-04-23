@@ -50,6 +50,7 @@ export class ProjectItemComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.taskName = this.project.recentActivityName;
     if (this.currentActivity) {
       this.currentActivity.subscribe(currentActivity => {
         if (currentActivity.project === this.project.id) {
@@ -61,14 +62,11 @@ export class ProjectItemComponent implements OnInit {
         this.currentActivityCopy = currentActivity;
       });
     }
-
     if (this.project.activities) {
       this.project.activities.map((activity) => {
         this.calculateActivityDuration(activity);
       });
     }
-
-    this.taskName = this.project.recentActivityName;
   }
 
   toggleStopStart() {
