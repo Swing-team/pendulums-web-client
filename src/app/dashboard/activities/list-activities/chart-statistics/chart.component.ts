@@ -121,14 +121,8 @@ export class ChartComponent implements OnInit, OnChanges {
         temInputStatArray.map((data) => {
           const series = [];
           let totalHourPerUser = 0;
-          let userName = '';
           const user = this.project.teamMembers.filter(x => x.id === data._id)[0];
 
-          if (user.name !== '') {
-            userName = user.name;
-          } else {
-            userName = user.email;
-          }
           data.stats.map((userStat, index) => {
             // push empty column when total columns are less than 4
             if (index === 0 && this.dateRange > 0 && this.dateRange < 4) {
@@ -181,17 +175,19 @@ export class ChartComponent implements OnInit, OnChanges {
           });
 
           this.multiLevelData.push({
-            'key': userName,
+            'key': user.name ? user.name : user.email,
             'values': series
             // color: ps-colors array
           });
 
           const x = {
             disabled: false,
-            userName: userName,
+            userName: user.name,
+            email: user.email,
             userId: data._id,
             totalHoursPerUser: Number((totalHourPerUser)),
-            humanizedHour: ''
+            humanizedHour: '',
+            profileImage: user.profileImage
           };
           tempUsersWithTotal.push(x);
         });
