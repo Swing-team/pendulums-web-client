@@ -242,7 +242,7 @@ export class ToolbarComponent implements OnInit  {
 
   updateStateInSuccess (activity, dividedActivitiesArray) {
     this.store.dispatch(this.CurrentActivityActions.clearCurrentActivity());
-    this.store.dispatch(this.projectsActions.updateProjectActivities(activity.id, activity));
+    this.store.dispatch(this.projectsActions.updateProjectActivities(activity.project, activity));
     this.taskName = 'untitled activity';
     // we send divided activities to server after original activity because
     // The stop time of activity cannot be older than start time in current activity!
