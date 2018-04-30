@@ -30,6 +30,7 @@ export class ProfileSettingComponent implements OnInit {
   emailHash: any;
   userNameEdited: boolean;
   netConnected: boolean;
+  editButtonDisabled = false;
   private status: Observable<any>;
 
   constructor (@Inject(APP_CONFIG) private config,
@@ -67,16 +68,22 @@ export class ProfileSettingComponent implements OnInit {
   }
 
   saveProfile() {
-    this.userNameEdited = false;
-    if (this.userEdit.name !== this.user.name) {
-      const formData = new FormData();
-      formData.append('user', JSON.stringify({name: this.userEdit.name}));
-      this.UserService.update(formData).then((user) => {
-        this.store.dispatch(this.userActions.updateUserName(user.name));
-      })
-        .catch(error => {
-          console.log('error is: ', error);
-        });
+    if (!this.editButtonDisabled ) {
+      if (this.userEdit.name !== this.user.name) {
+        this.editButtonDisabled = true;
+        const formData = new FormData();
+        formData.append('user', JSON.stringify({name: this.userEdit.name}));
+        this.UserService.update(formData).then((user) => {
+          this.store.dispatch(this.userActions.updateUserName(user.name));
+          this.editButtonDisabled = false;
+          this.userNameEdited = false;
+        })
+          .catch(error => {
+            this.editButtonDisabled = false;
+            console.log('error is: ', error);
+            this.userNameEdited = false;
+          });
+      }
     }
   }
 

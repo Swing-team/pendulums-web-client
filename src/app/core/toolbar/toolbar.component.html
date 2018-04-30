@@ -33,8 +33,12 @@
       </div>
       <div class="ps-toolbar-play" [ngClass]="{'ps-toolbar-stop': currentActivityCopy.startedAt}">
         <div (click)="toggleStopStart()">
-          <span *ngIf="!currentActivityCopy.startedAt" class="icon icon-play"></span>
-          <span *ngIf="currentActivityCopy.startedAt" class="icon icon-stop"></span>
+          <a  class="button ps-toolbar-button" [ngClass]="{'is-loading': stopStartButtonDisabled}">
+            <span class="icon">
+              <i *ngIf="currentActivityCopy.startedAt" class="icon icon-stop"></i>
+              <i *ngIf="!currentActivityCopy.startedAt" class="icon icon-play"></i>
+            </span>
+          </a>
         </div>
         <span id="rotate" *ngIf="currentActivityCopy.startedAt" class="icon icon-stopwatch ps-toolbar-time-icon"
               (click)="toggleShowTimeDuration()"></span>

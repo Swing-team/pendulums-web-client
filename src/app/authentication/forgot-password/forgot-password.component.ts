@@ -14,6 +14,7 @@ export class ForgotPasswordComponent {
   private errorMessage: string;
   private User = {email: null};
   submitted = false;
+  haveResponOfSubmit = false;
 
   constructor(
     private authService: AuthenticationService,
@@ -21,26 +22,33 @@ export class ForgotPasswordComponent {
   ) {}
 
   resetRequest() {
-    this.submitted = true;
-    this.errorMessage = null;
-    if (this.validation(this.User)) {
-      this.authService.forgotPassword(this.User)
-        .catch(error => {
+    if (!this.submitted) {
+      this.submitted = true;
+      this.errorMessage = null;
+      if (this.validation(this.User)) {
+        this.authService.forgotPassword(this.User).then(() => {
           this.submitted = false;
-          console.log('error is: ', error);
-          if (error.status === 400) {
-            this.errorMessage = 'Email not found';
-          } else {
-            this.errorMessage = 'Server communication error';
-          }
-        });
-    } else {
-      this.submitted = false;
+          this.haveResponOfSubmit = true;
+        })
+          .catch(error => {
+            this.submitted = false;
+            console.log('error is: ', error);
+            if (error.status === 400) {
+              this.errorMessage = 'Email not found';
+            } else {
+              this.errorMessage = 'Server communication error';
+            }
+          });
+      } else {
+        this.submitted = false;
+      }
     }
   };
+
   goBack(): void {
     this.location.back();
   }
+
   validation(User): boolean {
     if (!EMAIL_REGEX.test(User.email)) {
       this.errorMessage = 'please enter valid email address';

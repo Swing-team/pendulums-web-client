@@ -40,6 +40,8 @@
             [label]="member.role"
             (onItemClicked)="changeTeamMemberRole(member.id, i, $event)">
           </swing-select>
+          <a class="button ps-member-item-remove-team-member" *ngIf="teamMemberRoleChanged"
+             [ngClass]="{'is-loading': teamMemberRoleChanged}"></a>
         </div>
         <div *ngIf="member.role === 'owner'" class="ps-user-role ps-owner-role">
           {{member.role}}
@@ -47,11 +49,26 @@
       </div>
       <div class="column is-2">
         <div class="ps-member-item-button" *ngIf="removeMemberConfirmationViewIndex !== i">
-          <i class="icon-trash has-text-danger" (click)="removeMemberConfirmationViewIndex = i"></i>
+          <a class="button ps-member-item-button-confirmation"
+             (click)="confirmRemoveMember(i)">
+            <span class="icon">
+              <i class="icon-trash has-text-danger"></i>
+            </span>
+          </a>
         </div>
         <div class="ps-member-item-button" *ngIf="removeMemberConfirmationViewIndex === i" [@slideInOut]>
-          <span class="icon-cancel has-text-danger" (click)="removeMemberConfirmationViewIndex = -1"></span>
-          <span class="icon-check has-text-success" (click)="removeMember(member.id, i)"></span>
+          <a class="button ps-member-item-button-confirmation" *ngIf="!removeButtonDisabled"
+             (click)="cancelRemoveConfirmation()">
+            <span class="icon">
+              <i class="icon-cancel" [ngClass]="{'has-text-danger': !removeButtonDisabled}"></i>
+            </span>
+          </a>
+          <a class="button ps-member-item-button-confirmation" [ngClass]="{'is-loading': removeButtonDisabled}"
+             (click)="removeMember(member.id, i)">
+            <span class="icon">
+              <i class="icon-check" [ngClass]="{'has-text-success': !removeButtonDisabled}"></i>
+            </span>
+          </a>
         </div>
       </div>
     </div>

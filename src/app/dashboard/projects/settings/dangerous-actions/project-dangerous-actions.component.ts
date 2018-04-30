@@ -19,6 +19,8 @@ export class DangerousActionsComponent {
   @Input() isOwner: boolean;
   @Input() isAdmin: boolean;
   projectNameInput: String;
+  deleteConfirmation = false;
+  deleteButtonDisabled = false;
 
   constructor(
     private projectService: ProjectService,
@@ -28,17 +30,30 @@ export class DangerousActionsComponent {
     private modalService: ModalService) {
   }
 
-  confirm() {
-    if (this.projectNameInput.valueOf() === this.project.name.valueOf()) {
-      this.projectService.delete(this.project.id)
-        .then(response => {
-          this.store.dispatch(this.projectsAction.removeProject(this.project));
-          this.showError('The project was deleted successfully');
-          this.modalService.close();
-        })
-        .catch(error => {
-          this.showError('Server communication error');
-        });
+  confirmToDelete() {
+    this.deleteConfirmation = true;
+  }
+
+  cancelDelete() {
+    this.deleteConfirmation = false;
+  }
+
+  confirmFinalDelete() {
+    if (!this.deleteButtonDisabled) {
+      this.deleteButtonDisabled = true;
+      if (this.projectNameInput.valueOf() === this.project.name.valueOf()) {
+        this.projectService.delete(this.project.id)
+          .then(response => {
+            this.store.dispatch(this.projectsAction.removeProject(this.project));
+            this.showError('The project was deleted successfully');
+            this.deleteButtonDisabled = false;
+            this.modalService.close();
+          })
+          .catch(error => {
+            this.deleteButtonDisabled = false;
+            this.showError('Server communication error');
+          });
+      }
     }
   }
 

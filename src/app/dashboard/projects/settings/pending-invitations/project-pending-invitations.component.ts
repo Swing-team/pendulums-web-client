@@ -33,6 +33,8 @@ export class ProjectPendingInvitationsComponent {
   roles = ['team member', 'admin'];
   cancelInvitationConfirmationViewIndex: Number = -1;
   user = {email: null, role: this.roles[0]};
+  cancelButtonDisabled = false;
+  inviteButtonDisabled = false;
 
   constructor(private projectService: ProjectService,
               private store: Store<AppState>,
@@ -47,19 +49,24 @@ export class ProjectPendingInvitationsComponent {
     };
 
     if (this.validateInvitedUser()) {
-      this.projectService.inviteMember(this.project.id,
-        {
-          invitedUser
-        }
-      )
-        .then(response => {
-          this.store.dispatch(this.projectsActions.addInvitedUser(this.project.id, this.user));
-          this.project.invitedUsers.push(invitedUser);
-          this.user = {email: null, role: this.roles[0]};
-          this.showError('User is invited');
-        }).catch(error => {
-        this.showError('Server Communication error.');
-      });
+      if (!this.inviteButtonDisabled) {
+        this.inviteButtonDisabled = true;
+        this.projectService.inviteMember(this.project.id,
+          {
+            invitedUser
+          }
+        )
+          .then(response => {
+            this.store.dispatch(this.projectsActions.addInvitedUser(this.project.id, this.user));
+            this.inviteButtonDisabled = false;
+            this.project.invitedUsers.push(invitedUser);
+            this.user = {email: null, role: this.roles[0]};
+            this.showError('User is invited');
+          }).catch(error => {
+          this.inviteButtonDisabled = false;
+          this.showError('Server Communication error.');
+        });
+      }
     }
   }
 
@@ -68,14 +75,33 @@ export class ProjectPendingInvitationsComponent {
   }
 
   cancelInvitation(invitedUser, index) {
-    this.projectService.cancelInvitation(this.project.id, {invitedUser})
-      .then(response => {
-        this.store.dispatch(this.projectsActions.removeInvitedUser(this.project.id, invitedUser));
-        this.project.invitedUsers.splice(index, 1)
-        this.showError('Invitation was cancelled successfully');
-      }).catch(error => {
-      this.showError('Server Communication error.');
-    });
+    if (!this.cancelButtonDisabled) {
+      this.cancelButtonDisabled = true;
+      this.projectService.cancelInvitation(this.project.id, {invitedUser})
+        .then(response => {
+          this.store.dispatch(this.projectsActions.removeInvitedUser(this.project.id, invitedUser));
+          this.project.invitedUsers.splice(index, 1)
+          this.showError('Invitation was cancelled successfully');
+          this.cancelButtonDisabled = false;
+          this.cancelInvitationConfirmationViewIndex = -1
+        }).catch(error => {
+          this.showError('Server Communication error.');
+          this.cancelButtonDisabled = false;
+          this.cancelInvitationConfirmationViewIndex = -1
+      });
+    }
+  }
+
+  cancelInvitationConfirmation() {
+    if (!this.cancelButtonDisabled) {
+      this.cancelInvitationConfirmationViewIndex = -1;
+    }
+  }
+
+  confirmCancelInvitation(index) {
+    if (!this.cancelButtonDisabled) {
+      this.cancelInvitationConfirmationViewIndex = index;
+    }
   }
 
   validateInvitedUser() {

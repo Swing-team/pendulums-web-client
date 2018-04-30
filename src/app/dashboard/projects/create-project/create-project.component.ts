@@ -28,7 +28,6 @@ export class CreateProjectComponent {
   previewImage: string;
   canvasPreviewImage: string;
   fileTypeString: string;
-  userSubmitted = false;
   formSubmitted = false;
   md5: any;
 
@@ -44,45 +43,45 @@ export class CreateProjectComponent {
     if (!this.project.name || /^\s*$/.test(this.project.name) || !this.project.name.trim()) {
       this.showError('Project name is empty');
     } else {
-      this.formSubmitted = true;
-      delete this.project['id'];
-      delete this.project['image'];
-      delete this.project['activities'];
-      const formData = new FormData();
-      formData.append('project', JSON.stringify(this.project));
-      this.projectImageCanvasElem.nativeElement.toBlob(blob => {
-        if (blob.size > 500000) {
-          this.formSubmitted = false;
-          this.showError('Image size exceeded from 500KB');
-          return;
-        }
-        // check whether image has been changed or not
-        if (this.previewImage) {
-          formData.append('image', blob);
-        }
-        this.projectServices.create(formData).then((project) => {
-          this.store.dispatch(this.projectsActions.addProject(project));
-          this.showError('The project was created successfully');
-          this.project = new Project();
-          this.modalService.close();
-        })
-          .catch(error => {
+      if (!this.formSubmitted) {
+        this.formSubmitted = true;
+        delete this.project['id'];
+        delete this.project['image'];
+        delete this.project['activities'];
+        const formData = new FormData();
+        formData.append('project', JSON.stringify(this.project));
+        this.projectImageCanvasElem.nativeElement.toBlob(blob => {
+          if (blob.size > 500000) {
             this.formSubmitted = false;
-            console.log('error is: ', error);
-            this.showError('Server communication error');
-          });
-        this.formSubmitted = false;
-      }, this.fileTypeString, 0.90);
+            this.showError('Image size exceeded from 500KB');
+            return;
+          }
+          // check whether image has been changed or not
+          if (this.previewImage) {
+            formData.append('image', blob);
+          }
+          this.projectServices.create(formData).then((project) => {
+            this.store.dispatch(this.projectsActions.addProject(project));
+            this.showError('The project was created successfully');
+            this.project = new Project();
+            this.formSubmitted = false;
+            this.modalService.close();
+          })
+            .catch(error => {
+              this.formSubmitted = false;
+              console.log('error is: ', error);
+              this.showError('Server communication error');
+            });
+        }, this.fileTypeString, 0.90);
+      }
     }
   }
 
   invite() {
-    this.userSubmitted = true;
     if (this.validateInvitedUser()) {
       this.project.invitedUsers.push(_.cloneDeep(this.user));
       this.user = {email: null, role: this.roles[0]};
     }
-    this.userSubmitted = false;
   }
 
   userEmailHash(email) {
@@ -110,7 +109,7 @@ export class CreateProjectComponent {
     reader.onerror = (error) => {
       console.log('Error: ', error);
       this.showError('Failed to upload the image');
-    }
+    };
     const fileType = file['type'];
     console.log('fileType', fileType);
     const validImageTypes = ['image/jpeg', 'image/png'];

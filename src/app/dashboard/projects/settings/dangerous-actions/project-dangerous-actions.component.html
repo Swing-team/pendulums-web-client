@@ -14,8 +14,22 @@
               </p>
             </div>
           </div>
-          <div class="column is-4">
-            <a class="button ps-confirm-button" (click)="confirm()">Confirm</a>
+          <div class="column is-5">
+            <a class="button is-danger ps-confirm-button" *ngIf="!deleteConfirmation" (click)="confirmToDelete()">
+              Confirm
+            </a>
+            <a class="button ps-confirm-button" *ngIf="deleteConfirmation" (click)="cancelDelete()"
+               [ngClass]="{'is-loading': deleteButtonDisabled, 'is-danger': !deleteButtonDisabled}">
+              <span class="icon">
+                <i class="icon-cancel"></i>
+              </span>
+            </a>
+            <a class="button ps-confirm-button" *ngIf="deleteConfirmation && !deleteButtonDisabled" (click)="confirmFinalDelete()"
+               [ngClass]="{'is-success': !deleteButtonDisabled}">
+              <span class="icon">
+                <i class="icon-check"></i>
+              </span>
+            </a>
           </div>
         </div>
       </div>

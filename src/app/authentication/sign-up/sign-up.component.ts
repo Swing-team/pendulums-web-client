@@ -13,29 +13,34 @@ export class SignUpComponent {
   errorMessage: string;
   private newUser = {email: null, password: null};
   submitted = false;
+  haveResponOfSubmit = false;
 
   constructor(
     private authService: AuthenticationService,
   ) {}
 
   signUp() {
-    this.submitted = true;
-    this.errorMessage = null;
-    if (this.validation(this.newUser)) {
-      this.authService.signUp(this.newUser)
-        .then(() => {
-        })
-        .catch(error => {
-          this.submitted = false;
-          console.log('error is: ', error);
-          if (error.status === 400) {
-            this.errorMessage = 'Email or password mismatch';
-          } else {
-            this.errorMessage = 'Server communication error';
-          }
-        });
-    } else {
-      this.submitted = false;
+    if (!this.submitted) {
+      this.submitted = true;
+      this.errorMessage = null;
+      if (this.validation(this.newUser)) {
+        this.authService.signUp(this.newUser)
+          .then(() => {
+            this.haveResponOfSubmit = true;
+            this.submitted = false;
+          })
+          .catch(error => {
+            this.submitted = false;
+            console.log('error is: ', error);
+            if (error.status === 400) {
+              this.errorMessage = 'Email or password mismatch';
+            } else {
+              this.errorMessage = 'Server communication error';
+            }
+          });
+      } else {
+        this.submitted = false;
+      }
     }
   };
 

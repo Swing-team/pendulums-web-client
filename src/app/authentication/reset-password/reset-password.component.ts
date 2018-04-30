@@ -27,22 +27,27 @@ export class ResetPasswordComponent implements OnInit {
   }
 
   resetPassword() {
-    this.submitted = true;
-    this.errorMessage = null;
-    if (this.validation(this.User)) {
-      this.authService.resetPassword(this.User)
-        .then(() => this.router.navigate(['signIn']))
-        .catch(error => {
-          this.submitted = false;
-          console.log('error is: ', error);
-          if (error.status === 400) {
-            this.errorMessage = 'your information not found';
-          } else {
-            this.errorMessage = 'Server communication error';
-          }
-        });
-    } else {
-      this.submitted = false;
+    if (!this.submitted) {
+      this.submitted = true;
+      this.errorMessage = null;
+      if (this.validation(this.User)) {
+        this.authService.resetPassword(this.User)
+          .then(() => {
+            this.submitted = false;
+            this.router.navigate(['signIn'])
+        })
+          .catch(error => {
+            this.submitted = false;
+            console.log('error is: ', error);
+            if (error.status === 400) {
+              this.errorMessage = 'your information not found';
+            } else {
+              this.errorMessage = 'Server communication error';
+            }
+          });
+      } else {
+        this.submitted = false;
+      }
     }
   };
 
