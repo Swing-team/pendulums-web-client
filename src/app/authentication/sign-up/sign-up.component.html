@@ -1,4 +1,4 @@
-<section *ngIf="!submitted" class="hero is-fullheight ps-app-background is-bold ps-sign-up-content">
+<section *ngIf="!haveResponOfSubmit" class="hero is-fullheight ps-app-background is-bold ps-sign-up-content">
   <div class="hero-body">
     <div class="container has-text-centered">
       <div class="ps-auth-back column ps-is-8-mobile ps-is-offset-2-mobile is-6-tablet is-offset-3-tablet is-4-desktop is-offset-4-desktop">
@@ -30,7 +30,8 @@
               </div>
               <div class="field">
                 <p class="control">
-                  <button class="button is-primary is-fullwidth" type="submit" [disabled]="submitted">Sign up</button>
+                  <button class="button is-primary is-fullwidth" type="submit"
+                          [disabled]="submitted" [ngClass]="{'is-loading': submitted}">Sign up</button>
                 </p>
               </div>
               <div class="field">
@@ -58,7 +59,7 @@
     </div>
   </div>
 </section>
-<section *ngIf="submitted" class="hero is-fullheight ps-app-background is-bold ps-sign-up-content">
+<section *ngIf="haveResponOfSubmit" class="hero is-fullheight ps-app-background is-bold ps-sign-up-content">
   <div class="hero-body">
     <div class="container has-text-centered">
       <div class="ps-auth-back column is-4 is-offset-4">

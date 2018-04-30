@@ -32,7 +32,8 @@
               </div>
               <div class="field">
                 <p class="control">
-                  <button class="button is-primary is-fullwidth" type="submit" [disabled]="submitted">Sign in</button>
+                  <button class="button is-primary is-fullwidth" type="submit" [disabled]="submitted"
+                          [ngClass]="{'is-loading': submitted}">Sign in</button>
                 </p>
               </div>
               <div class="field">

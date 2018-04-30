@@ -30,6 +30,7 @@ export class ActivityItemComponent implements OnInit {
   @Input() activity: Activity;
   @Input() project: Project;
   @Input() currentUser: User;
+  @Input() deleteButtonDisabled: boolean;
   @Output() onDeleteClicked = new EventEmitter();
   @Output() onEditClicked = new EventEmitter();
   from: string;
@@ -76,11 +77,15 @@ export class ActivityItemComponent implements OnInit {
   }
 
   confirmDelete() {
-    this.onDeleteClicked.emit();
+    if (!this.deleteButtonDisabled) {
+      this.onDeleteClicked.emit();
+    }
   }
 
   cancelDelete() {
-    this.deleteConfirmation = false;
+    if (!this.deleteButtonDisabled) {
+      this.deleteConfirmation = false;
+    }
   }
 
   openEditManuallyModal() {

@@ -36,6 +36,8 @@ export class ProjectMembersComponent implements OnInit {
   @Input() readOnly: boolean;
   members: Array<TeamMember> = [];
   removeMemberConfirmationViewIndex: Number = -1;
+  removeButtonDisabled = false;
+  teamMemberRoleChanged = false;
 
   constructor(@Inject(APP_CONFIG) private config,
               private projectServices: ProjectService,
@@ -97,28 +99,52 @@ export class ProjectMembersComponent implements OnInit {
   }
 
   removeMember(memberId, index) {
-    this.projectServices.removeMember(this.project.id, memberId)
-      .then(response => {
-        this.store.dispatch(this.projectsAction.removeMember(this.project.id, memberId));
-        this.members.splice(index, 1)
-      })
-      .catch(error => {
-        console.log('error is: ', error);
-        this.showError('Server communication error.');
-      });
+    if (!this.removeButtonDisabled) {
+      this.removeButtonDisabled = true;
+      this.projectServices.removeMember(this.project.id, memberId)
+        .then(response => {
+          this.store.dispatch(this.projectsAction.removeMember(this.project.id, memberId));
+          this.members.splice(index, 1);
+          this.removeButtonDisabled = false;
+          this.removeMemberConfirmationViewIndex = -1
+        })
+        .catch(error => {
+          console.log('error is: ', error);
+          this.showError('Server communication error.');
+          this.removeButtonDisabled = false;
+          this.removeMemberConfirmationViewIndex = -1
+        });
+    }
+  }
+
+  confirmRemoveMember(index) {
+    if (!this.removeButtonDisabled) {
+      this.removeMemberConfirmationViewIndex = index;
+    }
+  }
+
+  cancelRemoveConfirmation() {
+    if (!this.removeButtonDisabled) {
+      this.removeMemberConfirmationViewIndex = -1;
+    }
   }
 
   changeTeamMemberRole(memberId, index, event) {
     console.log(event);
-    this.projectServices.changeTeamMemberRole(this.project.id, memberId, event.selectedItem)
-      .then(response => {
-        this.store.dispatch(this.projectsAction.changeMemberRole(this.project.id, memberId, event.selectedItem));
-        this.members[index].role = event.selectedItem;
-      })
-      .catch(error => {
-        console.log('error is: ', error);
-        this.showError('Server communication error.');
-      });
+    if (!this.teamMemberRoleChanged) {
+      this.teamMemberRoleChanged = true;
+      this.projectServices.changeTeamMemberRole(this.project.id, memberId, event.selectedItem)
+        .then(response => {
+          this.store.dispatch(this.projectsAction.changeMemberRole(this.project.id, memberId, event.selectedItem));
+          this.members[index].role = event.selectedItem;
+          this.teamMemberRoleChanged = false;
+        })
+        .catch(error => {
+          console.log('error is: ', error);
+          this.teamMemberRoleChanged = false;
+          this.showError('Server communication error.');
+        });
+    }
   }
 
   showError(error) {

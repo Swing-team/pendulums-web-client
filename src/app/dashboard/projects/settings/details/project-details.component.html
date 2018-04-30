@@ -34,7 +34,7 @@
 
     <p class="control">
       <button class="button is-primary ps-update-project-button"
-              type="submit" [disabled]="formSubmitted">
+              type="submit" [disabled]="formSubmitted" [ngClass]="{'is-loading': formSubmitted}">
         Update project
       </button>
     </p>

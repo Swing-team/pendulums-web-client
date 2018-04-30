@@ -54,7 +54,7 @@
           </div>
           <div class="ps-card-container">
             <div *ngFor='let activity of group.activities; trackBy: let i = index'>
-              <activity-item [activity]="activity" [project]="project" [currentUser]="user"
+              <activity-item [activity]="activity" [project]="project" [currentUser]="user" [deleteButtonDisabled]="deleteButtonDisabled"
                              (onDeleteClicked)="deleteActivity(activity, j, i)" (onEditClicked)="openEditManuallyModal(activity)"></activity-item>
             </div>
           </div>

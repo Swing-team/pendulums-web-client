@@ -68,8 +68,8 @@
       </div>
       <div class="ps-submit-button">
         <p class="control">
-          <button class="button is-primary is-fullwidth ps-none-radius"
-                  type="submit" [disabled]="formSubmitted">
+          <button class="button is-primary is-fullwidth ps-none-radius is-loading"
+                  type="submit" [disabled]="formSubmitted" [ngClass]="{'is-loading': formSubmitted}">
             Create
           </button>
         </p>

@@ -55,7 +55,8 @@
 
 <div class="ps-submit-button">
   <p class="control">
-    <button class="button is-primary is-fullwidth" (click)="addActivity()">
+    <button class="button is-primary is-fullwidth" [ngClass]="{'is-loading': saveButtonDisabled}"
+            [disabled]="saveButtonDisabled" (click)="addActivity()">
       save
     </button>
   </p>

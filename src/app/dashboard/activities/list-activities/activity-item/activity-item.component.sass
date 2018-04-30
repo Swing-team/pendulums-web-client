@@ -36,7 +36,6 @@
   border: 1px solid $ink
   border-radius: 100%
 
-
 .ps-activity-item-button
   overflow: hidden
   font-size: 1.4rem
@@ -45,5 +44,13 @@
   bottom: 0
   i
     cursor: pointer
+  @media (max-width: $ps-mobile)
+    font-size: 1rem
+
+.ps-activity-item-button-confirmation
+  border: none
+  padding: 0.5rem !important
+  font-size: 1.4rem
+  background-color: transparent
   @media (max-width: $ps-mobile)
     font-size: 1rem

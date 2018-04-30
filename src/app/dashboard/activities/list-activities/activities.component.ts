@@ -44,6 +44,7 @@ export class ActivitiesComponent implements OnInit {
     activities: any
     duration: any
   }[] = [];
+  deleteButtonDisabled = false;
 
   constructor (@Inject(APP_CONFIG) private config,
                private store: Store<AppState>,
@@ -118,6 +119,7 @@ export class ActivitiesComponent implements OnInit {
   };
 
   deleteActivity(activity , index1, index2) {
+    this.deleteButtonDisabled = true;
     this.activityService.delete(activity.project, activity.id).then(() => {
       this.projectActivities[index1].activities.splice(index2, 1);
       this.calculateTotalDurationPerDay();
@@ -125,9 +127,11 @@ export class ActivitiesComponent implements OnInit {
         return el.id !== activity.id ;
       });
       this.tempArray = Removed;
+      this.deleteButtonDisabled = false;
       this.showError('Activity was deleted successfully');
     })
       .catch(error => {
+        this.deleteButtonDisabled = false;
         this.showError('Server communication error');
         console.log('error is: ', error);
       });

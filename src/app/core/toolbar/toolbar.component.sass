@@ -58,27 +58,25 @@
     display: inline-flex
 
 .ps-toolbar-play
-  border-radius: 100%
-  height: 40px
-  width: 40px
-  background-color: $primary-light
   z-index: 2
   text-align: center
-  font-size: 1.5rem
-  line-height: 2.4rem
-  padding-left: 5px
-  color: $paper
-  cursor: pointer
   position: relative
-  @media (max-width: $ps-mobile)
-    height: 36px
-    width: 36px
-    line-height: 2.2rem
 
-.ps-toolbar-stop
-  padding-left: 2px
+.ps-toolbar-button
+  background-color: $primary-light
+  color: $paper
+  border-radius: 100%
+  text-align: center
+  border: none
+  height: 45px
+  width: 45px
+  font-size: 1.6rem
+  border-radius: 100%
+  margin: auto
   @media (max-width: $ps-mobile)
-    padding-left: 0
+    height: 40px
+    width: 40px
+    font-size: 1.4rem
 
 .ps-toolbar-time-tooltip
   background-color: $primary-light

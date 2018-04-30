@@ -29,7 +29,15 @@
   </div>
   </ng-container>
   <div class="ps-activity-item-button is-pulled-right" *ngIf="deleteConfirmation" [@slideInOut]>
-    <i class="icon-cancel has-text-danger" (click)="cancelDelete()"></i>
-    <i class="icon-check has-text-success" (click)="confirmDelete()"></i>
+    <a  *ngIf="!deleteButtonDisabled" class="button ps-activity-item-button-confirmation" (click)="cancelDelete()">
+      <span class="icon">
+        <i class="icon-cancel" [ngClass]="{'has-text-danger': !deleteButtonDisabled}"></i>
+      </span>
+    </a>
+    <a  class="button ps-activity-item-button-confirmation" [ngClass]="{'is-loading': deleteButtonDisabled}" (click)="confirmDelete()">
+      <span class="icon">
+        <i class="icon-check" [ngClass]="{'has-text-success': !deleteButtonDisabled}"></i>
+      </span>
+    </a>
   </div>
 </div>

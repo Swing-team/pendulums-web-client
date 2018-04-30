@@ -22,8 +22,16 @@
           <div *ngIf="userNameEdited">
             <input [(ngModel)]="userEdit.name" class="input ps-user-name"
                    placeholder="Untitled name" type="text">
-            <span class="ps-edit-profile-button icon-check" (click)="saveProfile()"></span>
-            <span class="ps-edit-profile-button icon-cancel" (click)="toggleView()"></span>
+            <a  *ngIf="!editButtonDisabled" class="button ps-edit-profile-button" (click)="toggleView()">
+              <span class="icon">
+                <i class="icon-cancel" [ngClass]="{'has-text-danger': !editButtonDisabled}"></i>
+              </span>
+                    </a>
+            <a  class="button ps-edit-profile-button" [ngClass]="{'is-loading': editButtonDisabled}" (click)="saveProfile()">
+              <span class="icon">
+                <i class="icon-check" [ngClass]="{'has-text-success': !editButtonDisabled}"></i>
+              </span>
+            </a>
           </div>
         </div>
         <div>{{userEdit.email}}</div>
@@ -61,7 +69,8 @@
               <br>
               <div class="field">
                 <p class="control">
-                  <button class="button is-primary is-fullwidth" type="submit" title="{{ netConnected ? '' : 'Offline mode!'}}" [disabled]="submitted || !netConnected">Reset Password
+                  <button class="button is-primary is-fullwidth" type="submit" title="{{ netConnected ? '' : 'Offline mode!'}}"
+                          [disabled]="submitted || !netConnected" [ngClass]="{'is-loading': submitted}">Reset Password
                   </button>
                 </p>
               </div>

@@ -31,6 +31,13 @@ export class ProjectItemComponent implements OnInit {
   @Input() status: Status;
   @Input() currentActivity: Observable<Activity>;
   activityStarted = false;
+  // use activityButtonDisabled to control loading and disabling buttons but know that
+  // this field will re-initial when this component re-render
+  // and by stop process this component's data will change so the component will re-render
+  // so we decided not to reset activityButtonDisabled to false through stop process in order to make flow chart more simple
+  // and reset buttonDisabled to false just through start process
+  activityButtonDisabled = false;
+
   private currentActivityCopy: Activity;
   private taskName: string;
   private activity: Activity;
@@ -70,10 +77,13 @@ export class ProjectItemComponent implements OnInit {
   }
 
   toggleStopStart() {
-    if (this.activityStarted) {
-      this.stopActivity();
-    } else {
-      this.startActivity();
+    if (!this.activityButtonDisabled) {
+      this.activityButtonDisabled = true;
+      if (this.activityStarted) {
+        this.stopActivity();
+      } else {
+        this.startActivity();
+      }
     }
   }
 
@@ -98,6 +108,7 @@ export class ProjectItemComponent implements OnInit {
       delete activity.createdAt;
       delete activity.updatedAt;
       this.store.dispatch(this.CurrentActivityActions.loadCurrentActivity(activity));
+      this.activityButtonDisabled = false;
     })
       .catch(error => {
         // todo: check errors
@@ -108,6 +119,7 @@ export class ProjectItemComponent implements OnInit {
         this.showError('Server communication error.');
         this.store.dispatch(this.CurrentActivityActions.loadCurrentActivity(this.activity));
         this.store.dispatch(this.StatusActions.updateUnsyncedDataChanged(true));
+        this.activityButtonDisabled = false;
       });
   }
 

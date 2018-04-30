@@ -28,26 +28,29 @@ export class SignInComponent {
   ) {}
 
   signIn() {
-    this.submitted = true;
-    this.errorMessage = null;
-    if (this.validation(this.authUser)) {
-      this.authService.signIn(this.authUser)
-        .then(() => {
-          this.store.dispatch(this.statusActions.updateIsLogin(true));
-          this.syncService.init();
-          this.router.navigate(['dashboard']);
-        })
-        .catch(error => {
-          this.submitted = false;
-          console.log('error is: ', error);
-          if (error.status === 400) {
-            this.errorMessage = 'Email or password mismatch';
-          } else {
-            this.errorMessage = 'Server communication error';
-          }
-        });
-    } else {
-      this.submitted = false;
+    if (!this.submitted) {
+      this.submitted = true;
+      this.errorMessage = null;
+      if (this.validation(this.authUser)) {
+        this.authService.signIn(this.authUser)
+          .then(() => {
+            this.store.dispatch(this.statusActions.updateIsLogin(true));
+            this.syncService.init();
+            this.router.navigate(['dashboard']);
+            this.submitted = false;
+          })
+          .catch(error => {
+            this.submitted = false;
+            console.log('error is: ', error);
+            if (error.status === 400) {
+              this.errorMessage = 'Email or password mismatch';
+            } else {
+              this.errorMessage = 'Server communication error';
+            }
+          });
+      } else {
+        this.submitted = false;
+      }
     }
   };
 
