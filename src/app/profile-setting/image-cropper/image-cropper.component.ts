@@ -17,6 +17,7 @@ export class ImgCropperComponent {
   cropperSettings: CropperSettings;
   @ViewChild('cropper', undefined)
   cropper: ImageCropperComponent;
+  disableButtons = false;
 
   constructor(private modalService: ModalService,
               private store: Store<AppState>,
@@ -42,22 +43,30 @@ export class ImgCropperComponent {
   }
 
   cancel() {
-    this.modalService.close();
+    if (!this.disableButtons) {
+      this.modalService.close();
+    }
   }
 
   save() {
     this.croppedImageFile = this.base64ToFile(this.profileData.image);
+    if (!this.disableButtons && this.croppedImageFile) {
+      this.disableButtons = true;
 
-    const formData = new FormData();
-    formData.append('user', JSON.stringify({}));
-    formData.append('image', this.croppedImageFile);
-    this.UserService.update(formData).then((user) => {
-      this.store.dispatch(this.userActions.updateUserImage(user.profileImage));
-    })
-      .catch(error => {
-        console.log('error is: ', error);
-      });
-    this.modalService.close();
+      const formData = new FormData();
+      formData.append('user', JSON.stringify({}));
+      formData.append('image', this.croppedImageFile);
+      this.UserService.update(formData).then((user) => {
+        this.store.dispatch(this.userActions.updateUserImage(user.profileImage));
+        this.disableButtons = false;
+        this.modalService.close();
+      })
+        .catch(error => {
+          console.log('error is: ', error);
+          this.disableButtons = false;
+          this.modalService.close();
+        });
+    }
   }
 
   base64ToFile(inputBase64) {

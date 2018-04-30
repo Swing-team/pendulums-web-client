@@ -24,7 +24,12 @@
     <div class="column is-2 ps-line-height">
       <div class="field">
         <p class="control has-text-centered">
-          <i class="icon-plus has-text-success ps-body-button" (click)="invite()"></i>
+          <a class="button ps-invitation-add-item-button" [ngClass]="{'is-loading': inviteButtonDisabled}"
+             (click)="invite()">
+          <span class="icon">
+            <i class="icon-plus" [ngClass]="{'has-text-success': !inviteButtonDisabled}"></i>
+          </span>
+          </a>
         </p>
       </div>
     </div>
@@ -46,11 +51,25 @@
     </div>
     <div class="column is-2">
       <div class="ps-invitation-item-button" *ngIf="cancelInvitationConfirmationViewIndex !== i">
-        <i class="icon-trash has-text-danger" (click)="cancelInvitationConfirmationViewIndex = i"></i>
+        <a class="button ps-invitation-item-button-confirmation" (click)="confirmCancelInvitation(i)">
+          <span class="icon">
+            <i class="icon-trash has-text-danger"></i>
+          </span>
+        </a>
       </div>
       <div class="ps-invitation-item-button" *ngIf="cancelInvitationConfirmationViewIndex === i" [@slideInOut]>
-        <i class="icon-cancel has-text-danger" (click)="cancelInvitationConfirmationViewIndex = -1"></i>
-        <i class="icon-check has-text-success" (click)="removeMember(invited, i)"></i>
+        <a class="button ps-invitation-item-button-confirmation" *ngIf="!cancelButtonDisabled"
+           (click)="cancelInvitationConfirmation()">
+          <span class="icon">
+            <i class="icon-cancel" [ngClass]="{'has-text-danger': !cancelButtonDisabled}"></i>
+          </span>
+        </a>
+        <a class="button ps-invitation-item-button-confirmation" [ngClass]="{'is-loading': cancelButtonDisabled}"
+           (click)="cancelInvitation(invited, i)">
+          <span class="icon">
+            <i class="icon-check" [ngClass]="{'has-text-success': !cancelButtonDisabled}"></i>
+          </span>
+        </a>
       </div>
     </div>
   </div>

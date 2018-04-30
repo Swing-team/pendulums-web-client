@@ -6,18 +6,20 @@
           you have invited to <strong>{{project.name}}</strong> project.
         </p>
         <nav class="level is-mobile">
-            <a class="level-item button is-small is-primary is-outlined" (click)="accept(project.id)">
+            <button class="level-item button is-small is-outlined ps-notification-button-accept" (click)="accept(project.id, i)"
+                    [ngClass]="{'is-loading': acceptDisabledIndex === i, 'is-success': acceptDisabledIndex !== i}" [disabled]="denyDisabledIndex === i">
               <span class="icon">
                <i class="icon-check"></i>
                </span>
               <span>accept</span>
-            </a>
-            <a class="level-item button is-small is-danger is-outlined" (click)="deny(project.id)">
+            </button>
+            <button class="level-item button is-small is-outlined ps-notification-button-deny" (click)="deny(project.id, i)"
+               [ngClass]="{'is-loading': denyDisabledIndex === i, 'is-danger': denyDisabledIndex !== i}" [disabled]="acceptDisabledIndex === i">
               <span class="icon">
                <i class="icon-cancel"></i>
                </span>
               <span>deny</span>
-            </a>
+            </button>
         </nav>
         <hr *ngIf="i+1 != pendingInvitations.length">
       </div>

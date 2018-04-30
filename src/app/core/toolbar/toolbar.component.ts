@@ -31,6 +31,7 @@ export class ToolbarComponent implements OnInit  {
   @Output() onMenuItemClicked = new EventEmitter();
   currentActivityCopy: Activity;
   showTimeDuration = false;
+  stopStartButtonDisabled = false;
   private selectedProject: Project;
   private taskName: string;
   private timeDuration: string;
@@ -123,10 +124,13 @@ export class ToolbarComponent implements OnInit  {
   }
 
   toggleStopStart() {
-    if (this.activityStarted) {
-      this.stopActivity();
-    } else {
-      this.startActivity();
+    if (!this.stopStartButtonDisabled) {
+      this.stopStartButtonDisabled = true;
+      if (this.activityStarted) {
+        this.stopActivity();
+      } else {
+        this.startActivity();
+      }
     }
   }
 
@@ -146,14 +150,17 @@ export class ToolbarComponent implements OnInit  {
         delete resActivity.createdAt;
         delete resActivity.updatedAt;
         this.store.dispatch(this.CurrentActivityActions.loadCurrentActivity(resActivity));
+        this.stopStartButtonDisabled = false;
       })
         .catch(error => {
           this.showError('Server communication error');
           console.log('server error happened', error);
           this.store.dispatch(this.CurrentActivityActions.loadCurrentActivity(activity));
           this.store.dispatch(this.StatusActions.updateUnsyncedDataChanged(true));
+          this.stopStartButtonDisabled = false;
         });
     } else {
+      this.stopStartButtonDisabled = false;
       this.showError('Select a project');
     }
   }
@@ -208,7 +215,8 @@ export class ToolbarComponent implements OnInit  {
   }
 
   pushDividedActivitiesToServer (dividedActivitiesResult) {
-    dividedActivitiesResult.map((item) => {
+    const result = [];
+    result.push(dividedActivitiesResult.map((item) => {
       this.activityService.createManually(this.currentActivityCopy.project, item).then((activity) => {
         this.store.dispatch(this.projectsActions.updateProjectActivities(this.currentActivityCopy.project, activity));
       })
@@ -218,14 +226,21 @@ export class ToolbarComponent implements OnInit  {
           this.store.dispatch(this.StatusActions.updateUnsyncedDataChanged(true));
           this.store.dispatch(this.projectsActions.updateProjectActivities(item.project, item));
         });
-    });
+    }));
+    Promise.all(result).then(() => {
+      this.stopStartButtonDisabled = false;
+    })
   }
 
   pushDividedActivitiesToDb (dividedActivitiesResult) {
-    dividedActivitiesResult.map((item) => {
+    const result = [];
+    result.push(dividedActivitiesResult.map((item) => {
       this.store.dispatch(this.UnsyncedActivityActions.addUnSyncedActivity(item));
       this.store.dispatch(this.projectsActions.updateProjectActivities(item.project, item));
-    });
+    }));
+    Promise.all(result).then(() => {
+      this.stopStartButtonDisabled = false;
+    })
   }
 
   updateStateInCatch (error, dividedActivitiesResult) {

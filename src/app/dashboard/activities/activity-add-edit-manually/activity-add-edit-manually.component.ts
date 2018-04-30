@@ -18,6 +18,7 @@ export class AddManuallyActivityComponent implements OnInit {
   @Input() currentActivity: Activity;
   @Input() activity: Activity;
   @Input() projectId: string;
+  saveButtonDisabled = false;
   activityModel: Activity;
   fromCalenderShow = false;
   toCalenderShow = false;
@@ -163,48 +164,51 @@ export class AddManuallyActivityComponent implements OnInit {
     const validation = this.validateForm();
     let message = '';
     if (validation) {
-      const dividedActivitiesArray = [];
-      const stoppedAtDay = moment(Number(this.activityModel.stoppedAt)).startOf('day');
-      const startedAtDay = moment(Number(this.activityModel.startedAt)).startOf('day');
-      if (stoppedAtDay.isSame(startedAtDay)) {
-        // nothing to do
-      } else {
-        const diff = stoppedAtDay.diff(startedAtDay, 'days');
-        const tempStoppedAt = this.activityModel.stoppedAt;
-        let startedAt = this.activityModel.startedAt;
-        let stoppedAt = moment(Number(this.activityModel.startedAt)).endOf('day').valueOf();
-        this.activityModel.stoppedAt = stoppedAt.toString();
-        for (let i = 0; i < diff; i++) {
-          startedAt = (stoppedAt + 1).toString();
-          if ( i < diff - 1) {
-            stoppedAt = moment(stoppedAt + 1).endOf('day').valueOf();
-          } else if (i === diff - 1) {
-            stoppedAt = Number(tempStoppedAt);
+      if (!this.saveButtonDisabled) {
+        this.saveButtonDisabled = true;
+        const dividedActivitiesArray = [];
+        const stoppedAtDay = moment(Number(this.activityModel.stoppedAt)).startOf('day');
+        const startedAtDay = moment(Number(this.activityModel.startedAt)).startOf('day');
+        if (stoppedAtDay.isSame(startedAtDay)) {
+          // nothing to do
+        } else {
+          const diff = stoppedAtDay.diff(startedAtDay, 'days');
+          const tempStoppedAt = this.activityModel.stoppedAt;
+          let startedAt = this.activityModel.startedAt;
+          let stoppedAt = moment(Number(this.activityModel.startedAt)).endOf('day').valueOf();
+          this.activityModel.stoppedAt = stoppedAt.toString();
+          for (let i = 0; i < diff; i++) {
+            startedAt = (stoppedAt + 1).toString();
+            if (i < diff - 1) {
+              stoppedAt = moment(stoppedAt + 1).endOf('day').valueOf();
+            } else if (i === diff - 1) {
+              stoppedAt = Number(tempStoppedAt);
+            }
+            const tempResult = {
+              name: this.activityModel.name,
+              user: this.activityModel.user,
+              project: this.activityModel.project,
+              startedAt: startedAt,
+              stoppedAt: stoppedAt.toString(),
+            };
+            dividedActivitiesArray.push(tempResult);
           }
-          const tempResult = {
-            name: this.activityModel.name,
-            user: this.activityModel.user,
-            project: this.activityModel.project,
-            startedAt: startedAt,
-            stoppedAt: stoppedAt.toString(),
-          };
-          dividedActivitiesArray.push(tempResult);
         }
-      }
 
-      if (this.activity) {
-        this.activityService.editOldActivity(this.projectId,  this.activityModel).then((activity) => {
-          message = 'Activity was edited successfully';
-          this.pushDividedActivitiesToServer(dividedActivitiesArray, message, activity);
-        })
-          .catch(error => {
-            this.showError('Server error happened');
-            console.log('error is: ', error);
-          });
-      } else {
-        dividedActivitiesArray.push(this.activityModel);
-        message = 'Activity was created successfully';
-        this.pushDividedActivitiesToServer(dividedActivitiesArray, message );
+        if (this.activity) {
+          this.activityService.editOldActivity(this.projectId, this.activityModel).then((activity) => {
+            message = 'Activity was edited successfully';
+            this.pushDividedActivitiesToServer(dividedActivitiesArray, message, activity);
+          })
+            .catch(error => {
+              this.showError('Server error happened');
+              console.log('error is: ', error);
+            });
+        } else {
+          dividedActivitiesArray.push(this.activityModel);
+          message = 'Activity was created successfully';
+          this.pushDividedActivitiesToServer(dividedActivitiesArray, message);
+        }
       }
     }
   }

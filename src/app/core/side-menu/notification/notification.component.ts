@@ -19,6 +19,8 @@ export class NotificationComponent implements OnInit {
   pendingInvitations: Array<object>;
   @Input() user: User;
   @Output() clickedOutSideOfNotification = new EventEmitter();
+  denyDisabledIndex = -1;
+  acceptDisabledIndex = -1;
 
   constructor (@Inject(APP_CONFIG) private config,
                private NotificationService: NotificationService,
@@ -31,33 +33,43 @@ export class NotificationComponent implements OnInit {
     this.pendingInvitations = this.user.pendingInvitations;
   }
 
-  accept(projectId) {
-    this.NotificationService.accept(projectId).then((project) => {
-      this.store.dispatch(this.projectsActions.addProject(project));
-      this.user.pendingInvitations.map((obj, index) => {
-        if (obj.id === projectId) {
-          this.user.pendingInvitations.splice(index, 1);
-        }
-      });
-      this.store.dispatch(this.userActions.loadUser(this.user));
-    })
-      .catch(error => {
-        console.log('error is: ', error);
-      });
+  accept(projectId, i) {
+    if (this.acceptDisabledIndex < 0 && this.denyDisabledIndex < 0) {
+      this.acceptDisabledIndex = i;
+      this.NotificationService.accept(projectId).then((project) => {
+        this.store.dispatch(this.projectsActions.addProject(project));
+        this.user.pendingInvitations.map((obj, index) => {
+          if (obj.id === projectId) {
+            this.user.pendingInvitations.splice(index, 1);
+          }
+        });
+        this.store.dispatch(this.userActions.loadUser(this.user));
+        this.acceptDisabledIndex = -1;
+      })
+        .catch(error => {
+          console.log('error is: ', error);
+          this.acceptDisabledIndex = -1;
+        });
+    }
   }
 
-  deny(projectId) {
-    this.NotificationService.deny(projectId).then((Id) => {
-      this.user.pendingInvitations.map((obj, index) => {
-        if (obj.id === projectId) {
-          this.user.pendingInvitations.splice(index, 1);
-        }
-      });
-      this.store.dispatch(this.userActions.loadUser(this.user));
-    })
-      .catch(error => {
-        console.log('error is: ', error);
-      });
+  deny(projectId, i) {
+    if (this.denyDisabledIndex < 0 && this.acceptDisabledIndex < 0) {
+      this.denyDisabledIndex = i;
+      this.NotificationService.deny(projectId).then((Id) => {
+        this.user.pendingInvitations.map((obj, index) => {
+          if (obj.id === projectId) {
+            this.user.pendingInvitations.splice(index, 1);
+          }
+        });
+        this.store.dispatch(this.userActions.loadUser(this.user));
+        this.denyDisabledIndex = -1;
+      })
+        .catch(error => {
+          console.log('error is: ', error);
+          this.denyDisabledIndex = -1;
+        });
+    }
   }
 
   @HostListener('document:click', ['$event'])

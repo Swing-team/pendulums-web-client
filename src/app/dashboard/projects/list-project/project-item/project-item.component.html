@@ -25,10 +25,13 @@
         <input [(ngModel)]="taskName" class="input ps-task-input" (change)="nameActivity($event)"
                placeholder="Task Name" type="text" *ngIf="activityStarted">
       </span>
-      <span class="is-pulled-right is-inline-block ps-item-card-button"
-            [ngClass]="{'ps-item-card-stop': activityStarted}" (click)="toggleStopStart()">
-        <span *ngIf="activityStarted" class="icon-stop ps-play-stop-size"></span>
-        <span *ngIf="!activityStarted" class="icon-play ps-play-stop-size"></span>
+      <span class="is-pulled-right is-inline-block" (click)="toggleStopStart()">
+        <a  class="button ps-item-card-button" [ngClass]="{'is-loading': activityButtonDisabled}">
+          <span class="icon">
+            <i *ngIf="activityStarted" class="icon-stop"></i>
+            <i *ngIf="!activityStarted" class="icon-play"></i>
+          </span>
+        </a>
       </span>
     </div>
     <div>

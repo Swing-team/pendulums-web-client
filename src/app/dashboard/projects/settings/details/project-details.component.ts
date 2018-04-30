@@ -44,32 +44,34 @@ export class ProjectDetailsComponent implements OnInit {
     if (!this.clonedProject.name || /^\s*$/.test(this.clonedProject.name) || !this.clonedProject.name.trim()) {
       this.showError('Project name is empty');
     } else {
-      this.formSubmitted = true;
-      const formData = new FormData();
-      formData.append('project', JSON.stringify({name: this.clonedProject.name}));
-      this.projectImageCanvasElem.nativeElement.toBlob(blob => {
-        if (blob.size > 500000) {
-          this.formSubmitted = false;
-          this.showError('Image size exceeded from 500KB');
-          return;
-        }
-        if (this.imageIsEdited) {
-          formData.append('image', blob);
-          this.showError('Project image has been edited');
-        }
-        this.projectServices.update(formData, this.project.id).then((response) => {
-          this.showError('The project was edited successfully');
-          this.clonedProject.image = response[0].image;
-          this.store.dispatch(this.projectsAction.updateProject(this.clonedProject))
-          this.formSubmitted = false;
-          this.modalService.close();
-        })
-          .catch(error => {
+      if (!this.formSubmitted) {
+        this.formSubmitted = true;
+        const formData = new FormData();
+        formData.append('project', JSON.stringify({name: this.clonedProject.name}));
+        this.projectImageCanvasElem.nativeElement.toBlob(blob => {
+          if (blob.size > 500000) {
             this.formSubmitted = false;
-            console.log('error is:', error);
-            this.showError('Server communication error.');
-          });
-      }, this.fileTypeString, 0.90);
+            this.showError('Image size exceeded from 500KB');
+            return;
+          }
+          if (this.imageIsEdited) {
+            formData.append('image', blob);
+            this.showError('Project image has been edited');
+          }
+          this.projectServices.update(formData, this.project.id).then((response) => {
+            this.showError('The project was edited successfully');
+            this.clonedProject.image = response[0].image;
+            this.store.dispatch(this.projectsAction.updateProject(this.clonedProject))
+            this.formSubmitted = false;
+            this.modalService.close();
+          })
+            .catch(error => {
+              this.formSubmitted = false;
+              console.log('error is:', error);
+              this.showError('Server communication error.');
+            });
+        }, this.fileTypeString, 0.90);
+      }
     }
   }
 
