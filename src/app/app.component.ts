@@ -2,7 +2,7 @@ import 'rxjs/add/operator/debounceTime';
 import {
   Component, ElementRef, OnInit, ViewChild,
   ViewContainerRef
-} from '@angular/core';
+}                                                 from '@angular/core';
 import { Router }                                 from '@angular/router';
 import { Observable }                             from 'rxjs/Observable';
 import { Store }                                  from '@ngrx/store';
@@ -13,6 +13,7 @@ import { StatusActions }                          from './shared/state/status/st
 import { CurrentActivityActions }                 from './shared/state/current-activity/current-activity.actions';
 import { SyncService }                            from './core/services/sync.service';
 import { Status }                                 from './shared/state/status/status.model';
+import { PageLoaderService }                      from './core/services/page-loader.service';
 
 @Component({
   selector: 'app-root',
@@ -27,7 +28,6 @@ export class AppComponent implements OnInit {
   private previousLoginStatus = null;
   SideMenuIsActive = false;
   netConnected: boolean;
-  pageLoaded = false;
 
   @ViewChild('sideMenu', { read: ElementRef }) sideMenu: ElementRef;
   @ViewChild('menuIcon', { read: ElementRef }) menuIcon: ElementRef;
@@ -41,6 +41,7 @@ export class AppComponent implements OnInit {
     private statusActions: StatusActions,
     private router: Router,
     private syncService: SyncService,
+    private pageLoaderService: PageLoaderService,
     // needed for dynamically loaded components
     public viewContainerRef: ViewContainerRef
   ) {
@@ -55,7 +56,7 @@ export class AppComponent implements OnInit {
     // to initialize webSocket connection
     const responseResults = this.syncService.init();
     Promise.all(responseResults).then(() => {
-      this.pageLoaded = true;
+      this.pageLoaderService.hideLoading();
     });
 
     // to handle 403 interceptor by isLogin that has been handle in signOut and authInterceptor

@@ -6,7 +6,7 @@ import { StoreModule }                  from '@ngrx/store';
 
 import { AppConfigModule }              from '../app.config';
 
-import { reducerToken, reducers }                     from '../shared/state/appState';
+import { reducerToken, reducers }       from '../shared/state/appState';
 import { UserActions }                  from '../shared/state/user/user.actions';
 import { ProjectsActions }              from '../shared/state/project/projects.actions';
 import { CurrentActivityActions }       from '../shared/state/current-activity/current-activity.actions';
@@ -22,7 +22,7 @@ import { SideMenuComponent }            from './side-menu/side-menu.component';
 import { ModalComponent }               from './modal/modal.component';
 import { NotificationComponent }        from './side-menu/notification/notification.component';
 import { NotificationService }          from './side-menu/notification/notification.service';
-import { ImgCropperComponent }        from '../profile-setting/image-cropper/image-cropper.component';
+import { ImgCropperComponent }          from '../profile-setting/image-cropper/image-cropper.component';
 import { ImageCropperModule }           from 'ng2-img-cropper';
 import { ErrorComponent }               from './error/error.component';
 import { ErrorService }                 from './error/error.service';
@@ -33,6 +33,7 @@ import { SyncService }                  from './services/sync.service';
 import { AuthInterceptor }              from './auth.interceptor';
 import { AuthGuardService }             from './services/router-guards/auth-guard.service';
 import { AnonymousGuardService }        from './services/router-guards/anonymous-guard.service';
+import { PageLoaderService }            from './services/page-loader.service';
 
 @NgModule({
   imports:      [
@@ -60,6 +61,7 @@ import { AnonymousGuardService }        from './services/router-guards/anonymous
     AuthGuardService,
     AnonymousGuardService,
     ErrorService,
+    PageLoaderService,
     ModalService,
     UserService,
     NotificationService,
