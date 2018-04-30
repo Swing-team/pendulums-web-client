@@ -18,6 +18,7 @@ import { AppState }                         from '../../../shared/state/appState
 import { Project }                          from '../../../shared/state/project/project.model';
 import { User }                             from '../../../shared/state/user/user.model';
 import { cloneDeep }                        from 'lodash';
+import { PageLoaderService }                from '../../../core/services/page-loader.service';
 
 @Component({
   selector: 'activities',
@@ -31,6 +32,8 @@ export class ActivitiesComponent implements OnInit {
   private scrollEnable = true;
   private tempArray: Array<Activity>;
   private user: User;
+  private activitiesLoaded = false;
+  private chartLoaded = false;
   // we need currentActivity itself in add/edit component to check added/edited activity has
   // no conflict with currentActivity
   private currentActivity: Observable<Activity>;
@@ -46,8 +49,6 @@ export class ActivitiesComponent implements OnInit {
   }[] = [];
   deleteButtonDisabled = false;
   pageLoaded = false;
-  activitiesLoaded = false;
-  chartLoaded = false;
 
   constructor (@Inject(APP_CONFIG) private config,
                private store: Store<AppState>,
@@ -55,7 +56,8 @@ export class ActivitiesComponent implements OnInit {
                private activityService: ActivityService,
                private location: Location,
                private modalService: ModalService,
-               private errorService: ErrorService) {
+               private errorService: ErrorService,
+               private pageLoaderService: PageLoaderService,) {
     this.currentActivity = store.select('currentActivity');
     store.select('user').subscribe((user: any) => {
       this.user = cloneDeep(user);
@@ -63,6 +65,7 @@ export class ActivitiesComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.pageLoaderService.showLoading();
     this.route.params.subscribe((params: Params) => {
       this.projectId = params['projectId'];
     });
@@ -276,6 +279,10 @@ export class ActivitiesComponent implements OnInit {
       this.chartLoaded = true;
     }
     this.pageLoaded = this.chartLoaded && this.activitiesLoaded;
+
+    if (this.pageLoaded) {
+      this.pageLoaderService.hideLoading();
+    }
   }
 
   calculateTimeDuration (duration) {
