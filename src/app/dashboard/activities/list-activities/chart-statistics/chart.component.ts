@@ -1,7 +1,7 @@
 import 'rxjs/add/operator/switchMap';
 import {
-  Component, Inject, Input, OnChanges,
-  OnInit, SimpleChange, ViewEncapsulation
+  Component, EventEmitter, Inject, Input, OnChanges,
+  OnInit, Output, SimpleChange, ViewEncapsulation
 } from '@angular/core';
 import { APP_CONFIG }                       from '../../../../app.config';
 import { cloneDeep }                        from 'lodash';
@@ -21,6 +21,7 @@ declare const d3: any;
 export class ChartComponent implements OnInit, OnChanges {
   @Input() project: Project;
   @Input() selectedUsers: string[];
+  @Output() chartLoaded = new EventEmitter();
   toDate: Number;
   fromDate: Number;
   private dateRange: any;
@@ -191,6 +192,8 @@ export class ChartComponent implements OnInit, OnChanges {
           };
           tempUsersWithTotal.push(x);
         });
+
+        this.chartLoaded.emit();
       });
     }
 
