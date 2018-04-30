@@ -10,3 +10,10 @@
     <router-outlet></router-outlet>
   </div>
 </div>
+
+<div class="pageloader" [ngClass]="{'is-active': !pageLoaded}">
+  <span class="title">loading...</span>
+</div>
+
+
+

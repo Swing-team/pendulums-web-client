@@ -27,6 +27,7 @@ export class AppComponent implements OnInit {
   private previousLoginStatus = null;
   SideMenuIsActive = false;
   netConnected: boolean;
+  pageLoaded = false;
 
   @ViewChild('sideMenu', { read: ElementRef }) sideMenu: ElementRef;
   @ViewChild('menuIcon', { read: ElementRef }) menuIcon: ElementRef;
@@ -52,7 +53,10 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     // to initialize webSocket connection
-    this.syncService.init();
+    const responseResults = this.syncService.init();
+    Promise.all(responseResults).then(() => {
+      this.pageLoaded = true;
+    });
 
     // to handle 403 interceptor by isLogin that has been handle in signOut and authInterceptor
     this.status.subscribe((status: Status) => {

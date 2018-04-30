@@ -1,4 +1,4 @@
-<div class="ps-activities-container">
+<div class="container ps-activities-container">
   <span class="ps-activity-top-button icon-plus" (click)="openAddManuallyModal()"></span>
   <span class="ps-activity-top-button ps-activity-back icon-back" (click)="goBack()"></span>
   <ng-container *ngIf="userAccess">
@@ -14,12 +14,12 @@
   <div class="columns ps-activities-stat-wrapper">
     <ng-container *ngIf="projectActivities.length > 0">
       <div class="column is-offset-1 is-10" style="background-color: white">
-        <chart *ngIf="project" [project]="project" [selectedUsers]="selectedUsers"></chart>
+        <chart *ngIf="project" [project]="project" [selectedUsers]="selectedUsers" (chartLoaded)="UpdatePageLoader(true)"></chart>
       </div>
     </ng-container>
-    <ng-container *ngIf="projectActivities === 0 || !currentActivityCopy">
+    <ng-container *ngIf="projectActivities.length === 0">
       <div class="column is-offset-1 is-10" style="background-color: white">
-        <div *ngIf="projectActivities.length === 0 && !currentActivityCopy" class="ps-activities-placeholder">
+        <div class="ps-activities-placeholder">
           <figure class="image">
             <img src="../../../../assets/images/placeholder.jpg">
           </figure>
@@ -64,6 +64,6 @@
   </div>
 </div>
 
-
-
-
+<div class="pageloader" [ngClass]="{'is-active': !pageLoaded}">
+  <span class="title">loading...</span>
+</div>
