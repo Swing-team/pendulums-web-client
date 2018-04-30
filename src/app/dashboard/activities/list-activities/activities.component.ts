@@ -45,6 +45,9 @@ export class ActivitiesComponent implements OnInit {
     duration: any
   }[] = [];
   deleteButtonDisabled = false;
+  pageLoaded = false;
+  activitiesLoaded = false;
+  chartLoaded = false;
 
   constructor (@Inject(APP_CONFIG) private config,
                private store: Store<AppState>,
@@ -257,11 +260,22 @@ export class ActivitiesComponent implements OnInit {
           }
         });
         this.groupByActivities();
+        this.activitiesLoaded = true;
+        this.UpdatePageLoader();
       });
     } else {
       this.tempArray = [];
       this.groupByActivities();
     }
+  }
+
+  UpdatePageLoader (chartLoaded?) {
+    if (chartLoaded) {
+      this.chartLoaded = chartLoaded;
+    } else if (this.projectActivities.length === 0) {
+      this.chartLoaded = true;
+    }
+    this.pageLoaded = this.chartLoaded && this.activitiesLoaded;
   }
 
   calculateTimeDuration (duration) {

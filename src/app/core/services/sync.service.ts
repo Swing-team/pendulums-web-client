@@ -22,6 +22,7 @@ export class SyncService {
   private tempState: any;
   private status: Observable<any>;
   private unsyncedDataChanged: boolean;
+  private responseResults = [];
 
   constructor(@Inject(APP_CONFIG) private config,
               private http: HttpClient,
@@ -40,13 +41,15 @@ export class SyncService {
     });
   }
 
-  init(): void {
-    this.getStateFromDb().then(() => {
-      this.initialAppOffline();
-      this.connectSocket();
-    }).catch(() => {
-      this.connectSocket();
-    });
+  init(): any {
+    this.responseResults.push(this.getStateFromDb().then(() => {
+        this.initialAppOffline();
+        this.connectSocket();
+      }).catch(() => {
+        this.connectSocket();
+      })
+    );
+    return this.responseResults;
   }
 
   syncData(data): Promise<any> {
@@ -98,7 +101,7 @@ export class SyncService {
         syncData.currentActivity = this.tempState.currentActivity;
       }
       if (syncData.currentActivity || syncData.activities) {
-        this.syncData(syncData)
+        this.responseResults.push(this.syncData(syncData)
           .then(() => {
             this.store.dispatch(this.unSyncedActivityActions.clearUnSyncedActivity());
             this.tempState.currentActivity = null;
@@ -113,7 +116,7 @@ export class SyncService {
               // todo: handle sync errors based on corrupted data
               this.getSummaryOnline();
             }
-          });
+          }))
       } else {
         this.getSummaryOnline();
       }
@@ -150,7 +153,7 @@ export class SyncService {
   }
 
   getSummaryOnline() {
-    this.userService.getSummary()
+    this.responseResults.push(this.userService.getSummary()
       .then((user) => {
         this.store.dispatch(this.userActions.loadUser(user));
         this.store.dispatch(this.projectsActions.loadProjects(user.projects));
@@ -174,7 +177,7 @@ export class SyncService {
           console.log('error is: ', error);
           this.router.navigate(['signIn']);
         }
-      });
+      }));
   }
 
   initialAppOffline() {
