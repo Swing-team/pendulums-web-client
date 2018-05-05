@@ -6,7 +6,9 @@ export class PageLoaderService {
   constructor() {}
 
   hideLoading() {
-    document.getElementById('loader').remove();
+    if (document.getElementById('loader')) {
+      document.getElementById('loader').remove();
+    }
     document.getElementById('loader-wrapper').style.display = 'none';
   }
 
