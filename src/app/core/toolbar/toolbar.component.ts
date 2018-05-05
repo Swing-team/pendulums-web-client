@@ -62,10 +62,14 @@ export class ToolbarComponent implements OnInit, OnDestroy  {
           let now;
           let duration;
           setInterval(() => {
-            startedAt = Number(this.currentActivityCopy.startedAt);
-            now = Date.now();
-            duration = now - startedAt;
-            this.timeDuration = this.getTime(duration);
+            if (this.currentActivityCopy.startedAt) {
+              startedAt = Number(this.currentActivityCopy.startedAt);
+              now = Date.now();
+              duration = now - startedAt;
+              this.timeDuration = this.getTime(duration);
+            } else {
+              this.timeDuration = '0';
+            }
           }, 1000);
         } else {
           this.activityStarted = false;
