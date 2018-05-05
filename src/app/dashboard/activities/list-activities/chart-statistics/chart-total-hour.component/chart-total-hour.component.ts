@@ -34,7 +34,6 @@ export class ChartTotalHourComponent implements OnChanges {
 
   calculateTotalHours () {
     this.totalHours = 0;
-    console.log('kfjgkjfkjg', this.inputArray)
     this.inputArray.map((data) => {
       if (!data.disabled) {
         this.totalHours = this.totalHours + data.totalHoursPerUser;
