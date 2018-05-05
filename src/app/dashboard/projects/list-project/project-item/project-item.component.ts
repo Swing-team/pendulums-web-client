@@ -257,31 +257,33 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
   }
 
   calculateActivityDuration (activity) {
-    const duration = Number(activity.stoppedAt) - Number(activity.startedAt);
     let result: any;
     result = {
       name: activity.name,
       hour: 0
     };
-    let x = duration / 1000;
-    const seconds = Math.floor(x % 60);
-    // minutes
-    x /= 60;
-    const minutes = Math.floor(x % 60);
-    // hours
-    x /= 60;
-    const hours = Math.floor(x);
+    if (activity.stoppedAt) {
+      const duration = Number(activity.stoppedAt) - Number(activity.startedAt);
+      let x = duration / 1000;
+      const seconds = Math.floor(x % 60);
+      // minutes
+      x /= 60;
+      const minutes = Math.floor(x % 60);
+      // hours
+      x /= 60;
+      const hours = Math.floor(x);
 
-    if (hours !== 0) {
-      result.hour = hours + 'h ' + minutes + 'm';
-    }
+      if (hours !== 0) {
+        result.hour = hours + 'h ' + minutes + 'm';
+      }
 
-    if (minutes !== 0 && hours === 0) {
-      result.hour = minutes + ' min' ;
-    }
+      if (minutes !== 0 && hours === 0) {
+        result.hour = minutes + ' min' ;
+      }
 
-    if (minutes === 0 && hours === 0) {
-      result.hour = seconds + ' sec';
+      if (minutes === 0 && hours === 0) {
+        result.hour = seconds + ' sec';
+      }
     }
     this.activities.push(result);
   };
