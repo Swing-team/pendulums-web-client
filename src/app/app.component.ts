@@ -15,6 +15,7 @@ import { CurrentActivityActions }                 from './shared/state/current-a
 import { SyncService }                            from './core/services/sync.service';
 import { Status }                                 from './shared/state/status/status.model';
 import { PageLoaderService }                      from './core/services/page-loader.service';
+import { UnSyncedActivityActions }                from './shared/state/unsynced-activities/unsynced-activities.actions';
 
 @Component({
   selector: 'app-root',
@@ -43,6 +44,7 @@ export class AppComponent implements OnInit {
     private router: Router,
     private syncService: SyncService,
     private pageLoaderService: PageLoaderService,
+    private unSyncedActivityActions: UnSyncedActivityActions,
     // needed for dynamically loaded components
     public viewContainerRef: ViewContainerRef
   ) {
@@ -67,6 +69,8 @@ export class AppComponent implements OnInit {
         this.store.dispatch(this.projectsActions.clearProjects());
         this.store.dispatch(this.currentActivityActions.clearCurrentActivity());
         this.store.dispatch(this.statusActions.loadStatus({netStatus: true, isLogin: null, unsyncedDataChanged: false}));
+        // we think we don't need to keep unSynced data any more after user sign out or get 403
+        this.store.dispatch(this.unSyncedActivityActions.clearUnSyncedActivity());
         this.syncService.closeConnection();
         this.router.navigate(['signIn']);
       }
