@@ -1,7 +1,7 @@
 import {
   Component, EventEmitter, Inject,
-  Input, Output, OnInit,
-} from '@angular/core';
+  Input, Output, OnInit, OnDestroy,
+}                                           from '@angular/core';
 import { Observable }                       from 'rxjs/Observable';
 import { APP_CONFIG }                       from '../../app.config';
 import { Activity }                         from '../../shared/state/current-activity/current-activity.model';
@@ -16,6 +16,7 @@ import { ErrorService }                     from '../error/error.service';
 import { User }                             from '../../shared/state/user/user.model';
 import { UnSyncedActivityActions }          from '../../shared/state/unsynced-activities/unsynced-activities.actions';
 import { StatusActions }                    from '../../shared/state/status/status.actions';
+import { Subscription }                     from 'rxjs/Subscription';
 import * as moment from 'moment';
 
 @Component({
@@ -24,7 +25,7 @@ import * as moment from 'moment';
   styleUrls: ['./toolbar.component.sass']
 })
 
-export class ToolbarComponent implements OnInit  {
+export class ToolbarComponent implements OnInit, OnDestroy  {
   @Input() user: User;
   @Input() projects: Projects;
   @Input() currentActivity: Observable<Activity>;
@@ -36,6 +37,7 @@ export class ToolbarComponent implements OnInit  {
   private taskName: string;
   private timeDuration: string;
   private activityStarted = false;
+  private subscriptions: Array<Subscription> = [];
 
   constructor (@Inject(APP_CONFIG) private config,
                private activityService: ActivityService,
@@ -50,7 +52,7 @@ export class ToolbarComponent implements OnInit  {
 
   ngOnInit() {
     if (this.currentActivity) {
-      this.currentActivity.subscribe(currentActivity => {
+      this.subscriptions.push(this.currentActivity.subscribe(currentActivity => {
         this.currentActivityCopy = currentActivity;
         this.taskName = currentActivity.name;
         this.selectedProject = this.projects.entities[currentActivity.project];
@@ -68,8 +70,14 @@ export class ToolbarComponent implements OnInit  {
         } else {
           this.activityStarted = false;
         }
-      });
+      }));
     }
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.map((subscribe) => {
+      subscribe.unsubscribe()
+    });
   }
 
   getTime (duration) {
