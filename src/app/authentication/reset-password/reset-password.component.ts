@@ -1,6 +1,7 @@
-import { Component, OnInit }        from '@angular/core';
-import { AuthenticationService }    from '../../core/services/authentication.service';
-import { ActivatedRoute, Router }   from '@angular/router';
+import { Component, OnDestroy, OnInit }         from '@angular/core';
+import { AuthenticationService }                from '../../core/services/authentication.service';
+import { ActivatedRoute, Router }               from '@angular/router';
+import { Subscription }                         from 'rxjs/Subscription';
 
 @Component({
   selector: 'reset-password',
@@ -8,12 +9,12 @@ import { ActivatedRoute, Router }   from '@angular/router';
   styleUrls: ['./reset-password.component.sass']
 })
 
-export class ResetPasswordComponent implements OnInit {
+export class ResetPasswordComponent implements OnInit, OnDestroy {
   User = {password: null, token: null};
   rePassword: string;
   submitted = false;
   errorMessage: string;
-  private sub: any;
+  private subscriptions: Array<Subscription> = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -22,8 +23,14 @@ export class ResetPasswordComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.sub = this.route.params.subscribe(params => {
-      this.User.token = params['token']; });
+    this.subscriptions.push(this.route.params.subscribe(params => {
+      this.User.token = params['token']; }));
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.map((subscribe) => {
+      subscribe.unsubscribe()
+    });
   }
 
   resetPassword() {

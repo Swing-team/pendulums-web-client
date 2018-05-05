@@ -1,11 +1,14 @@
-import {ComponentFactoryResolver, Injectable, ViewContainerRef, ApplicationRef} from '@angular/core';
-import {ModalComponent} from './modal.component';
+import { ComponentFactoryResolver, Injectable,
+         ViewContainerRef, ApplicationRef }         from '@angular/core';
+import { ModalComponent }                           from './modal.component';
+import { Subscription }                             from 'rxjs/Subscription';
 
 @Injectable()
 export class ModalService {
   private modalComponentRef;
   private contentComponentRef;
   private rootViewContainerRef: ViewContainerRef;
+  private subscriptions: Array<Subscription> = [];
 
   constructor(
     private componentFactoryResolver: ComponentFactoryResolver,
@@ -40,12 +43,12 @@ export class ModalService {
     if (modalConfig.outputs) {
       for (const output in modalConfig.outputs) {
         if (modalConfig.outputs.hasOwnProperty(output)) {
-          this.contentComponentRef.instance[output].subscribe(modalConfig.outputs[output]);
+          this.subscriptions.push(this.contentComponentRef.instance[output].subscribe(modalConfig.outputs[output]));
         }
       }
     }
 
-    this.modalComponentRef.instance['close'].subscribe(() => this.close());
+    this.subscriptions.push(this.modalComponentRef.instance['close'].subscribe(() => this.close()));
     this.contentComponentRef.changeDetectorRef.detectChanges();
   }
 
@@ -53,6 +56,9 @@ export class ModalService {
     // cleanup
     this.contentComponentRef.destroy();
     this.modalComponentRef.destroy();
+    this.subscriptions.map((subscribe) => {
+      subscribe.unsubscribe()
+    });
   }
 }
 

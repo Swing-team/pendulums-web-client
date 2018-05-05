@@ -1,5 +1,7 @@
-import { Component, Inject, Input,
-         OnInit }                             from '@angular/core';
+import {
+  Component, Inject, Input,
+  OnDestroy, OnInit
+}                                             from '@angular/core';
 import { APP_CONFIG }                         from '../../../../app.config';
 import { Project }                            from '../../../../shared/state/project/project.model';
 import { ActivityService }                    from '../../../shared/activity.service';
@@ -18,6 +20,7 @@ import { UnSyncedActivityActions }            from '../../../../shared/state/uns
 import { Status }                             from '../../../../shared/state/status/status.model';
 import { Md5 }                                from 'ts-md5/dist/md5';
 import { StatusActions }                      from '../../../../shared/state/status/status.actions';
+import { Subscription }                       from 'rxjs/Subscription';
 import * as moment from 'moment';
 
 @Component({
@@ -25,7 +28,7 @@ import * as moment from 'moment';
   templateUrl: './project-item.component.html',
   styleUrls: ['./project-item.component.sass'],
 })
-export class ProjectItemComponent implements OnInit {
+export class ProjectItemComponent implements OnInit, OnDestroy {
   @Input() project: Project;
   @Input() user: User;
   @Input() status: Status;
@@ -42,6 +45,7 @@ export class ProjectItemComponent implements OnInit {
   private taskName: string;
   private activity: Activity;
   private activities: any;
+  private subscriptions: Array<Subscription> = [];
 
   constructor (@Inject(APP_CONFIG) public config,
                private activityService: ActivityService,
@@ -59,7 +63,7 @@ export class ProjectItemComponent implements OnInit {
   ngOnInit() {
     this.taskName = this.project.recentActivityName;
     if (this.currentActivity) {
-      this.currentActivity.subscribe(currentActivity => {
+      this.subscriptions.push(this.currentActivity.subscribe(currentActivity => {
         if (currentActivity.project === this.project.id) {
           this.activityStarted = true;
           this.taskName = currentActivity.name;
@@ -67,13 +71,19 @@ export class ProjectItemComponent implements OnInit {
           this.activityStarted = false;
         }
         this.currentActivityCopy = currentActivity;
-      });
+      }));
     }
     if (this.project.activities) {
       this.project.activities.map((activity) => {
         this.calculateActivityDuration(activity);
       });
     }
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.map((subscribe) => {
+      subscribe.unsubscribe()
+    });
   }
 
   toggleStopStart() {

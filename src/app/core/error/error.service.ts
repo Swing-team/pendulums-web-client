@@ -30,14 +30,7 @@ export class ErrorService {
       this.errorComponentRef.instance.setTime();
     }
 
-    this.errorComponentRef.instance['close'].subscribe(() => this.close());
     this.errorComponentRef.changeDetectorRef.detectChanges();
-  }
-
-  close() {
-    // cleanup
-    this.errorComponentRef.destroy();
-    this.errorComponentRef = null;
   }
 }
 

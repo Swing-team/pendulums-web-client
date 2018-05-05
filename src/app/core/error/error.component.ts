@@ -17,8 +17,4 @@ export class ErrorComponent {
       this.errorMessages.splice(0, 1);
     }, 4000);
   }
-
-  closeModal() {
-    this.close.emit();
-  }
 }
