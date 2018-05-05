@@ -2,7 +2,7 @@ import 'rxjs/add/operator/switchMap';
 import * as _ from 'lodash';
 import {
   Component, HostListener,
-  Inject, OnInit,
+  Inject, OnDestroy, OnInit,
 }                                           from '@angular/core';
 import { Observable }                       from 'rxjs/Observable';
 import { APP_CONFIG }                       from '../../../app.config';
@@ -19,13 +19,14 @@ import { Project }                          from '../../../shared/state/project/
 import { User }                             from '../../../shared/state/user/user.model';
 import { cloneDeep }                        from 'lodash';
 import { PageLoaderService }                from '../../../core/services/page-loader.service';
+import { Subscription }                     from 'rxjs/Subscription';
 
 @Component({
   selector: 'activities',
   templateUrl: './activities.component.html',
   styleUrls: ['./activities.component.sass'],
 })
-export class ActivitiesComponent implements OnInit {
+export class ActivitiesComponent implements OnInit, OnDestroy {
   projectId: string;
   private project: Project;
   private pageNumber = 0;
@@ -34,6 +35,7 @@ export class ActivitiesComponent implements OnInit {
   private user: User;
   private activitiesLoaded = false;
   private chartLoaded = false;
+  private subscriptions: Array<Subscription> = [];
   // we need currentActivity itself in add/edit component to check added/edited activity has
   // no conflict with currentActivity
   private currentActivity: Observable<Activity>;
@@ -57,19 +59,19 @@ export class ActivitiesComponent implements OnInit {
                private location: Location,
                private modalService: ModalService,
                private errorService: ErrorService,
-               private pageLoaderService: PageLoaderService,) {
+               private pageLoaderService: PageLoaderService) {
     this.currentActivity = store.select('currentActivity');
-    store.select('user').subscribe((user: any) => {
+    this.subscriptions.push(store.select('user').subscribe((user: any) => {
       this.user = cloneDeep(user);
-    });
+    }));
   }
 
   ngOnInit() {
     this.pageLoaderService.showLoading();
-    this.route.params.subscribe((params: Params) => {
+    this.subscriptions.push(this.route.params.subscribe((params: Params) => {
       this.projectId = params['projectId'];
-    });
-    this.store.select('projects').subscribe((projects: any) => {
+    }));
+    this.subscriptions.push(this.store.select('projects').subscribe((projects: any) => {
       if (projects) {
         this.project = projects.entities[this.projectId];
         if (this.user.id && this.project) {
@@ -92,9 +94,9 @@ export class ActivitiesComponent implements OnInit {
           }
         }
       }
-    });
+    }));
     if (this.currentActivity) {
-      this.currentActivity.subscribe(currentActivity => {
+      this.subscriptions.push(this.currentActivity.subscribe(currentActivity => {
         if (currentActivity.project === this.projectId) {
           this.currentActivityCopy = currentActivity;
         }
@@ -106,8 +108,14 @@ export class ActivitiesComponent implements OnInit {
           }
           this.currentActivityCopy = null;
         }
-      });
+      }));
     };
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.map((subscribe) => {
+      subscribe.unsubscribe()
+    });
   }
 
   userRoleInProject(project, userId)  {
@@ -186,9 +194,9 @@ export class ActivitiesComponent implements OnInit {
   openAddManuallyModal() {
     let tempCurrentActivity: any;
     if (this.currentActivity) {
-      this.currentActivity.subscribe(currentActivity => {
+      this.subscriptions.push(this.currentActivity.subscribe(currentActivity => {
         tempCurrentActivity = currentActivity;
-      });
+      }));
     }
     this.modalService.show({
       component:  AddManuallyActivityComponent,
@@ -208,9 +216,9 @@ export class ActivitiesComponent implements OnInit {
   openEditManuallyModal(activity) {
     let tempCurrentActivity: any;
     if (this.currentActivity) {
-      this.currentActivity.subscribe(currentActivity => {
+      this.subscriptions.push(this.currentActivity.subscribe(currentActivity => {
         tempCurrentActivity = currentActivity;
-      });
+      }));
     }
     this.modalService.show({
       component:  AddManuallyActivityComponent,
