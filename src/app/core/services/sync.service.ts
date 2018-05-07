@@ -186,6 +186,7 @@ export class SyncService {
       this.store.dispatch(this.projectsActions.loadDbProjects(this.tempState.projects.entities));
       this.store.dispatch(this.currentActivityActions.loadCurrentActivity(this.tempState.currentActivity));
       this.store.dispatch(this.unSyncedActivityActions.loadUnSyncedActivity(this.tempState.unSyncedActivity));
+      this.store.dispatch(this.StatusActions.updateUnsyncedDataChanged(this.tempState.status.unsyncedDataChanged));
       this.store.dispatch(this.StatusActions.updateNetStatus(false));
       if (this.router.url === '/dashboard' || this.router.url === '/signIn') {
         this.router.navigate(['dashboard']);

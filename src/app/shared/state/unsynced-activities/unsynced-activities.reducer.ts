@@ -22,6 +22,20 @@ export default function reducer(state = initialState, action: ActionWithPayload<
       return initialState;
     }
 
+    case UnSyncedActivityActions.REMOVE_UNSYNCED_ACTIVITY_BY_FIELDS: {
+      const newState = JSON.parse(JSON.stringify(state));
+      newState.entities.map((unSyncedData , index) => {
+        if (unSyncedData.startedAt === action.payload.startedAt &&
+            unSyncedData.stoppedAt === action.payload.stoppedAt &&
+            unSyncedData.name === action.payload.name  &&
+            unSyncedData.project === action.payload.project &&
+            unSyncedData.user === action.payload.user) {
+          newState.entities.splice(index, 1);
+        }
+      });
+      return newState;
+    }
+
     default: {
       return state;
     }
