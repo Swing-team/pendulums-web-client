@@ -9,6 +9,7 @@ export class UnSyncedActivityActions {
   static LOAD_UNSYNCED_ACTIVITY = 'LOAD_UNSYNCED_ACTIVITY';
   static CLEAR_UNSYNCED_ACTIVITY = 'CLEAR_UNSYNCED_ACTIVITY';
   static ADD_UNSYNCED_ACTIVITY = 'ADD_UNSYNCED_ACTIVITY';
+  static REMOVE_UNSYNCED_ACTIVITY_BY_FIELDS = 'REMOVE_UNSYNCED_ACTIVITY_BY_FIELDS';
 
   loadUnSyncedActivity(unSyncedActivities: UnSyncedActivities): ActionWithPayload<UnSyncedActivities> {
     return {
@@ -26,6 +27,13 @@ export class UnSyncedActivityActions {
   addUnSyncedActivity(activity: Activity): ActionWithPayload<Activity> {
     return {
       type: UnSyncedActivityActions.ADD_UNSYNCED_ACTIVITY,
+      payload: activity
+    };
+  }
+
+  removeUnSyncedActivityByFields(activity: Activity): ActionWithPayload<Activity> {
+    return {
+      type: UnSyncedActivityActions.REMOVE_UNSYNCED_ACTIVITY_BY_FIELDS,
       payload: activity
     };
   }

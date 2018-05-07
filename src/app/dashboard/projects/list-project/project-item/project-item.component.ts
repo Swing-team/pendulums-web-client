@@ -113,28 +113,36 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
     this.activity = new Activity();
     this.activity.name = this.taskName;
     this.activity.startedAt = Date.now().toString();
+    // we need two below fields for offline logic
+    this.activity.project = this.project.id;
+    this.activity.user = this.user.id;
+
+    // we decided to put all data in db by default and then send it to server
+    this.store.dispatch(this.CurrentActivityActions.loadCurrentActivity(this.activity));
+    this.store.dispatch(this.StatusActions.updateUnsyncedDataChanged(true));
+
     this.activityService.create(this.project.id, this.activity).then((activity) => {
       this.showError('The activity was started');
       delete activity.createdAt;
       delete activity.updatedAt;
+
+      // if we get ok response from server so we have id for currentActivity and it has to been set
       this.store.dispatch(this.CurrentActivityActions.loadCurrentActivity(activity));
+      // if we get ok response from server so we don't have any unSynced data any more here
+      this.store.dispatch(this.StatusActions.updateUnsyncedDataChanged(false));
       this.activityButtonDisabled = false;
     })
       .catch(error => {
         // todo: check errors
-        // we need two below fields for offline logic
-        this.activity.project = this.project.id;
-        this.activity.user = this.user.id;
         console.log('server error happened', error);
         this.showError('Server communication error.');
-        this.store.dispatch(this.CurrentActivityActions.loadCurrentActivity(this.activity));
-        this.store.dispatch(this.StatusActions.updateUnsyncedDataChanged(true));
         this.activityButtonDisabled = false;
       });
   }
 
   stopActivity() {
     if (this.currentActivity) {
+      // first we need divide time to separated days
       const dividedActivitiesArray = [];
       const stoppedAtDay = moment().startOf('day');
       const startedAtDay = moment(Number(this.currentActivityCopy.startedAt)).startOf('day');
@@ -163,64 +171,70 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
         }
       }
 
+      // we must save divided activities and original activity in db
+      this.pushDividedActivitiesToDb(dividedActivitiesArray);
+
+      // now we will try to store all data at server
       if (this.currentActivityCopy.id) {
         this.activityService.editCurrentActivity(this.project.id, this.currentActivityCopy).then((activity) => {
-          this.updateStateInSuccess(activity, dividedActivitiesArray);
+          this.updateStateInSuccess(dividedActivitiesArray);
         })
           .catch(error => {
-            this.updateStateInCatch (error, dividedActivitiesArray);
+            this.updateStateInCatch (error);
           });
       } else {
         this.activityService.createManually(this.project.id, this.currentActivityCopy).then((activity) => {
-          this.updateStateInSuccess(activity, dividedActivitiesArray);
+          this.updateStateInSuccess(dividedActivitiesArray);
         })
           .catch((error) => {
-            this.updateStateInCatch (error, dividedActivitiesArray);
+            this.updateStateInCatch (error);
           });
         }
     }
   }
 
-  pushDividedActivitiesToServer (dividedActivitiesResult) {
+  pushDividedActivitiesToDb (dividedActivitiesResult) {
+    // store an original activity
+    this.store.dispatch(this.UnSyncedActivityActions.addUnSyncedActivity(this.currentActivityCopy));
+    this.store.dispatch(this.projectsActions.updateProjectActivities(this.currentActivityCopy.project, this.currentActivityCopy));
+    // store all divided activities
     dividedActivitiesResult.map((item) => {
+      this.store.dispatch(this.UnSyncedActivityActions.addUnSyncedActivity(item));
+      this.store.dispatch(this.projectsActions.updateProjectActivities(this.project.id, item));
+    });
+    this.store.dispatch(this.StatusActions.updateUnsyncedDataChanged(true));
+  }
+
+  pushDividedActivitiesToServer (dividedActivitiesResult) {
+    const responseResult = [];
+    responseResult.push(dividedActivitiesResult.map((item) => {
       this.activityService.createManually(this.project.id, item).then((activity) => {
         this.store.dispatch(this.projectsActions.updateProjectActivities(this.project.id, activity));
+        this.store.dispatch(this.UnSyncedActivityActions.removeUnSyncedActivityByFields(item))
       })
         .catch(error => {
           console.log('server error happened', error);
-          this.store.dispatch(this.UnSyncedActivityActions.addUnSyncedActivity(item));
-          this.store.dispatch(this.StatusActions.updateUnsyncedDataChanged(true));
-          this.store.dispatch(this.projectsActions.updateProjectActivities(item.project, item));
         });
-    });
+    }));
+    Promise.all(responseResult).then(() => {
+      this.store.dispatch(this.StatusActions.updateUnsyncedDataChanged(false));
+    })
   }
 
-  pushDividedActivitiesToDb (dividedActivitiesResult) {
-    dividedActivitiesResult.map((item) => {
-      this.store.dispatch(this.UnSyncedActivityActions.addUnSyncedActivity(item));
-      this.store.dispatch(this.projectsActions.updateProjectActivities(item.project, item));
-    });
-  }
-
-  updateStateInCatch (error, dividedActivitiesResult) {
+  updateStateInCatch (error) {
     console.log('server error happened', error);
     this.showError('Server communication error.');
-    this.store.dispatch(this.UnSyncedActivityActions.addUnSyncedActivity(this.currentActivityCopy));
-    this.store.dispatch(this.projectsActions.updateProjectActivities(this.currentActivityCopy.project, this.currentActivityCopy));
-    // we must save divided activities in db
-    this.pushDividedActivitiesToDb(dividedActivitiesResult);
-    this.store.dispatch(this.StatusActions.updateUnsyncedDataChanged(true));
-    this.store.dispatch(this.CurrentActivityActions.clearCurrentActivity());
     this.showError('The activity was stopped');
+    this.store.dispatch(this.CurrentActivityActions.clearCurrentActivity());
   }
 
-  updateStateInSuccess (activity, dividedActivitiesArray) {
-    this.store.dispatch(this.CurrentActivityActions.clearCurrentActivity());
-    this.store.dispatch(this.projectsActions.updateProjectActivities(this.project.id, activity));
+  updateStateInSuccess (dividedActivitiesArray) {
     // we send divided activities to server after original activity because
     // The stop time of activity cannot be older than start time in current activity!
     this.pushDividedActivitiesToServer(dividedActivitiesArray);
     this.showError('The activity was stopped');
+    this.store.dispatch(this.UnSyncedActivityActions.removeUnSyncedActivityByFields(this.currentActivityCopy));
+    this.store.dispatch(this.CurrentActivityActions.clearCurrentActivity());
   }
 
   nameActivity($event) {
@@ -230,27 +244,19 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
 
     if (this.currentActivity) {
       this.currentActivityCopy.name = this.taskName;
+      this.store.dispatch(this.CurrentActivityActions.loadCurrentActivity(this.currentActivityCopy));
+      this.store.dispatch(this.StatusActions.updateUnsyncedDataChanged(true));
       if (this.currentActivityCopy.id) {
         this.activityService.editCurrentActivity(this.project.id, this.currentActivityCopy).then((activity) => {
-          delete activity.createdAt;
-          delete activity.updatedAt;
-          this.store.dispatch(this.CurrentActivityActions.loadCurrentActivity(activity));
         })
           .catch(error => {
             console.log('server error happened', error);
-            this.store.dispatch(this.CurrentActivityActions.loadCurrentActivity(this.currentActivityCopy));
-            this.store.dispatch(this.StatusActions.updateUnsyncedDataChanged(true));
           });
       } else {
         this.activityService.create(this.project.id, this.currentActivityCopy).then((activity) => {
-          delete activity.createdAt;
-          delete activity.updatedAt;
-          this.store.dispatch(this.CurrentActivityActions.loadCurrentActivity(activity));
         })
           .catch(error => {
             console.log('server error happened', error);
-            this.store.dispatch(this.CurrentActivityActions.loadCurrentActivity(this.currentActivityCopy));
-            this.store.dispatch(this.StatusActions.updateUnsyncedDataChanged(true));
           });
       }
     }
