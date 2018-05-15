@@ -61,7 +61,7 @@ export class SignInComponent {
     }
     if (!authUser.password
       || authUser.password.length < 6
-      || authUser.password.length > 12) {
+      || authUser.password.length > 32) {
       this.errorMessage = 'please choose password with 6 to 12 characters ';
       return false;
     }
