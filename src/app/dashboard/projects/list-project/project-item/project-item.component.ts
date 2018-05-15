@@ -1,7 +1,7 @@
 import {
   Component, Inject, Input,
-  OnDestroy, OnInit
-}                                             from '@angular/core';
+  OnDestroy, OnInit, ViewChild
+} from '@angular/core';
 import { APP_CONFIG }                         from '../../../../app.config';
 import { Project }                            from '../../../../shared/state/project/project.model';
 import { ActivityService }                    from '../../../shared/activity.service';
@@ -26,7 +26,7 @@ import * as moment from 'moment';
 @Component({
   selector: 'project-item',
   templateUrl: './project-item.component.html',
-  styleUrls: ['./project-item.component.sass'],
+  styleUrls: ['./project-item.component.sass']
 })
 export class ProjectItemComponent implements OnInit, OnDestroy {
   @Input() project: Project;
@@ -34,49 +34,44 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
   @Input() status: Status;
   @Input() currentActivity: Observable<Activity>;
   activityStarted = false;
-  // use activityButtonDisabled to control loading and disabling buttons but know that
-  // this field will re-initial when this component re-render
-  // and by stop process this component's data will change so the component will re-render
-  // so we decided not to reset activityButtonDisabled to false through stop process in order to make flow chart more simple
-  // and reset buttonDisabled to false just through start process
   activityButtonDisabled = false;
+  @ViewChild('activityNameElm') activityNameElm;
 
   private currentActivityCopy: Activity;
   private taskName: string;
   private activity: Activity;
-  private activities: any;
   private subscriptions: Array<Subscription> = [];
 
   constructor (@Inject(APP_CONFIG) public config,
                private activityService: ActivityService,
                private store: Store<AppState>,
-               private CurrentActivityActions: CurrentActivityActions,
+               private currentActivityActions: CurrentActivityActions,
                private projectsActions: ProjectsActions,
                private router: Router,
                private modalService: ModalService,
                private errorService: ErrorService,
-               private UnSyncedActivityActions: UnSyncedActivityActions,
-               private StatusActions: StatusActions) {
-    this.activities = [];
+               private unSyncedActivityActions: UnSyncedActivityActions,
+               private statusActions: StatusActions) {
   }
 
   ngOnInit() {
     this.taskName = this.project.recentActivityName;
     if (this.currentActivity) {
-      this.subscriptions.push(this.currentActivity.subscribe(currentActivity => {
+      this.subscriptions.push(this.currentActivity.subscribe((currentActivity) => {
         if (currentActivity.project === this.project.id) {
           this.activityStarted = true;
-          this.taskName = currentActivity.name;
+
+          // this part of code is to handel situation that we have slow connection and activityName is editing
+          if (this.activityNameElm && document.activeElement === this.activityNameElm.nativeElement) {
+            // do nothing
+          } else {
+            this.taskName = currentActivity.name;
+          }
         } else {
           this.activityStarted = false;
         }
         this.currentActivityCopy = currentActivity;
       }));
-    }
-    if (this.project.activities) {
-      this.project.activities.map((activity) => {
-        this.calculateActivityDuration(activity);
-      });
     }
   }
 
@@ -118,8 +113,8 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
     this.activity.user = this.user.id;
 
     // we decided to put all data in db by default and then send it to server
-    this.store.dispatch(this.CurrentActivityActions.loadCurrentActivity(this.activity));
-    this.store.dispatch(this.StatusActions.updateUnsyncedDataChanged(true));
+    this.store.dispatch(this.currentActivityActions.loadCurrentActivity(this.activity));
+    this.store.dispatch(this.statusActions.updateUnsyncedDataChanged(true));
 
     this.activityService.create(this.project.id, this.activity).then((activity) => {
       this.showError('The activity was started');
@@ -127,9 +122,9 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
       delete activity.updatedAt;
 
       // if we get ok response from server so we have id for currentActivity and it has to been set
-      this.store.dispatch(this.CurrentActivityActions.loadCurrentActivity(activity));
+      this.store.dispatch(this.currentActivityActions.loadCurrentActivity(activity));
       // if we get ok response from server so we don't have any unSynced data any more here
-      this.store.dispatch(this.StatusActions.updateUnsyncedDataChanged(false));
+      this.store.dispatch(this.statusActions.updateUnsyncedDataChanged(false));
       this.activityButtonDisabled = false;
     })
       .catch(error => {
@@ -138,6 +133,13 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
         this.showError('Server communication error.');
         this.activityButtonDisabled = false;
       });
+
+    // This timeout use to handle focus on input
+    setTimeout(() => {
+      if (this.activityNameElm) {
+        this.activityNameElm.nativeElement.focus();
+      }
+    }, 500)
   }
 
   stopActivity() {
@@ -195,14 +197,14 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
 
   pushDividedActivitiesToDb (dividedActivitiesResult) {
     // store an original activity
-    this.store.dispatch(this.UnSyncedActivityActions.addUnSyncedActivity(this.currentActivityCopy));
+    this.store.dispatch(this.unSyncedActivityActions.addUnSyncedActivity(this.currentActivityCopy));
     this.store.dispatch(this.projectsActions.updateProjectActivities(this.currentActivityCopy.project, this.currentActivityCopy));
     // store all divided activities
     dividedActivitiesResult.map((item) => {
-      this.store.dispatch(this.UnSyncedActivityActions.addUnSyncedActivity(item));
+      this.store.dispatch(this.unSyncedActivityActions.addUnSyncedActivity(item));
       this.store.dispatch(this.projectsActions.updateProjectActivities(this.project.id, item));
     });
-    this.store.dispatch(this.StatusActions.updateUnsyncedDataChanged(true));
+    this.store.dispatch(this.statusActions.updateUnsyncedDataChanged(true));
   }
 
   pushDividedActivitiesToServer (dividedActivitiesResult) {
@@ -210,14 +212,15 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
     responseResult.push(dividedActivitiesResult.map((item) => {
       this.activityService.createManually(this.project.id, item).then((activity) => {
         this.store.dispatch(this.projectsActions.updateProjectActivities(this.project.id, activity));
-        this.store.dispatch(this.UnSyncedActivityActions.removeUnSyncedActivityByFields(item))
+        this.store.dispatch(this.unSyncedActivityActions.removeUnSyncedActivityByFields(item))
       })
         .catch(error => {
           console.log('server error happened', error);
         });
     }));
     Promise.all(responseResult).then(() => {
-      this.store.dispatch(this.StatusActions.updateUnsyncedDataChanged(false));
+      this.store.dispatch(this.statusActions.updateUnsyncedDataChanged(false));
+      this.activityButtonDisabled = false;
     })
   }
 
@@ -225,7 +228,7 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
     console.log('server error happened', error);
     this.showError('Server communication error.');
     this.showError('The activity was stopped');
-    this.store.dispatch(this.CurrentActivityActions.clearCurrentActivity());
+    this.store.dispatch(this.currentActivityActions.clearCurrentActivity());
   }
 
   updateStateInSuccess (dividedActivitiesArray) {
@@ -233,8 +236,8 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
     // The stop time of activity cannot be older than start time in current activity!
     this.pushDividedActivitiesToServer(dividedActivitiesArray);
     this.showError('The activity was stopped');
-    this.store.dispatch(this.UnSyncedActivityActions.removeUnSyncedActivityByFields(this.currentActivityCopy));
-    this.store.dispatch(this.CurrentActivityActions.clearCurrentActivity());
+    this.store.dispatch(this.unSyncedActivityActions.removeUnSyncedActivityByFields(this.currentActivityCopy));
+    this.store.dispatch(this.currentActivityActions.clearCurrentActivity());
   }
 
   nameActivity($event) {
@@ -244,8 +247,8 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
 
     if (this.currentActivity) {
       this.currentActivityCopy.name = this.taskName;
-      this.store.dispatch(this.CurrentActivityActions.loadCurrentActivity(this.currentActivityCopy));
-      this.store.dispatch(this.StatusActions.updateUnsyncedDataChanged(true));
+      this.store.dispatch(this.currentActivityActions.renameCurrentActivity(this.currentActivityCopy.name));
+      this.store.dispatch(this.statusActions.updateUnsyncedDataChanged(true));
       if (this.currentActivityCopy.id) {
         this.activityService.editCurrentActivity(this.project.id, this.currentActivityCopy).then((activity) => {
         })
@@ -254,6 +257,8 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
           });
       } else {
         this.activityService.create(this.project.id, this.currentActivityCopy).then((activity) => {
+          // we reload currentActivity because it will get id and we will need it
+          this.store.dispatch(this.currentActivityActions.loadCurrentActivity(activity));
         })
           .catch(error => {
             console.log('server error happened', error);
@@ -263,11 +268,7 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
   }
 
   calculateActivityDuration (activity) {
-    let result: any;
-    result = {
-      name: activity.name,
-      hour: 0
-    };
+    let hour = '';
     if (activity.stoppedAt) {
       const duration = Number(activity.stoppedAt) - Number(activity.startedAt);
       let x = duration / 1000;
@@ -280,18 +281,18 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
       const hours = Math.floor(x);
 
       if (hours !== 0) {
-        result.hour = hours + 'h ' + minutes + 'm';
+        hour = hours + 'h ' + minutes + 'm';
       }
 
       if (minutes !== 0 && hours === 0) {
-        result.hour = minutes + ' min' ;
+        hour = minutes + ' min' ;
       }
 
       if (minutes === 0 && hours === 0) {
-        result.hour = seconds + ' sec';
+        hour = seconds + ' sec';
       }
     }
-    this.activities.push(result);
+    return hour;
   };
 
   getEmailHash(email): any {

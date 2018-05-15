@@ -22,7 +22,7 @@
     <div class="has-text-left ps-title" [ngClass]="{'ps-task-input-container': activityStarted}">
       <span class="subtitle is-inline-block">
         <p *ngIf="!activityStarted">{{project.name}}</p>
-        <input [(ngModel)]="taskName" class="input ps-task-input" (change)="nameActivity($event)"
+        <input #activityNameElm [(ngModel)]="taskName" class="input ps-task-input" (change)="nameActivity($event)"
                placeholder="Task Name" type="text" *ngIf="activityStarted">
       </span>
       <span class="is-pulled-right is-inline-block" (click)="toggleStopStart()">
@@ -45,11 +45,11 @@
     <div *ngIf="project.activities && project.activities.length > 0" class="ps-title">
       <table class="table ps-item-table">
         <tbody>
-        <tr *ngFor="let activity of activities">
+        <tr *ngFor="let activity of project.activities">
           <td>{{activity.name}}</td>
           <td class="row-narrow has-text-right">
             <i class="icon-stopwatch"></i>
-            {{activity.hour}}
+            {{calculateActivityDuration(activity)}}
           </td>
         </tr>
         </tbody>

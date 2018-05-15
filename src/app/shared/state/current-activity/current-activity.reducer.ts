@@ -11,7 +11,7 @@ const initialState: Activity = {
   user: null,
 };
 
-export default function reducer(state = initialState, action: ActionWithPayload<Activity>) {
+export default function reducer(state = initialState, action: ActionWithPayload<any>) {
   switch (action.type) {
     case CurrentActivityActions.LOAD_CURRENT_ACTIVITY: {
       return action.payload ? action.payload : state;
@@ -19,6 +19,10 @@ export default function reducer(state = initialState, action: ActionWithPayload<
 
     case CurrentActivityActions.CLEAR_CURRENT_ACTIVITY: {
       return initialState;
+    }
+
+    case CurrentActivityActions.RENAME_CURRENT_ACTIVITY: {
+      return {...state, name: action.payload};
     }
 
     default: {

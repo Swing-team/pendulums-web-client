@@ -39,6 +39,10 @@ export class ListOfProjectComponent {
     }
   }
 
+  projectsTrackBy(index, project) {
+    return project.id;
+  }
+
   showError(error) {
     this.errorService.show({
       input: error
