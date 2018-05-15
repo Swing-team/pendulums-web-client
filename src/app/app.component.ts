@@ -16,6 +16,7 @@ import { SyncService }                            from './core/services/sync.ser
 import { Status }                                 from './shared/state/status/status.model';
 import { PageLoaderService }                      from './core/services/page-loader.service';
 import { UnSyncedActivityActions }                from './shared/state/unsynced-activities/unsynced-activities.actions';
+import { AppStateSelectors }                      from './shared/state/app-state.selectors';
 
 @Component({
   selector: 'app-root',
@@ -45,12 +46,13 @@ export class AppComponent implements OnInit {
     private syncService: SyncService,
     private pageLoaderService: PageLoaderService,
     private unSyncedActivityActions: UnSyncedActivityActions,
+    appStateSelectors: AppStateSelectors,
     // needed for dynamically loaded components
     public viewContainerRef: ViewContainerRef
   ) {
     // to initialize state
     this.user = store.select('user');
-    this.projects = store.select('projects');
+    this.projects = store.select(appStateSelectors.getProjectsArray);
     this.currentActivity = store.select('currentActivity');
     this.status = store.select('status');
   }

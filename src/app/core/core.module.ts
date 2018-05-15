@@ -34,6 +34,8 @@ import { AuthInterceptor }              from './auth.interceptor';
 import { AuthGuardService }             from './services/router-guards/auth-guard.service';
 import { AnonymousGuardService }        from './services/router-guards/anonymous-guard.service';
 import { PageLoaderService }            from './services/page-loader.service';
+import { AppStateSelectors }            from '../shared/state/app-state.selectors';
+import { ProjectsSelectors }            from '../shared/state/project/projects.selectors';
 
 @NgModule({
   imports:      [
@@ -71,6 +73,8 @@ import { PageLoaderService }            from './services/page-loader.service';
     ProjectsActions,
     CurrentActivityActions,
     UnSyncedActivityActions,
+    AppStateSelectors,
+    ProjectsSelectors,
     DexieService,
     DatabaseService,
     SyncService,

@@ -6,7 +6,6 @@ import { HttpClientModule }       from '@angular/common/http';
 import { SwingSelectComponent }   from './swing-select/swing-select.component';
 import { SwingSwitchComponent }   from './swing-switch/swing-switch.component';
 import { IdenticonHashDirective } from './identicon-hash.directive';
-import { ObjectKeysPipe }         from './object-keys.pipe';
 import { ActivityService }        from '../dashboard/shared/activity.service';
 import { SwingCalendarComponent } from './swing-calendar/swing-calendar.component';
 import { RestrictInputDirective } from './restrict-input.directive';
@@ -20,8 +19,7 @@ import { SwingTagInputComponent }  from './swing-tag-input/swing-tag-input.compo
     SwingSwitchComponent,
     SwingSelectComponent,
     SwingCalendarComponent,
-    SwingTagInputComponent,
-    ObjectKeysPipe
+    SwingTagInputComponent
   ],
   exports:      [
     CommonModule,
@@ -29,7 +27,6 @@ import { SwingTagInputComponent }  from './swing-tag-input/swing-tag-input.compo
     HttpClientModule,
     IdenticonHashDirective,
     RestrictInputDirective,
-    ObjectKeysPipe,
     SwingCalendarComponent,
     SwingSelectComponent,
     SwingSwitchComponent,

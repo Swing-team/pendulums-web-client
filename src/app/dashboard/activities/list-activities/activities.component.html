@@ -4,7 +4,7 @@
   <ng-container *ngIf="userAccess">
     <div *ngIf="project" class="ps-stat-user-filter-wrapper">
       <swing-select [type]="'multiSelect'"
-                    [items]="project.teamMembers | objectKeys"
+                    [items]="project.teamMembers"
                     [itemTextAttribute]="['name', 'email']"
                     (onItemClicked)="getSelectedUsers($event)"
                     [label]="'Select Users'"
