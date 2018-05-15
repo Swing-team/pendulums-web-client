@@ -27,6 +27,10 @@ export class SwingSelectComponent implements OnInit {
   constructor(private elementRef: ElementRef) {}
 
   ngOnInit() {
+    if (this.type === 'singleSelect') {
+      this.selectedItem = this.items[this.selectedItemIndex[0]];
+    }
+
     if (this.type === 'multiSelect') {
       this.selectItemsList.push({
         index: 0,
