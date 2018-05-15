@@ -12,16 +12,16 @@
   </div>
   <div class="nav-center ps-nav-center" *ngIf="currentActivityCopy.startedAt">
     <div class="nav-item">
-      <input id="activityName" class="input is-small" [(ngModel)]="taskName" placeholder="Task name" type="text"
+      <input id="activityNameElm" class="input is-small ps-nav-input" [(ngModel)]="taskName" placeholder="Task name" type="text"
              (change)="nameActivity($event)"/>
-      <label for="activityName">{{currentActivityCopy.name}}&nbsp;-&nbsp;{{selectedProject.name ? selectedProject.name : ''}}</label>
+      <label class="ps-nav-label" for="activityNameElm">{{currentActivityCopy.name}}&nbsp;-&nbsp;{{selectedProject.name ? selectedProject.name : ''}}</label>
     </div>
   </div>
   <div class="nav-right">
     <div class="nav-item">
       <div *ngIf="!currentActivityCopy.startedAt" class="ps-nav-right-item">
         <swing-select [width]="'120px'"
-                      [items]="projects.entities | objectKeys"
+                      [items]="projects"
                       [itemTextAttribute]="'name'"
                       (onItemClicked)="projectSelected($event)"
                       [label]="'Select Project'"
@@ -31,7 +31,7 @@
         <span class="ps-time-indicator"></span>
         <span class="ps-display-span-time">{{timeDuration}}</span>
       </div>
-      <div class="ps-toolbar-play" [ngClass]="{'ps-toolbar-stop': currentActivityCopy.startedAt}">
+      <div class="ps-toolbar-play">
         <div (click)="toggleStopStart()">
           <a  class="button ps-toolbar-button" [ngClass]="{'is-loading': stopStartButtonDisabled}">
             <span class="icon">
