@@ -23,6 +23,7 @@
         <swing-select [width]="'120px'"
                       [items]="projects"
                       [itemTextAttribute]="'name'"
+                      [selectedItemIndex]="[selectedProjectIndex]"
                       (onItemClicked)="projectSelected($event)"
                       [label]="'Select Project'"
                       class="ps-toolbar-select"></swing-select>
