@@ -32,6 +32,7 @@ export class ToolbarComponent implements OnInit, OnDestroy  {
   currentActivityCopy: Activity;
   showTimeDuration = false;
   stopStartButtonDisabled = false;
+  selectedProjectIndex: any;
   private selectedProject: Project;
   private taskName: string;
   private timeDuration: string;
@@ -51,6 +52,7 @@ export class ToolbarComponent implements OnInit, OnDestroy  {
 
   ngOnInit() {
     this.selectedProject = this.projects[0];
+    this.selectedProjectIndex = 0;
     this.taskName = this.projects[0].recentActivityName;
 
     if (this.currentActivity) {
@@ -67,9 +69,10 @@ export class ToolbarComponent implements OnInit, OnDestroy  {
           }
         }
 
-        this.projects.map((project) => {
+        this.projects.map((project, index) => {
           if (project.id === currentActivity.project) {
             this.selectedProject = project;
+            this.selectedProjectIndex = index;
           }
         });
 
@@ -142,10 +145,9 @@ export class ToolbarComponent implements OnInit, OnDestroy  {
   };
 
   projectSelected(event) {
-    console.log(event.index);
+    this.selectedProjectIndex = event.index;
     this.selectedProject = event.selectedItem;
     this.taskName = this.selectedProject.recentActivityName;
-    console.log(event.selectedItem);
   }
 
   toggleShowTimeDuration() {
