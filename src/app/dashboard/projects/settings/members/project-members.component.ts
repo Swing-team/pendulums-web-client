@@ -34,6 +34,7 @@ export class ProjectMembersComponent implements OnInit {
   @Input() project: Project;
   @Input() user: User;
   @Input() readOnly: boolean;
+  items = ['team member', 'admin'];
   members: Array<TeamMember> = [];
   removeMemberConfirmationViewIndex: Number = -1;
   removeButtonDisabled = false;
@@ -98,12 +99,12 @@ export class ProjectMembersComponent implements OnInit {
     return userRoleInProject(this.project, this.user.id);
   }
 
-  removeMember(memberId, index) {
-    if (!this.removeButtonDisabled) {
+  removeMember(member, index) {
+    if (!this.removeButtonDisabled && member.role !== 'owner') {
       this.removeButtonDisabled = true;
-      this.projectServices.removeMember(this.project.id, memberId)
+      this.projectServices.removeMember(this.project.id, member.id)
         .then(response => {
-          this.store.dispatch(this.projectsAction.removeMember(this.project.id, memberId));
+          this.store.dispatch(this.projectsAction.removeMember(this.project.id, member.id));
           this.members.splice(index, 1);
           this.removeButtonDisabled = false;
           this.removeMemberConfirmationViewIndex = -1
