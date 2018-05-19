@@ -43,7 +43,11 @@
 
 <div *ngIf="readOnly" dir="auto" class="ps-container">
   <div class="ps-image-container">
-    <img [src]="previewImage ? previewImage : '../../../../../assets/images/placeholder.jpg'">
+    <div style="padding: unset">
+      <figure class="image is-1by1">
+        <img [src]="clonedProject.image ? previewImage : '../../../../../assets/images/placeholder.jpg'">
+      </figure>
+    </div>
   </div>
   <div class="ps-project-name-container">
     <span class="ps-header-input">
