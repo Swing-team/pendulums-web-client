@@ -36,8 +36,8 @@
         <div *ngIf="member.role !== 'owner'" class="ps-user-role">
           <swing-select
             [width]="'120px'"
-            [items]="['team member','admin']"
-            [label]="member.role"
+            [items]="items"
+            [selectedItemIndex] = "[items.indexOf(member.role)]"
             (onItemClicked)="changeTeamMemberRole(member.id, i, $event)">
           </swing-select>
           <a class="button ps-member-item-remove-team-member" *ngIf="teamMemberRoleChanged"
@@ -47,7 +47,7 @@
           {{member.role}}
         </div>
       </div>
-      <div class="column is-2">
+      <div class="column is-2" *ngIf="member.role !== 'owner'">
         <div class="ps-member-item-button" *ngIf="removeMemberConfirmationViewIndex !== i">
           <a class="button ps-member-item-button-confirmation"
              (click)="confirmRemoveMember(i)">
@@ -64,12 +64,15 @@
             </span>
           </a>
           <a class="button ps-member-item-button-confirmation" [ngClass]="{'is-loading': removeButtonDisabled}"
-             (click)="removeMember(member.id, i)">
+             (click)="removeMember(member, i)">
             <span class="icon">
               <i class="icon-check" [ngClass]="{'has-text-success': !removeButtonDisabled}"></i>
             </span>
           </a>
         </div>
+      </div>
+      <div class="column is-2" *ngIf="member.role === 'owner'">
+        {{member.role}}
       </div>
     </div>
   </ng-container>
