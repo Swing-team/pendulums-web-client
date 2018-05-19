@@ -1,6 +1,6 @@
 <aside class="menu">
   <ul class="menu-list">
-    <li>
+    <li title="Profile">
       <a [routerLink]="['/profile']" (click)="updateIndex(1)" [ngClass]="{'is-active': activeItemNumber === 1 }" >
         <img *ngIf="user.profileImage" class="ps-user-image"
              src="{{user.profileImage? config.imagesEndpoint + '/profile/' + user.profileImage :
@@ -10,15 +10,15 @@
         </svg>
       </a>
     </li>
-    <li>
+    <li title="Notifications">
       <a [ngClass]="{'is-active': activeItemNumber === 2 }" #notifications (click)="toggleNotifications()">
         <span class="icon-bell"></span>
         <span class="ps-notification-count" *ngIf="user.pendingInvitations.length>0">{{user.pendingInvitations.length}}</span>
       </a>
     </li>
-    <li><a [ngClass]="{'is-active': activeItemNumber === 3 }" [routerLink]="['dashboard']" (click)="updateIndex(3)"><span class="icon-dashboard"></span></a></li>
-    <li><a [ngClass]="{'is-active': activeItemNumber === 4 , 'is-disabled': !netConnected}" title="{{ netConnected ? '' : 'Offline mode!'}}" (click)="signout()"><span class="icon-sign-out ps-reverse-icon"></span></a></li>
-    <li class="ps-bug-report" >
+    <li title="Dashboard"><a [ngClass]="{'is-active': activeItemNumber === 3 }" [routerLink]="['dashboard']" (click)="updateIndex(3)"><span class="icon-dashboard"></span></a></li>
+    <li title="{{ netConnected ? 'Sign out' : 'Offline mode!'}}"><a [ngClass]="{'is-active': activeItemNumber === 4 , 'is-disabled': !netConnected}" (click)="signout()"><span class="icon-sign-out ps-reverse-icon"></span></a></li>
+    <li title="Report bug" class="ps-bug-report" >
       <a [ngClass]="{'is-active': activeItemNumber === 5 }" (click)="togglePendulumNotifications()">
         <span class="icon-bug"></span>
         <span class="ps-notification-count">!</span>
