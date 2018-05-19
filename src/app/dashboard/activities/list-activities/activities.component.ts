@@ -20,6 +20,7 @@ import { User }                             from '../../../shared/state/user/use
 import { cloneDeep }                        from 'lodash';
 import { PageLoaderService }                from '../../../core/services/page-loader.service';
 import { Subscription }                     from 'rxjs/Subscription';
+import {ProjectsActions} from "../../../shared/state/project/projects.actions";
 
 @Component({
   selector: 'activities',
@@ -35,6 +36,8 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
   private user: User;
   private activitiesLoaded = false;
   private chartLoaded = false;
+  // we need this boolean to handle projects subscribe to run just one time
+  private FirstProjectsSubscribe = true;
   private subscriptions: Array<Subscription> = [];
   // we need currentActivity itself in add/edit component to check added/edited activity has
   // no conflict with currentActivity
@@ -56,6 +59,7 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
                private store: Store<AppState>,
                private route: ActivatedRoute,
                private activityService: ActivityService,
+               private projectsActions: ProjectsActions,
                private location: Location,
                private modalService: ModalService,
                private errorService: ErrorService,
@@ -88,7 +92,10 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
               this.selectedUsers.push(this.user.id);
             }
           }
-          if ( this.selectedUsers.length > 0) {
+          // making sure that this subscribe and getting data just run 1 time
+          // and just in beginning of page loading by FirstProjectsSubscribe
+          if ( this.selectedUsers.length > 0 && this.FirstProjectsSubscribe) {
+            this.FirstProjectsSubscribe = false;
             this.tempArray = [];
             this.getActivitiesFromServer();
           }
@@ -143,6 +150,7 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
       this.tempArray = Removed;
       this.deleteButtonDisabled = false;
       this.showError('Activity was deleted successfully');
+      this.updateProjectRecentActivitiesInState();
     })
       .catch(error => {
         this.deleteButtonDisabled = false;
@@ -159,6 +167,7 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
     this.tempArray = this.tempArray.concat(params);
     this.sortArrayByDate();
     this.groupByActivities();
+    this.updateProjectRecentActivitiesInState();
   }
 
   groupByActivities() {
@@ -278,6 +287,14 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
       this.tempArray = [];
       this.groupByActivities();
     }
+  }
+
+  updateProjectRecentActivitiesInState() {
+    // we will update project recent activities in state here
+    // but because of reference calls in js we need to take deep copy from activities
+    const tempArrayCopy = this.tempArray;
+    this.store.dispatch(this.projectsActions.editProjectActivities(this.projectId, tempArrayCopy[1]));
+    this.store.dispatch(this.projectsActions.editProjectActivities(this.projectId, tempArrayCopy[0]));
   }
 
   UpdatePageLoader (chartLoaded?) {
