@@ -1,5 +1,5 @@
 import 'rxjs/add/operator/toPromise';
-import * as io from 'socket.io-client';
+import * as io                          from 'socket.io-client';
 import { Inject, Injectable }           from '@angular/core';
 import { HttpClient }                   from '@angular/common/http';
 import { APP_CONFIG }                   from '../../app.config';
@@ -21,7 +21,7 @@ export class SyncService {
   private socket = null;
   private tempState: any;
   private status: Observable<any>;
-  private unsyncedDataChanged: boolean;
+  private unSyncedDataChanged: boolean;
   private responseResults = [];
 
   constructor(@Inject(APP_CONFIG) private config,
@@ -29,7 +29,7 @@ export class SyncService {
               private router: Router,
               private userService: UserService,
               private store: Store<AppState>,
-              private StatusActions: StatusActions,
+              private statusActions: StatusActions,
               private dBService: DatabaseService,
               private userActions: UserActions,
               private projectsActions: ProjectsActions,
@@ -37,7 +37,7 @@ export class SyncService {
               private unSyncedActivityActions: UnSyncedActivityActions) {
     this.status = store.select('status');
     this.status.subscribe((status: Status) => {
-      this.unsyncedDataChanged = status.unsyncedDataChanged;
+      this.unSyncedDataChanged = status.unsyncedDataChanged;
     });
   }
 
@@ -104,7 +104,7 @@ export class SyncService {
         this.responseResults.push(this.syncData(syncData)
           .then(() => {
             this.store.dispatch(this.unSyncedActivityActions.clearUnSyncedActivity());
-            this.tempState.currentActivity = null;
+            this.tempState.activity = null;
             this.tempState.unSyncedActivity = null;
             this.getSummaryOnline();
           })
@@ -129,7 +129,7 @@ export class SyncService {
     this.socket = io(this.config.socketEndpoint, {path: this.config.socketPath, transports: ['websocket'], upgrade: true});
     this.socket.on('connect', () => {
       console.log('websocket connected!');
-      if (this.unsyncedDataChanged === true) {
+      if (this.unSyncedDataChanged === true) {
         this.getStateFromDb().then(() => {
           this.autoSync();
         }).catch(() => {
@@ -138,7 +138,7 @@ export class SyncService {
       } else {
         this.getSummaryOnline();
       }
-      this.store.dispatch(this.StatusActions.updateNetStatus(true));
+      this.store.dispatch(this.statusActions.updateNetStatus(true));
       this.socket.emit('get', {
         method: 'get',
         url: '/socket/subscribe-to-events',
@@ -148,7 +148,7 @@ export class SyncService {
     });
     this.socket.on('disconnect', (error) => {
       console.log('websocket disconnected!');
-      this.store.dispatch(this.StatusActions.updateNetStatus(false));
+      this.store.dispatch(this.statusActions.updateNetStatus(false));
     });
   }
 
@@ -157,8 +157,8 @@ export class SyncService {
       .then((user) => {
         this.store.dispatch(this.userActions.loadUser(user));
         this.store.dispatch(this.projectsActions.loadProjects(user.projects));
-        this.store.dispatch(this.currentActivityActions.loadCurrentActivity(user.currentActivity));
-        this.store.dispatch(this.StatusActions.loadStatus({netStatus: true, isLogin: true, unsyncedDataChanged: false}));
+        this.store.dispatch(this.currentActivityActions.loadCurrentActivity(user.activity));
+        this.store.dispatch(this.statusActions.loadStatus({netStatus: true, isLogin: true, unsyncedDataChanged: false}));
         this.dBService
           .removeAll('activeUser')
           .then(() => {
@@ -184,10 +184,10 @@ export class SyncService {
     if (this.tempState) {
       this.store.dispatch(this.userActions.loadUser(this.tempState.user));
       this.store.dispatch(this.projectsActions.loadDbProjects(this.tempState.projects.entities));
-      this.store.dispatch(this.currentActivityActions.loadCurrentActivity(this.tempState.currentActivity));
+      this.store.dispatch(this.currentActivityActions.loadCurrentActivity(this.tempState.activity));
       this.store.dispatch(this.unSyncedActivityActions.loadUnSyncedActivity(this.tempState.unSyncedActivity));
-      this.store.dispatch(this.StatusActions.updateUnsyncedDataChanged(this.tempState.status.unsyncedDataChanged));
-      this.store.dispatch(this.StatusActions.updateNetStatus(false));
+      this.store.dispatch(this.statusActions.updateUnsyncedDataChanged(this.tempState.status.unSyncedDataChanged));
+      this.store.dispatch(this.statusActions.updateNetStatus(false));
       if (this.router.url === '/dashboard' || this.router.url === '/signIn') {
         this.router.navigate(['dashboard']);
       }
@@ -199,7 +199,7 @@ export class SyncService {
   closeConnection(): void {
     if (this.socket) {
       this.socket.disconnect();
-      this.store.dispatch(this.StatusActions.clearStatus());
+      this.store.dispatch(this.statusActions.clearStatus());
     }
   }
 
