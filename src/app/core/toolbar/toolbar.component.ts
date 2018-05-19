@@ -271,7 +271,7 @@ export class ToolbarComponent implements OnInit, OnDestroy  {
     const result = [];
     result.push(dividedActivitiesResult.map((item) => {
       this.activityService.createManually(this.currentActivityCopy.project, item).then((activity) => {
-        this.store.dispatch(this.projectsActions.updateProjectActivities(this.currentActivityCopy.project, activity));
+        this.store.dispatch(this.projectsActions.editProjectActivities(this.currentActivityCopy.project, activity));
         this.store.dispatch(this.unSyncedActivityActions.removeUnSyncedActivityByFields(item))
       })
         .catch(error => {
@@ -287,11 +287,11 @@ export class ToolbarComponent implements OnInit, OnDestroy  {
   pushDividedActivitiesToDb (dividedActivitiesResult) {
     // store an original activity
     this.store.dispatch(this.unSyncedActivityActions.addUnSyncedActivity(this.currentActivityCopy));
-    this.store.dispatch(this.projectsActions.updateProjectActivities(this.currentActivityCopy.project, this.currentActivityCopy));
+    this.store.dispatch(this.projectsActions.editProjectActivities(this.currentActivityCopy.project, this.currentActivityCopy));
     // store all divided activities
     dividedActivitiesResult.map((item) => {
       this.store.dispatch(this.unSyncedActivityActions.addUnSyncedActivity(item));
-      this.store.dispatch(this.projectsActions.updateProjectActivities(item.project, item));
+      this.store.dispatch(this.projectsActions.editProjectActivities(item.project, item));
     });
     this.store.dispatch(this.statusActions.updateUnsyncedDataChanged(true));
   }

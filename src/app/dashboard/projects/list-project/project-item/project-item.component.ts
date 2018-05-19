@@ -198,11 +198,11 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
   pushDividedActivitiesToDb (dividedActivitiesResult) {
     // store an original activity
     this.store.dispatch(this.unSyncedActivityActions.addUnSyncedActivity(this.currentActivityCopy));
-    this.store.dispatch(this.projectsActions.updateProjectActivities(this.currentActivityCopy.project, this.currentActivityCopy));
+    this.store.dispatch(this.projectsActions.editProjectActivities(this.currentActivityCopy.project, this.currentActivityCopy));
     // store all divided activities
     dividedActivitiesResult.map((item) => {
       this.store.dispatch(this.unSyncedActivityActions.addUnSyncedActivity(item));
-      this.store.dispatch(this.projectsActions.updateProjectActivities(this.project.id, item));
+      this.store.dispatch(this.projectsActions.editProjectActivities(this.project.id, item));
     });
     this.store.dispatch(this.statusActions.updateUnsyncedDataChanged(true));
   }
@@ -211,7 +211,7 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
     const responseResult = [];
     responseResult.push(dividedActivitiesResult.map((item) => {
       this.activityService.createManually(this.project.id, item).then((activity) => {
-        this.store.dispatch(this.projectsActions.updateProjectActivities(this.project.id, activity));
+        this.store.dispatch(this.projectsActions.editProjectActivities(this.project.id, activity));
         this.store.dispatch(this.unSyncedActivityActions.removeUnSyncedActivityByFields(item))
       })
         .catch(error => {

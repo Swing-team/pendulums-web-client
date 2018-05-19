@@ -17,7 +17,7 @@ export class ProjectsActions {
   static REMOVE_INVITED_USER = 'REMOVE_INVITED_USER';
   static REMOVE_MEMBER = 'REMOVE_MEMBER';
   static CHANGE_MEMBER_ROLE = 'CHANGE_MEMBER_ROLE';
-  static UPDATE_PROJECT_ACTIVITIES = 'UPDATE_PROJECT_ACTIVITIES';
+  static EDIT_PROJECT_ACTIVITIES = 'EDIT_PROJECT_ACTIVITIES';
 
   loadProjects(projects: Projects):  ActionWithPayload<Projects> {
     return {
@@ -101,12 +101,12 @@ export class ProjectsActions {
     };
   }
 
-  updateProjectActivities(projectId: string, activity: Activity): ActionWithPayload<any> {
+  editProjectActivities(projectId: string, activity: Activity): ActionWithPayload<any> {
     return {
-      type: ProjectsActions.UPDATE_PROJECT_ACTIVITIES,
+      type: ProjectsActions.EDIT_PROJECT_ACTIVITIES,
       payload: {
         projectId,
-        currentActivity: activity
+        activity: activity
       }
     };
   }

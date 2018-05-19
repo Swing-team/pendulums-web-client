@@ -110,18 +110,18 @@ export default function reducer(state = initialState, action: ActionWithPayload<
       return newState;
     }
 
-    case ProjectsActions.UPDATE_PROJECT_ACTIVITIES: {
+    case ProjectsActions.EDIT_PROJECT_ACTIVITIES: {
       const newState = JSON.parse(JSON.stringify(state));
       if (newState.entities[action.payload.projectId].activities) {
-        newState.entities[action.payload.projectId].activities.unshift(action.payload.currentActivity);
+        newState.entities[action.payload.projectId].activities.unshift(action.payload.activity);
         if (newState.entities[action.payload.projectId].activities.length > 2) {
           const tempArray = newState.entities[action.payload.projectId].activities.slice(0, 2);
           newState.entities[action.payload.projectId].activities = tempArray;
         }
       } else {
-        newState.entities[action.payload.projectId].activities = [action.payload.currentActivity];
+        newState.entities[action.payload.projectId].activities = [action.payload.activity];
       }
-      newState.entities[action.payload.projectId].recentActivityName = action.payload.currentActivity.name;
+      newState.entities[action.payload.projectId].recentActivityName = action.payload.activity.name;
       return newState;
     }
 
