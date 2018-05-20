@@ -1,6 +1,6 @@
 import {
   Component, EventEmitter, Inject,
-  Input, Output, OnInit, OnDestroy,
+  Input, Output, OnInit, OnDestroy, ViewChild,
 } from '@angular/core';
 import { Observable }                       from 'rxjs/Observable';
 import { APP_CONFIG }                       from '../../app.config';
@@ -29,6 +29,7 @@ export class ToolbarComponent implements OnInit, OnDestroy  {
   @Input() projects: Array<Project>;
   @Input() currentActivity: Observable<Activity>;
   @Output() onMenuItemClicked = new EventEmitter();
+  @ViewChild('activityNameElm') activityNameElm;
   currentActivityCopy: Activity;
   showTimeDuration = false;
   stopStartButtonDisabled = false;
@@ -48,12 +49,16 @@ export class ToolbarComponent implements OnInit, OnDestroy  {
                private errorService: ErrorService,
                private statusActions: StatusActions) {
     this.selectedProject = new Project();
+    this.currentActivityCopy = new Activity();
   }
 
   ngOnInit() {
-    this.selectedProject = this.projects[0];
     this.selectedProjectIndex = 0;
-    this.taskName = this.projects[0].recentActivityName;
+
+    if (this.projects.length > 0) {
+      this.selectedProject = this.projects[0];
+      this.taskName = this.projects[0].recentActivityName;
+    }
 
     if (this.currentActivity) {
       this.subscriptions.push(this.currentActivity.subscribe(currentActivity => {
@@ -201,9 +206,11 @@ export class ToolbarComponent implements OnInit, OnDestroy  {
 
       // This timeout use to handle focus on input
       setTimeout(() => {
-        const element = document.getElementById('activityNameElm');
+        const element: HTMLElement = document.getElementById('activityNameElm') as HTMLElement;
         if (element) {
-          element.focus();
+          // We have to work with view child because select() doesn't exist on HTMLElement
+          this.activityNameElm.nativeElement.focus();
+          this.activityNameElm.nativeElement.select();
         }
       }, 300)
     } else {
