@@ -33,9 +33,9 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
   @Input() user: User;
   @Input() status: Status;
   @Input() currentActivity: Observable<Activity>;
+  @ViewChild('activityNameElm') activityNameElm;
   activityStarted = false;
   activityButtonDisabled = false;
-  @ViewChild('activityNameElm') activityNameElm;
 
   private currentActivityCopy: Activity;
   private taskName: string;
@@ -138,6 +138,7 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       if (this.activityNameElm) {
         this.activityNameElm.nativeElement.focus();
+        this.activityNameElm.nativeElement.select();
       }
     }, 500)
   }
