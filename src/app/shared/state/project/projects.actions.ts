@@ -18,6 +18,7 @@ export class ProjectsActions {
   static REMOVE_MEMBER = 'REMOVE_MEMBER';
   static CHANGE_MEMBER_ROLE = 'CHANGE_MEMBER_ROLE';
   static EDIT_PROJECT_ACTIVITIES = 'EDIT_PROJECT_ACTIVITIES';
+  static REMOVE_PROJECT_ACTIVITIES = 'REMOVE_PROJECT_ACTIVITIES';
 
   loadProjects(projects: Projects):  ActionWithPayload<Projects> {
     return {
@@ -107,6 +108,15 @@ export class ProjectsActions {
       payload: {
         projectId,
         activity: activity
+      }
+    };
+  }
+
+  removeProjectActivities(projectId: string): ActionWithPayload<any> {
+    return {
+      type: ProjectsActions.REMOVE_PROJECT_ACTIVITIES,
+      payload: {
+        projectId
       }
     };
   }
