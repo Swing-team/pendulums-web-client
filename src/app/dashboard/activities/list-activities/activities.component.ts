@@ -33,7 +33,6 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
   private project: Project;
   private pageNumber = 0;
   private scrollEnable = true;
-  private tempArray: Array<Activity>;
   private user: User;
   private activitiesLoaded = false;
   private chartLoaded = false;
@@ -48,6 +47,7 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
   userAccess = false;
   selectedUsers = [];
   selectedItemIndex = [];
+  tempArray: Array<Activity> = [];
   projectActivities: {
     date: any
     activities: any
@@ -150,7 +150,7 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
       const Removed = this.tempArray .filter(function(el) {
         return el.id !== activity.id ;
       });
-      // Now reRender chart component
+      // Now re-render chart component
       this.ChartComponent.getStatAndPrepareData();
       this.tempArray = Removed;
       this.deleteButtonDisabled = false;
@@ -169,12 +169,14 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
   }
 
   updateActivities(params) {
-    // Now rerender chart component
-    this.ChartComponent.getStatAndPrepareData();
     this.tempArray = this.tempArray.concat(params);
     this.sortArrayByDate();
     this.groupByActivities();
     this.updateProjectRecentActivitiesInState();
+    // Now re-render chart component
+    if (this.ChartComponent){
+      this.ChartComponent.getStatAndPrepareData();
+    }
   }
 
   groupByActivities() {
@@ -300,8 +302,13 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
     // we will update project recent activities in state here
     // but because of reference calls in js we need to take deep copy from activities
     const tempArrayCopy = this.tempArray;
-    this.store.dispatch(this.projectsActions.editProjectActivities(this.projectId, tempArrayCopy[1]));
-    this.store.dispatch(this.projectsActions.editProjectActivities(this.projectId, tempArrayCopy[0]));
+    this.store.dispatch(this.projectsActions.removeProjectActivities(this.projectId));
+    if (tempArrayCopy[1]) {
+      this.store.dispatch(this.projectsActions.editProjectActivities(this.projectId, tempArrayCopy[1]));
+    }
+    if (tempArrayCopy[0]) {
+      this.store.dispatch(this.projectsActions.editProjectActivities(this.projectId, tempArrayCopy[0]));
+    }
   }
 
   UpdatePageLoader (chartLoaded?) {

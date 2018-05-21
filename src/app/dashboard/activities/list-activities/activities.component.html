@@ -12,12 +12,12 @@
     </div>
   </ng-container>
   <div class="columns ps-activities-stat-wrapper">
-    <ng-container *ngIf="projectActivities.length > 0">
+    <ng-container *ngIf="tempArray.length > 0">
       <div class="column is-offset-1 is-10" style="background-color: white">
         <chart *ngIf="project" [project]="project" [selectedUsers]="selectedUsers" (chartLoaded)="UpdatePageLoader(true)"></chart>
       </div>
     </ng-container>
-    <ng-container *ngIf="projectActivities.length === 0">
+    <ng-container *ngIf="tempArray.length === 0">
       <div class="column is-offset-1 is-10" style="background-color: white">
         <div class="ps-activities-placeholder">
           <figure class="image">

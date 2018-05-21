@@ -125,6 +125,15 @@ export default function reducer(state = initialState, action: ActionWithPayload<
       return newState;
     }
 
+    case ProjectsActions.REMOVE_PROJECT_ACTIVITIES: {
+      const newState = JSON.parse(JSON.stringify(state));
+      if (newState.entities[action.payload.projectId].activities) {
+        newState.entities[action.payload.projectId].activities = [];
+      }
+      newState.entities[action.payload.projectId].recentActivityName = null;
+      return newState;
+    }
+
     default: {
       return state;
     }

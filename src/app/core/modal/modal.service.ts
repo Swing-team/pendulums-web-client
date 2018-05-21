@@ -27,9 +27,7 @@ export class ModalService {
     this.contentComponentRef = this.modalComponentRef.instance.contentContainer.createComponent(contentFactory)
 
     if (modalConfig.customStyles) {
-      console.log(modalConfig.customStyles);
       this.modalComponentRef.instance['customStyles'] = modalConfig.customStyles;
-      console.log(this.modalComponentRef.instance['customStyles']);
     }
 
     if (modalConfig.inputs) {
@@ -66,7 +64,7 @@ interface ModalConfig {
   component: any;
   /**
    * EXPERIMENTAL: provide {containerRef} only if you need to put modal inside a specific container but
-   * be aware that any state change can cause rerender the parent and the modal would be destroyed!
+   * be aware that any state change can cause re-render the parent and the modal would be destroyed!
    * we still don't know if it's an issue in our code or Angular it self... so this property is experimental.
    */
   containerRef?: ViewContainerRef;
