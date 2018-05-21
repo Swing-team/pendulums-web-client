@@ -22,6 +22,7 @@ export class SyncService {
   private tempState: any;
   private status: Observable<any>;
   private unSyncedDataChanged: boolean;
+  private isLogin: boolean;
   private responseResults = [];
 
   constructor(@Inject(APP_CONFIG) private config,
@@ -38,6 +39,7 @@ export class SyncService {
     this.status = store.select('status');
     this.status.subscribe((status: Status) => {
       this.unSyncedDataChanged = status.unsyncedDataChanged;
+      this.isLogin = status.isLogin;
     });
   }
 
@@ -46,7 +48,9 @@ export class SyncService {
         this.initialAppOffline();
         this.connectSocket();
       }).catch(() => {
-        this.connectSocket();
+        if (this.isLogin) {
+          this.connectSocket();
+        }
       })
     );
     return this.responseResults;
@@ -111,7 +115,7 @@ export class SyncService {
           .catch(error => {
             console.log('error is: ', error);
             if (error.status === 403) {
-              // this.router.navigate(['signIn']);
+              // do nothing
             } else {
               // todo: handle sync errors based on corrupted data
               this.getSummaryOnline();
