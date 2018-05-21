@@ -2,8 +2,8 @@ import 'rxjs/add/operator/switchMap';
 import * as _ from 'lodash';
 import {
   Component, HostListener,
-  Inject, OnDestroy, OnInit,
-}                                           from '@angular/core';
+  Inject, OnDestroy, OnInit, ViewChild,
+} from '@angular/core';
 import { Observable }                       from 'rxjs/Observable';
 import { APP_CONFIG }                       from '../../../app.config';
 import { ActivityService }                  from '../../shared/activity.service';
@@ -20,7 +20,8 @@ import { User }                             from '../../../shared/state/user/use
 import { cloneDeep }                        from 'lodash';
 import { PageLoaderService }                from '../../../core/services/page-loader.service';
 import { Subscription }                     from 'rxjs/Subscription';
-import {ProjectsActions} from "../../../shared/state/project/projects.actions";
+import { ProjectsActions }                  from '../../../shared/state/project/projects.actions';
+import { ChartComponent }                   from './chart-statistics/chart.component';
 
 @Component({
   selector: 'activities',
@@ -54,6 +55,8 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
   }[] = [];
   deleteButtonDisabled = false;
   pageLoaded = false;
+  @ViewChild(ChartComponent)
+  private ChartComponent: ChartComponent;
 
   constructor (@Inject(APP_CONFIG) private config,
                private store: Store<AppState>,
@@ -147,6 +150,8 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
       const Removed = this.tempArray .filter(function(el) {
         return el.id !== activity.id ;
       });
+      // Now reRender chart component
+      this.ChartComponent.getStatAndPrepareData();
       this.tempArray = Removed;
       this.deleteButtonDisabled = false;
       this.showError('Activity was deleted successfully');
@@ -164,6 +169,8 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
   }
 
   updateActivities(params) {
+    // Now rerender chart component
+    this.ChartComponent.getStatAndPrepareData();
     this.tempArray = this.tempArray.concat(params);
     this.sortArrayByDate();
     this.groupByActivities();

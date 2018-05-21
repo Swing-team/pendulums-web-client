@@ -84,8 +84,8 @@ export class ChartComponent implements OnInit, OnChanges {
         // staggerLabels: true,
         duration: 500,
         stacked: true,
-        x: function(d){ return d.x; },
-        y: function(d){ return d.y; },
+        x: function(d) { return d.x; },
+        y: function(d) { return d.y; },
         useInteractiveGuideline: true,
         showControls: false,
         xAxis: {
