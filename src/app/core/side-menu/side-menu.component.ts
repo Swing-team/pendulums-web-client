@@ -102,9 +102,22 @@ export class SideMenuComponent implements OnInit {
   @HostListener('document:click', ['$event'])
   clickOutOfMenu(event) {
     if (this.eRef.nativeElement.contains(event.target)) {
-      console.log('clicked inside menu of sideMenu.');
+      // do nothing
+      // console.log('clicked inside menu of sideMenu.');
     } else {
       this.clickedOutsideOfMenu.emit(event);
+    }
+
+    if (this.pendulumNotification) {
+      const bugReportContainer: HTMLElement = document.getElementById('bug-report') as HTMLElement;
+      const bugReportIcon: HTMLElement = document.getElementById('bug-report-icon') as HTMLElement;
+      if (bugReportContainer) {
+        if (bugReportContainer.contains(event.target) || bugReportIcon.contains(event.target)) {
+          // do nothing
+        } else {
+          this.pendulumNotification = false;
+        }
+      }
     }
   }
 
