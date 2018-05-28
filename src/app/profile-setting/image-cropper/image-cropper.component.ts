@@ -1,10 +1,10 @@
-import {Component, ViewChild} from '@angular/core';
-import {ImageCropperComponent, CropperSettings} from 'ng2-img-cropper';
-import {ModalService} from '../../core/modal/modal.service';
-import {Store} from '@ngrx/store';
-import {AppState} from '../../shared/state/appState';
-import {UserActions} from '../../shared/state/user/user.actions';
-import {UserService} from '../../core/services/user.service';
+import { Component, ViewChild }                   from '@angular/core';
+import { ImageCropperComponent, CropperSettings } from 'ng2-img-cropper';
+import { ModalService }                           from '../../core/modal/modal.service';
+import { Store }                                  from '@ngrx/store';
+import { AppState }                               from '../../shared/state/appState';
+import { UserActions }                            from '../../shared/state/user/user.actions';
+import { UserService }                            from '../../core/services/user.service';
 
 @Component({
   selector: 'image-cropper',
@@ -35,11 +35,14 @@ export class ImgCropperComponent {
     const file: File = $event.target.files[0];
     const myReader: FileReader = new FileReader();
     const that = this;
-    console.log('mahsa:', image)
+
     myReader.onloadend = function (loadEvent: any) {
       image.src = loadEvent.target.result;
-      that.cropper.setImage(image);
+      setTimeout(() => {
+        that.cropper.setImage(image);
+      }, 500);
     };
+
     myReader.readAsDataURL(file);
   }
 
@@ -71,10 +74,10 @@ export class ImgCropperComponent {
   }
 
   base64ToFile(inputBase64) {
-    let base64String = inputBase64.split(',')[1];
-    let binaryString = atob(base64String);
-    let len = binaryString.length;
-    let bytes = new Uint8Array(len);
+    const base64String = inputBase64.split(',')[1];
+    const binaryString = atob(base64String);
+    const len = binaryString.length;
+    const bytes = new Uint8Array(len);
     for (let i = 0; i < len; i++) {
       bytes[i] = binaryString.charCodeAt(i);
     }
@@ -82,7 +85,7 @@ export class ImgCropperComponent {
   }
 
   getBase64(file, callBack) {
-    let reader = new FileReader();
+    const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => callBack(reader.result);
     reader.onerror = (error) => console.log('Error: ', error);
