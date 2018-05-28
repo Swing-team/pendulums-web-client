@@ -31,9 +31,12 @@ export class SignUpComponent {
           })
           .catch(error => {
             this.submitted = false;
-            console.log('error is: ', error);
             if (error.status === 400) {
-              this.errorMessage = 'Email or password mismatch';
+              if (JSON.parse(error.error).errorCode === 3) {
+                this.errorMessage = 'User already exists';
+              } else {
+                this.errorMessage = 'Email or password mismatch';
+              }
             } else {
               this.errorMessage = 'Server communication error';
             }
