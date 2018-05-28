@@ -55,7 +55,7 @@ export class SignUpComponent {
     if (!newUser.password
       || newUser.password.length < 6
       || newUser.password.length > 32) {
-      this.errorMessage = 'please choose password with 6 to 12 characters ';
+      this.errorMessage = 'please choose password with 6 to 32 characters ';
       return false;
     }
     return true;

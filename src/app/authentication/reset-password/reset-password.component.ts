@@ -62,7 +62,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
     if (!User.password
       || User.password.length < 6
       || User.password.length > 32) {
-      this.errorMessage = 'please choose password with 6 to 12 characters ';
+      this.errorMessage = 'please choose password with 6 to 32 characters ';
       return false;
     }
     if (User.password !== this.rePassword) {
