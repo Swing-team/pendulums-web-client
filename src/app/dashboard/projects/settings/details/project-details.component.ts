@@ -37,7 +37,9 @@ export class ProjectDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.clonedProject = cloneDeep(this.project);
-    this.previewImage = this.config.imagesEndpoint + '/projects/' + this.clonedProject.image;
+    if (this.clonedProject.image) {
+      this.previewImage = this.config.imagesEndpoint + '/projects/' + this.clonedProject.image;
+    }
   }
 
   updateProject() {
