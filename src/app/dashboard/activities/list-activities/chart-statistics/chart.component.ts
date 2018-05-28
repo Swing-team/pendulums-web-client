@@ -20,6 +20,7 @@ declare const d3: any;
 
 export class ChartComponent implements OnInit {
   @Input() project: Project;
+  @Input() parentHasActivity: boolean = true;
   @Input() selectedUsers: string[];
   @Output() chartLoaded = new EventEmitter();
   toDate: Number;

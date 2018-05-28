@@ -174,7 +174,7 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
     this.groupByActivities();
     this.updateProjectRecentActivitiesInState();
     // Now re-render chart component
-    if (this.ChartComponent){
+    if (this.ChartComponent) {
       this.ChartComponent.getStatAndPrepareData();
     }
   }
@@ -291,10 +291,14 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
         this.groupByActivities();
         this.activitiesLoaded = true;
         this.UpdatePageLoader();
+        if (this.tempArray.length < 0) {
+          this.ChartComponent.parentHasActivity = false;
+        }
       });
     } else {
       this.tempArray = [];
       this.groupByActivities();
+      this.ChartComponent.parentHasActivity = false;
     }
   }
 
@@ -361,6 +365,9 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
     this.tempArray = [];
     this.pageNumber = 0;
     this.getActivitiesFromServer();
+    // Now re-render chart component
+    this.ChartComponent.selectedUsers = this.selectedUsers;
+    this.ChartComponent.getStatAndPrepareData();
   }
 }
 
