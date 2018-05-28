@@ -13,9 +13,11 @@ export class PageLoaderService {
   }
 
   showLoading() {
-    document.getElementById('loader-wrapper').style.display = 'block';
-    const newNode = document.createElement('div');
-    newNode.id = 'loader';
-    document.getElementById('loader-wrapper').appendChild(newNode);
+    if (document.getElementById('loader-wrapper').children.length === 0) {
+      document.getElementById('loader-wrapper').style.display = 'block';
+      const newNode = document.createElement('div');
+      newNode.id = 'loader';
+      document.getElementById('loader-wrapper').appendChild(newNode);
+    }
   }
 }
