@@ -1,12 +1,12 @@
 <div class="ps-chart-wrapper" *ngIf="selectedUsers.length > 0 && parentHasActivity">
   <div class="ps-chart-calendar-wrapper">
-    <input [(ngModel)]="dateString" type="text" (focus)="showCalender()" >
+    <input id="ps-calendar-input" [(ngModel)]="dateString" type="text" (focus)="showCalender()" >
     <div class="ps-calendar-range-wrapper" *ngIf="calenderShow">
       <button class="button is-pulled-right is-small ps-close-calender-button"
               (click)="closeCalender()">
         <span class="icon is-small">X</span>
       </button>
-      <swing-calendar (rangeSelected)="updateDates($event)" calendarType="range"
+      <swing-calendar id="ps-calendar" (rangeSelected)="updateDates($event)" calendarType="range"
                       [startRangeInput]="fromDate" [endRangeInput]="toDate - 86400000"></swing-calendar>
     </div>
   </div>
