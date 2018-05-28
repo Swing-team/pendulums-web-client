@@ -246,21 +246,6 @@ export class ChartComponent implements OnInit {
     this.getStatAndPrepareData();
     this.calenderShow = false;
   }
-
-  @HostListener('document:click', ['$event'])
-  clickOutOfMenu(event) {
-    if (this.calenderShow) {
-      const psCalendarContainer: HTMLElement = document.getElementById('ps-calendar') as HTMLElement;
-      const psCalendarInput: HTMLElement = document.getElementById('ps-calendar-input') as HTMLElement;
-      if (psCalendarContainer) {
-        if (psCalendarContainer.contains(event.target) || psCalendarInput.contains(event.target)) {
-          // do nothing
-        } else {
-          this.calenderShow = false;
-        }
-      }
-    }
-  }
 }
 
 
