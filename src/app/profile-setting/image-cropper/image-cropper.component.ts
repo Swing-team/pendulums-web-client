@@ -22,7 +22,7 @@ export class ImgCropperComponent {
   constructor(private modalService: ModalService,
               private store: Store<AppState>,
               private userActions: UserActions,
-              private UserService: UserService,) {
+              private userService: UserService) {
     this.cropperSettings = new CropperSettings();
     this.cropperSettings.noFileInput = true;
     this.cropperSettings.rounded = true;
@@ -35,6 +35,7 @@ export class ImgCropperComponent {
     const file: File = $event.target.files[0];
     const myReader: FileReader = new FileReader();
     const that = this;
+    console.log('mahsa:', image)
     myReader.onloadend = function (loadEvent: any) {
       image.src = loadEvent.target.result;
       that.cropper.setImage(image);
@@ -56,7 +57,7 @@ export class ImgCropperComponent {
       const formData = new FormData();
       formData.append('user', JSON.stringify({}));
       formData.append('image', this.croppedImageFile);
-      this.UserService.update(formData).then((user) => {
+      this.userService.update(formData).then((user) => {
         this.store.dispatch(this.userActions.updateUserImage(user.profileImage));
         this.disableButtons = false;
         this.modalService.close();
