@@ -41,7 +41,7 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
                private errorService: ErrorService,
                private store: Store<AppState>,
                private userActions: UserActions,
-               private UserService: UserService,
+               private userService: UserService,
                private modalService: ModalService) {
     this.subscriptions.push(store.select('user').subscribe((user: User) => {
       this.user = user;
@@ -74,6 +74,9 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
   toggleView() {
     if (this.netConnected) {
       this.userNameEdited = !this.userNameEdited;
+      if (!this.userNameEdited) {
+        this.userEdit.name = this.user.name;
+      }
     } else {
       this.showError('This feature is not available in offline mode');
     }
@@ -85,7 +88,7 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
         this.editButtonDisabled = true;
         const formData = new FormData();
         formData.append('user', JSON.stringify({name: this.userEdit.name}));
-        this.UserService.update(formData).then((user) => {
+        this.userService.update(formData).then((user) => {
           this.store.dispatch(this.userActions.updateUserName(user.name));
           this.editButtonDisabled = false;
           this.userNameEdited = false;
