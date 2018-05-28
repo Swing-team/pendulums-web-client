@@ -18,13 +18,13 @@ declare const d3: any;
   encapsulation: ViewEncapsulation.None
 })
 
-export class ChartComponent implements OnInit, OnChanges {
+export class ChartComponent implements OnInit {
   @Input() project: Project;
   @Input() selectedUsers: string[];
   @Output() chartLoaded = new EventEmitter();
   toDate: Number;
   fromDate: Number;
-  private dateRange: any;
+  private dateRange: number;
   dateString: string;
   calenderShow = false;
 
@@ -41,6 +41,7 @@ export class ChartComponent implements OnInit, OnChanges {
     this.fromDate = moment().subtract(7, 'days').startOf('day').valueOf();
     this.toDate = moment().add(1, 'days').startOf('day').valueOf();
     this.dateString = moment().subtract(7, 'days').format('MMM Do');
+    this.dateRange = 7;
     const firstIdsMonth =  moment().subtract(7, 'days').month();
     const secondIdsMonth =  moment().month();
     let temp = '';
@@ -94,23 +95,21 @@ export class ChartComponent implements OnInit, OnChanges {
         yAxis: {
           axisLabelDistance: 0,
           tickFormat: function formatDateTick(time) {
-            let minutes = time / 1000 / 60;
-            const hours = Math.floor(minutes / 60);
-            minutes = minutes % 60;
-            const date = new Date();
-            date.setHours(hours);
-            date.setMinutes(minutes);
-            return d3.time.format('%H:%M')(date);
+            time = time / 1000;
+            const hours = Math.floor(time / 3600);
+            const minutes = Math.floor((time - (hours * 3600)) / 60);
+
+            let hoursString = hours.toString();
+            let minutesString = minutes.toString();
+
+            if (hours   < 10) {hoursString   = '0' + hours; }
+            if (minutes < 10) {minutesString = '0' + minutes; }
+            const result = hoursString + ': ' + minutesString;
+            return result;
           }
         }
       }
     };
-  }
-
-  ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
-    if (changes.selectedUsers && changes.selectedUsers.currentValue && !changes.selectedUsers.firstChange) {
-      this.getStatAndPrepareData();
-    }
   }
 
   getStatAndPrepareData() {
@@ -191,9 +190,9 @@ export class ChartComponent implements OnInit, OnChanges {
             profileImage: user.profileImage
           };
           tempUsersWithTotal.push(x);
-        });
 
-        this.chartLoaded.emit();
+          this.chartLoaded.emit();
+        });
       });
     }
 
@@ -240,9 +239,9 @@ export class ChartComponent implements OnInit, OnChanges {
     }
     this.dateString = this.dateString + ' - ' + temp;
 
-    this.dateRange = moment.duration(Number(this.toDate) - Number(this.fromDate)).asDays();
     this.fromDate = event.start.startOf('day').valueOf();
     this.toDate = (event.end.add(1, 'days')).startOf('day').valueOf();
+    this.dateRange = moment.duration(Number(this.toDate) - Number(this.fromDate)).asDays();
     this.getStatAndPrepareData();
     this.calenderShow = false;
   }
