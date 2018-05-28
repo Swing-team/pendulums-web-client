@@ -9,7 +9,7 @@
   <div class="column is-4">
     <div>From:</div>
     <input class="ps-add-manually-input" [ngClass]="{'ps-add-manually-input-error': fromTimeError}"
-           [(ngModel)]="fromTime" (change)="updateFromTime()" placeholder="00:00" type="text" app-restrict-input="time">
+           [(ngModel)]="fromTime" (change)="updateFromTime()" type="time">
     <p class="ps-add-manually-date-error" *ngIf="fromTimeError">{{timeError}}</p>
   </div>
   <div class="column">
@@ -33,7 +33,7 @@
   <div class="column is-4">
     <div>To:</div>
     <input class="ps-add-manually-input" [ngClass]="{'ps-add-manually-input-error': toTimeError}"
-           [(ngModel)]="toTime" (change)="updateToTime()" placeholder="00:00" type="text" app-restrict-input="time">
+           [(ngModel)]="toTime" (change)="updateToTime()" type="time">
     <p class="ps-add-manually-date-error" *ngIf="toTimeError">{{timeError}}</p>
   </div>
   <div class="column">
