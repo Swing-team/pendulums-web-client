@@ -1,4 +1,4 @@
-<div class="ps-chart-wrapper">
+<div class="ps-chart-wrapper" *ngIf="selectedUsers.length > 0 && parentHasActivity">
   <div class="ps-chart-calendar-wrapper">
     <input [(ngModel)]="dateString" type="text" (focus)="showCalender()" >
     <div class="ps-calendar-range-wrapper" *ngIf="calenderShow">
@@ -18,4 +18,12 @@
       <chart-total-hour [inputArray]="usersWithTotal"></chart-total-hour>
     </div>
   </ng-container>
+</div>
+
+<div class="ps-chart-placeholder" *ngIf="selectedUsers.length === 0 || !parentHasActivity">
+  <figure class="image">
+    <img src="../../../../assets/images/placeholder.jpg">
+  </figure>
+  <p *ngIf="selectedUsers.length > 0 && !parentHasActivity">There is no activity yet!</p>
+  <p *ngIf="selectedUsers.length === 0 ">Please select a member to show statistics</p>
 </div>

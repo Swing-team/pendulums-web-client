@@ -12,22 +12,10 @@
     </div>
   </ng-container>
   <div class="columns ps-activities-stat-wrapper">
-    <ng-container *ngIf="tempArray.length > 0">
-      <div class="column is-offset-1 is-10" style="background-color: white">
-        <chart *ngIf="project" [project]="project" [selectedUsers]="selectedUsers" (chartLoaded)="UpdatePageLoader(true)"></chart>
-      </div>
-    </ng-container>
-    <ng-container *ngIf="tempArray.length === 0">
-      <div class="column is-offset-1 is-10" style="background-color: white">
-        <div class="ps-activities-placeholder">
-          <figure class="image">
-            <img src="../../../../assets/images/placeholder.jpg">
-          </figure>
-          <p *ngIf="selectedUsers.length > 0 ">There is no activity yet!</p>
-          <p *ngIf="selectedUsers.length === 0 ">Please select a member to show statistics</p>
-        </div>
-      </div>
-    </ng-container>
+    <div class="column is-offset-1 is-10" style="background-color: white">
+      <chart *ngIf="project" [project]="project" [selectedUsers]="selectedUsers" (chartLoaded)="UpdatePageLoader(true)"
+             [parentHasActivity]="projectActivities.length > 0 ? true: false"></chart>
+    </div>
   </div>
   <div class="columns">
     <div class="column is-offset-4-widescreen is-4-widescreen is-4-desktop is-offset-4-desktop is-6-tablet is-offset-3-tablet">
