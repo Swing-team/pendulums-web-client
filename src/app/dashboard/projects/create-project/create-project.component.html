@@ -51,21 +51,32 @@
           </div>
         </div>
       </div>
-      <div *ngFor='let invited of project.invitedUsers;trackBy:let i = index'
-           class="columns is-gapless is-mobile ps-invited-user-item">
-        <svg width="36" height="36" [identiconHash]="userEmailHash(invited.email)">
-          Fallback text for browsers not supporting inline svg
-        </svg>
-        <span class="column ps-invited-user-email">
+      <ng-container *ngIf="project.invitedUsers.length > 0">
+        <div *ngFor='let invited of project.invitedUsers;trackBy:let i = index'
+             class="columns is-gapless is-mobile ps-invited-user-item">
+          <svg width="36" height="36" [identiconHash]="userEmailHash(invited.email)">
+            Fallback text for browsers not supporting inline svg
+          </svg>
+          <span class="column ps-invited-user-email">
           {{invited.email}}
         </span>
-        <span class="column is-5 ps-invited-user-role">
+          <span class="column is-5 ps-invited-user-role">
           {{invited.role}}
         </span>
-        <span class="column is-1">
+          <span class="column is-1">
           <i class="icon-trash has-text-danger ps-body-button" (click)="delete(i)"></i>
         </span>
-      </div>
+        </div>
+      </ng-container>
+
+      <ng-container *ngIf="project.invitedUsers.length === 0">
+        <div class="field ps-empty-list">
+          <p class="control has-text-centered">
+            List of invited users is empty!
+          </p>
+        </div>
+      </ng-container>
+
       <div class="ps-submit-button">
         <p class="control">
           <button class="button is-primary is-fullwidth ps-none-radius is-loading"

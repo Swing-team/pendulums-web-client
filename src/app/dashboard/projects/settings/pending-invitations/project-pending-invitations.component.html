@@ -26,15 +26,16 @@
         <p class="control has-text-centered">
           <a class="button ps-invitation-add-item-button" [ngClass]="{'is-loading': inviteButtonDisabled}"
              (click)="invite()">
-          <span class="icon">
-            <i class="icon-plus" [ngClass]="{'has-text-success': !inviteButtonDisabled}"></i>
-          </span>
+            <span class="icon">
+              <i class="icon-plus has-text-success ps-invitation-add-item-button-icon" [ngClass]="{'has-text-success': !inviteButtonDisabled}"></i>
+            </span>
           </a>
         </p>
       </div>
     </div>
   </div>
-  <div *ngFor='let invited of project.invitedUsers;trackBy:let i = index'
+  <ng-container *ngIf="project.invitedUsers.length > 0">
+   <div *ngFor='let invited of project.invitedUsers;trackBy:let i = index'
        class="columns is-gapless is-mobile ps-margin-bottom ps-invited-user-item">
     <div class="column is-2">
       <svg width="36" height="36" [identiconHash]="userEmailHash(invited.email)">
@@ -73,4 +74,12 @@
       </div>
     </div>
   </div>
+  </ng-container>
+  <ng-container *ngIf="project.invitedUsers.length === 0">
+    <div class="field ps-empty-list">
+      <p class="control has-text-centered">
+        List of invited users is empty!
+      </p>
+    </div>
+  </ng-container>
 </div>
