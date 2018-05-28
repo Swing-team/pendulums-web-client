@@ -55,6 +55,14 @@ export class AddManuallyActivityComponent implements OnInit {
       this.toTime = moment(Number(this.activityModel.stoppedAt)).format('HH:mm');
     } else {
       this.activityModel = new Activity();
+      this.fromDate = moment().format('dddd, MMMM Do YYYY');
+      this.toDate = moment().format('dddd, MMMM Do YYYY');
+
+      this.fromTime = moment().subtract(2, 'hours').format('HH:mm');
+      this.toTime = moment().format('HH:mm');
+
+      this.fromDateValue = moment().valueOf().toString();
+      this.toDateValue = moment().subtract(2, 'hours').valueOf().toString();
     }
   }
 
@@ -118,7 +126,7 @@ export class AddManuallyActivityComponent implements OnInit {
 
   updateToDate(event) {
     this.toDate = event.format('dddd, MMMM Do YYYY');
-    this.toDateValue = event.valueOf();
+    this.toDateValue = event.valueOf().toString();
     this.toCalenderError = this.checkDate();
     if (this.toCalenderError) {
       this.dateError = 'The end date could not be before start date';
@@ -130,7 +138,7 @@ export class AddManuallyActivityComponent implements OnInit {
 
   updateFromDate(event) {
     this.fromDate = event.format('dddd, MMMM Do YYYY');
-    this.fromDateValue = event.valueOf();
+    this.fromDateValue = event.valueOf().toString();
     this.fromCalenderError = this.checkDate();
     if (this.fromCalenderError) {
       this.dateError = 'The start date could not be after end date';
