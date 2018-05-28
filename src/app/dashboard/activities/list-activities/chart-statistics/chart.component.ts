@@ -1,6 +1,6 @@
 import 'rxjs/add/operator/switchMap';
 import {
-  Component, EventEmitter, Inject, Input, OnChanges,
+  Component, EventEmitter, HostListener, Inject, Input, OnChanges,
   OnInit, Output, SimpleChange, ViewEncapsulation
 } from '@angular/core';
 import { APP_CONFIG }                       from '../../../../app.config';
@@ -245,6 +245,21 @@ export class ChartComponent implements OnInit {
     this.dateRange = moment.duration(Number(this.toDate) - Number(this.fromDate)).asDays();
     this.getStatAndPrepareData();
     this.calenderShow = false;
+  }
+
+  @HostListener('document:click', ['$event'])
+  clickOutOfMenu(event) {
+    if (this.calenderShow) {
+      const psCalendarContainer: HTMLElement = document.getElementById('ps-calendar') as HTMLElement;
+      const psCalendarInput: HTMLElement = document.getElementById('ps-calendar-input') as HTMLElement;
+      if (psCalendarContainer) {
+        if (psCalendarContainer.contains(event.target) || psCalendarInput.contains(event.target)) {
+          // do nothing
+        } else {
+          this.calenderShow = false;
+        }
+      }
+    }
   }
 }
 
