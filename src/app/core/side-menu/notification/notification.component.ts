@@ -23,7 +23,7 @@ export class NotificationComponent implements OnInit {
   acceptDisabledIndex = -1;
 
   constructor (@Inject(APP_CONFIG) private config,
-               private NotificationService: NotificationService,
+               private notificationService: NotificationService,
                private store: Store<AppState>,
                private userActions: UserActions,
                private projectsActions: ProjectsActions,
@@ -36,7 +36,7 @@ export class NotificationComponent implements OnInit {
   accept(projectId, i) {
     if (this.acceptDisabledIndex < 0 && this.denyDisabledIndex < 0) {
       this.acceptDisabledIndex = i;
-      this.NotificationService.accept(projectId).then((project) => {
+      this.notificationService.accept(projectId).then((project) => {
         this.store.dispatch(this.projectsActions.addProject(project));
         this.user.pendingInvitations.map((obj, index) => {
           if (obj.id === projectId) {
@@ -56,7 +56,7 @@ export class NotificationComponent implements OnInit {
   deny(projectId, i) {
     if (this.denyDisabledIndex < 0 && this.acceptDisabledIndex < 0) {
       this.denyDisabledIndex = i;
-      this.NotificationService.deny(projectId).then((Id) => {
+      this.notificationService.deny(projectId).then((Id) => {
         this.user.pendingInvitations.map((obj, index) => {
           if (obj.id === projectId) {
             this.user.pendingInvitations.splice(index, 1);
