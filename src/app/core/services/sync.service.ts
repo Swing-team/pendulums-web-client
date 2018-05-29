@@ -108,7 +108,7 @@ export class SyncService {
         this.responseResults.push(this.syncData(syncData)
           .then(() => {
             this.store.dispatch(this.unSyncedActivityActions.clearUnSyncedActivity());
-            this.tempState.activity = null;
+            this.tempState.currentActivity = null;
             this.tempState.unSyncedActivity = null;
             this.getSummaryOnline();
           })
@@ -161,7 +161,7 @@ export class SyncService {
       .then((user) => {
         this.store.dispatch(this.userActions.loadUser(user));
         this.store.dispatch(this.projectsActions.loadProjects(user.projects));
-        this.store.dispatch(this.currentActivityActions.loadCurrentActivity(user.activity));
+        this.store.dispatch(this.currentActivityActions.loadCurrentActivity(user.currentActivity));
         this.store.dispatch(this.statusActions.loadStatus({netStatus: true, isLogin: true, unsyncedDataChanged: false}));
         this.dBService
           .removeAll('activeUser')
@@ -188,7 +188,7 @@ export class SyncService {
     if (this.tempState) {
       this.store.dispatch(this.userActions.loadUser(this.tempState.user));
       this.store.dispatch(this.projectsActions.loadDbProjects(this.tempState.projects.entities));
-      this.store.dispatch(this.currentActivityActions.loadCurrentActivity(this.tempState.activity));
+      this.store.dispatch(this.currentActivityActions.loadCurrentActivity(this.tempState.currentActivity));
       this.store.dispatch(this.unSyncedActivityActions.loadUnSyncedActivity(this.tempState.unSyncedActivity));
       this.store.dispatch(this.statusActions.updateUnsyncedDataChanged(this.tempState.status.unSyncedDataChanged));
       this.store.dispatch(this.statusActions.updateNetStatus(false));
