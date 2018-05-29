@@ -187,7 +187,6 @@ export class ToolbarComponent implements OnInit, OnDestroy  {
 
       // we decided to put all data in db by default and then send it to server
       this.store.dispatch(this.currentActivityActions.loadCurrentActivity(activity));
-      this.store.dispatch(this.statusActions.updateUnsyncedDataChanged(true));
 
       if (this.status.netStatus) {
         this.activityService.create(this.selectedProject.id, activity).then((resActivity) => {
@@ -197,8 +196,6 @@ export class ToolbarComponent implements OnInit, OnDestroy  {
 
           // if we get ok response from server so we have id for currentActivity and it has to been set
           this.store.dispatch(this.currentActivityActions.loadCurrentActivity(resActivity));
-          // if we get ok response from server so we don't have any unSynced data any more here
-          this.store.dispatch(this.statusActions.updateUnsyncedDataChanged(false));
           this.stopStartButtonDisabled = false;
         })
           .catch(error => {
@@ -299,7 +296,6 @@ export class ToolbarComponent implements OnInit, OnDestroy  {
         });
     }));
     Promise.all(result).then(() => {
-      this.store.dispatch(this.statusActions.updateUnsyncedDataChanged(false));
       this.stopStartButtonDisabled = false;
     })
   }
@@ -313,7 +309,6 @@ export class ToolbarComponent implements OnInit, OnDestroy  {
       this.store.dispatch(this.unSyncedActivityActions.addUnSyncedActivity(item));
       this.store.dispatch(this.projectsActions.editProjectActivities(item.project, item));
     });
-    this.store.dispatch(this.statusActions.updateUnsyncedDataChanged(true));
   }
 
   updateStateInCatch (error) {
@@ -342,7 +337,6 @@ export class ToolbarComponent implements OnInit, OnDestroy  {
     if (this.currentActivity) {
       this.currentActivityCopy.name = this.taskName;
       this.store.dispatch(this.currentActivityActions.renameCurrentActivity(this.currentActivityCopy.name));
-      this.store.dispatch(this.statusActions.updateUnsyncedDataChanged(true));
 
       if (this.status.netStatus) {
         if (this.currentActivityCopy.id) {

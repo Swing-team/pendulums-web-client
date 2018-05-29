@@ -5,7 +5,6 @@ import { ActionWithPayload } from '../action-with-payload';
 const initialState: Status = {
   netStatus: null,
   isLogin: null,
-  unsyncedDataChanged: false,
 };
 
 export default function reducer(state = initialState, action:  ActionWithPayload<any>) {
@@ -17,11 +16,6 @@ export default function reducer(state = initialState, action:  ActionWithPayload
     case StatusActions.UPDATE_NET_STATUS: {
       // copied whole of state of status because it may change in future and have more properties
       return Object.assign({}, state , { netStatus: action.payload});
-    }
-
-    case StatusActions.UPDATE_UNCYNCED_DATA_CHANGED: {
-      // copied whole of state of status because it may change in future and have more properties
-      return Object.assign({}, state , { unsyncedDataChanged: action.payload});
     }
 
     case StatusActions.UPDATE_IS_LOGIN: {

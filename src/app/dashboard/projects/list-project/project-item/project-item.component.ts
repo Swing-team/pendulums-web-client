@@ -114,7 +114,6 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
 
     // we decided to put all data in db by default and then send it to server
     this.store.dispatch(this.currentActivityActions.loadCurrentActivity(this.activity));
-    this.store.dispatch(this.statusActions.updateUnsyncedDataChanged(true));
 
     if (this.status.netStatus) {
       this.activityService.create(this.project.id, this.activity).then((activity) => {
@@ -124,8 +123,6 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
 
         // if we get ok response from server so we have id for currentActivity and it has to been set
         this.store.dispatch(this.currentActivityActions.loadCurrentActivity(activity));
-        // if we get ok response from server so we don't have any unSynced data any more here
-        this.store.dispatch(this.statusActions.updateUnsyncedDataChanged(false));
         this.activityButtonDisabled = false;
       })
         .catch(error => {
@@ -216,7 +213,6 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
       this.store.dispatch(this.unSyncedActivityActions.addUnSyncedActivity(item));
       this.store.dispatch(this.projectsActions.editProjectActivities(this.project.id, item));
     });
-    this.store.dispatch(this.statusActions.updateUnsyncedDataChanged(true));
   }
 
   pushDividedActivitiesToServer (dividedActivitiesResult) {
@@ -231,7 +227,6 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
         });
     }));
     Promise.all(responseResult).then(() => {
-      this.store.dispatch(this.statusActions.updateUnsyncedDataChanged(false));
       this.activityButtonDisabled = false;
     })
   }
@@ -261,7 +256,6 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
     if (this.currentActivity) {
       this.currentActivityCopy.name = this.taskName;
       this.store.dispatch(this.currentActivityActions.renameCurrentActivity(this.currentActivityCopy.name));
-      this.store.dispatch(this.statusActions.updateUnsyncedDataChanged(true));
 
       if (this.status.netStatus) {
         if (this.currentActivityCopy.id) {
