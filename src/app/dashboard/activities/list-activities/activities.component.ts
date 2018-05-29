@@ -30,7 +30,7 @@ import { ChartComponent }                   from './chart-statistics/chart.compo
 })
 export class ActivitiesComponent implements OnInit, OnDestroy {
   projectId: string;
-  private project: Project;
+  project: Project;
   private pageNumber = 0;
   private scrollEnable = true;
   private user: User;
