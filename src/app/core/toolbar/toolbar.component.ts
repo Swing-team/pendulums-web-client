@@ -16,6 +16,7 @@ import { User }                             from '../../shared/state/user/user.m
 import { UnSyncedActivityActions }          from '../../shared/state/unsynced-activities/unsynced-activities.actions';
 import { StatusActions }                    from '../../shared/state/status/status.actions';
 import { Subscription }                     from 'rxjs/Subscription';
+import { Status }                           from '../../shared/state/status/status.model';
 import * as moment from 'moment';
 
 @Component({
@@ -26,6 +27,7 @@ import * as moment from 'moment';
 
 export class ToolbarComponent implements OnInit, OnDestroy  {
   @Input() user: User;
+  @Input() status: Status;
   @Input() projects: Array<Project>;
   @Input() currentActivity: Observable<Activity>;
   @Output() onMenuItemClicked = new EventEmitter();
@@ -187,22 +189,27 @@ export class ToolbarComponent implements OnInit, OnDestroy  {
       this.store.dispatch(this.currentActivityActions.loadCurrentActivity(activity));
       this.store.dispatch(this.statusActions.updateUnsyncedDataChanged(true));
 
-      this.activityService.create(this.selectedProject.id, activity).then((resActivity) => {
-        this.showError('The activity was started');
-        delete resActivity.createdAt;
-        delete resActivity.updatedAt;
+      if (this.status.netStatus) {
+        this.activityService.create(this.selectedProject.id, activity).then((resActivity) => {
+          this.showError('The activity started');
+          delete resActivity.createdAt;
+          delete resActivity.updatedAt;
 
-        // if we get ok response from server so we have id for currentActivity and it has to been set
-        this.store.dispatch(this.currentActivityActions.loadCurrentActivity(resActivity));
-        // if we get ok response from server so we don't have any unSynced data any more here
-        this.store.dispatch(this.statusActions.updateUnsyncedDataChanged(false));
-        this.stopStartButtonDisabled = false;
-      })
-        .catch(error => {
-          this.showError('Server communication error');
-          console.log('server error happened', error);
+          // if we get ok response from server so we have id for currentActivity and it has to been set
+          this.store.dispatch(this.currentActivityActions.loadCurrentActivity(resActivity));
+          // if we get ok response from server so we don't have any unSynced data any more here
+          this.store.dispatch(this.statusActions.updateUnsyncedDataChanged(false));
           this.stopStartButtonDisabled = false;
-        });
+        })
+          .catch(error => {
+            this.showError('Server communication error');
+            console.log('server error happened', error);
+            this.stopStartButtonDisabled = false;
+          });
+      } else {
+        this.showError('The activity started');
+        this.stopStartButtonDisabled = false;
+      }
 
       // This timeout use to handle focus on input
       setTimeout(() => {
@@ -255,21 +262,27 @@ export class ToolbarComponent implements OnInit, OnDestroy  {
       // we must save divided activities and original activity in db
       this.pushDividedActivitiesToDb(dividedActivitiesArray);
 
-      // now we will try to store all data at server
-      if (this.currentActivityCopy.id) {
-        this.activityService.editCurrentActivity(this.currentActivityCopy.project, this.currentActivityCopy).then((activity) => {
-          this.updateStateInSuccess(dividedActivitiesArray);
-        })
-          .catch(error => {
-            this.updateStateInCatch (error);
-          });
+      if (this.status.netStatus) {
+        // now we will try to store all data at server
+        if (this.currentActivityCopy.id) {
+          this.activityService.editCurrentActivity(this.currentActivityCopy.project, this.currentActivityCopy).then((activity) => {
+            this.updateStateInSuccess(dividedActivitiesArray);
+          })
+            .catch(error => {
+              this.updateStateInCatch (error);
+            });
+        } else {
+          this.activityService.createManually(this.currentActivityCopy.project, this.currentActivityCopy).then((activity) => {
+            this.updateStateInSuccess(dividedActivitiesArray);
+          })
+            .catch(error => {
+              this.updateStateInCatch (error);
+            });
+        }
       } else {
-        this.activityService.createManually(this.currentActivityCopy.project, this.currentActivityCopy).then((activity) => {
-          this.updateStateInSuccess(dividedActivitiesArray);
-        })
-          .catch(error => {
-            this.updateStateInCatch (error);
-          });
+        this.showError('The activity stopped');
+        this.stopStartButtonDisabled = false;
+        this.store.dispatch(this.currentActivityActions.clearCurrentActivity());
       }
     }
   }
@@ -306,15 +319,17 @@ export class ToolbarComponent implements OnInit, OnDestroy  {
   updateStateInCatch (error) {
     console.log('server error happened', error);
     this.showError('Server communication error.');
-    this.showError('The activity was stopped');
+    this.showError('The activity stopped');
+    this.stopStartButtonDisabled = false;
     this.store.dispatch(this.currentActivityActions.clearCurrentActivity());
+
   }
 
   updateStateInSuccess (dividedActivitiesArray) {
     // we send divided activities to server after original activity because
     // The stop time of activity cannot be older than start time in current activity!
     this.pushDividedActivitiesToServer(dividedActivitiesArray);
-    this.showError('The activity was stopped');
+    this.showError('The activity stopped');
     this.store.dispatch(this.unSyncedActivityActions.removeUnSyncedActivityByFields(this.currentActivityCopy));
     this.store.dispatch(this.currentActivityActions.clearCurrentActivity());
   }
@@ -328,20 +343,23 @@ export class ToolbarComponent implements OnInit, OnDestroy  {
       this.currentActivityCopy.name = this.taskName;
       this.store.dispatch(this.currentActivityActions.renameCurrentActivity(this.currentActivityCopy.name));
       this.store.dispatch(this.statusActions.updateUnsyncedDataChanged(true));
-      if (this.currentActivityCopy.id) {
-        this.activityService.editCurrentActivity(this.currentActivityCopy.project, this.currentActivityCopy).then((activity) => {
-        })
-          .catch(error => {
-            console.log('server error happened', error);
-          });
-      } else {
-        this.activityService.create(this.currentActivityCopy.project, this.currentActivityCopy).then((activity) => {
-          // we reload currentActivity because it will get id and we will need it
-          this.store.dispatch(this.currentActivityActions.loadCurrentActivity(activity));
-        })
-          .catch(error => {
-            console.log('server error happened', error);
-          });
+
+      if (this.status.netStatus) {
+        if (this.currentActivityCopy.id) {
+          this.activityService.editCurrentActivity(this.currentActivityCopy.project, this.currentActivityCopy).then((activity) => {
+          })
+            .catch(error => {
+              console.log('server error happened', error);
+            });
+        } else {
+          this.activityService.create(this.currentActivityCopy.project, this.currentActivityCopy).then((activity) => {
+            // we reload currentActivity because it will get id and we will need it
+            this.store.dispatch(this.currentActivityActions.loadCurrentActivity(activity));
+          })
+            .catch(error => {
+              console.log('server error happened', error);
+            });
+        }
       }
     }
     // just for blur out the input

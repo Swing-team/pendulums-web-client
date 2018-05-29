@@ -1,5 +1,5 @@
 <toolbar *ngIf="(user | async).id" [user]="user | async" [projects]="projects | async" [currentActivity]="currentActivity"
-         class="ps-toolbar" (onMenuItemClicked)="showSideMenu($event)" ></toolbar>
+         [status]="status | async" class="ps-toolbar" (onMenuItemClicked)="showSideMenu($event)" ></toolbar>
 <side-menu #sideMenu *ngIf="(user | async).id" [user]="user | async" [netConnected]="netConnected" (onSignoutClicked)="signOut()" (clickedToCloseMenu)="closeMenu()"
            class="ps-side-menu" [ngClass]="{'ps-side-menu-show': SideMenuIsActive}" (clickedOutsideOfMenu)="clickedOutSideOfMenu($event)"></side-menu>
 <div class="columns ps-main-content" [ngClass]="{'ps-main-signed-in-content-with-side': (user | async).id, 'ps-main-signed-in-content-without-side': !SideMenuIsActive}">
