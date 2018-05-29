@@ -116,6 +116,8 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
     this.store.dispatch(this.currentActivityActions.loadCurrentActivity(this.activity));
 
     if (this.status.netStatus) {
+      delete this.activity.stoppedAt;
+
       this.activityService.create(this.project.id, this.activity).then((activity) => {
         this.showError('The activity started');
         delete activity.createdAt;
@@ -258,6 +260,8 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
       this.store.dispatch(this.currentActivityActions.renameCurrentActivity(this.currentActivityCopy.name));
 
       if (this.status.netStatus) {
+        delete this.currentActivityCopy.stoppedAt;
+
         if (this.currentActivityCopy.id) {
           this.activityService.editCurrentActivity(this.project.id, this.currentActivityCopy).then((activity) => {
           })

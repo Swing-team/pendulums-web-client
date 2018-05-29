@@ -189,6 +189,8 @@ export class ToolbarComponent implements OnInit, OnDestroy  {
       this.store.dispatch(this.currentActivityActions.loadCurrentActivity(activity));
 
       if (this.status.netStatus) {
+        delete activity.stoppedAt;
+
         this.activityService.create(this.selectedProject.id, activity).then((resActivity) => {
           this.showError('The activity started');
           delete resActivity.createdAt;
@@ -339,6 +341,8 @@ export class ToolbarComponent implements OnInit, OnDestroy  {
       this.store.dispatch(this.currentActivityActions.renameCurrentActivity(this.currentActivityCopy.name));
 
       if (this.status.netStatus) {
+        delete this.currentActivityCopy.stoppedAt;
+
         if (this.currentActivityCopy.id) {
           this.activityService.editCurrentActivity(this.currentActivityCopy.project, this.currentActivityCopy).then((activity) => {
           })
