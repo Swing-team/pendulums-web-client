@@ -161,7 +161,11 @@ export class SyncService {
       .then((user) => {
         this.store.dispatch(this.userActions.loadUser(user));
         this.store.dispatch(this.projectsActions.loadProjects(user.projects));
-        this.store.dispatch(this.currentActivityActions.loadCurrentActivity(user.currentActivity));
+        if (user.currentActivity) {
+          this.store.dispatch(this.currentActivityActions.loadCurrentActivity(user.currentActivity));
+        } else {
+          this.store.dispatch(this.currentActivityActions.clearCurrentActivity());
+        }
         this.store.dispatch(this.statusActions.loadStatus({netStatus: true, isLogin: true, unsyncedDataChanged: false}));
         this.dBService
           .removeAll('activeUser')
