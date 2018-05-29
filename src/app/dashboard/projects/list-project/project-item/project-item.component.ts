@@ -116,23 +116,28 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
     this.store.dispatch(this.currentActivityActions.loadCurrentActivity(this.activity));
     this.store.dispatch(this.statusActions.updateUnsyncedDataChanged(true));
 
-    this.activityService.create(this.project.id, this.activity).then((activity) => {
-      this.showError('The activity was started');
-      delete activity.createdAt;
-      delete activity.updatedAt;
+    if (this.status.netStatus) {
+      this.activityService.create(this.project.id, this.activity).then((activity) => {
+        this.showError('The activity started');
+        delete activity.createdAt;
+        delete activity.updatedAt;
 
-      // if we get ok response from server so we have id for currentActivity and it has to been set
-      this.store.dispatch(this.currentActivityActions.loadCurrentActivity(activity));
-      // if we get ok response from server so we don't have any unSynced data any more here
-      this.store.dispatch(this.statusActions.updateUnsyncedDataChanged(false));
-      this.activityButtonDisabled = false;
-    })
-      .catch(error => {
-        // todo: check errors
-        console.log('server error happened', error);
-        this.showError('Server communication error.');
+        // if we get ok response from server so we have id for currentActivity and it has to been set
+        this.store.dispatch(this.currentActivityActions.loadCurrentActivity(activity));
+        // if we get ok response from server so we don't have any unSynced data any more here
+        this.store.dispatch(this.statusActions.updateUnsyncedDataChanged(false));
         this.activityButtonDisabled = false;
-      });
+      })
+        .catch(error => {
+          // todo: check errors
+          console.log('server error happened', error);
+          this.showError('Server communication error.');
+          this.activityButtonDisabled = false;
+        });
+    } else {
+      this.showError('The activity started');
+      this.activityButtonDisabled = false;
+    }
 
     // This timeout use to handle focus on input
     setTimeout(() => {
@@ -177,22 +182,28 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
       // we must save divided activities and original activity in db
       this.pushDividedActivitiesToDb(dividedActivitiesArray);
 
-      // now we will try to store all data at server
-      if (this.currentActivityCopy.id) {
-        this.activityService.editCurrentActivity(this.project.id, this.currentActivityCopy).then((activity) => {
-          this.updateStateInSuccess(dividedActivitiesArray);
-        })
-          .catch(error => {
-            this.updateStateInCatch (error);
-          });
-      } else {
-        this.activityService.createManually(this.project.id, this.currentActivityCopy).then((activity) => {
-          this.updateStateInSuccess(dividedActivitiesArray);
-        })
-          .catch((error) => {
-            this.updateStateInCatch (error);
-          });
+      if (this.status.netStatus) {
+        // now we will try to store all data at server
+        if (this.currentActivityCopy.id) {
+          this.activityService.editCurrentActivity(this.project.id, this.currentActivityCopy).then((activity) => {
+            this.updateStateInSuccess(dividedActivitiesArray);
+          })
+            .catch(error => {
+              this.updateStateInCatch(error);
+            });
+        } else {
+          this.activityService.createManually(this.project.id, this.currentActivityCopy).then((activity) => {
+            this.updateStateInSuccess(dividedActivitiesArray);
+          })
+            .catch((error) => {
+              this.updateStateInCatch(error);
+            });
         }
+      } else {
+        this.store.dispatch(this.currentActivityActions.clearCurrentActivity());
+        this.activityButtonDisabled = false;
+        this.showError('The activity stopped');
+      }
     }
   }
 
@@ -228,7 +239,8 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
   updateStateInCatch (error) {
     console.log('server error happened', error);
     this.showError('Server communication error.');
-    this.showError('The activity was stopped');
+    this.showError('The activity stopped');
+    this.activityButtonDisabled = false;
     this.store.dispatch(this.currentActivityActions.clearCurrentActivity());
   }
 
@@ -236,7 +248,7 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
     // we send divided activities to server after original activity because
     // The stop time of activity cannot be older than start time in current activity!
     this.pushDividedActivitiesToServer(dividedActivitiesArray);
-    this.showError('The activity was stopped');
+    this.showError('The activity stopped');
     this.store.dispatch(this.unSyncedActivityActions.removeUnSyncedActivityByFields(this.currentActivityCopy));
     this.store.dispatch(this.currentActivityActions.clearCurrentActivity());
   }
@@ -250,20 +262,23 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
       this.currentActivityCopy.name = this.taskName;
       this.store.dispatch(this.currentActivityActions.renameCurrentActivity(this.currentActivityCopy.name));
       this.store.dispatch(this.statusActions.updateUnsyncedDataChanged(true));
-      if (this.currentActivityCopy.id) {
-        this.activityService.editCurrentActivity(this.project.id, this.currentActivityCopy).then((activity) => {
-        })
-          .catch(error => {
-            console.log('server error happened', error);
-          });
-      } else {
-        this.activityService.create(this.project.id, this.currentActivityCopy).then((activity) => {
-          // we reload currentActivity because it will get id and we will need it
-          this.store.dispatch(this.currentActivityActions.loadCurrentActivity(activity));
-        })
-          .catch(error => {
-            console.log('server error happened', error);
-          });
+
+      if (this.status.netStatus) {
+        if (this.currentActivityCopy.id) {
+          this.activityService.editCurrentActivity(this.project.id, this.currentActivityCopy).then((activity) => {
+          })
+            .catch(error => {
+              console.log('server error happened', error);
+            });
+        } else {
+          this.activityService.create(this.project.id, this.currentActivityCopy).then((activity) => {
+            // we reload currentActivity because it will get id and we will need it
+            this.store.dispatch(this.currentActivityActions.loadCurrentActivity(activity));
+          })
+            .catch(error => {
+              console.log('server error happened', error);
+            });
+        }
       }
     }
   }

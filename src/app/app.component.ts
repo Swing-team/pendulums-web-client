@@ -24,9 +24,9 @@ import { AppStateSelectors }                      from './shared/state/app-state
 })
 export class AppComponent implements OnInit {
   user: Observable<any>;
+  status: Observable<any>;
   private projects: Observable<any>;
   private currentActivity: Observable<any>;
-  private status: Observable<any>;
   private previousLoginStatus = null;
   SideMenuIsActive = false;
   netConnected: boolean;
