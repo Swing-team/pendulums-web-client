@@ -70,7 +70,7 @@ export class AppComponent implements OnInit {
         this.store.dispatch(this.userActions.clearUser());
         this.store.dispatch(this.projectsActions.clearProjects());
         this.store.dispatch(this.currentActivityActions.clearCurrentActivity());
-        this.store.dispatch(this.statusActions.loadStatus({netStatus: true, isLogin: null, unsyncedDataChanged: false}));
+        this.store.dispatch(this.statusActions.loadStatus({netStatus: true, isLogin: null}));
         // we think we don't need to keep unSynced data any more after user sign out or get 403
         this.store.dispatch(this.unSyncedActivityActions.clearUnSyncedActivity());
         this.syncService.closeConnection();

@@ -21,7 +21,6 @@ export class SyncService {
   private socket = null;
   private tempState: any;
   private status: Observable<any>;
-  private unSyncedDataChanged: boolean;
   private isLogin: boolean;
   private responseResults = [];
 
@@ -38,13 +37,13 @@ export class SyncService {
               private unSyncedActivityActions: UnSyncedActivityActions) {
     this.status = store.select('status');
     this.status.subscribe((status: Status) => {
-      this.unSyncedDataChanged = status.unsyncedDataChanged;
       this.isLogin = status.isLogin;
     });
   }
 
   init(): any {
-    this.responseResults.push(this.getStateFromDb().then(() => {
+    this.responseResults.push(
+      this.getStateFromDb().then(() => {
         this.initialAppOffline();
         this.connectSocket();
       }).catch(() => {
@@ -133,15 +132,11 @@ export class SyncService {
     this.socket = io(this.config.socketEndpoint, {path: this.config.socketPath, transports: ['websocket'], upgrade: true});
     this.socket.on('connect', () => {
       console.log('websocket connected!');
-      if (this.unSyncedDataChanged === true) {
-        this.getStateFromDb().then(() => {
-          this.autoSync();
-        }).catch(() => {
-          this.getSummaryOnline();
-        });
-      } else {
+      this.getStateFromDb().then(() => {
+        this.autoSync();
+      }).catch(() => {
         this.getSummaryOnline();
-      }
+      });
       this.store.dispatch(this.statusActions.updateNetStatus(true));
       this.socket.emit('get', {
         method: 'get',
@@ -166,7 +161,7 @@ export class SyncService {
         } else {
           this.store.dispatch(this.currentActivityActions.clearCurrentActivity());
         }
-        this.store.dispatch(this.statusActions.loadStatus({netStatus: true, isLogin: true, unsyncedDataChanged: false}));
+        this.store.dispatch(this.statusActions.loadStatus({netStatus: true, isLogin: true}));
         this.dBService
           .removeAll('activeUser')
           .then(() => {
@@ -194,7 +189,6 @@ export class SyncService {
       this.store.dispatch(this.projectsActions.loadDbProjects(this.tempState.projects.entities));
       this.store.dispatch(this.currentActivityActions.loadCurrentActivity(this.tempState.currentActivity));
       this.store.dispatch(this.unSyncedActivityActions.loadUnSyncedActivity(this.tempState.unSyncedActivity));
-      this.store.dispatch(this.statusActions.updateUnsyncedDataChanged(this.tempState.status.unSyncedDataChanged));
       this.store.dispatch(this.statusActions.updateNetStatus(false));
       if (this.router.url === '/dashboard' || this.router.url === '/signIn') {
         this.router.navigate(['dashboard']);
