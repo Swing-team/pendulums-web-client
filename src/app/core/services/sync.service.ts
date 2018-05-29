@@ -102,6 +102,7 @@ export class SyncService {
       }
       if (this.tempState.currentActivity.startedAt) {
         syncData.currentActivity = this.tempState.currentActivity;
+        delete syncData.currentActivity.stoppedAt;
       }
       if (syncData.currentActivity || syncData.activities) {
         this.responseResults.push(this.syncData(syncData)
