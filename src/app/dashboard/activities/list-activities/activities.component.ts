@@ -112,9 +112,9 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
         }
         if (!currentActivity.startedAt && this.currentActivityCopy) {
           if (this.currentActivityCopy.startedAt) {
-            const newActivity = this.currentActivityCopy;
-            newActivity.stoppedAt = Date.now().toString();
-            this.updateActivities(newActivity);
+            this.tempArray = [];
+            this.pageNumber = 0;
+            this.getActivitiesFromServer();
           }
           this.currentActivityCopy = null;
         }

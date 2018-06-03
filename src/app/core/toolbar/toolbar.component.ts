@@ -287,15 +287,15 @@ export class ToolbarComponent implements OnInit, OnDestroy  {
 
   pushDividedActivitiesToServer (dividedActivitiesResult) {
     const result = [];
-    result.push(dividedActivitiesResult.map((item) => {
-      this.activityService.createManually(this.currentActivityCopy.project, item).then((activity) => {
-        this.store.dispatch(this.projectsActions.editProjectActivities(this.currentActivityCopy.project, activity));
+    dividedActivitiesResult.map((item) => {
+      result.push(this.activityService.createManually(item.project, item).then((activity) => {
+        this.store.dispatch(this.projectsActions.editProjectActivities(item.project, activity));
         this.store.dispatch(this.unSyncedActivityActions.removeUnSyncedActivityByFields(item))
       })
         .catch(error => {
           console.log('server error happened', error);
-        });
-    }));
+        }));
+    });
     Promise.all(result).then(() => {
       this.stopStartButtonDisabled = false;
     })
@@ -322,11 +322,11 @@ export class ToolbarComponent implements OnInit, OnDestroy  {
   }
 
   updateStateInSuccess (dividedActivitiesArray) {
+    this.store.dispatch(this.unSyncedActivityActions.removeUnSyncedActivityByFields(this.currentActivityCopy));
     // we send divided activities to server after original activity because
     // The stop time of activity cannot be older than start time in current activity!
     this.pushDividedActivitiesToServer(dividedActivitiesArray);
     this.showError('The activity stopped');
-    this.store.dispatch(this.unSyncedActivityActions.removeUnSyncedActivityByFields(this.currentActivityCopy));
     this.store.dispatch(this.currentActivityActions.clearCurrentActivity());
   }
 
