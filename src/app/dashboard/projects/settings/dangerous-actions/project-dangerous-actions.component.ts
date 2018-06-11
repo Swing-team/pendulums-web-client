@@ -31,7 +31,11 @@ export class DangerousActionsComponent {
   }
 
   confirmToDelete() {
-    this.deleteConfirmation = true;
+    if (this.projectNameInput === this.project.name) {
+      this.deleteConfirmation = true;
+    } else {
+      this.showError('Project name mismatch.');
+    }
   }
 
   cancelDelete() {
@@ -39,21 +43,25 @@ export class DangerousActionsComponent {
   }
 
   confirmFinalDelete() {
-    if (!this.deleteButtonDisabled) {
-      this.deleteButtonDisabled = true;
-      if (this.projectNameInput.valueOf() === this.project.name.valueOf()) {
-        this.projectService.delete(this.project.id)
-          .then(response => {
-            this.store.dispatch(this.projectsAction.removeProject(this.project));
-            this.showError('The project was deleted successfully');
-            this.deleteButtonDisabled = false;
-            this.modalService.close();
-          })
-          .catch(error => {
-            this.deleteButtonDisabled = false;
-            this.showError('Server communication error');
-          });
+    if (this.projectNameInput === this.project.name) {
+      if (!this.deleteButtonDisabled) {
+        this.deleteButtonDisabled = true;
+        if (this.projectNameInput.valueOf() === this.project.name.valueOf()) {
+          this.projectService.delete(this.project.id)
+            .then(response => {
+              this.store.dispatch(this.projectsAction.removeProject(this.project));
+              this.showError('The project was deleted successfully');
+              this.deleteButtonDisabled = false;
+              this.modalService.close();
+            })
+            .catch(error => {
+              this.deleteButtonDisabled = false;
+              this.showError('Server communication error');
+            });
+        }
       }
+    } else {
+      this.showError('Project name mismatch.');
     }
   }
 
