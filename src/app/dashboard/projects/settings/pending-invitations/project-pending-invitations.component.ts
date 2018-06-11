@@ -44,7 +44,7 @@ export class ProjectPendingInvitationsComponent {
 
   invite() {
     const invitedUser = {
-      email: this.user.email,
+      email: this.user.email.toLowerCase(),
       role: this.user.role
     };
 

@@ -24,6 +24,7 @@ export class SignUpComponent {
       this.submitted = true;
       this.errorMessage = null;
       if (this.validation(this.newUser)) {
+        this.newUser.email = this.newUser.email.toLowerCase();
         this.authService.signUp(this.newUser)
           .then(() => {
             this.haveResponOfSubmit = true;
