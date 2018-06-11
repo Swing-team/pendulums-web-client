@@ -79,6 +79,7 @@ export class CreateProjectComponent {
 
   invite() {
     if (this.validateInvitedUser()) {
+      this.user.email = this.user.email.toLowerCase();
       this.project.invitedUsers.push(_.cloneDeep(this.user));
       this.user = {email: null, role: this.roles[0]};
     }
