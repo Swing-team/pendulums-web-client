@@ -14,7 +14,7 @@ export class ForgotPasswordComponent {
   private errorMessage: string;
   private User = {email: null};
   submitted = false;
-  haveResponOfSubmit = false;
+  haveResponseOfSubmit = false;
 
   constructor(
     private authService: AuthenticationService,
@@ -28,7 +28,7 @@ export class ForgotPasswordComponent {
       if (this.validation(this.User)) {
         this.authService.forgotPassword(this.User).then(() => {
           this.submitted = false;
-          this.haveResponOfSubmit = true;
+          this.haveResponseOfSubmit = true;
         })
           .catch(error => {
             this.submitted = false;
