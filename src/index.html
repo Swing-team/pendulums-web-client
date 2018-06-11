@@ -78,5 +78,42 @@
     <div id="loader"></div>
   </div>
   <app-root></app-root>
+  <script>
+    function getBrowser() {
+      var ua = navigator.userAgent, tem,
+        M = ua.match(/(opera|chrome|safari|edge|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
+      if(/trident/i.test(M[1])){
+        tem = /\brv[ :]+(\d+)/g.exec(ua) || [];
+        return {name:'IE',version:(tem[1] || '')};
+      }
+      if(M[1]=== 'Chrome'){
+        tem = ua.match(/\b(OPR|Edge)\/(\d+)/);
+        if(tem != null) return {name:tem[1].replace('OPR', 'Opera'),version:tem[2]};
+      }
+      M = M[2]? [M[1], M[2]]: [navigator.appName, navigator.appVersion, '-?'];
+      if((tem = ua.match(/version\/(\d+)/i))!= null)
+        M.splice(1, 1, tem[1]);
+      return {name:M[0], version:M[1]};
+    }
+
+    function initBody() {
+      var browser = getBrowser();
+      if ((browser.name === 'Firefox' && browser.version < 58) ||
+        (browser.name === 'Chrome' && browser.version < 62) ||
+        (browser.name === 'Edge' && browser.version < 17) ||
+        (browser.name === 'Opera' && browser.version < 51) ||
+        (browser.name === 'Safari' && browser.version < 10) ||
+        (browser.name === 'IE')) {
+        console.log('we do not support this browser version');
+        var html = '<div style="color: white; position:fixed; top: 50%; left: 50%; width:30em; height:18em; margin-top: -9em; margin-left: -15em">' +
+          '<p>We do not support this browser.<br>' +
+          'Please use a modern browser like FireFox 58+, Chrome 62+, Edge 17+, Opera 51+ or Safari 10+.<br><br><br>' +
+          'Thank you,<br>' +
+          'Pendulums team</p></div>';
+        document.body.innerHTML = html;
+      }
+    }
+    initBody();
+  </script>
 </body>
 </html>
