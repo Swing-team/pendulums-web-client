@@ -32,6 +32,7 @@ export class SignInComponent {
       this.submitted = true;
       this.errorMessage = null;
       if (this.validation(this.authUser)) {
+        this.authUser.email = this.authUser.email.toLowerCase();
         this.authService.signIn(this.authUser)
           .then(() => {
             this.store.dispatch(this.statusActions.updateIsLogin(true));

@@ -26,6 +26,7 @@ export class ForgotPasswordComponent {
       this.submitted = true;
       this.errorMessage = null;
       if (this.validation(this.User)) {
+        this.User.email = this.User.email.toLowerCase();
         this.authService.forgotPassword(this.User).then(() => {
           this.submitted = false;
           this.haveResponseOfSubmit = true;
