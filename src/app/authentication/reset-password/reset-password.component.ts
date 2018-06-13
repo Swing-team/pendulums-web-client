@@ -46,8 +46,10 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
           .catch(error => {
             this.submitted = false;
             console.log('error is: ', error);
-            if (error.status === 400) {
-              this.errorMessage = 'your information not found';
+            if (error.status === 404) {
+              this.errorMessage = 'Your information not found';
+            } else if (error.status === 400) {
+              this.errorMessage = 'Bad request.';
             } else {
               this.errorMessage = 'Server communication error';
             }

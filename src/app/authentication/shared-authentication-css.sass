@@ -2,71 +2,49 @@
 
 .hero-body
   @media (max-width: $ps-small-screen-size)
-    padding: 0.5rem
-    font-size: 0.8rem
-
-.title
-  font-size: 1.2rem
-
-@media screen and (min-width: $ps-small-screen-size) and (max-width: 768px)
-  .column.ps-is-offset-2-mobile
-    margin-left: 15%
-  .column.ps-is-8-mobile
-    -webkit-box-flex: 0
-      -ms-flex: none
-       flex: none
-    width: 70%
-
-.ps-email-input
-  text-transform: lowercase !important
-
-.ps-auth-back
-  position: relative
-  height: 400px
-  background-color: $paper
-  border-radius: 4px !important
-  form
-    border-radius: 4px 4px 0 0 !important
-    position: absolute
-    padding: 20px
-    bottom: 0
-    right: 10%
-    display: inline-block
-    width: 80%
-    background-color: $paper
-    box-shadow: 0 0 3px #999999
-    @media (max-width: $ps-small-screen-size)
-      width: 90%
-      right: 5%
-      padding: 0.5rem
-      height: 480px
-    @media screen and (min-width: $ps-small-screen-size) and (max-width: 488px)
-      width: 90%
-      right: 5%
-      padding: 0.5rem
-      height: 480px
-
-.ps-reserve-space
-  visibility: hidden
-  height: 90px
-
-.ps-reserve-big-space
-  visibility: hidden
-  height: 150px
-
-.ps-login-error
-  background-color: #d9aca6
-  color: $accent
-  font-size:  0.9rem !important
-
-.ps-error
-  border-color: $accent !important
-  color: $accent !important
-
-.ps-google-login
-  background-color: $google-login !important
-  border-color: transparent !important
-  color: $paper !important
+    padding: 0
+    margin-top: -20px
 
 .ps-app-background
-  background-color: $app-background
+  background-color: $primary
+
+.ps-auth-back
+  border-radius: 4px !important
+  background-color: $white
+  box-shadow: 0 0 3px #999999
+  padding: 20px
+  max-width: 360px
+  .ps-auth-logo-container
+    margin-bottom: 1rem
+    .ps-auth-logo
+      width: 100px
+      height: auto
+      margin: 0 auto
+  .ps-auth-input
+    margin-top: 10px
+    background-color: $white
+    color: $ink
+    box-shadow: 0 3px 5px rgba(0,0,0,.08)
+  .ps-email-input
+    text-transform: lowercase !important
+  .ps-error
+    border-color: $red !important
+    color: $red !important
+  .ps-login-error
+    color: $red
+    font-size:  0.8rem !important
+    display: block
+    min-height: 14px
+    height: 14px
+  .ps-auth-links
+    &:hover
+      color: lighten($primary,30%) !important
+  .ps-auth-buttons
+    font-weight: 500
+  .ps-google-login
+    background-color: $red
+    border-color: transparent !important
+    color: $paper !important
+    cursor: not-allowed
+    transition: all ease-in-out 200ms
+
