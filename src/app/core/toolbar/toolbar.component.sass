@@ -1,85 +1,136 @@
 @import "../../../sass/variables"
 @import "../../../../node_modules/bulma/sass/utilities/variables"
 
-.nav-right
-  overflow: inherit
-  @media (max-width: 330px)
-    padding-right: 0
-
-.ps-nav-app-name
-  font-size: 1.2em
-  color: $primary-light
-
-.ps-nav-left
-  color: $primary-light
-  cursor: pointer
-  padding: 2px
-  &:hover
-    background-color: $primary-light
-    color: $paper
-  @media (max-width: 1020px) and (min-width: 481px)
-    max-width: 64px
-    min-width: 64px
-  @media (max-width: 480px)
-    max-width: 56px
-    min-width: 56px
-
-.ps-nav-item-menu
-  padding: 0
-  margin: 0.4rem
-  @media (max-width: $ps-mobile)
+.ps-nav
+  height: $toolbar-size
+  background-color: $white
+  .nav-left
+    max-width: 170px
+  .ps-nav-left
+    color: $primary
+    cursor: pointer
+    padding: 2px
+    max-width: $side-menu-size
+    width: $side-menu-size
+    &:hover
+      background-color: $primary
+      color: $paper
+  .ps-nav-item-menu
     padding: 0
-    margin: 0.5rem
+    margin: auto
+    .ps-nav-menu-icon
+      font-size: 2rem
+  .ps-nav-logo-container
+    padding-left: 0
+    @media (min-width: 1024px)
+      padding-left: 0.75rem
+    .ps-nav-item-logo
+      width: 48px !important
+      height: 48px !important
+      min-height: 48px !important
+    .ps-nav-app-name
+      color: $primary
+      font-weight: 500
+      margin-left: 5px
+  .ps-nav-center
+    flex-grow: 1
+    flex-shrink: 1
+    max-width: 500px
+    .nav-item
+      width: 100%
+      position: relative
+      .ps-nav-input
+        width: 100%
+        height: 2.5em
+        position: relative
+        z-index: 1
+        border: none
+        box-shadow: none
+        text-align: center
+        color: $primary
+        text-transform: uppercase
+        font-weight: 500
+        font-size: 1rem
+        padding: 4px
+        line-height: 2rem
+        &:not(:focus) + label
+          background-color: $white
+          padding: 4px
+          z-index: 2
+          color: $primary
+          text-transform: uppercase
+          font-weight: 500
+          line-height: 2rem
+      .ps-nav-label
+        height: 2.5em
+        position: absolute
+        left: 15px
+        right: 15px
+        overflow: hidden
+        white-space: nowrap
+        text-overflow: ellipsis
+      &:after, &:before
+        content: ""
+        min-width: 3px
+        height: 24px
+        background-color: $primary
+        margin: auto
+  .nav-right
+    overflow: inherit
+    max-width: 205px
+    @media (max-width: 330px)
+      padding-right: 0
+    .ps-nav-right-item
+      background-color: $powderBlue
+      color: $primary
+      height: 40px
+      min-width: 160px
+      width: auto
+      font-weight: 500
+      font-size: 24px
+      border-top-left-radius: 20px
+      border-bottom-left-radius: 20px
+      margin: 0 -20px 0 0
+      padding-left: 20px
+      padding-right: 20px
+      display: flex
+      align-content: center
+      align-items: center
+      .ps-toolbar-select
+        display: inline-flex
+      .ps-display-span-time
+        overflow: hidden
+        white-space: nowrap
+        text-overflow: ellipsis
+        width: 70px
+        font-size: 16px
+      .ps-time-indicator
+        border-radius: 100%
+        width: 12px
+        height: 12px
+        background-color: $red
+    // This class used to hide time duration in mobile size
+    .ps-nav-right-time
+      @media (max-width: $ps-mobile + 1px)
+        display: none
+    .ps-toolbar-play
+      z-index: 2
+      position: relative
+      .ps-toolbar-button
+        padding: 0
+        background-color: $primary
+        color: $paper
+        border-radius: 100%
+        border: none
+        height: 40px
+        width: 40px
+        font-size: 24px
+        text-align: center
 
-.ps-nav-menu-icon
-  font-size: 2rem
-  @media (max-width: $ps-mobile)
-    font-size: 1.5em
-
-.ps-nav-item-logo
-  padding-left: 0
-  @media (min-width: 1024px)
-    padding-left: 0.75rem
-
-.ps-nav-logo
-  max-height: 48px
-
-.ps-nav-right-item
-  background-color: $primary-light
-  border-top-left-radius: 20px
-  width: auto
-  margin: 0 -5px 0 0
-  color: $paper
-  padding-left: 1rem
-  @media (max-width: $ps-mobile)
-    max-height: 1.6rem
-    padding-right: 5px
-  .ps-toolbar-select
-    display: inline-flex
-
-.ps-toolbar-play
-  z-index: 2
-  text-align: center
-  position: relative
-
-.ps-toolbar-button
-  background-color: $primary-light
-  color: $paper
-  border-radius: 100%
-  text-align: center
-  border: none
-  height: 45px
-  width: 45px
-  font-size: 1.6rem
-  border-radius: 100%
-  margin: auto
-  @media (max-width: $ps-mobile)
-    height: 40px
-    width: 40px
-    font-size: 1.4rem
 
 .ps-toolbar-time-tooltip
-  background-color: $primary-light
+  background-color: $pink
+  color: $white
   position: absolute
   font-size: 0.75rem
   bottom: -32px
@@ -99,18 +150,21 @@
     margin-left: -5px
     border-width: 5px
     border-style: solid
-    border-color: transparent transparent $primary-light transparent
+    border-color: transparent transparent $pink transparent
 
 .ps-toolbar-time-icon
-  background-color: $red
+  background-color: $pink
+  color: $white
   position: absolute
-  font-size: 0.75rem
+  font-size: 0.8rem
+  padding: 2px
   bottom: -5px
-  left: -15px
+  left: -10px
   border-radius: 100%
+  animation: rotation 2s infinite linear
   @media (min-width: $ps-mobile + 1px)
     display: none
-  animation: rotation 2s infinite linear
+
 
 @keyframes rotation
   0%, 25%
@@ -120,71 +174,10 @@
   100%
     transform: rotate(360deg)
 
-.ps-nav-display-time
-  text-align: left
-  max-height: 1.8em
-  font-size: 0.9rem
-  line-height: 1.8rem
-  padding-left: 1.7rem !important
-  position: relative
-  .ps-display-span-time
-    display: inline-block
-    overflow: hidden
-    white-space: nowrap
-    text-overflow: ellipsis
-    width: 70px
-    @media (max-width: $ps-mobile)
-      display: none
-  .ps-time-indicator
-    border-radius: 100%
-    width: 12px
-    height: 12px
-    background-color: $red
-    border-color: $red
-    position: absolute
-    bottom: 0.3rem
-    left: 0.7rem
-    @media (max-width: $ps-mobile)
-      display: none
-  @media (max-width: $ps-mobile)
-    line-height: 1.5rem
-    padding-left: 0 !important
 
-.ps-nav-center
-  position: relative
-  width: 33%
-  .nav-item
-    width: 100%
-  @media (max-width: 768px)
-    width: 60%
-  @media (min-width: 481px) and (max-width: 530px)
-    width: 55%
 
-.ps-nav-input
-  width: 100%
-  background: none
-  position: relative
-  z-index: 1
-  outline: 0
-  border-color: $primary-light
-  text-align: center
-  &:not(:focus) + label
-    background: $primary-light
-    color: white
-    font-size: 0.7rem
-    padding: 6px
-    z-index: 2
-    text-transform: uppercase
 
-.ps-nav-label
-  width: 95%
-  height: 2.5em
-  position: absolute
-  color: $paper
-  border-radius: $radius
-  display: inline-block
-  overflow: hidden
-  white-space: nowrap
-  text-overflow: ellipsis
+
+
 
 
