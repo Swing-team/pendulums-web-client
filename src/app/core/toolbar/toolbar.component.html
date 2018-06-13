@@ -1,17 +1,17 @@
-<nav class="nav">
+<nav class="nav ps-nav">
   <div class="ps-nav-left nav-left ps-is-visible" (click)="showSideMenu($event)">
     <div class="nav-item ps-nav-item-menu">
       <span  #menuIcon class="icon-menu ps-nav-menu-icon"></span>
     </div>
   </div>
   <div class="nav-left is-hidden-mobile">
-    <div class="nav-item ps-nav-item-logo">
-      <img class="ps-nav-logo" src="assets/images/logo-small.png" >
-      <div class="ps-nav-app-name">Pendulums</div>
+    <div class="nav-item ps-nav-logo-container">
+      <img class="ps-nav-item-logo" src="../../../assets/images/logo-blue.png"/>
+      <div class="ps-nav-app-name">PENDULUMS</div>
     </div>
   </div>
-  <div class="nav-center ps-nav-center" *ngIf="currentActivityCopy.startedAt">
-    <div class="nav-item">
+  <div class="nav-center ps-nav-center">
+    <div class="nav-item" *ngIf="currentActivityCopy.startedAt">
       <input id="activityNameElm" #activityNameElm class="input is-small ps-nav-input" [(ngModel)]="taskName" placeholder="Task name" type="text"
              (change)="nameActivity($event)"/>
       <label class="ps-nav-label" for="activityNameElm">{{currentActivityCopy.name}}&nbsp;-&nbsp;{{selectedProject.name ? selectedProject.name : ''}}</label>
@@ -28,7 +28,7 @@
                       [label]="'Select Project'"
                       class="ps-toolbar-select"></swing-select>
       </div>
-      <div *ngIf="currentActivityCopy.startedAt" class="ps-nav-right-item ps-nav-display-time">
+      <div *ngIf="currentActivityCopy.startedAt" class="ps-nav-right-item ps-nav-right-time">
         <span class="ps-time-indicator"></span>
         <span class="ps-display-span-time">{{timeDuration}}</span>
       </div>
@@ -36,12 +36,12 @@
         <div (click)="toggleStopStart()">
           <a  class="button ps-toolbar-button" [ngClass]="{'is-loading': stopStartButtonDisabled}">
             <span class="icon">
-              <i *ngIf="currentActivityCopy.startedAt" class="icon icon-stop"></i>
-              <i *ngIf="!currentActivityCopy.startedAt" class="icon icon-play"></i>
+              <i *ngIf="currentActivityCopy.startedAt" class="icon-stop"></i>
+              <i *ngIf="!currentActivityCopy.startedAt" class="icon-play"></i>
             </span>
           </a>
         </div>
-        <span id="rotate" *ngIf="currentActivityCopy.startedAt" class="icon icon-stopwatch ps-toolbar-time-icon"
+        <span id="rotate" *ngIf="currentActivityCopy.startedAt" class="icon-stopwatch ps-toolbar-time-icon"
               (click)="toggleShowTimeDuration()"></span>
         <span *ngIf="currentActivityCopy.startedAt && showTimeDuration" class="ps-toolbar-time-tooltip">{{timeDuration}}</span>
       </div>
