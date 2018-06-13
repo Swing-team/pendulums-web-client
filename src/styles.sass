@@ -6,6 +6,11 @@
 .ps-has-underline
   text-decoration: underline !important
 
+.is-primary
+  transition: all ease-in-out 200ms
+  &:hover
+    background-color: lighten($primary,10%) !important
+
 @media (max-width: $ps-mobile)
   .ps-is-hidden-mobile
     display: none !important
