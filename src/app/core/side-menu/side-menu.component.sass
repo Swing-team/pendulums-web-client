@@ -1,86 +1,75 @@
 @import "../../../sass/variables"
 
-$item-size: 64px
-$item-size-mobile: 56px
+$side-menu-item-size: $side-menu-size - 8px
 
 .menu
-  width: $item-size
+  width: $side-menu-size
   height: 100%
-  background-color: $primary-light
-  @media (max-width: $ps-mobile)
-    width: $item-size-mobile
+  background-color: $ink
   .menu-list
+    padding-top: 1rem
+    padding-bottom: 1rem
     height: 90% !important
     position: relative
-  .menu-list li a
-    position: relative
-    height: $item-size
-    padding: 15px
-    border-radius: unset
-    @media (max-width: $ps-mobile)
-      padding: 15px
-      height: $item-size-mobile
-    .ps-user-image
-      width: 34px
-      height: 34px
-      border: 1px solid $ink
-      border-radius: 100%
-      @media (max-width: $ps-mobile)
-        width: 26px
-        height: 26px
-    &.is-active
-      background-color: $primary
-    &.is-disabled
-      cursor: not-allowed
-      background-color: #4B895E !important
-      &:hover
-        background-color: inherit
-    &:hover
-      background-color: $primary
-    span
-      font-size: 24px
-      vertical-align: middle
-      color: $paper
-      @media (max-width: $ps-mobile)
-        font-size: 20px
-      &.ps-reverse-icon:before
-        transform: rotate(180deg)
+    display: flex
+    flex-direction: column
+    .ps-fill-space
+      flex-grow: 1
+    li
+      padding: 4px
+      a
+        display: flex
+        transition: all ease-in-out $ps-transitions
+        border-radius: 100%
+        padding: 0
+        position: relative
+        height: $side-menu-item-size
+        max-height: $side-menu-item-size
+        .ps-user-image
+          margin: auto
+          width: $side-menu-item-size - 8px
+          height: $side-menu-item-size - 8px
+          border: 1px solid $ink
+          border-radius: 100%
+        &.is-active
+          background-color: $primary
+        &.is-disabled
+          cursor: not-allowed
+          background-color: #4B895E !important
+          &:hover
+            background-color: inherit
+        &:hover
+          background-color: $primary
+        span
+          font-size: 24px
+          display: block
+          text-align: center
+          margin: auto
+          color: $paper
+          &.ps-reverse-icon:before
+            transform: rotate(180deg)
 
-.ps-bug-report
-  position: absolute
-  bottom: 0px
-  @media (max-height: 320px)
-    position: inherit
-    bottom: unset
 
 .ps-notifications-container
   position: absolute
-  left: $item-size
+  left: $side-menu-size
   width: 300px
   max-height: 400px
   overflow-y: auto
   box-shadow: 0 0 5px #777777
   @media (max-width: $ps-mobile)
-    left: $item-size-mobile
-    font-size: 0.75rem
     width: 250px
 
 .ps-notifications-container-top
-  top: $item-size
-  @media (max-width: $ps-mobile)
-    top: $item-size-mobile
+  top: $side-menu-size + 16px
 
 .ps-alert-bottom
   background-color: rgba(246, 249, 254, 0.65)
   top: unset
-  bottom: $item-size - 10px
-  @media (max-width: $ps-mobile)
-    top: unset
-    bottom: $item-size-mobile
-
+  bottom: $side-menu-size + 16px
 
 .ps-notification-count
-  background-color: $google-login
+  background-color: $light-red
   border-radius: 100%
   width: 16px
   height: 16px
@@ -89,10 +78,5 @@ $item-size-mobile: 56px
   font-size: 12px !important
   position: absolute
   top: 10px
-  right: 15px
+  right: 8px
   text-align: center
-  @media (max-width: $ps-mobile)
-    width: 14px
-    height: 14px
-    padding: 1px 3px
-    font-size: 10px !important
