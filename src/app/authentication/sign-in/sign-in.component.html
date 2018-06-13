@@ -1,61 +1,65 @@
-<section class="hero is-fullheight ps-app-background is-bold">
+<section class="hero ps-app-background">
   <div class="hero-body">
-    <div class="container has-text-centered">
-      <div class="ps-auth-back column ps-is-8-mobile ps-is-offset-2-mobile is-6-tablet is-offset-3-tablet is-4-desktop is-offset-4-desktop">
-        <form (ngSubmit)="signIn()" #signinForm="ngForm" novalidate>
-          <div class="is-centered">
+    <div class="container">
+      <div class="columns is-mobile is-centered">
+        <div class="column is-one-third-desktop is-11-mobile is-half-tablet ps-auth-back">
+          <form (ngSubmit)="signIn()" #signinForm="ngForm" novalidate>
             <div dir="auto">
-              <div class="field">
-                <h3 class="title is-4 ps-has-primary-color ">
-                  Pendulums Time Tracking
-                </h3>
+              <div class="ps-auth-logo-container">
+                <figure class="ps-auth-logo">
+                  <img src="../../../assets/images/logo-blue.png"/>
+                </figure>
               </div>
-              <div [style.visibility]="errorMessage ? 'unset' : 'hidden'" class="notification ps-login-error has-text-centered">
-                <span class="icon">
-                <i class="icon-error"></i>
-                </span>
-                <span class="is-info">{{errorMessage}}</span>
+              <div class="field">
+                <h5 class="content is-bold ps-has-primary-color">
+                  <b>Pendulums Time Tracking</b>
+                </h5>
               </div>
               <div class="field">
                 <p class="control">
-                  <input [(ngModel)]="authUser.email" name="email" class="input ps-email-input"
+                  <input [(ngModel)]="authUser.email" name="email" class="input ps-email-input ps-auth-input"
                          [ngClass]="{'ps-error': errorMessage }"
                          placeholder="Email" type="email">
                 </p>
               </div>
               <div class="field">
                 <p class="control">
-                  <input [(ngModel)]="authUser.password" name="password" class="input"
+                  <input [(ngModel)]="authUser.password" name="password" class="input ps-auth-input"
                          [ngClass]="{'ps-error': errorMessage }"
                          placeholder="Password" type="password">
                 </p>
               </div>
               <div class="field">
+                <p [style.visibility]="errorMessage ? 'unset' : 'hidden'" class="control ps-login-error is-fullwidth">
+                  {{errorMessage}}
+                </p>
+              </div>
+              <div class="field">
                 <p class="control">
-                  <button class="button is-primary is-fullwidth" type="submit" [disabled]="submitted"
+                  <button class="button is-fullwidth is-primary ps-auth-buttons" type="submit" [disabled]="submitted"
                           [ngClass]="{'is-loading': submitted}">Sign in</button>
                 </p>
               </div>
               <div class="field">
                 <p class="control">
-                  <button class="button ps-google-login is-fullwidth" title="coming soon!" [disabled]="true">Sign in with google
+                  <button class="button is-fullwidth ps-auth-buttons ps-google-login" title="coming soon!">Sign in with google
                   </button>
                 </p>
               </div>
               <br>
               <div class="field">
-                <a routerLink="/forgotPassword" class="ps-has-primary-color ps-has-underline">
+                <a routerLink="/forgotPassword" class="ps-has-primary-color ps-has-underline ps-auth-links">
                   Forgot your password?
                 </a>
               </div>
               <br>
               <div class="field">
                 <p class="ps-has-primary-color">You don’t have an account?</p>
-                <p class="ps-has-primary-color ps-has-underline"><a routerLink="/signUp">Create one</a></p>
+                <p><a  class="ps-has-primary-color ps-has-underline ps-auth-links" routerLink="/signUp">Create one</a></p>
               </div>
             </div>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
     </div>
   </div>

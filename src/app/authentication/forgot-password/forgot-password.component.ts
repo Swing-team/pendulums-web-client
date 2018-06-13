@@ -35,6 +35,8 @@ export class ForgotPasswordComponent {
             this.submitted = false;
             console.log('error is: ', error);
             if (error.status === 400) {
+              this.errorMessage = 'Bad request';
+            } else if (error.status === 404) {
               this.errorMessage = 'Email not found';
             } else {
               this.errorMessage = 'Server communication error';
