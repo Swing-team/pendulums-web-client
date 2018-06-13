@@ -1,3 +1,4 @@
+@import "./sass/fonts.sass"
 @import "./sass/variables.sass"
 
 .ps-has-primary-color
@@ -7,9 +8,13 @@
   text-decoration: underline !important
 
 .is-primary
-  transition: all ease-in-out 200ms
+  transition: all ease-in-out $ps-transitions
   &:hover
     background-color: lighten($primary,10%) !important
+
+/* fix buttons height, for twitter bootstrap in fontello */
+[class^="icon-"]:before, [class*=" icon-"]:before
+  line-height: unset !important
 
 @media (max-width: $ps-mobile)
   .ps-is-hidden-mobile
