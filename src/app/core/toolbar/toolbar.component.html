@@ -41,7 +41,7 @@
             </span>
           </a>
         </div>
-        <span id="rotate" *ngIf="currentActivityCopy.startedAt" class="icon-stopwatch ps-toolbar-time-icon"
+        <span id="rotate" *ngIf="currentActivityCopy.startedAt" class="icon-hourglass ps-toolbar-time-icon"
               (click)="toggleShowTimeDuration()"></span>
         <span *ngIf="currentActivityCopy.startedAt && showTimeDuration" class="ps-toolbar-time-tooltip">{{timeDuration}}</span>
       </div>

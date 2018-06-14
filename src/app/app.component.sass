@@ -1,6 +1,4 @@
 @import "../sass/variables.sass"
-$toolbar-size: 52px
-$side-menu-size: 64px
 
 .ps-toolbar
   position: fixed
@@ -19,7 +17,7 @@ $side-menu-size: 64px
 
 .ps-side-menu
   position: fixed
-  left: -64px
+  left: -$side-menu-size
   top: $toolbar-size
   height: 100vh
   z-index: 9
@@ -31,6 +29,6 @@ $side-menu-size: 64px
   left: 0
 
 .offline-indicator
-  background-color: $google-login
+  background-color: $red
   color: $paper
   font-size: 0.8rem

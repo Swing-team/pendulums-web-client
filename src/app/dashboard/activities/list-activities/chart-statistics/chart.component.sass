@@ -4,7 +4,7 @@
 .ps-chart-wrapper
   display: inline-block
   width: 100%
-  min-height: 320px
+  min-height: 420px
 
 .ps-chart-calendar-wrapper
   position: relative
@@ -55,7 +55,7 @@
   position: absolute
   top: 0
   right: 0
-  background-color: $primary
+  background-color: $ps-primary
   color: $paper !important
   border-radius: 100% !important
   z-index: 5
@@ -66,12 +66,14 @@
     margin-right: 0
 
 .ps-chart-placeholder
-  background-color: #4E9F67
+  background-color: $yellow
   width: 100%
+  height: 100%
   display: inline-block
   .image
     max-width: 320px
     max-height: 320px
     margin: 20px auto
   p
+    color: $ps-primary
     padding-bottom: 10px

@@ -2,14 +2,14 @@
          [status]="status | async" class="ps-toolbar" (onMenuItemClicked)="showSideMenu($event)" ></toolbar>
 <side-menu #sideMenu *ngIf="(user | async).id" [user]="user | async" [netConnected]="netConnected" (onSignoutClicked)="signOut()" (clickedToCloseMenu)="closeMenu()"
            class="ps-side-menu" [ngClass]="{'ps-side-menu-show': SideMenuIsActive}" (clickedOutsideOfMenu)="clickedOutSideOfMenu($event)"></side-menu>
-<div class="columns ps-main-content" [ngClass]="{'ps-main-signed-in-content-with-side': (user | async).id, 'ps-main-signed-in-content-without-side': !SideMenuIsActive}">
- <div class="column has-text-centered">
-    <div *ngIf="!netConnected" class="offline-indicator has-text-centered">
-      There is no internet connection!
-    </div>
-    <router-outlet></router-outlet>
+
+<div class="ps-main-content has-text-centered" [ngClass]="{'ps-main-signed-in-content-with-side': (user | async).id, 'ps-main-signed-in-content-without-side': !SideMenuIsActive}">
+  <div *ngIf="!netConnected" class="offline-indicator has-text-centered">
+    There is no internet connection!
   </div>
+  <router-outlet></router-outlet>
 </div>
+
 
 
 

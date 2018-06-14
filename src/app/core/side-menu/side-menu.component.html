@@ -17,8 +17,9 @@
         <span class="ps-notification-count" *ngIf="user.pendingInvitations.length>0">{{user.pendingInvitations.length}}</span>
       </a>
     </li>
+    <li title="Give us a gift"><a [ngClass]="{'is-active': activeItemNumber === 4 , 'is-disabled': !netConnected}" (click)="signout()"><span class="icon-gift"></span></a></li>
     <li class="ps-fill-space"></li>
-    <li title="{{ netConnected ? 'Sign out' : 'Offline mode!'}}"><a [ngClass]="{'is-active': activeItemNumber === 4 , 'is-disabled': !netConnected}" (click)="signout()"><span class="icon-sign-out ps-reverse-icon"></span></a></li>
+    <li title="{{ netConnected ? 'Sign out' : 'Offline mode!'}}"><a [ngClass]="{'is-active': activeItemNumber === 4 , 'is-disabled': !netConnected}" (click)="signout()"><span class="icon-sign-out"></span></a></li>
     <li title="Report bug" id="bug-report-icon">
       <a [ngClass]="{'is-active': activeItemNumber === 5 }" (click)="togglePendulumNotifications()">
         <span class="icon-bug"></span>
@@ -31,10 +32,11 @@
 <notification #notifications *ngIf="notificationIsActive" class="ps-notifications-container ps-notifications-container-top"
               [user]="user" (clickedOutSideOfNotification)="clickedOutSideOfNotification($event)"></notification>
 
-<article id="bug-report" class="message is-info ps-notifications-container ps-alert-bottom" *ngIf="pendulumNotification">
+<article id="bug-report" class="message ps-notifications-container ps-alert-bottom" *ngIf="pendulumNotification">
   <div class="message-body">
-    <p>
+    <p class="ps-bug-report-text">
       <strong><span class="icon-error"></span> THIS IS ALPHA SOFTWARE.</strong>
+      <br>
       This software is pre-release, which means there are likely to be bugs our testing didn't catch. So be aware of data loosing.
       <br>
       Please inform us about that bugs we didn't catch in our testing <a href="https://github.com/Pendulum-Swing/web-client/issues" target="_blank"> here</a>.

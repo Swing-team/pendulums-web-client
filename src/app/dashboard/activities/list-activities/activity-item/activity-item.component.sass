@@ -9,12 +9,13 @@
     min-width: 80%
 
 .ps-activity-item-name
+  text-align: center
   margin-bottom: 0.5rem
   @media (max-width: $ps-mobile)
     font-size: 0.75rem
 
 .ps-activity-item-text
-  font-size: 0.7rem
+  font-size: 0.8rem
   color:  gray
   @media (max-width: $ps-mobile)
     font-size: 0.65rem
@@ -25,10 +26,9 @@
 .ps-activity-item-done-by
   white-space: nowrap
   text-overflow: ellipsis
-  width: 70px
-  position: absolute
-  top: 3px
-  left: 25px
+  display: inline-block
+  vertical-align: super
+  line-height: 20px
 
 .ps-activity-member-image
   width: 20px
@@ -38,19 +38,31 @@
 
 .ps-activity-item-button
   overflow: hidden
-  font-size: 1.4rem
   position: absolute
   right: 0
-  bottom: 0
+  bottom: 10px
   i
     cursor: pointer
-  @media (max-width: $ps-mobile)
-    font-size: 1rem
+    transition: all ease-in-out $ps-transitions
+  .icon-pencil
+    color: $ps-primary
+    &:hover
+      color: lighten($ps-primary, 20)
+  .icon-trash
+    color: $pink
+    &:hover
+      color: lighten($pink, 20)
+  .icon-cancel
+    &:hover
+      color: lighten($red, 20)
+  .icon-check
+    &:hover
+      color: lighten($success, 20)
 
 .ps-activity-item-button-confirmation
   border: none
-  padding: 0.5rem !important
   font-size: 1.4rem
   background-color: transparent
+  padding: 1rem 0.2rem 0.2rem  0.2rem !important
   @media (max-width: $ps-mobile)
     font-size: 1rem
