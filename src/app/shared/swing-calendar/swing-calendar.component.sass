@@ -3,11 +3,11 @@
 
 $calendar-border: .1rem solid $white-ter !default
 $calendar-border-radius: $radius-small !default
-$calendar-header-color: $primary-light !default
-$calendar-date-hover: lighten($primary-light, 10%) !default
+$calendar-header-color: $ps-primary !default
+$calendar-date-hover: lighten($ps-primary, 10%) !default
 $calendar-today-background: transparent !default
-$calendar-today-border-color: $primary-light !default
-$calendar-today-color: $primary-light !default
+$calendar-today-border-color: $ps-primary !default
+$calendar-today-color: $ps-primary !default
 
 .calendar
   border: $calendar-border
@@ -37,14 +37,17 @@ $calendar-today-color: $primary-light !default
         &.is-link
           &:hover,
           &:active,
-          &.is-active
-            background: lighten($primary-light, 10%) !important
-            color: $white-ter
+          &.is-active,
           &:focus,
-          &.is-focused,
+          &.is-focused
+            background: lighten($ps-primary, 10%) !important
+            color: $white-ter
+            box-shadow: unset
+            outline: 0
           &.is-hovered
             background-color: $calendar-header-color !important
             color: $white-ter
+            box-shadow: unset
     .calendar-nav-left
       align-items: center
       justify-content: flex-start
@@ -91,7 +94,9 @@ $calendar-today-color: $primary-light !default
       &.is-today
         background: $calendar-today-background
         border-color: $calendar-today-border-color !important
-        color: $calendar-today-color !important
+        color: $calendar-today-color
+        .is-active
+          color: $paper
       &:focus
         background: $calendar-date-hover
         border-color: $calendar-date-hover
@@ -103,9 +108,9 @@ $calendar-today-color: $primary-light !default
         color: findColorInvert( $calendar-date-hover )
         text-decoration: none
       &.is-active
-        background: lighten($primary-light, 20%) !important
-        border-color: lighten($primary-light, 20%) !important
-        color: findColorInvert( $primary )
+        background: lighten($ps-primary, 20%) !important
+        border-color: lighten($ps-primary, 20%) !important
+        color: $paper
     &.is-disabled
       .date-item, .calendar-event
         cursor: default
@@ -114,7 +119,7 @@ $calendar-today-color: $primary-light !default
   .calendar-range
     position: relative
     &::before
-      background: lighten($primary-light, 20%)
+      background: lighten($ps-primary, 20%)
       content: ""
       height: 1.8rem
       left: 0
@@ -157,8 +162,9 @@ $calendar-today-color: $primary-light !default
     cursor: pointer
     font-size: 0.85rem
     border-radius: $radius
+    transition: all ease-in-out $ps-transitions
     &:hover
-      color: $primary-light
+      color: lighten($ps-primary,10%) !important
   @media(max-width: 769px)
     -webkit-box-orient: horizontal
     -webkit-box-direction: normal
@@ -175,7 +181,7 @@ $calendar-today-color: $primary-light !default
     li
       border: solid #e5e5e5 1px
       line-height: 1rem
-      font-size: 0.7rem
+      font-size: 0.8rem
       padding: 5px
       margin: 2px
   @media(max-width: 400px)

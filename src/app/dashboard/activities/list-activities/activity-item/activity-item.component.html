@@ -1,6 +1,6 @@
 <div class="ps-activity-item-inner">
+  <p class="ps-activity-item-name" dir="auto">{{activity.name}}</p>
   <div class="is-pulled-left ps-activity-item-inner-text">
-    <p class="ps-activity-item-name" dir="auto">{{activity.name}}</p>
     <div *ngIf="activityUser" class="has-text-left ps-activity-item-done-by-container">
       <img class="ps-activity-member-image" *ngIf="activityUser.profileImage"
            src="{{activityUser.profileImage? config.imagesEndpoint + '/profile/' + activityUser.profileImage :
@@ -24,8 +24,8 @@
   </div>
   <ng-container *ngIf="activity.stoppedAt">
   <div class="ps-activity-item-button is-pulled-right" *ngIf="!deleteConfirmation">
-    <i class="icon-pencil has-text-success" (click)="openEditManuallyModal()"></i>
-    <i class="icon-trash has-text-danger" (click)="delete()"></i>
+    <i class="icon-pencil" (click)="openEditManuallyModal()"></i>
+    <i class="icon-trash" (click)="delete()"></i>
   </div>
   </ng-container>
   <div class="ps-activity-item-button is-pulled-right" *ngIf="deleteConfirmation" [@slideInOut]>

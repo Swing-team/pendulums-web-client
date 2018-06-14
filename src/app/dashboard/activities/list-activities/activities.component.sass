@@ -9,7 +9,7 @@
 
 .ps-activity-item
   &:before
-    border-left: 2px solid $primary-light
+    border-left: 2px solid $cornflowerBlue
     content: ''
     height: 25%
     position: absolute
@@ -28,10 +28,9 @@
 
 .ps-activity-header
   width: 60%
-  border-top-left-radius: 100px
-  border-bottom-right-radius: 100px
+  border-radius: $radius
   color: $paper
-  background: $primary-light
+  background: $cornflowerBlue
   margin: 0 auto
   padding: 5px
   font-size: 0.9rem
@@ -47,7 +46,7 @@
   font-size: 1.5rem
   line-height: 3rem
   position: absolute
-  color: $primary-light
+  color: $ps-primary
   background-color: $paper
   border-radius: 100%
   border: none
@@ -76,7 +75,7 @@
 .ps-stat-user-filter-wrapper
   background-color: $paper
   position: absolute
-  top: 40px
+  top: 37px
   right: 25%
   width: 50%
   @media (max-width: 700px)
