@@ -32,23 +32,28 @@ $side-menu-item-size: $side-menu-size - 8px
           border: 1px solid $ink
           border-radius: 100%
         &.is-active
-          background-color: $primary
+          background-color: lighten($ps-primary,10%) !important
         &.is-disabled
           cursor: not-allowed
-          background-color: #4B895E !important
+          background-color: darken($white1,30%) !important
           &:hover
-            background-color: inherit
+            background-color: lighten($ps-primary,30%) !important
         &:hover
-          background-color: $primary
+          background-color: lighten($ps-primary,10%) !important
         span
           font-size: 24px
           display: block
           text-align: center
           margin: auto
           color: $paper
-          &.ps-reverse-icon:before
-            transform: rotate(180deg)
-
+          &.icon-sign-out
+            font-size: 20px
+            padding: unset
+            padding-right: 4px
+            padding-top: 2px
+          &.icon-gift
+            padding: unset
+            padding-bottom: 2px
 
 .ps-notifications-container
   position: absolute
@@ -61,12 +66,14 @@ $side-menu-item-size: $side-menu-size - 8px
     width: 250px
 
 .ps-notifications-container-top
-  top: $side-menu-size + 16px
+  top: $side-menu-size * 2 + 16px
 
 .ps-alert-bottom
-  background-color: rgba(246, 249, 254, 0.65)
+  background-color: rgba(246, 249, 254, 0.75)
   top: unset
   bottom: $side-menu-size + 16px
+  .ps-bug-report-text
+    color: $cornflowerBlue
 
 .ps-notification-count
   background-color: $light-red

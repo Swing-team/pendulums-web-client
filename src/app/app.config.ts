@@ -11,19 +11,19 @@ export class AppConfig {
 }
 
 export const APP_DI_CONFIG: AppConfig = {
-  socketEndpoint: 'http://localhost:1337',
+  socketEndpoint: 'http://192.168.1.108:1337',
   // production
   // socketEndpoint: 'https://app.pendulums.io',
   socketPath: '/socket.io',
   // production
   // socketPath: '/api/socket.io',
-  apiEndpoint: 'http://localhost:1337',
+  apiEndpoint: 'http://192.168.1.108:1337',
   // production
   // apiEndpoint: 'https://app.pendulums.io/api',
   httpOptions: { withCredentials: true, responseType: 'json' },
   // production
   // httpOptions: { responseType: 'json' },
-  imagesEndpoint: 'http://localhost:1337/images',
+  imagesEndpoint: 'http://192.168.1.108:1337/images',
   // production
   // imagesEndpoint: 'https://app.pendulums.io/api/images',
 };

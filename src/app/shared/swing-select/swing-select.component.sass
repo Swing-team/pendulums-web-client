@@ -15,7 +15,7 @@
 
 .ps-select
   display: inline-block
-  height: 2.25em
+  height: $ps-select-height
   max-width: 100%
   position: relative
   vertical-align: top
@@ -33,7 +33,7 @@
   .ps-select-label
     padding-right: 2.5em
     cursor: pointer
-    line-height: 2.25em
+    line-height: $ps-select-height
     text-overflow: ellipsis
     overflow: hidden
     white-space: nowrap
@@ -43,7 +43,7 @@
   .ps-select-items-list
     display: none
     position: absolute
-    top: 2.25em
+    top: $ps-select-height
     background-color: $paper
     z-index: 9999
     width: 100%
@@ -58,7 +58,7 @@
       overflow: hidden
       text-overflow: ellipsis
       &:hover
-        background-color: lighten($primary-light, 10)
+        background-color: lighten($ps-primary, 10)
         color: $paper
 
 .ps-close-swing-select
