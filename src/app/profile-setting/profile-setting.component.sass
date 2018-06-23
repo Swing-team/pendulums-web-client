@@ -7,15 +7,25 @@
 .ps-user-image
   width: 120px
   height: 120px
-  border: 1px solid $ink
+  border: 1px solid $paper
   border-radius: 100%
   cursor: pointer
+
+.ps-edit-profile-parent-btn
+  border: none
+  height: 32px !important
+  padding: 8px
 
 .ps-edit-profile-button
   cursor: pointer
   border: none
-  padding: 0.5rem  !important
+  padding: 0.3rem  !important
   background-color: transparent
+  transition: all ease-in-out $ps-transitions
+  &:hover
+    background-color: lighten($white1, 5%) !important
+    border-radius: 100%
+    color: $salmon
 
 .ps-user-name
   width: 70%
@@ -23,6 +33,14 @@
   font-size: 0.85rem
   border-radius: unset !important
   box-shadow: unset !important
+
+.ps-profile-pass-button
+  background-color: $salmon
+  border: unset
+  color: $white
+  transition: all ease-in-out $ps-transitions
+  &:hover
+    background-color: lighten($salmon, 5%) !important
 
 .ps-reserve-space
   visibility: hidden
