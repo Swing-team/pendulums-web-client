@@ -15,12 +15,12 @@ export const userRoleInProject = (project, userId) => {
 };
 
 export const userInProject = (project, userId) => {
-  let role: User;
-  project.teamMembers.map(user => {
-    if (user.id === userId) {
-      role = user;
+  let user: User;
+  project.teamMembers.map(projectUser => {
+    if (projectUser.id === userId) {
+      user = projectUser;
     }
   });
 
-  return role;
+  return user;
 };

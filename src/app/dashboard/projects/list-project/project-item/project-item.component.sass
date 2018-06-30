@@ -1,156 +1,137 @@
 @import "../../../../../sass/variables"
 
-$item-size: 180px
+.ps-back-aquamarine
+  .ps-project-item-card
+    border-radius: $radius
+    background: $aquamarine
+    .ps-hidden
+      background-color: darken($aquamarine, 10) !important
+
+.ps-back-salmon
+  .ps-project-item-card
+    background: $salmon
+    border-radius: $radius
+    .ps-hidden
+      background-color: darken($salmon, 10) !important
+
+.ps-back-white1
+  .ps-project-item-card
+    background: $white1
+    border-radius: $radius
+    .ps-hidden
+      background-color: darken($white1, 10) !important
 
 .ps-project-item
   height: $item-size
+  .ps-project-item-card
+    height: 100%
+    border: unset
+    overflow-y: hidden
+    .ps-project-item-card-content
+      padding: 10px !important
+      height: 100%
+      display: flex
+      flex-direction: column
+      &.ps-hidden
+        position: absolute
+        top: $item-size
+        background-color: inherit
+        transition: all ease-in-out $ps-transitions
+        &.ps-visible
+          top: 0
+      .ps-project-item-card-content-media
+        font-size: 0.85rem
+        padding-bottom: 10px
+        border-bottom: 1px solid lighten($ink, 40)
+        .ps-owner-name
+          color: rgba(0,0,0,0.5)
+        .ps-project-icons
+          color: rgba(0,0,0,0.5)
+          &:hover
+            color: rgba(0,0,0,0.2)
+        .ps-project-image-container
+          height: 76px
+          width: 76px
+          background: no-repeat center center
+          background-size: cover
+          border-radius: $radius !important
+        .ps-item-card-button
+          background-color: rgba(0,0,0,0.5)
+          border: none
+          padding: 0
+          color: $paper
+          border-radius: 100%
+          height: 36px
+          width: 36px
+          font-size: 24px
+          text-align: center
+        .ps-project-item-card-title
+          font-size: 1.5rem
+          max-width: 180px
+          overflow: hidden
+          white-space: nowrap
+          text-overflow: ellipsis
+        .ps-task-input
+          height: 36px
+          font-size: 0.9rem
+          background-color: $ink
+          mix-blend-mode: soft-light
+          border-radius: unset
+          border: unset !important
+          color: $paper !important
+      .ps-project-item-main-content
+        margin-bottom: 0
+        flex-grow: 1
+        .ps-empty-item
+          padding-top: 25px
+        .ps-item-table
+          background-color: inherit
+          table-layout: fixed
+          width: 100%
+          white-space: nowrap
+          margin-bottom: 0
+          td
+            font-size: 0.9rem
+            border: unset
+            white-space: nowrap
+            overflow: hidden
+            text-overflow: ellipsis
+            padding: 0
+            &.ps-image-td
+              width: 40px
+              .ps-member-image
+                width: 24px
+                height: 24px
+                border: 1px solid $ink
+                border-radius: 100%
+            &.row-narrow
+              width: 100px
+              text-align: left !important
+          tr
+            &:hover
+              background-color: transparent
+      .ps-project-item-footer
+        border: unset
+        font-size: 0.75rem
+        color: rgba(0,0,0,0.5)
+        transition: all ease-in-out $ps-transitions
+        .card-footer-item
+          border: unset
+          padding: unset
+          cursor: pointer
+          &:hover
+            color: rgba(0,0,0,0.3)
+          .icon-arrow-right
+            font-size: 1.2rem
+          .icon-back
+            font-size: 1.2rem
+        .ps-project-item-show-more
+          display: table
+          p
+            height: 15px
+          &.ps-project-item-show-more-icon
+            height: 10px
 
-.ps-text-padding
-  padding-left: 10px
 
-.ps-item-font-size-1
-  font-size: 0.7rem
 
-.ps-title
-  padding-left: 10px
-  padding-top: 10px
-  padding-right: 10px
-  margin-bottom: unset
-  height: 40px
-  p
-    max-width: 100px
-    overflow: hidden
-    white-space: nowrap
-    text-overflow: ellipsis
 
-.ps-task-input
-  font-size: 0.75rem
-  background-color: rgba(0, 0, 0, 0.5)
-  border-radius: unset !important
-  border: unset !important
-  box-shadow: unset !important
-  width: 95%
-  max-width: 95%
-  color: $paper
-
-.ps-project-header-ellipsis
-  overflow: hidden
-  text-overflow: ellipsis
-  width: 200px
-  max-width: 200px
-  white-space: nowrap
-
-.ps-item-card-button
-  border-radius: 100%
-  width: 25px
-  height: 25px
-  color: $paper
-  text-align: center
-  background-color: rgba(0, 0, 0, 0.5)
-  border: none
-
-.ps-item-table
-  background-color: inherit
-  table-layout: fixed
-  width: 100%
-  white-space: nowrap
-  td
-    font-size: 0.75rem
-    border-color: black
-    white-space: nowrap
-    overflow: hidden
-    text-overflow: ellipsis
-    &.row-narrow
-      width: 80px
-      text-align: left !important
-  tr
-    &:hover
-      background-color: transparent
-
-.ps-empty-item
-  padding-top: 25px
-
-.ps-image-caption
-  width: 100%
-  height: 30px
-  background-color: rgba(0, 0, 0, 0.7)
-  position: absolute
-  bottom: 0
-  color: $ink
-  line-height: 30px
-  padding-right: 10px
-  padding-left: 10px
-
-.ps-project-image-container
-  height: $item-size
-  width: $item-size
-  background: no-repeat center center
-  background-size: cover
-
-.ps-member-image
-  width: 24px
-  height: 24px
-  border: 1px solid $ink
-  border-radius: 100%
-  margin-left: -15px
-
-.ps-back-member-image
-  background-color: $white !important
-
-.ps-member-etc
-  min-width: 24px
-  min-height: 24px
-  width: 24px
-  height: 24px
-  border: 1px solid $ink
-  border-radius: 100%
-  margin-left: -15px
-  background-color: #A9A9A9
-
-.ps-member-image-container
-  padding-left: 15px
-  height: 24px
-
-.ps-project-footer
-  position: absolute
-  bottom: 0
-  padding-right: 10px
-  padding-left: 10px
-  width: 100%
-  line-height: 30px
-  font-size: 0.75rem
-
-.ps-project-footer-container
-  position: relative
-
-.ps-back-yellow
-  background: #FFFF33
-  .ps-owner-name
-    color: darken(#FFFF33,30)
-  .ps-picture-icon
-    color: #FFFF33
-
-.ps-back-pink
-  background: #ea697b
-  .ps-owner-name
-    color: $paper
-  .ps-picture-icon
-    color: #ea697b
-
-.ps-back-lawnGreen
-  background: #cee83d
-  .ps-owner-name
-    color: $aquamarine
-  .ps-picture-icon
-    color: #cee83d
-
-.is-disabled
-  cursor: not-allowed
-
-.ps-task-input-container
-  // todo: it must handle better for issue 22
-  display: inline-flex
-  @media (max-width: 768px) and (min-width: 447px)
-    display: inherit
-  @media (max-width: 1200px) and (min-width: 920px)
-    display: inherit
