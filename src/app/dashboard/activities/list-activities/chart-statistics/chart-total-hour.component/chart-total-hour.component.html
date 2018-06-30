@@ -4,7 +4,7 @@
       <span>
         <img class="ps-chart-total-hour-member-image" *ngIf="data.profileImage"
              src="{{data.profileImage? config.imagesEndpoint + '/profile/' + data.profileImage :
-                  '../../../../../../assets/images/placeholder.jpg'}}">
+                  '../../../../../../assets/images/placeholder.png'}}">
       <svg *ngIf="!data.profileImage" class="ps-chart-total-hour-member-image" width="20" height="20"
            [identiconHash]="getEmailHash(data.email)">
         Fallback text for browsers not supporting inline svg
