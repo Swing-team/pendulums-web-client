@@ -1,93 +1,118 @@
-<div class="columns is-gapless is-mobile ps-project-item"
-     [ngClass]="{'ps-back-pink': project.id.charCodeAt(project.id.length - 1) % 3 == 0,
-      'ps-back-lawnGreen': project.id.charCodeAt(project.id.length - 1) % 3 == 1,
-       'ps-back-yellow': project.id.charCodeAt(project.id.length - 1) % 3 == 2}">
-  <figure class="image ps-project-image-container"
-    [ngStyle]="{'background-image': project.image ? 'url(' + config.imagesEndpoint + '/projects/' + project.image + ')' :
-         'url(../../../../../assets/images/placeholder.jpg)'}">
-    <div class="ps-image-caption">
-      <a [ngClass]="{'is-disabled': !status.netStatus}" title="{{ status.netStatus ? '' : 'Offline mode!'}}" (click)="showSettings()">
-        <span class="is-pulled-left">
-        <i class="icon-settings ps-picture-icon" ></i>
-      </span>
-      </a>
-      <a [ngClass]="{'is-disabled': !status.netStatus}" title="{{ status.netStatus ? '' : 'Offline mode!'}}" (click)="goToActivities()">
-        <span class="is-pulled-right">
-         <i class="icon-statistic ps-picture-icon" ></i>
-        </span>
-      </a>
-    </div>
-  </figure>
-  <div class="column ps-project-footer-container">
-    <div class="has-text-left ps-title" [ngClass]="{'ps-task-input-container': activityStarted}">
-      <span class="subtitle is-inline-block">
-        <p *ngIf="!activityStarted">{{project.name}}</p>
-        <input #activityNameElm [(ngModel)]="taskName" class="input ps-task-input" (change)="nameActivity($event)"
-               placeholder="Task Name" type="text" *ngIf="activityStarted">
-      </span>
-      <span class="is-pulled-right is-inline-block" (click)="toggleStopStart()">
-        <a  class="button ps-item-card-button" [ngClass]="{'is-loading': activityButtonDisabled}">
-          <span class="icon">
-            <i *ngIf="activityStarted" class="icon-stop"></i>
-            <i *ngIf="!activityStarted" class="icon-play"></i>
+<div class="columns is-gapless is-mobile ps-project-item">
+  <div [ngClass]="{'ps-back-salmon': project.id.charCodeAt(project.id.length - 1) % 3 == 0,
+                   'ps-back-white1': project.id.charCodeAt(project.id.length - 1) % 3 == 1,
+                   'ps-back-aquamarine': project.id.charCodeAt(project.id.length - 1) % 3 == 2}" class="column">
+    <div class="card ps-project-item-card">
+      <div class="card-content ps-project-item-card-content">
+        <div class="media ps-project-item-card-content-media">
+          <div class="media-left is-fullheight">
+            <figure [ngStyle]="{'background-image': project.image ? 'url(' + config.imagesEndpoint + '/projects/' + project.image + ')' :
+                                'url(../../../../../assets/images/placeholder.jpg)'}" class="image ps-project-image-container">
+            </figure>
+          </div>
+          <div class="media-content">
+            <p class="ps-project-item-card-title" *ngIf="!activityStarted">{{project.name}}</p>
+            <p *ngIf="activityStarted">
+              <input #activityNameElm [(ngModel)]="taskName" class="input ps-task-input" (change)="nameActivity($event)"
+                     placeholder="Task Name" type="text">
+            </p>
+            <p>
+              <span>Owned by | </span>
+              <span class="ps-owner-name">
+              <b>{{project.owner.name ? project.owner.name : project.owner.email}}</b>
+              </span>
+            </p>
+            <p>
+              <a [ngClass]="{'is-disabled': !status.netStatus}" title="{{ status.netStatus ? '' : 'Offline mode!'}}" (click)="showSettings()">
+                <i class="icon-settings ps-project-icons"></i>
+              </a>
+              <a [ngClass]="{'is-disabled': !status.netStatus}" title="{{ status.netStatus ? '' : 'Offline mode!'}}" (click)="goToActivities()">
+                <i class="icon-statistic ps-project-icons"></i>
+              </a>
+            </p>
+          </div>
+          <div class="media-right">
+            <div (click)="toggleStopStart()">
+              <a  class="button ps-item-card-button" [ngClass]="{'is-loading': activityButtonDisabled}">
+                <span class="icon">
+                  <i *ngIf="activityStarted" class="icon-stop"></i>
+                  <i *ngIf="!activityStarted" class="icon-play"></i>
+                </span>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="content ps-project-item-main-content">
+          <div class="ps-empty-item" *ngIf="!project.activities || project.activities.length === 0" >
+            There is no activity yet!
+          </div>
+          <table class="table ps-item-table" *ngIf="project.activities && project.activities.length > 0">
+            <tbody>
+            <tr *ngFor="let activity of project.activities  |slice:0:2" title="{{findUserName(activity.user)}}">
+              <td class="ps-image-td">
+                <img class="ps-member-image" *ngIf="findUserImage(activity.user) !== ''" src="{{findUserImage(activity.user)}}">
+                <svg *ngIf="findUserImage(activity.user) === ''" class="ps-member-image ps-back-member-image" width="24" height="34" [identiconHash]="getUserEmailHash(activity.user)">
+                  Fallback text for browsers not supporting inline svg
+                </svg>
+              </td>
+              <td>{{activity.name}}</td>
+              <td class="row-narrow has-text-right">
+                <i *ngIf="activity.stoppedAt" class="icon-stopwatch"></i>
+                <i *ngIf="!activity.stoppedAt" class="icon-walking"></i>
+                {{calculateActivityDuration(activity)}}
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+        <footer class="card-footer ps-project-item-footer" *ngIf="project.activities && project.activities.length > 2">
+          <span class="card-footer-item"></span>
+          <span class="card-footer-item ps-project-item-show-more" (click)="toggleShowMore()">
+            <p><b>show more</b></p>
+            <p class="ps-project-item-show-more-icon"><b><i class="icon-dot-3"></i></b></p>
           </span>
-        </a>
-      </span>
-    </div>
-    <div>
-      <div class="has-text-left ps-text-padding ps-item-font-size-1 ps-project-header-ellipsis">
-        <span>Owned by: </span>
-        <span class="ps-owner-name">
-          <b>{{project.owner.name ? project.owner.name : project.owner.email}}</b>
-        </span>
+          <span class="card-footer-item"></span>
+        </footer>
       </div>
-    </div>
-    <div *ngIf="project.activities && project.activities.length > 0" class="ps-title">
-      <table class="table ps-item-table">
-        <tbody>
-        <tr *ngFor="let activity of project.activities">
-          <td>{{activity.name}}</td>
-          <td class="row-narrow has-text-right">
-            <i class="icon-stopwatch"></i>
-            {{calculateActivityDuration(activity)}}
-          </td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="ps-empty-item">
-      <table *ngIf="!project.activities || project.activities.length === 0" class="table ps-item-table">
-        <tbody>
-        <tr>
-          <td class="has-text-centered">There is no activity yet!</td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="ps-project-footer is-full">
-      <div class="has-text-left ps-member-image-container">
-        <span *ngFor="let member of project.teamMembers|slice:0:4">
-          <img class="ps-member-image" *ngIf="member.profileImage"
-               src="{{member.profileImage? config.imagesEndpoint + '/profile/' + member.profileImage :
-                      '../../../../../assets/images/placeholder.jpg'}}">
-          <svg *ngIf="!member.profileImage" class="ps-member-image ps-back-member-image" width="24" height="34" [identiconHash]="getEmailHash(member.email)">
-          Fallback text for browsers not supporting inline svg
-        </svg>
-        </span>
-        <span *ngIf="project.teamMembers.length > 4">
-          <img class="ps-member-image"
-               src='../../../../../assets/images/ellipsis.jpg'>
-        </span>
-        <span class="is-pulled-right">
-        <i class=" icon-group">
-          {{project.teamMembers.length}}
-        </i>
-      </span>
+
+      <div class="card-content ps-project-item-card-content ps-hidden" [ngClass]="{'ps-visible': showMore}">
+        <div class="content ps-project-item-main-content">
+          <table class="table ps-item-table" *ngIf="project.activities && project.activities.length > 2">
+            <tbody>
+              <tr *ngFor="let activity of project.activities  |slice:showMoreStart:showMoreEnd" title="{{findUserName(activity.user)}}">
+                <td class="ps-image-td">
+                  <img class="ps-member-image" *ngIf="findUserImage(activity.user) !== ''" src="{{findUserImage(activity.user)}}">
+                  <svg *ngIf="findUserImage(activity.user) === ''" class="ps-member-image ps-back-member-image" width="24" height="34" [identiconHash]="getUserEmailHash(activity.user)">
+                    Fallback text for browsers not supporting inline svg
+                  </svg>
+                </td>
+                <td>{{activity.name}}</td>
+                <td class="row-narrow has-text-right">
+                  <i *ngIf="activity.stoppedAt" class="icon-stopwatch"></i>
+                  <i *ngIf="!activity.stoppedAt" class="icon-walking"></i>
+                  {{calculateActivityDuration(activity)}}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <footer class="card-footer ps-project-item-footer">
+          <span class="card-footer-item">
+            <span *ngIf="showMoreStart !== 2" (click)="decreasePointer()">
+              <i class="icon-back"></i>
+            </span>
+          </span>
+          <span class="card-footer-item ps-project-item-show-more" (click)="toggleShowMore()">
+            <p><b>show less</b></p>
+            <p class="ps-project-item-show-more-icon"><b><i class="icon-dot-3"></i></b></p>
+          </span>
+          <span class="card-footer-item">
+            <span *ngIf="showMoreEnd <= project.activities .length" (click)="increasePointer()">
+              <i class="icon-arrow-right"></i>
+            </span>
+          </span>
+        </footer>
       </div>
-      <!--<span class
-        ed-left">-->
-        <!--12 $/h-->
-      <!--</span>-->
     </div>
   </div>
 </div>

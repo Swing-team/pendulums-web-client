@@ -19,9 +19,10 @@ import { ErrorService }                       from '../../../../core/error/error
 import { UnSyncedActivityActions }            from '../../../../shared/state/unsynced-activities/unsynced-activities.actions';
 import { Status }                             from '../../../../shared/state/status/status.model';
 import { Md5 }                                from 'ts-md5/dist/md5';
-import { StatusActions }                      from '../../../../shared/state/status/status.actions';
 import { Subscription }                       from 'rxjs/Subscription';
+import { userInProject }                      from '../../../shared/utils';
 import * as moment from 'moment';
+
 
 @Component({
   selector: 'project-item',
@@ -36,6 +37,9 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
   @ViewChild('activityNameElm') activityNameElm;
   activityStarted = false;
   activityButtonDisabled = false;
+  showMore = false;
+  showMoreStart: number;
+  showMoreEnd: number;
 
   private currentActivityCopy: Activity;
   private taskName: string;
@@ -50,8 +54,7 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
                private router: Router,
                private modalService: ModalService,
                private errorService: ErrorService,
-               private unSyncedActivityActions: UnSyncedActivityActions,
-               private statusActions: StatusActions) {
+               private unSyncedActivityActions: UnSyncedActivityActions) {
   }
 
   ngOnInit() {
@@ -73,6 +76,8 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
         this.currentActivityCopy = currentActivity;
       }));
     }
+
+    this.initializePointers();
   }
 
   ngOnDestroy() {
@@ -282,7 +287,7 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
   }
 
   calculateActivityDuration (activity) {
-    let hour = '';
+    let hour = 'Due';
     if (activity.stoppedAt) {
       const duration = Number(activity.stoppedAt) - Number(activity.startedAt);
       let x = duration / 1000;
@@ -309,8 +314,50 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
     return hour;
   };
 
-  getEmailHash(email): any {
-    return Md5.hashStr(email);
+  findUserInProject(userId) {
+    const user = userInProject(this.project, userId);
+    return user;
+  }
+
+  findUserName(userId) {
+    const user = this.findUserInProject(userId);
+    const userName = user.name ? user.name : user.email;
+    return userName;
+  }
+
+  findUserImage(userId) {
+    const user = this.findUserInProject(userId);
+    const imgUrl = user.profileImage ? this.config.imagesEndpoint + '/profile/' + user.profileImage : '';
+    return imgUrl;
+  }
+
+  getUserEmailHash(userId): any {
+    const user = userInProject(this.project, userId);
+    return Md5.hashStr(user.email);
+  }
+
+  toggleShowMore() {
+    this.showMore = !this.showMore;
+    this.initializePointers();
+  }
+
+  initializePointers() {
+    this.showMoreStart = 2;
+    if (this.project.activities.length < 7) {
+      this.showMoreEnd = 2 + 5;
+    } else {
+      this.showMoreEnd = this.project.activities.length;
+    }
+  }
+
+  increasePointer() {
+    this.showMoreStart = this.showMoreStart + 5;
+    this.showMoreEnd = this.showMoreEnd + 5;
+  }
+
+  decreasePointer() {
+    this.showMoreStart = this.showMoreStart - 5;
+    this.showMoreEnd = this.showMoreEnd - 5;
   }
 
   showSettings() {
