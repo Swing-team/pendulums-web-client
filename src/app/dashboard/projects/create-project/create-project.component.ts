@@ -61,6 +61,7 @@ export class CreateProjectComponent {
             formData.append('image', blob);
           }
           this.projectServices.create(formData).then((project) => {
+            project.activities = [];
             this.store.dispatch(this.projectsActions.addProject(project));
             this.showError('The project was created successfully');
             this.project = new Project();
