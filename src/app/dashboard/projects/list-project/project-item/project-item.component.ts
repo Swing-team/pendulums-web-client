@@ -20,7 +20,7 @@ import { UnSyncedActivityActions }            from '../../../../shared/state/uns
 import { Status }                             from '../../../../shared/state/status/status.model';
 import { Md5 }                                from 'ts-md5/dist/md5';
 import { Subscription }                       from 'rxjs/Subscription';
-import { userInProject }                      from '../../../shared/utils';
+import { userInProject, userRoleInProject }   from '../../../shared/utils';
 import * as moment from 'moment';
 
 
@@ -41,6 +41,10 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
   showMoreStart: number;
   showMoreEnd: number;
 
+  // activityPushType field used to manage the procedure we should update project recent activities in state
+  // if it be "push" means that user is team member or project has just 1 team member and we just need to push activity to recent activities
+  // if it be "edit" means that user is admin/owner and project members are more that 1 so we should update recent activities
+  private activityPushType: string;
   private currentActivityCopy: Activity;
   private taskName: string;
   private activity: Activity;
@@ -77,6 +81,7 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
       }));
     }
 
+    this.initializeActivityPushType();
     this.initializePointers();
   }
 
@@ -84,6 +89,19 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
     this.subscriptions.map((subscribe) => {
       subscribe.unsubscribe()
     });
+  }
+
+  initializeActivityPushType() {
+    const userRoll = userRoleInProject(this.project, this.user.id);
+
+    this.activityPushType = 'edit';
+
+    if (userRoll === 'team member') {
+      this.activityPushType = 'push';
+
+    } else if (this.project.teamMembers.length === 1) {
+      this.activityPushType = 'push';
+    }
   }
 
   toggleStopStart() {
@@ -120,6 +138,9 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
     // we decided to put all data in db by default and then send it to server
     this.store.dispatch(this.currentActivityActions.loadCurrentActivity(this.activity));
 
+    // update project recent activities
+    this.manageProjectRecentActivitiesInState(this.activity.project, this.activity);
+
     if (this.status.netStatus) {
       delete this.activity.stoppedAt;
 
@@ -150,6 +171,14 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
         this.activityNameElm.nativeElement.select();
       }
     }, 500)
+  }
+
+  manageProjectRecentActivitiesInState(projectId, activity) {
+    if (this.activityPushType === 'push') {
+      this.store.dispatch(this.projectsActions.addActivityToProject(projectId, activity));
+    } else if (this.activityPushType === 'edit') {
+      this.store.dispatch(this.projectsActions.updateProjectActivities(projectId, activity));
+    }
   }
 
   stopActivity() {
@@ -214,11 +243,11 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
   pushDividedActivitiesToDb (dividedActivitiesResult) {
     // store an original activity
     this.store.dispatch(this.unSyncedActivityActions.addUnSyncedActivity(this.currentActivityCopy));
-    this.store.dispatch(this.projectsActions.editProjectActivities(this.currentActivityCopy.project, this.currentActivityCopy));
+    this.store.dispatch(this.projectsActions.updateProjectActivities(this.currentActivityCopy.project, this.currentActivityCopy));
     // store all divided activities
     dividedActivitiesResult.map((item) => {
       this.store.dispatch(this.unSyncedActivityActions.addUnSyncedActivity(item));
-      this.store.dispatch(this.projectsActions.editProjectActivities(this.project.id, item));
+      this.store.dispatch(this.projectsActions.updateProjectActivities(item.project, item));
     });
   }
 
@@ -226,7 +255,6 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
     const responseResult = [];
     dividedActivitiesResult.map((item) => {
       responseResult.push(this.activityService.createManually(this.project.id, item).then((activity) => {
-        this.store.dispatch(this.projectsActions.editProjectActivities(this.project.id, activity));
         this.store.dispatch(this.unSyncedActivityActions.removeUnSyncedActivityByFields(item))
       })
         .catch(error => {
@@ -263,7 +291,7 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
     if (this.currentActivity) {
       this.currentActivityCopy.name = this.taskName;
       this.store.dispatch(this.currentActivityActions.renameCurrentActivity(this.currentActivityCopy.name));
-
+      this.store.dispatch(this.projectsActions.updateProjectActivities(this.currentActivityCopy.project, this.currentActivityCopy));
       if (this.status.netStatus) {
         delete this.currentActivityCopy.stoppedAt;
 
@@ -334,7 +362,7 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
   }
 
   getUserEmailHash(userId): any {
-    const user = userInProject(this.project, userId);
+    const user = this.findUserInProject(userId);
     return Md5.hashStr(user.email);
   }
 
@@ -345,7 +373,8 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
 
   initializePointers() {
     this.showMoreStart = 2;
-    if (this.project.activities.length < 7) {
+    this.showMoreEnd = 2 + 5;
+    if (this.project.activities.length > 7) {
       this.showMoreEnd = 2 + 5;
     } else {
       this.showMoreEnd = this.project.activities.length;
