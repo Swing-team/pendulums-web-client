@@ -50,11 +50,13 @@ export default function reducer(state = initialState, action: ActionWithPayload<
       updateProject.invitedUsers.push(action.payload.invitedUser);
       return newState;
     }
+
     case ProjectsActions.UPDATE_PROJECT: {
       const newState = JSON.parse(JSON.stringify(state));
       newState.entities[action.payload.id] = action.payload;
       return newState;
     }
+
     case ProjectsActions.REMOVE_INVITED_USER: {
       const newState = JSON.parse(JSON.stringify(state));
       let invitedUserIndexToRemove;
@@ -110,26 +112,38 @@ export default function reducer(state = initialState, action: ActionWithPayload<
       return newState;
     }
 
-    case ProjectsActions.EDIT_PROJECT_ACTIVITIES: {
+    case ProjectsActions.ADD_ACTIVITY_TO_PROJECT: {
       const newState = JSON.parse(JSON.stringify(state));
-      if (newState.entities[action.payload.projectId].activities) {
-        newState.entities[action.payload.projectId].activities.unshift(action.payload.activity);
-        if (newState.entities[action.payload.projectId].activities.length > 2) {
-          const tempArray = newState.entities[action.payload.projectId].activities.slice(0, 2);
-          newState.entities[action.payload.projectId].activities = tempArray;
-        }
+
+      newState.entities[action.payload.projectId].activities.unshift(action.payload.activity);
+
+      newState.entities[action.payload.projectId].recentActivityName = action.payload.activity.name;
+      return newState;
+    }
+
+    case ProjectsActions.UPDATE_PROJECT_ACTIVITIES: {
+      const newState = JSON.parse(JSON.stringify(state));
+
+      const usersWithActivity = [];
+      newState.entities[action.payload.projectId].activities.map((activity) => {
+        usersWithActivity.push(activity.user);
+      });
+      const userIndex = usersWithActivity.indexOf(action.payload.activity.user);
+      if (userIndex === -1) {
+        newState.entities[action.payload.projectId].activities.push(action.payload.activity)
       } else {
-        newState.entities[action.payload.projectId].activities = [action.payload.activity];
+        newState.entities[action.payload.projectId].activities[userIndex] = action.payload.activity;
       }
+
       newState.entities[action.payload.projectId].recentActivityName = action.payload.activity.name;
       return newState;
     }
 
     case ProjectsActions.REMOVE_PROJECT_ACTIVITIES: {
       const newState = JSON.parse(JSON.stringify(state));
-      if (newState.entities[action.payload.projectId].activities) {
-        newState.entities[action.payload.projectId].activities = [];
-      }
+
+      newState.entities[action.payload.projectId].activities = [];
+
       newState.entities[action.payload.projectId].recentActivityName = null;
       return newState;
     }

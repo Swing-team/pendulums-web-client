@@ -43,10 +43,10 @@
           </div>
         </div>
         <div class="content ps-project-item-main-content">
-          <div class="ps-empty-item" *ngIf="!project.activities || project.activities.length === 0" >
+          <div class="ps-empty-item" *ngIf="project.activities.length === 0" >
             There is no activity yet!
           </div>
-          <table class="table ps-item-table" *ngIf="project.activities && project.activities.length > 0">
+          <table class="table ps-item-table" *ngIf="project.activities.length > 0">
             <tbody>
             <tr *ngFor="let activity of project.activities  |slice:0:2" title="{{findUserName(activity.user)}}">
               <td class="ps-image-td">
@@ -66,7 +66,7 @@
             </tbody>
           </table>
         </div>
-        <footer class="card-footer ps-project-item-footer" *ngIf="project.activities && project.activities.length > 2">
+        <footer class="card-footer ps-project-item-footer" *ngIf="project.activities.length > 2">
           <span class="card-footer-item"></span>
           <span class="card-footer-item ps-project-item-show-more" (click)="toggleShowMore()">
             <p><b>show more</b></p>
@@ -78,7 +78,7 @@
 
       <div class="card-content ps-project-item-card-content ps-hidden" [ngClass]="{'ps-visible': showMore}">
         <div class="content ps-project-item-main-content">
-          <table class="table ps-item-table" *ngIf="project.activities && project.activities.length > 2">
+          <table class="table ps-item-table" *ngIf="project.activities.length > 2">
             <tbody>
               <tr *ngFor="let activity of project.activities  |slice:showMoreStart:showMoreEnd" title="{{findUserName(activity.user)}}">
                 <td class="ps-image-td">
@@ -108,7 +108,7 @@
             <p class="ps-project-item-show-more-icon"><b><i class="icon-dot-3"></i></b></p>
           </span>
           <span class="card-footer-item">
-            <span *ngIf="showMoreEnd <= project.activities .length" (click)="increasePointer()">
+            <span *ngIf="showMoreEnd < project.activities.length" (click)="increasePointer()">
               <i class="icon-arrow-right"></i>
             </span>
           </span>

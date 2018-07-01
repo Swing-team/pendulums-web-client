@@ -18,6 +18,7 @@ import { StatusActions }                    from '../../shared/state/status/stat
 import { Subscription }                     from 'rxjs/Subscription';
 import { Status }                           from '../../shared/state/status/status.model';
 import * as moment from 'moment';
+import {userRoleInProject} from "../../dashboard/shared/utils";
 
 @Component({
   selector: 'toolbar',
@@ -187,6 +188,9 @@ export class ToolbarComponent implements OnInit, OnDestroy  {
       // we decided to put all data in db by default and then send it to server
       this.store.dispatch(this.currentActivityActions.loadCurrentActivity(activity));
 
+      // update project recent activities
+      this.manageProjectRecentActivitiesInState(this.selectedProject, activity);
+
       if (this.status.netStatus) {
         delete activity.stoppedAt;
 
@@ -221,6 +225,23 @@ export class ToolbarComponent implements OnInit, OnDestroy  {
     } else {
       this.stopStartButtonDisabled = false;
       this.showError('Select a project');
+    }
+  }
+
+  manageProjectRecentActivitiesInState(project, activity) {
+    const userRoll = userRoleInProject(project, this.user.id);
+    let activityPushType = 'edit';
+    if (userRoll === 'team member') {
+      activityPushType = 'push';
+
+    } else if (project.teamMembers.length === 1) {
+      activityPushType = 'push';
+    }
+
+    if (activityPushType === 'push') {
+      this.store.dispatch(this.projectsActions.addActivityToProject(project.id, activity));
+    } else if (activityPushType === 'edit') {
+      this.store.dispatch(this.projectsActions.updateProjectActivities(project.id, activity));
     }
   }
 
@@ -289,7 +310,6 @@ export class ToolbarComponent implements OnInit, OnDestroy  {
     const result = [];
     dividedActivitiesResult.map((item) => {
       result.push(this.activityService.createManually(item.project, item).then((activity) => {
-        this.store.dispatch(this.projectsActions.editProjectActivities(item.project, activity));
         this.store.dispatch(this.unSyncedActivityActions.removeUnSyncedActivityByFields(item))
       })
         .catch(error => {
@@ -304,11 +324,11 @@ export class ToolbarComponent implements OnInit, OnDestroy  {
   pushDividedActivitiesToDb (dividedActivitiesResult) {
     // store an original activity
     this.store.dispatch(this.unSyncedActivityActions.addUnSyncedActivity(this.currentActivityCopy));
-    this.store.dispatch(this.projectsActions.editProjectActivities(this.currentActivityCopy.project, this.currentActivityCopy));
+    this.store.dispatch(this.projectsActions.updateProjectActivities(this.currentActivityCopy.project, this.currentActivityCopy));
     // store all divided activities
     dividedActivitiesResult.map((item) => {
       this.store.dispatch(this.unSyncedActivityActions.addUnSyncedActivity(item));
-      this.store.dispatch(this.projectsActions.editProjectActivities(item.project, item));
+      this.store.dispatch(this.projectsActions.updateProjectActivities(item.project, item));
     });
   }
 
@@ -338,6 +358,7 @@ export class ToolbarComponent implements OnInit, OnDestroy  {
     if (this.currentActivity) {
       this.currentActivityCopy.name = this.taskName;
       this.store.dispatch(this.currentActivityActions.renameCurrentActivity(this.currentActivityCopy.name));
+      this.store.dispatch(this.projectsActions.updateProjectActivities(this.currentActivityCopy.project, this.currentActivityCopy));
 
       if (this.status.netStatus) {
         delete this.currentActivityCopy.stoppedAt;
