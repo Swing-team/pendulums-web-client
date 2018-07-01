@@ -51,14 +51,15 @@
             <tr *ngFor="let activity of project.activities  |slice:0:2" title="{{findUserName(activity.user)}}">
               <td class="ps-image-td">
                 <img class="ps-member-image" *ngIf="findUserImage(activity.user) !== ''" src="{{findUserImage(activity.user)}}">
-                <svg *ngIf="findUserImage(activity.user) === ''" class="ps-member-image ps-back-member-image" width="24" height="34" [identiconHash]="getUserEmailHash(activity.user)">
+                <svg *ngIf="findUserImage(activity.user) === ''" class="ps-member-image ps-back-member-image"
+                     width="24" height="34" [identiconHash]="getUserEmailHash(activity.user)">
                   Fallback text for browsers not supporting inline svg
                 </svg>
               </td>
-              <td>{{activity.name}}</td>
+              <td>{{activity.name ? activity.name : 'No recent activity'}}</td>
               <td class="row-narrow has-text-right">
-                <i *ngIf="activity.stoppedAt" class="icon-stopwatch"></i>
-                <i *ngIf="!activity.stoppedAt" class="icon-walking"></i>
+                <i *ngIf="activity.stoppedAt || (!activity.stoppedAt && !activity.startedAt)" class="icon-stopwatch"></i>
+                <i *ngIf="!activity.stoppedAt && activity.startedAt" class="icon-walking"></i>
                 {{calculateActivityDuration(activity)}}
               </td>
             </tr>
@@ -86,10 +87,10 @@
                     Fallback text for browsers not supporting inline svg
                   </svg>
                 </td>
-                <td>{{activity.name}}</td>
+                <td>{{activity.name ? activity.name : 'No recent activity'}}</td>
                 <td class="row-narrow has-text-right">
-                  <i *ngIf="activity.stoppedAt" class="icon-stopwatch"></i>
-                  <i *ngIf="!activity.stoppedAt" class="icon-walking"></i>
+                  <i *ngIf="activity.stoppedAt || (!activity.stoppedAt && !activity.startedAt)" class="icon-stopwatch"></i>
+                  <i *ngIf="!activity.stoppedAt && activity.startedAt" class="icon-walking"></i>
                   {{calculateActivityDuration(activity)}}
                 </td>
               </tr>

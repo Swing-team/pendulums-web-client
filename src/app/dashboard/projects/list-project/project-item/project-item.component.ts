@@ -310,6 +310,8 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
       if (minutes === 0 && hours === 0) {
         hour = seconds + ' sec';
       }
+    } else if (!activity.startedAt) {
+      hour = '- -'
     }
     return hour;
   };
