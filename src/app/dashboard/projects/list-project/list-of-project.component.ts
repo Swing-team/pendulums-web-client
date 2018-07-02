@@ -1,4 +1,4 @@
-import {Component, Input}                             from '@angular/core';
+import { Component, Input }                           from '@angular/core';
 import { Observable }                                 from 'rxjs/Observable';
 import { ModalService }                               from '../../../core/modal/modal.service';
 import { CreateProjectComponent }                     from '../create-project/create-project.component';
@@ -22,8 +22,9 @@ export class ListOfProjectComponent {
 
   constructor (
     private modalService: ModalService,
-    private errorService: ErrorService,
-  ) {}
+    private errorService: ErrorService) {
+
+  }
 
   openCreateProjectModal() {
     if (this.status.netStatus) {
