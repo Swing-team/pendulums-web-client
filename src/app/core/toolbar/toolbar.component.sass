@@ -54,6 +54,7 @@
         font-size: 1rem
         padding: 4px
         line-height: 2rem
+        transition: all ease-in-out $ps-transitions
         &:not(:focus) + label
           background-color: $white
           padding: 4px
@@ -62,6 +63,10 @@
           text-transform: uppercase
           font-weight: 500
           line-height: 2rem
+          &:hover
+            background-color: $powderBlue
+        &:focus
+          background-color: $powderBlue
       .ps-nav-label
         height: 2.5em
         position: absolute
@@ -70,10 +75,12 @@
         overflow: hidden
         white-space: nowrap
         text-overflow: ellipsis
+        cursor: pointer
+        transition: all ease-in-out $ps-transitions
       &:after, &:before
         content: ""
         min-width: 3px
-        height: 24px
+        height: 35px
         background-color: $ps-primary
         margin: auto
   .nav-right
@@ -110,6 +117,7 @@
         width: 12px
         height: 12px
         background-color: $red
+        animation: blink 1s linear infinite
     // This class used to hide time duration in mobile size
     .ps-nav-right-time
       @media (max-width: $ps-mobile + 1px)
@@ -125,9 +133,15 @@
         border: none
         height: 40px
         width: 40px
+        min-height: 40px
+        min-width: 40px
+        max-height: 40px
+        max-width: 40px
         font-size: 24px
         text-align: center
-
+        .icon
+          .icon-play
+            margin-left: 2px
 
 .ps-toolbar-time-tooltip
   background-color: $yellow
@@ -175,7 +189,13 @@
   100%
     transform: rotate(360deg)
 
-
+@keyframes blink
+  0%
+    opacity: 0
+  50%
+    opacity: .5
+  100%
+    opacity: 1
 
 
 

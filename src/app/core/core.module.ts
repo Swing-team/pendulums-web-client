@@ -36,6 +36,7 @@ import { AnonymousGuardService }        from './services/router-guards/anonymous
 import { PageLoaderService }            from './services/page-loader.service';
 import { AppStateSelectors }            from '../shared/state/app-state.selectors';
 import { ProjectsSelectors }            from '../shared/state/project/projects.selectors';
+import { RouterChangeListenerService }  from './services/roueter-change-listener.service';
 
 @NgModule({
   imports:      [
@@ -78,6 +79,7 @@ import { ProjectsSelectors }            from '../shared/state/project/projects.s
     DexieService,
     DatabaseService,
     SyncService,
+    RouterChangeListenerService,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],
   entryComponents: [

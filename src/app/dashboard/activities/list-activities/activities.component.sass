@@ -55,13 +55,18 @@
   z-index: 5
   top: 30px
   right: 50px
+  transition: all ease-in-out $ps-transitions
+  &:hover
+    background-color: darken($paper, 10)
   @media (max-width: 700px)
     height: 40px
     width: 40px
-    top: 20px
+    top: 30px
     right: 5px
     font-size: 1.2rem
     line-height: 2.5rem
+  @media (max-width: 400px)
+    top: 20px
 
 .icon-back
   &:before

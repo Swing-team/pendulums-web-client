@@ -371,10 +371,10 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
   }
 
   initializePointers() {
-    this.showMoreStart = 2;
-    this.showMoreEnd = 2 + 5;
-    if (this.project.activities.length > 7) {
-      this.showMoreEnd = 2 + 5;
+    this.showMoreStart = 0;
+    this.showMoreEnd = 5;
+    if (this.project.activities.length > 5) {
+      this.showMoreEnd = 5;
     } else {
       this.showMoreEnd = this.project.activities.length;
     }
