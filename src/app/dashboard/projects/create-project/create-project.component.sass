@@ -19,18 +19,23 @@
   text-transform: lowercase !important
 
 .ps-left-border
-  border-left: 1px solid $aquamarine
+  border-left: 1px solid $yellow
 
 .ps-body-button
   font-size: 25px
-  transition: background-color 200ms ease-in
   border-radius: 100%
+  color: $primary
+  cursor: pointer
+  transition: all ease-in-out $ps-transitions
+  &.is-danger
+    color: $red
   &:hover
-    background-color: #dddddd
-    cursor: pointer
+    color: lighten($primary, 40)
+    &.is-danger
+      color: lighten($red, 30)
 
 .ps-inviting-user
-  border-bottom: 1px solid $aquamarine
+  border-bottom: 1px solid $yellow
 
 .ps-invited-user-item
   border-bottom: 1px solid #dedfcb

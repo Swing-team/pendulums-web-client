@@ -5,21 +5,21 @@
     border-radius: $radius
     background: $aquamarine
     .ps-hidden
-      background-color: darken($aquamarine, 10) !important
+      background-color: darken($aquamarine, 5) !important
 
 .ps-back-salmon
   .ps-project-item-card
     background: $salmon
     border-radius: $radius
     .ps-hidden
-      background-color: darken($salmon, 10) !important
+      background-color: darken($salmon, 5) !important
 
 .ps-back-white1
   .ps-project-item-card
     background: $white1
     border-radius: $radius
     .ps-hidden
-      background-color: darken($white1, 10) !important
+      background-color: darken($white1, 5) !important
 
 .ps-project-item
   height: $item-size
@@ -43,15 +43,27 @@
         font-size: 0.85rem
         padding-bottom: 10px
         border-bottom: 1px solid lighten($ink, 40)
-        .ps-owner-name
-          color: rgba(0,0,0,0.5)
-        .ps-project-icons
-          color: rgba(0,0,0,0.5)
-          &:hover
-            color: rgba(0,0,0,0.8)
+        .ps-owner-container
+          display: inline-flex
+          max-width: 180px
+          overflow: hidden
+          white-space: nowrap
+          text-overflow: ellipsis
+          .ps-owner-name
+            color: rgba(0,0,0,0.5)
+          @media (max-width: 400px)
+            max-width: 120px
+        .ps-header-icon-container
+          font-size: 1.1rem !important
+          line-height: 1.1rem !important
+          .ps-project-icons
+            color: rgba(0,0,0,0.5)
+            transition: all ease-in-out $ps-transitions
+            &:hover
+              color: rgba(0,0,0,0.8)
         .ps-project-image-container
-          height: 76px
-          width: 76px
+          height: 80px
+          width: 80px
           background: no-repeat center center
           background-size: cover
           border-radius: $radius !important
@@ -63,8 +75,14 @@
           border-radius: 100%
           height: 36px
           width: 36px
+          min-height: 36px
+          min-width: 36px
+          max-height: 36px
+          max-width: 36px
           font-size: 24px
           text-align: center
+          .icon-play
+            margin-left: 2px
         .ps-project-item-card-title
           font-size: 1.5rem
           max-width: 180px
@@ -74,8 +92,7 @@
         .ps-task-input
           height: 36px
           font-size: 0.9rem
-          background-color: $ink
-          mix-blend-mode: soft-light
+          background-color: rgba(0,0,0,0.3)
           border-radius: unset
           border: unset !important
           color: $paper !important

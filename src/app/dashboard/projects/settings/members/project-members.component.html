@@ -52,7 +52,7 @@
           <a class="button ps-member-item-button-confirmation"
              (click)="confirmRemoveMember(i)">
             <span class="icon">
-              <i class="icon-trash has-text-danger"></i>
+              <i class="icon-trash ps-is-danger"></i>
             </span>
           </a>
         </div>
@@ -60,13 +60,13 @@
           <a class="button ps-member-item-button-confirmation" *ngIf="!removeButtonDisabled"
              (click)="cancelRemoveConfirmation()">
             <span class="icon">
-              <i class="icon-cancel" [ngClass]="{'has-text-danger': !removeButtonDisabled}"></i>
+              <i class="icon-cancel" [ngClass]="{'ps-is-danger': !removeButtonDisabled}"></i>
             </span>
           </a>
           <a class="button ps-member-item-button-confirmation" [ngClass]="{'is-loading': removeButtonDisabled}"
              (click)="removeMember(member, i)">
             <span class="icon">
-              <i class="icon-check" [ngClass]="{'has-text-success': !removeButtonDisabled}"></i>
+              <i class="icon-check" [ngClass]="{'ps-is-success': !removeButtonDisabled}"></i>
             </span>
           </a>
         </div>

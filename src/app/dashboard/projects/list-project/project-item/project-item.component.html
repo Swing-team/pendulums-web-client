@@ -16,13 +16,13 @@
               <input #activityNameElm [(ngModel)]="taskName" class="input ps-task-input" (change)="nameActivity($event)"
                      placeholder="Task Name" type="text">
             </p>
-            <p>
-              <span>Owned by | </span>
+            <p class="ps-owner-container">
+              <span>Owned by |&nbsp;</span>
               <span class="ps-owner-name">
-              <b>{{project.owner.name ? project.owner.name : project.owner.email}}</b>
+                <b> {{project.owner.name ? project.owner.name : project.owner.email}}</b>
               </span>
             </p>
-            <p>
+            <p class="ps-header-icon-container">
               <a [ngClass]="{'is-disabled': !status.netStatus}" title="{{ status.netStatus ? '' : 'Offline mode!'}}" (click)="showSettings()">
                 <i class="icon-settings ps-project-icons"></i>
               </a>
@@ -99,7 +99,7 @@
         </div>
         <footer class="card-footer ps-project-item-footer">
           <span class="card-footer-item">
-            <span *ngIf="showMoreStart !== 2" (click)="decreasePointer()">
+            <span *ngIf="showMoreStart !== 0" (click)="decreasePointer()">
               <i class="icon-back"></i>
             </span>
           </span>

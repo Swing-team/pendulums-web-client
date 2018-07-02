@@ -22,7 +22,7 @@
   margin-bottom: 25px !important
 
 .ps-inviting-user
-  border-bottom: 1px solid $aquamarine
+  border-bottom: 1px solid $yellow
 
 .ps-body-input
   box-shadow: none
@@ -52,6 +52,15 @@
   padding: 0.5rem !important
   font-size: 1.4rem
   background-color: transparent
+  transition: all ease-in-out $ps-transitions
+  .ps-is-danger
+    color: $red
+    &:hover
+      color: lighten($red, 30)
+  .ps-is-success
+    color: $success
+    &:hover
+      color: lighten($success, 30)
   @media (max-width: $ps-mobile)
     font-size: 1rem
 
@@ -62,13 +71,13 @@
 .ps-invitation-add-item-button-icon
   font-size: 25px
   border-radius: 100%
+  color: $primary
   &:hover
-    background-color: #dddddd
     cursor: pointer
-
+    color: lighten($primary, 30)
 
 .ps-left-border
-  border-left: 1px solid $aquamarine
+  border-left: 1px solid $yellow
 
 .ps-line-height
   line-height: 36px
