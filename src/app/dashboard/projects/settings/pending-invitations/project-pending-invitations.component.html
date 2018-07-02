@@ -27,7 +27,7 @@
           <a class="button ps-invitation-add-item-button" [ngClass]="{'is-loading': inviteButtonDisabled}"
              (click)="invite()">
             <span class="icon">
-              <i class="icon-plus has-text-success ps-invitation-add-item-button-icon" [ngClass]="{'has-text-success': !inviteButtonDisabled}"></i>
+              <i class="icon-plus ps-invitation-add-item-button-icon" [ngClass]="{'has-text-success': !inviteButtonDisabled}"></i>
             </span>
           </a>
         </p>
@@ -54,7 +54,7 @@
       <div class="ps-invitation-item-button" *ngIf="cancelInvitationConfirmationViewIndex !== i">
         <a class="button ps-invitation-item-button-confirmation" (click)="confirmCancelInvitation(i)">
           <span class="icon">
-            <i class="icon-trash has-text-danger"></i>
+            <i class="icon-trash ps-is-danger"></i>
           </span>
         </a>
       </div>
@@ -62,13 +62,13 @@
         <a class="button ps-invitation-item-button-confirmation" *ngIf="!cancelButtonDisabled"
            (click)="cancelInvitationConfirmation()">
           <span class="icon">
-            <i class="icon-cancel" [ngClass]="{'has-text-danger': !cancelButtonDisabled}"></i>
+            <i class="icon-cancel" [ngClass]="{'ps-is-danger': !cancelButtonDisabled}"></i>
           </span>
         </a>
         <a class="button ps-invitation-item-button-confirmation" [ngClass]="{'is-loading': cancelButtonDisabled}"
            (click)="cancelInvitation(invited, i)">
           <span class="icon">
-            <i class="icon-check" [ngClass]="{'has-text-success': !cancelButtonDisabled}"></i>
+            <i class="icon-check" [ngClass]="{'ps-is-success': !cancelButtonDisabled}"></i>
           </span>
         </a>
       </div>

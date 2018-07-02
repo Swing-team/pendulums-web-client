@@ -82,8 +82,17 @@
   padding: 0.5rem !important
   font-size: 1.4rem
   background-color: transparent
+  transition:  all ease-in-out $ps-transitions
   @media (max-width: $ps-mobile)
     font-size: 1rem
+  .ps-is-danger
+    color: $red
+    &:hover
+      color: lighten($red, 30)
+  .ps-is-success
+    color: $success
+    &:hover
+      color: lighten($success, 30)
 
 .ps-member-item-remove-team-member
   border: none

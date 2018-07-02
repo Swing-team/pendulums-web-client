@@ -37,6 +37,7 @@ export class NotificationComponent implements OnInit {
     if (this.acceptDisabledIndex < 0 && this.denyDisabledIndex < 0) {
       this.acceptDisabledIndex = i;
       this.notificationService.accept(projectId).then((project) => {
+        project.activities = [];
         this.store.dispatch(this.projectsActions.addProject(project));
         this.user.pendingInvitations.map((obj, index) => {
           if (obj.id === projectId) {
