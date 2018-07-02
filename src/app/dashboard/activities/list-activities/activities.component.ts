@@ -20,7 +20,6 @@ import { User }                             from '../../../shared/state/user/use
 import { cloneDeep }                        from 'lodash';
 import { PageLoaderService }                from '../../../core/services/page-loader.service';
 import { Subscription }                     from 'rxjs/Subscription';
-import { ProjectsActions }                  from '../../../shared/state/project/projects.actions';
 import { ChartComponent }                   from './chart-statistics/chart.component';
 
 @Component({
@@ -62,7 +61,6 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
                private store: Store<AppState>,
                private route: ActivatedRoute,
                private activityService: ActivityService,
-               private projectsActions: ProjectsActions,
                private location: Location,
                private modalService: ModalService,
                private errorService: ErrorService,
@@ -155,7 +153,6 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
       this.tempArray = Removed;
       this.deleteButtonDisabled = false;
       this.showError('Activity was deleted successfully');
-      this.updateProjectRecentActivitiesInState();
     })
       .catch(error => {
         this.deleteButtonDisabled = false;
@@ -172,7 +169,6 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
     this.tempArray = this.tempArray.concat(params);
     this.sortArrayByDate();
     this.groupByActivities();
-    this.updateProjectRecentActivitiesInState();
     // Now re-render chart component
     if (this.ChartComponent) {
       this.ChartComponent.getStatAndPrepareData();
@@ -299,19 +295,6 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
       this.tempArray = [];
       this.groupByActivities();
       this.ChartComponent.parentHasActivity = false;
-    }
-  }
-
-  updateProjectRecentActivitiesInState() {
-    // we will update project recent activities in state here
-    // but because of reference calls in js we need to take deep copy from activities
-    const tempArrayCopy = this.tempArray;
-    this.store.dispatch(this.projectsActions.removeProjectActivities(this.projectId));
-    if (tempArrayCopy[1]) {
-      this.store.dispatch(this.projectsActions.editProjectActivities(this.projectId, tempArrayCopy[1]));
-    }
-    if (tempArrayCopy[0]) {
-      this.store.dispatch(this.projectsActions.editProjectActivities(this.projectId, tempArrayCopy[0]));
     }
   }
 

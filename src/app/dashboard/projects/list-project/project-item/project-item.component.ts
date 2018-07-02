@@ -23,7 +23,6 @@ import { Subscription }                       from 'rxjs/Subscription';
 import { userInProject, userRoleInProject }   from '../../../shared/utils';
 import * as moment from 'moment';
 
-
 @Component({
   selector: 'project-item',
   templateUrl: './project-item.component.html',
