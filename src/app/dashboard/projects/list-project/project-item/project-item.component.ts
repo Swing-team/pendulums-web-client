@@ -116,8 +116,9 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
 
   startActivity() {
     if (this.currentActivityCopy.startedAt) {
-      this.stopActivity();
-      this.startActivityAtServer();
+      this.stopActivity().then(() => {
+        this.startActivityAtServer();
+      });
     } else {
       this.startActivityAtServer();
     }
@@ -180,63 +181,70 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
     }
   }
 
-  stopActivity() {
-    if (this.currentActivity) {
-      // first we need divide time to separated days
-      const dividedActivitiesArray = [];
-      const stoppedAtDay = moment().startOf('day');
-      const startedAtDay = moment(Number(this.currentActivityCopy.startedAt)).startOf('day');
-      if (stoppedAtDay.isSame(startedAtDay)) {
-        this.currentActivityCopy.stoppedAt = moment().valueOf().toString();
-      } else {
-        const diff = stoppedAtDay.diff(startedAtDay, 'days');
-        let startedAt = this.currentActivityCopy.startedAt;
-        let stoppedAt = moment(Number(this.currentActivityCopy.startedAt)).endOf('day').valueOf();
-        this.currentActivityCopy.stoppedAt = stoppedAt.toString();
-        for (let i = 0; i < diff; i++) {
-          startedAt = (stoppedAt + 1).toString();
-          if ( i < diff - 1) {
-            stoppedAt = moment(stoppedAt + 1).endOf('day').valueOf();
-          } else if (i === diff - 1) {
-            stoppedAt = moment().valueOf();
-          }
-          const tempResult = {
-            name: this.currentActivityCopy.name,
-            user: this.currentActivityCopy.user,
-            project: this.currentActivityCopy.project,
-            startedAt: startedAt,
-            stoppedAt: stoppedAt.toString(),
-          };
-          dividedActivitiesArray.push(tempResult);
-        }
-      }
-
-      // we must save divided activities and original activity in db
-      this.pushDividedActivitiesToDb(dividedActivitiesArray);
-
-      if (this.status.netStatus) {
-        // now we will try to store all data at server
-        if (this.currentActivityCopy.id) {
-          this.activityService.editCurrentActivity(this.project.id, this.currentActivityCopy).then((activity) => {
-            this.updateStateInSuccess(dividedActivitiesArray);
-          })
-            .catch(error => {
-              this.updateStateInCatch(error);
-            });
+  stopActivity(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      if (this.currentActivity) {
+        // first we need divide time to separated days
+        const dividedActivitiesArray = [];
+        const stoppedAtDay = moment().startOf('day');
+        const startedAtDay = moment(Number(this.currentActivityCopy.startedAt)).startOf('day');
+        if (stoppedAtDay.isSame(startedAtDay)) {
+          this.currentActivityCopy.stoppedAt = moment().valueOf().toString();
         } else {
-          this.activityService.createManually(this.project.id, this.currentActivityCopy).then((activity) => {
-            this.updateStateInSuccess(dividedActivitiesArray);
-          })
-            .catch((error) => {
-              this.updateStateInCatch(error);
-            });
+          const diff = stoppedAtDay.diff(startedAtDay, 'days');
+          let startedAt = this.currentActivityCopy.startedAt;
+          let stoppedAt = moment(Number(this.currentActivityCopy.startedAt)).endOf('day').valueOf();
+          this.currentActivityCopy.stoppedAt = stoppedAt.toString();
+          for (let i = 0; i < diff; i++) {
+            startedAt = (stoppedAt + 1).toString();
+            if ( i < diff - 1) {
+              stoppedAt = moment(stoppedAt + 1).endOf('day').valueOf();
+            } else if (i === diff - 1) {
+              stoppedAt = moment().valueOf();
+            }
+            const tempResult = {
+              name: this.currentActivityCopy.name,
+              user: this.currentActivityCopy.user,
+              project: this.currentActivityCopy.project,
+              startedAt: startedAt,
+              stoppedAt: stoppedAt.toString(),
+            };
+            dividedActivitiesArray.push(tempResult);
+          }
         }
-      } else {
-        this.store.dispatch(this.currentActivityActions.clearCurrentActivity());
-        this.activityButtonDisabled = false;
-        this.showError('The activity stopped');
+
+        // we must save divided activities and original activity in db
+        this.pushDividedActivitiesToDb(dividedActivitiesArray);
+
+        if (this.status.netStatus) {
+          // now we will try to store all data at server
+          if (this.currentActivityCopy.id) {
+            this.activityService.editCurrentActivity(this.project.id, this.currentActivityCopy).then((activity) => {
+              this.updateStateInSuccess(dividedActivitiesArray);
+              resolve();
+            })
+              .catch(error => {
+                this.updateStateInCatch(error);
+                resolve();
+              });
+          } else {
+            this.activityService.createManually(this.project.id, this.currentActivityCopy).then((activity) => {
+              this.updateStateInSuccess(dividedActivitiesArray);
+              resolve();
+            })
+              .catch((error) => {
+                this.updateStateInCatch(error);
+                resolve();
+              });
+          }
+        } else {
+          this.store.dispatch(this.currentActivityActions.clearCurrentActivity());
+          this.activityButtonDisabled = false;
+          this.showError('The activity stopped');
+          resolve();
+        }
       }
-    }
+    });
   }
 
   pushDividedActivitiesToDb (dividedActivitiesResult) {
