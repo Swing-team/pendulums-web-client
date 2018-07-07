@@ -1,18 +1,50 @@
 @import "../../../../../sass/variables"
 
-.ps-back-aquamarine
+.ps-back-blue
   .ps-project-item-card
     border-radius: $radius
-    background: $aquamarine
+    background: $ps-card-blue
     .ps-hidden
-      background-color: darken($aquamarine, 5) !important
+      background-color: $ps-card-blue-dark !important
+
+.ps-back-black
+  .ps-project-item-card
+    border-radius: $radius
+    background: $black
+    color: $paper !important
+    .ps-hidden
+      background-color: $black-light !important
+    .ps-owner-name
+      color: $paper !important
+    .ps-item-table
+      td
+        color: $paper !important
+    .ps-header-icon-container
+      .ps-project-icons
+        color: $paper !important
+        transition: all ease-in-out $ps-transitions
+        &:hover
+          color: darken($paper, 30) !important
+    .ps-project-item-footer
+      color: $paper !important
+      transition: all ease-in-out $ps-transitions
+      .card-footer-item
+        &:hover
+          color: darken($paper, 30) !important
+
+.ps-back-yellow
+  .ps-project-item-card
+    background: $yellow
+    border-radius: $radius
+    .ps-hidden
+      background-color: $yellow-dark !important
 
 .ps-back-salmon
   .ps-project-item-card
     background: $salmon
     border-radius: $radius
     .ps-hidden
-      background-color: darken($salmon, 5) !important
+      background-color: $salmon-dark !important
 
 .ps-back-white1
   .ps-project-item-card
@@ -20,6 +52,13 @@
     border-radius: $radius
     .ps-hidden
       background-color: darken($white1, 5) !important
+
+.ps-back-pink
+  .ps-project-item-card
+    background: $ps-card-pink
+    border-radius: $radius
+    .ps-hidden
+      background-color: $ps-card-pink-dark !important
 
 .ps-project-item
   height: $item-size
