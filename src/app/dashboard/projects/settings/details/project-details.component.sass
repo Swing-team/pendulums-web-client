@@ -1,10 +1,30 @@
 @import '../../../../../sass/variables'
 
+$projectImageSize: 100px
+
 .ps-header-input
-  border: none
-  font-size: 30px
+  border-left: 3px solid $ps-primary
+  border-right: 3px solid $ps-primary
+  border-top: none
+  border-bottom: none
+  border-radius: 0
+  margin-top: 20px
+  margin-bottom: 20px
+  font-size: 25px
   box-shadow: none
   text-align: center
+  &:not(:focus) + label
+    background-color: $white
+    padding: 4px
+    z-index: 2
+    color: $ps-primary
+    text-transform: uppercase
+    font-weight: 500
+    line-height: 2rem
+    &:hover
+      background-color: $powderBlue
+  &:focus
+    background-color: $powderBlue
   @media (max-width: 480px)
     font-size: 20px
 
@@ -17,8 +37,11 @@
   font-size:  0.9rem !important
 
 .ps-image-container
-  width: 100px
-  height: 100px
+  width: $projectImageSize
+  height: $projectImageSize
+  position: relative
+  border-radius: 4px
+  overflow: hidden
 
 .ps-container
   display: flex
@@ -42,3 +65,17 @@
 
 .ps-project-name-container
   margin: 20px
+
+.ps-pencil-image-change
+  background-color: rgba(70, 71, 111, 0.7)
+  position: absolute
+  text-align: center
+  color: $paper
+  line-height: $projectImageSize
+  font-size: 24px
+  top: 0
+  bottom: 0
+  left: 0
+  right: 0
+  cursor: pointer
+
