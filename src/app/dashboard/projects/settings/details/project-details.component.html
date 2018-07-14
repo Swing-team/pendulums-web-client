@@ -2,10 +2,10 @@
   <div dir="auto" class="ps-container">
     <div class="ps-image-container">
       <div style="padding: unset">
-        <a (click)="projectImageElem.click()">
+        <a>
           <figure class="image is-1by1">
             <input #projectImageElem type="file" name="projectImage" style="display:none" (change)="getFiles($event)"
-                   accept="image/">
+                  accept="image/">
             <img [src]="previewImage ? previewImage : '../../../../../assets/images/placeholder.png'">
           </figure>
         </a>
@@ -14,12 +14,13 @@
         <img #canvasPreviewImageElem [src]="canvasPreviewImage" style="max-width: unset;" (load)="resizeImage()">
         <canvas #projectImageCanvasElem></canvas>
       </div>
+      <span (click)="projectImageElem.click()" class="icon-pencil ps-pencil-image-change" ></span>
     </div>
     <div>
       <div class="field">
         <p class="control">
           <input [(ngModel)]="clonedProject.name" name="name" class="input ps-header-input"
-                 placeholder="untitled project..." type="text">
+                placeholder="untitled project..." type="text">
         </p>
       </div>
     </div>
