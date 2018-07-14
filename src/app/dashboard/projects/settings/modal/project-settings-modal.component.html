@@ -10,6 +10,6 @@
   <project-details *ngIf="tabs[0] === 'is-active'" [project]="project" [readOnly]="readOnly"></project-details>
   <project-members *ngIf="tabs[1] === 'is-active'" [project]="project" [user]="user" [readOnly]="readOnly"></project-members>
   <project-pending-invitations *ngIf="tabs[2] === 'is-active' && !readOnly" [project]="project"></project-pending-invitations>
-  <dangerous-actions *ngIf="tabs[3] === 'is-active'" [project]="project"
-                     [readOnly]="readOnly" [isAdmin]="isAdmin" [isOwner]="isOwner"></dangerous-actions>
+  <dangerous-actions *ngIf="tabs[3] === 'is-active'" [project]="project" [readOnly]="readOnly" [isAdmin]="isAdmin"
+                     [isOwner]="isOwner" [projectIdInCurrentActivity]="projectIdInCurrentActivity"></dangerous-actions>
 </section>
