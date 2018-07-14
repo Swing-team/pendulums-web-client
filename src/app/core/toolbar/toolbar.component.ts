@@ -204,7 +204,17 @@ export class ToolbarComponent implements OnInit, OnDestroy  {
           this.stopStartButtonDisabled = false;
         })
           .catch(error => {
-            this.showError('Server communication error');
+            if (error.status === 404) {
+              this.showError('Project has been deleted before.');
+              this.store.dispatch(this.projectsActions.removeProject(this.selectedProject.id));
+
+              // if we have current activity on deleted project we should clear it
+              if (this.selectedProject.id === this.currentActivityCopy.project) {
+                this.store.dispatch(this.currentActivityActions.clearCurrentActivity());
+              }
+            } else {
+              this.showError('Server communication error.');
+            }
             console.log('server error happened', error);
             this.stopStartButtonDisabled = false;
           });
