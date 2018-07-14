@@ -2,13 +2,13 @@
   <div dir="auto" class="ps-container">
     <div class="ps-image-container">
       <div style="padding: unset">
-        <a>
-          <figure class="image is-1by1">
-            <input #projectImageElem type="file" name="projectImage" style="display:none" (change)="getFiles($event)"
-                  accept="image/">
-            <img [src]="previewImage ? previewImage : '../../../../../assets/images/placeholder.png'">
+        <div>
+          <input #projectImageElem type="file" name="projectImage" style="display:none" (change)="getFiles($event)"
+                accept="image/">
+          <figure [ngStyle]="{'background-image': previewImage ? 'url(' + previewImage + ')' : 'url(\'../../../../../assets/images/placeholder.png\')'}"
+            class="ps-image-resize">
           </figure>
-        </a>
+        </div>
       </div>
       <div style="display: none;">
         <img #canvasPreviewImageElem [src]="canvasPreviewImage" style="max-width: unset;" (load)="resizeImage()">
