@@ -40,7 +40,7 @@ export default function reducer(state = initialState, action: ActionWithPayload<
 
     case ProjectsActions.REMOVE_PROJECT: {
       const newState = JSON.parse(JSON.stringify(state));
-      delete newState.entities[action.payload.id];
+      delete newState.entities[action.payload];
       return newState;
     }
 
