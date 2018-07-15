@@ -1,4 +1,4 @@
-import { Component, ViewChild, Inject, Input }           from '@angular/core';
+import { Component, ViewChild, Input }            from '@angular/core';
 import { ImageCropperComponent, CropperSettings } from 'ng2-img-cropper';
 import { ModalService }                           from '../../core/modal/modal.service';
 import { Store }                                  from '@ngrx/store';
