@@ -1,4 +1,4 @@
-import { Component, ViewChild }                   from '@angular/core';
+import { Component, ViewChild, Inject, Input }           from '@angular/core';
 import { ImageCropperComponent, CropperSettings } from 'ng2-img-cropper';
 import { ModalService }                           from '../../core/modal/modal.service';
 import { Store }                                  from '@ngrx/store';
@@ -12,6 +12,7 @@ import { UserService }                            from '../../core/services/user
   styleUrls: ['./image-cropper.component.sass'],
 })
 export class ImgCropperComponent {
+  @Input() initialImage: string;
   profileData: any;
   croppedImageFile: any;
   cropperSettings: CropperSettings;
@@ -34,12 +35,11 @@ export class ImgCropperComponent {
     const image: any = new Image();
     const file: File = $event.target.files[0];
     const myReader: FileReader = new FileReader();
-    const that = this;
 
-    myReader.onloadend = function (loadEvent: any) {
+    myReader.onloadend = (loadEvent: any) => {
       image.src = loadEvent.target.result;
       setTimeout(() => {
-        that.cropper.setImage(image);
+        this.cropper.setImage(image);
       }, 500);
     };
 
