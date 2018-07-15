@@ -14,12 +14,12 @@
             </figure>
           </div>
           <div class="media-content">
-            <p class="ps-project-item-card-title" *ngIf="!activityStarted">{{project.name}}</p>
+            <p class="ps-project-item-card-title" *ngIf="!activityStarted" title="{{project.name}}">{{project.name}}</p>
             <p *ngIf="activityStarted">
               <input #activityNameElm [(ngModel)]="taskName" class="input ps-task-input" (change)="nameActivity($event)"
                      placeholder="Task Name" type="text">
             </p>
-            <p class="ps-owner-container">
+            <p class="ps-owner-container" title="{{project.owner.name ? project.owner.name : project.owner.email}}">
               <span>Owned by |&nbsp;</span>
               <span class="ps-owner-name">
                 <b> {{project.owner.name ? project.owner.name : project.owner.email}}</b>
@@ -51,7 +51,7 @@
           </div>
           <table class="table ps-item-table" *ngIf="project.activities.length > 0">
             <tbody>
-            <tr *ngFor="let activity of project.activities  |slice:0:2" title="{{findUserName(activity.user)}}">
+            <tr *ngFor="let activity of project.activities  |slice:0:2" title="{{findUserName(activity.user) + '&#013;' + activity.name}}">
               <td class="ps-image-td">
                 <img class="ps-member-image" *ngIf="findUserImage(activity.user) !== ''" src="{{findUserImage(activity.user)}}">
                 <svg *ngIf="findUserImage(activity.user) === ''" class="ps-member-image ps-back-member-image"
@@ -83,7 +83,7 @@
         <div class="content ps-project-item-main-content">
           <table class="table ps-item-table" *ngIf="project.activities.length > 2">
             <tbody>
-              <tr *ngFor="let activity of project.activities  |slice:showMoreStart:showMoreEnd" title="{{findUserName(activity.user)}}">
+              <tr *ngFor="let activity of project.activities  |slice:showMoreStart:showMoreEnd" title="{{findUserName(activity.user) + '&#013;' + activity.name}}">
                 <td class="ps-image-td">
                   <img class="ps-member-image" *ngIf="findUserImage(activity.user) !== ''" src="{{findUserImage(activity.user)}}">
                   <svg *ngIf="findUserImage(activity.user) === ''" class="ps-member-image ps-back-member-image" width="24" height="34" [identiconHash]="getUserEmailHash(activity.user)">
