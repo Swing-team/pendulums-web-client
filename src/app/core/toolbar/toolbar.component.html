@@ -14,7 +14,7 @@
     <div class="nav-item" *ngIf="currentActivityCopy.startedAt">
       <input id="activityNameElm" #activityNameElm class="input is-small ps-nav-input" [(ngModel)]="taskName" placeholder="Task name" type="text"
              (change)="nameActivity($event)"/>
-      <label class="ps-nav-label" for="activityNameElm">{{currentActivityCopy.name}}&nbsp;-&nbsp;{{selectedProject.name ? selectedProject.name : ''}}</label>
+      <label class="ps-nav-label" for="activityNameElm" title="{{currentActivityCopy.name}}">{{currentActivityCopy.name}}&nbsp;-&nbsp;{{selectedProject.name ? selectedProject.name : ''}}</label>
     </div>
   </div>
   <div class="nav-right">
@@ -30,7 +30,7 @@
       </div>
       <div *ngIf="currentActivityCopy.startedAt" class="ps-nav-right-item ps-nav-right-time">
         <span class="ps-time-indicator"></span>
-        <span class="ps-display-span-time">{{timeDuration}}</span>
+        <span class="ps-display-span-time" title="{{timeDuration}}">{{timeDuration}}</span>
       </div>
       <div class="ps-toolbar-play">
         <div (click)="toggleStopStart()">

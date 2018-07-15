@@ -8,7 +8,7 @@
       <svg *ngIf="!activityUser.profileImage" class="ps-activity-member-image" width="20" height="20" [identiconHash]="getEmailHash(activityUser.email)">
         Fallback text for browsers not supporting inline svg
       </svg>
-      <span class="ps-activity-item-text ps-activity-item-done-by">
+      <span class="ps-activity-item-text ps-activity-item-done-by"  title="{{activityUser.name ? activityUser.name : activityUser.email}}">
         <p *ngIf="activityUser.id != currentUser.id">Done by: &nbsp; {{activityUser.name ? activityUser.name : activityUser.email}}</p>
         <p *ngIf="activityUser.id == currentUser.id">Done by: &nbsp; you</p>
       </span>
