@@ -106,6 +106,11 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
     if (this.netConnected) {
       this.modalService.show({
         component: ImgCropperComponent,
+        inputs: {
+          initialImage: this.userEdit.profileImage ? this.config.imagesEndpoint
+          + '/profile/' + this.userEdit.profileImage :
+          '../../../assets/images/placeholder.png'
+        },
         customStyles: {'width': '350px', 'overflow': 'initial'}
       });
     } else {
