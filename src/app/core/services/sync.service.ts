@@ -158,7 +158,7 @@ export class SyncService {
         this.store.dispatch(this.projectsActions.removeProject(data.data.toString()));
 
         // if we have current activity on deleted project we should clear it
-        if (this.currentActivityProjectId.toString() === data.data.toString()) {
+        if (this.currentActivityProjectId && (this.currentActivityProjectId.toString() === data.data.toString())) {
           this.store.dispatch(this.currentActivityActions.clearCurrentActivity());
         }
       }
