@@ -210,21 +210,57 @@ export class ChartComponent implements OnInit {
   }
 
   updateUsersWithTotal(series) {
-    const tempArray = cloneDeep(this.usersWithTotal);
+    const tempArray = cloneDeep(this.usersWithTotal)
+
+    // We use this variable to handle bug of chart
+    // that happen when all of items in legend not selected but it selects all of items in legend list
+    // so we check if count of selected items be zero we should select all of them again
+    let displayingUserCounts = 0 ;
+
+    tempArray.map((item) => {
+      if (!item.disabled) {
+        displayingUserCounts++;
+      }
+    });
+
     this.usersWithTotal = [];
     if (!series.disabled) {
       tempArray.map((item) => {
-        if (item.userName === series.key) {
-          item.disabled = true;
+        if (item.userName !== '') {
+          if (item.userName === series.key) {
+            item.disabled = true;
+            displayingUserCounts--;
+          }
+        } else if (item.userName === '') {
+          if (item.email === series.key) {
+            item.disabled = true;
+            displayingUserCounts--;
+          }
         }
       })
     } else if (series.disabled) {
       tempArray.map((item) => {
-        if (item.userName === series.key) {
-          item.disabled = false;
+        if (item.userName !== '') {
+          if (item.userName === series.key) {
+            item.disabled = false;
+            displayingUserCounts++;
+          }
+        } else if (item.userName === '') {
+          if (item.email === series.key) {
+            item.disabled = false;
+            displayingUserCounts++;
+          }
         }
       })
     }
+
+    // here we check count of items if it be zero it means that chart has selected all of items so we should do it too
+    if (displayingUserCounts === 0) {
+      tempArray.map((item) => {
+        item.disabled = false;
+      })
+    }
+
     this.usersWithTotal = tempArray;
   }
 
