@@ -1,5 +1,5 @@
 <ng-container *ngIf="length && length != items.length">
-  <span *ngFor="let item of items; trackBy: let i = index" class="ps-tag">
+  <span *ngFor="let item of items; trackBy: let i = index" class="ps-tag" title="{{item}}">
   {{item}}
 </span>
 </ng-container>
