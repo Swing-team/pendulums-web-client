@@ -2,16 +2,15 @@
   <div class="columns is-multiline is-centered">
     <div class="column is-4-widescreen is-6-desktop is-6-tablet">
       <div class="box">
-        <div>
-          <span>
-            <img *ngIf="userEdit.profileImage" class="ps-user-image" (click)="openImageModal()"
-                 src="{{userEdit.profileImage? config.imagesEndpoint + '/profile/' + userEdit.profileImage :
-                          '../../assets/images/placeholder.png'}}">
-            <svg *ngIf="!userEdit.profileImage" class="ps-user-image" (click)="openImageModal()"
-                 width="36" height="36" [identiconHash]="emailHash">
-              Fallback text for browsers not supporting inline svg
-            </svg>
-          </span>
+        <div class="ps-profile-image-container">
+          <img *ngIf="userEdit.profileImage" (click)="openImageModal()" class="ps-user-image"
+                src="{{userEdit.profileImage? config.imagesEndpoint + '/profile/' + userEdit.profileImage :
+                        '../../assets/images/placeholder.png'}}">
+          <svg *ngIf="!userEdit.profileImage" (click)="openImageModal()" class="ps-user-image"
+                width="36" height="36" [identiconHash]="emailHash">
+            Fallback text for browsers not supporting inline svg
+          </svg>
+          <span class="icon-pencil ps-pencil-image-change" (click)="openImageModal()"></span>
         </div>
         <div class="ps-reserve-space"></div>
         <div>

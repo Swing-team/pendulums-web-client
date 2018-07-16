@@ -1,9 +1,29 @@
 @import "../../../../sass/variables"
 
 .ps-header-input
-  border: none
+  border-left: 3px solid $ps-primary
+  border-right: 3px solid $ps-primary
+  border-top: none
+  border-bottom: none
+  border-radius: 0
+  margin-top: 20px
+  margin-bottom: 20px
+  margin-left: 10px
   font-size: 30px
   box-shadow: none
+  text-align: center
+  &:not(:focus) + label
+    background-color: $white
+    padding: 4px
+    z-index: 2
+    color: $ps-primary
+    text-transform: uppercase
+    font-weight: 500
+    line-height: 2rem
+  &:hover
+    background-color: $powderBlue
+  &:focus
+    background-color: $powderBlue
   @media (max-width: 480px)
     font-size: 20px
 
@@ -65,3 +85,25 @@
   margin-left: -20px
   @media (max-width: 480px)
     margin-left: -10px
+
+.ps-padding-left
+  padding-left: 10px !important
+  padding-right: 10px !important
+
+.ps-pencil-image-change
+  background-color: rgba(0, 0, 0, 0.6)
+  position: absolute
+  color: $paper
+  line-height: 28px
+  text-align: center
+  font-size: 16px
+  width: 28px
+  height: 28px
+  bottom: 0
+  right: 0
+  border-radius: 8px
+  cursor: pointer
+
+.ps-radius-image
+  border-radius: 4px
+  cursor: pointer

@@ -6,7 +6,7 @@
           <input #projectImageElem type="file" name="projectImage" style="display:none" (change)="getFiles($event)"
                 accept="image/">
           <figure [ngStyle]="{'background-image': previewImage ? 'url(' + previewImage + ')' : 'url(\'../../../../../assets/images/placeholder.png\')'}"
-            class="ps-image-resize">
+          (click)="projectImageElem.click()" class="ps-image-resize">
           </figure>
         </div>
       </div>
