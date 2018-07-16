@@ -7,23 +7,25 @@
     color: $paper !important
     .ps-hidden
       background-color: $ps-card-blue-light !important
+      .ps-item-table
+      td
+        color: #054d59 !important
     .ps-owner-name
       color: $paper !important
     .ps-item-table
       td
-        color: $paper !important
+        color: $paper
     .ps-header-icon-container
       .ps-project-icons
         color: $paper !important
         transition: all ease-in-out $ps-transitions
         &:hover
-          color: darken($paper, 30) !important
+          color: rgba(242,242,242,0.9) !important
     .ps-project-item-footer
       color: $paper !important
-      transition: all ease-in-out $ps-transitions
       .card-footer-item
         &:hover
-          color: darken($paper, 30) !important
+          color: rgba(242,242,242,0.9) !important
 
 .ps-back-black
   .ps-project-item-card
@@ -42,13 +44,12 @@
         color: $paper !important
         transition: all ease-in-out $ps-transitions
         &:hover
-          color: darken($paper, 30) !important
+          color: rgba(242,242,242,0.9) !important
     .ps-project-item-footer
       color: $paper !important
-      transition: all ease-in-out $ps-transitions
       .card-footer-item
         &:hover
-          color: darken($paper, 30) !important
+          color: rgba(242,242,242,0.9) !important
 
 .ps-back-yellow
   .ps-project-item-card
@@ -188,11 +189,11 @@
         border: unset
         font-size: 0.75rem
         color: rgba(0,0,0,0.5)
-        transition: all ease-in-out $ps-transitions
         .card-footer-item
           border: unset
           padding: unset
           cursor: pointer
+          transition: all ease-in-out $ps-transitions
           &:hover
             color: rgba(0,0,0,0.8)
           .icon-arrow-right
