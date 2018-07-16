@@ -16,16 +16,16 @@
           </div>
           <div class="column is-5">
             <a class="button is-danger ps-confirm-button" *ngIf="!deleteConfirmation" (click)="confirmToDelete()">
-              Confirm
+              Delete
             </a>
-            <a class="button ps-confirm-button" *ngIf="deleteConfirmation" (click)="cancelDelete()"
+            <a class="button ps-confirm-button" *ngIf="deleteConfirmation" (click)="cancelDelete()" title="Cancel"
                [ngClass]="{'is-loading': deleteButtonDisabled, 'is-danger': !deleteButtonDisabled}">
               <span class="icon">
                 <i class="icon-cancel"></i>
               </span>
             </a>
             <a class="button ps-confirm-button" *ngIf="deleteConfirmation && !deleteButtonDisabled" (click)="confirmFinalDelete()"
-               [ngClass]="{'is-success': !deleteButtonDisabled}">
+               [ngClass]="{'is-success': !deleteButtonDisabled}" title="Confirm">
               <span class="icon">
                 <i class="icon-check"></i>
               </span>
