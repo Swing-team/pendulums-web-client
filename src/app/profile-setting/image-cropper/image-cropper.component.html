@@ -1,6 +1,7 @@
 <div class="columns">
-  <div class="column is-three-quarters">
-    <img-cropper #cropper [image]="profileData" [settings]="cropperSettings"></img-cropper>
+  <div class="column has-text-centered">
+    <img-cropper #cropper [ngStyle]="{display: profileData.image ? 'inline-block' : 'none'}" [image]="profileData" [settings]="cropperSettings"></img-cropper>
+    <img [ngStyle]="{display: !profileData.image ? 'inline-block' : 'none'}" [src]="initialImage">
   </div>
 </div>
 <div class="columns">
