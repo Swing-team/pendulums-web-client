@@ -15,7 +15,7 @@
         </div>
         <div class="ps-reserve-space"></div>
         <div>
-          <div *ngIf="!userNameEdited">
+          <div *ngIf="!userNameEdited" title="Edit name">
             {{userEdit.name? userEdit.name : "No name"}}
             <span class="ps-edit-profile-button icon-user-edit" (click)="toggleView()"></span>
           </div>

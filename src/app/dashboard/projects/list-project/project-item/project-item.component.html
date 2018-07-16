@@ -26,10 +26,12 @@
               </span>
             </p>
             <p class="ps-header-icon-container">
-              <a [ngClass]="{'is-disabled': !status.netStatus}" title="{{ status.netStatus ? '' : 'Offline mode!'}}" (click)="showSettings()">
+              <a [ngClass]="{'is-disabled': !status.netStatus}" title="{{ status.netStatus ? 'Show settings' : 'Offline mode!'}}"
+                 (click)="showSettings()">
                 <i class="icon-settings ps-project-icons"></i>
               </a>
-              <a [ngClass]="{'is-disabled': !status.netStatus}" title="{{ status.netStatus ? '' : 'Offline mode!'}}" (click)="goToActivities()">
+              <a [ngClass]="{'is-disabled': !status.netStatus}" title="{{ status.netStatus ? 'Go to activities list' : 'Offline mode!'}}"
+                 (click)="goToActivities()">
                 <i class="icon-statistic ps-project-icons"></i>
               </a>
             </p>
@@ -38,8 +40,8 @@
             <div (click)="toggleStopStart()">
               <a  class="button ps-item-card-button" [ngClass]="{'is-loading': activityButtonDisabled}">
                 <span class="icon">
-                  <i *ngIf="activityStarted" class="icon-stop"></i>
-                  <i *ngIf="!activityStarted" class="icon-play"></i>
+                  <i *ngIf="activityStarted" class="icon-stop" title="Stop activity"></i>
+                  <i *ngIf="!activityStarted" class="icon-play" title="Start activity"></i>
                 </span>
               </a>
             </div>

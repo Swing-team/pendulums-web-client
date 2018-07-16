@@ -24,17 +24,17 @@
   </div>
   <ng-container *ngIf="activity.stoppedAt">
   <div class="ps-activity-item-button is-pulled-right" *ngIf="!deleteConfirmation">
-    <i class="icon-pencil" (click)="openEditManuallyModal()"></i>
-    <i class="icon-trash" (click)="delete()"></i>
+    <i class="icon-pencil" (click)="openEditManuallyModal()" title="Edit Activity"></i>
+    <i class="icon-trash" (click)="delete()" title="Delete Activity"></i>
   </div>
   </ng-container>
   <div class="ps-activity-item-button is-pulled-right" *ngIf="deleteConfirmation" [@slideInOut]>
-    <a  *ngIf="!deleteButtonDisabled" class="button ps-activity-item-button-confirmation" (click)="cancelDelete()">
+    <a  *ngIf="!deleteButtonDisabled" class="button ps-activity-item-button-confirmation" (click)="cancelDelete()" title="Cancel Delete">
       <span class="icon">
         <i class="icon-cancel" [ngClass]="{'has-text-danger': !deleteButtonDisabled}"></i>
       </span>
     </a>
-    <a  class="button ps-activity-item-button-confirmation" [ngClass]="{'is-loading': deleteButtonDisabled}" (click)="confirmDelete()">
+    <a  class="button ps-activity-item-button-confirmation" [ngClass]="{'is-loading': deleteButtonDisabled}" (click)="confirmDelete()" title="Confirm Delete">
       <span class="icon">
         <i class="icon-check" [ngClass]="{'has-text-success': !deleteButtonDisabled}"></i>
       </span>
