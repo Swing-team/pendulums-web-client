@@ -1,8 +1,8 @@
 <div class="container ps-activities-container">
-  <span class="ps-activity-top-button icon-plus" (click)="openAddManuallyModal()"></span>
-  <span class="ps-activity-top-button ps-activity-back icon-back" (click)="goBack()"></span>
+  <span class="ps-activity-top-button icon-plus" (click)="openAddManuallyModal()" title="Add new activity"></span>
+  <span class="ps-activity-top-button ps-activity-back icon-back" (click)="goBack()" title="Back"></span>
   <ng-container *ngIf="userAccess">
-    <div *ngIf="project" class="ps-stat-user-filter-wrapper">
+    <div *ngIf="project" class="ps-stat-user-filter-wrapper" title="Select users">
       <swing-select [type]="'multiSelect'"
                     [items]="project.teamMembers"
                     [itemTextAttribute]="['name', 'email']"
