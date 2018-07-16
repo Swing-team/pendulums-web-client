@@ -5,6 +5,7 @@ import { Store }                                  from '@ngrx/store';
 import { AppState }                               from '../../shared/state/appState';
 import { UserActions }                            from '../../shared/state/user/user.actions';
 import { UserService }                            from '../../core/services/user.service';
+import { resolve } from 'url';
 
 @Component({
   selector: 'image-cropper',
@@ -53,7 +54,7 @@ export class ImgCropperComponent {
   }
 
   save() {
-    this.croppedImageFile = this.base64ToFile(this.profileData.image);
+    this.croppedImageFile = this.base64ToFile(this.profileData.image)
     if (!this.disableButtons && this.croppedImageFile) {
       this.disableButtons = true;
 
@@ -81,7 +82,7 @@ export class ImgCropperComponent {
     for (let i = 0; i < len; i++) {
       bytes[i] = binaryString.charCodeAt(i);
     }
-    return new File([bytes.buffer], 'image.jpg');
+    return new Blob([bytes.buffer]);
   }
 
   getBase64(file, callBack) {
