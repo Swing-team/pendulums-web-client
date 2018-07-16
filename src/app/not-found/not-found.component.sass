@@ -1,0 +1,19 @@
+@import "../../sass/variables"
+
+.ps-not-found-no-toolbar
+  margin-top: -60px
+
+.ps-not-found-background
+  background: url(../../assets/images/404.jpg) no-repeat center center
+  background-size: cover
+  justify-content: flex-end
+  .ps-not-found-body
+    flex-grow: 0 !important
+    padding: 4rem 1.5rem
+    .ps-not-found-link
+      color: $white
+      font-weight: 500
+      transition: all ease-in-out $ps-transitions
+      &:hover
+        color: $yellow !important
+

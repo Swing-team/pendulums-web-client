@@ -1,5 +1,5 @@
 import { NgModule }                     from '@angular/core';
-import { RouterModule, Routes }         from '@angular/router';
+import { Router, RouterModule, Routes } from '@angular/router';
 import { SignInComponent }              from './authentication/sign-in/sign-in.component';
 import { SignUpComponent }              from './authentication/sign-up/sign-up.component';
 import { ForgotPasswordComponent }      from './authentication/forgot-password/forgot-password.component';
@@ -9,6 +9,7 @@ import { ActivitiesComponent }          from './dashboard/activities/list-activi
 import { ProfileSettingComponent }      from './profile-setting/profile-setting.component';
 import { AuthGuardService }             from './core/services/router-guards/auth-guard.service';
 import { AnonymousGuardService }        from './core/services/router-guards/anonymous-guard.service';
+import {NotFoundComponent} from "./not-found/not-found.component";
 
 const appRoutes: Routes = [
   {
@@ -51,6 +52,10 @@ const appRoutes: Routes = [
     canActivate: [AuthGuardService],
     component: ProfileSettingComponent
   },
+  {
+    path: 'notFound',
+    component: NotFoundComponent
+  }
 ];
 
 @NgModule({
@@ -63,4 +68,10 @@ const appRoutes: Routes = [
     RouterModule
   ],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {
+  constructor(private router: Router) {
+    this.router.errorHandler = (error: any) => {
+      this.router.navigate(['notFound']);
+    }
+  }
+}
