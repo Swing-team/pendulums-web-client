@@ -6,6 +6,7 @@ import { Store }                      from '@ngrx/store';
 import { ProjectsActions }            from '../../../../shared/state/project/projects.actions';
 import { ErrorService }               from '../../../../core/error/error.service';
 import { ModalService }               from '../../../../core/modal/modal.service';
+import { CurrentActivityActions }     from '../../../../shared/state/current-activity/current-activity.actions';
 
 @Component({
   selector: 'dangerous-actions',
@@ -18,6 +19,7 @@ export class DangerousActionsComponent {
   @Input() readOnly: boolean;
   @Input() isOwner: boolean;
   @Input() isAdmin: boolean;
+  @Input() projectIdInCurrentActivity: string;
   projectNameInput: String;
   deleteConfirmation = false;
   deleteButtonDisabled = false;
@@ -27,7 +29,8 @@ export class DangerousActionsComponent {
     private store: Store<AppState>,
     private projectsAction: ProjectsActions,
     private errorService: ErrorService,
-    private modalService: ModalService) {
+    private modalService: ModalService,
+    private currentActivityActions: CurrentActivityActions) {
   }
 
   confirmToDelete() {
@@ -49,8 +52,14 @@ export class DangerousActionsComponent {
         if (this.projectNameInput.valueOf() === this.project.name.valueOf()) {
           this.projectService.delete(this.project.id)
             .then(response => {
-              this.store.dispatch(this.projectsAction.removeProject(this.project));
+              this.store.dispatch(this.projectsAction.removeProject(this.project.id));
               this.showError('The project was deleted successfully');
+
+              // if we have current activity on deleted project we should clear it
+              if (this.project.id === this.projectIdInCurrentActivity) {
+                this.store.dispatch(this.currentActivityActions.clearCurrentActivity());
+              }
+
               this.deleteButtonDisabled = false;
               this.modalService.close();
             })

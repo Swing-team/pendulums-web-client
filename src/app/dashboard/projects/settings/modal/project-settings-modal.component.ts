@@ -12,6 +12,7 @@ import {userRoleInProject} from '../../../shared/utils';
 export class ProjectSettingsModalComponent implements OnInit {
   @Input() project: Project;
   @Input() user: User;
+  @Input() projectIdInCurrentActivity: string;
   tabs = ['is-active', '', ''];
   readOnly = false;
   isOwner = false;

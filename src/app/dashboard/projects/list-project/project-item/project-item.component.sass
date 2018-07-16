@@ -4,8 +4,26 @@
   .ps-project-item-card
     border-radius: $radius
     background: $ps-card-blue
+    color: $paper !important
     .ps-hidden
-      background-color: $ps-card-blue-dark !important
+      background-color: $ps-card-blue-light !important
+    .ps-owner-name
+      color: $paper !important
+    .ps-item-table
+      td
+        color: $paper !important
+    .ps-header-icon-container
+      .ps-project-icons
+        color: $paper !important
+        transition: all ease-in-out $ps-transitions
+        &:hover
+          color: darken($paper, 30) !important
+    .ps-project-item-footer
+      color: $paper !important
+      transition: all ease-in-out $ps-transitions
+      .card-footer-item
+        &:hover
+          color: darken($paper, 30) !important
 
 .ps-back-black
   .ps-project-item-card
@@ -37,14 +55,14 @@
     background: $yellow
     border-radius: $radius
     .ps-hidden
-      background-color: $yellow-dark !important
+      background-color: $yellow-light !important
 
 .ps-back-salmon
   .ps-project-item-card
     background: $salmon
     border-radius: $radius
     .ps-hidden
-      background-color: $salmon-dark !important
+      background-color: $salmon-light !important
 
 .ps-back-white1
   .ps-project-item-card
@@ -58,7 +76,7 @@
     background: $ps-card-pink
     border-radius: $radius
     .ps-hidden
-      background-color: $ps-card-pink-dark !important
+      background-color: $ps-card-pink-light !important
 
 .ps-project-item
   height: $item-size

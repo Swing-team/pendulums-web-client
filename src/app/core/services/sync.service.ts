@@ -21,6 +21,8 @@ export class SyncService {
   private socket = null;
   private tempState: any;
   private status: Observable<any>;
+  private currentActivity: Observable<any>;
+  private currentActivityProjectId: string;
   private isLogin: boolean;
   private responseResults = [];
 
@@ -36,8 +38,12 @@ export class SyncService {
               private currentActivityActions: CurrentActivityActions,
               private unSyncedActivityActions: UnSyncedActivityActions) {
     this.status = store.select('status');
+    this.currentActivity = store.select('currentActivity');
     this.status.subscribe((status: Status) => {
       this.isLogin = status.isLogin;
+    });
+    this.currentActivity.subscribe((currentActivity) => {
+      this.currentActivityProjectId = currentActivity.project;
     });
   }
 
@@ -146,6 +152,18 @@ export class SyncService {
         // listen to events
       });
     });
+
+    this.socket.on('message', (data) => {
+      if (data.type === 'projectRemoved') {
+        this.store.dispatch(this.projectsActions.removeProject(data.data.toString()));
+
+        // if we have current activity on deleted project we should clear it
+        if (this.currentActivityProjectId && (this.currentActivityProjectId.toString() === data.data.toString())) {
+          this.store.dispatch(this.currentActivityActions.clearCurrentActivity());
+        }
+      }
+    });
+
     this.socket.on('disconnect', (error) => {
       console.log('websocket disconnected!');
       this.store.dispatch(this.statusActions.updateNetStatus(false));

@@ -155,8 +155,18 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
       })
         .catch(error => {
           // todo: check errors
+          if (error.status === 404) {
+            this.showError('Project has been deleted before.');
+            this.store.dispatch(this.projectsActions.removeProject(this.project.id));
+
+            // if we have current activity on deleted project we should clear it
+            if (this.project.id === this.currentActivityCopy.project) {
+              this.store.dispatch(this.currentActivityActions.clearCurrentActivity());
+            }
+          } else {
+            this.showError('Server communication error.');
+          }
           console.log('server error happened', error);
-          this.showError('Server communication error.');
           this.activityButtonDisabled = false;
         });
     } else {
@@ -404,7 +414,8 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
         component: ProjectSettingsModalComponent,
         inputs: {
           project: this.project,
-          user: this.user
+          user: this.user,
+          projectIdInCurrentActivity: this.currentActivityCopy.project
         }
       });
     } else {

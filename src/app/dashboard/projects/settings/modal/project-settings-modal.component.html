@@ -7,9 +7,9 @@
       <li *ngIf="isOwner" (click)="setSelectedTab(3)"><a class="dangerousAction">DANGEROUS ACTIONS</a></li>
     </ul>
   </div>
-  <project-details *ngIf="tabs[0] === 'is-active'" [project]="project" [readOnly]="readOnly"></project-details>
-  <project-members *ngIf="tabs[1] === 'is-active'" [project]="project" [user]="user" [readOnly]="readOnly"></project-members>
-  <project-pending-invitations *ngIf="tabs[2] === 'is-active' && !readOnly" [project]="project"></project-pending-invitations>
-  <dangerous-actions *ngIf="tabs[3] === 'is-active'" [project]="project"
-                     [readOnly]="readOnly" [isAdmin]="isAdmin" [isOwner]="isOwner"></dangerous-actions>
+  <project-details [ngClass]="{'ps-project-setting-tab-hidden': tabs[0] !== 'is-active'}" [project]="project" [readOnly]="readOnly"></project-details>
+  <project-members [ngClass]="{'ps-project-setting-tab-hidden': tabs[1] !== 'is-active'}" [project]="project" [user]="user" [readOnly]="readOnly"></project-members>
+  <project-pending-invitations [ngClass]="{'ps-project-setting-tab-hidden': (tabs[2] !== 'is-active'&& !readOnly)}" [project]="project"></project-pending-invitations>
+  <dangerous-actions [ngClass]="{'ps-project-setting-tab-hidden': tabs[3] !== 'is-active'}" [project]="project" [readOnly]="readOnly" [isAdmin]="isAdmin"
+                     [isOwner]="isOwner" [projectIdInCurrentActivity]="projectIdInCurrentActivity"></dangerous-actions>
 </section>

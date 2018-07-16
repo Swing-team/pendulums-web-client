@@ -48,7 +48,7 @@ export class ProjectsActions {
     };
   }
 
-  removeProject(project: Project): ActionWithPayload<Project> {
+  removeProject(project: string): ActionWithPayload<string> {
     return {
       type: ProjectsActions.REMOVE_PROJECT,
       payload: project
