@@ -6,7 +6,7 @@
           <div class="column" style="padding: unset">
             <div class="image is-1by1">
               <input #projectImageElem type="file" name="projectImage" style="display:none" (change)="getFiles($event)" accept="image/">
-              <img class="ps-radius-image" [src]="previewImage ? previewImage : '../../../../assets/images/placeholder.png'">
+              <img class="ps-radius-image" (click)="projectImageElem.click()" [src]="previewImage ? previewImage : '../../../../assets/images/placeholder.png'">
               <span (click)="projectImageElem.click()" class="icon-pencil ps-pencil-image-change" ></span>
             </div>
           </div>
