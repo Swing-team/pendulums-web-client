@@ -1,4 +1,5 @@
-import {Component, EventEmitter, Input, Output, ViewChild, ViewContainerRef} from '@angular/core';
+import {Component, EventEmitter, Input, Output, ViewChild, ViewContainerRef } from '@angular/core';
+import { PlatformLocation } from '@angular/common';
 
 @Component({
   selector: 'modal',
@@ -12,7 +13,15 @@ export class ModalComponent {
   // used in modal service
   @ViewChild('contentContainer', { read: ViewContainerRef }) contentContainer: ViewContainerRef;
 
-  closeModal() {
-    this.close.emit();
+  constructor(location: PlatformLocation) {
+    // TODO: Ashkan 7/17/2018 :
+    // this will actually close the modal but we had to create ignoreIsModalOpen
+    // to prevent router to change so ...
+    location.onPopState(() => {
+      this.closeModal(true);
+    })
+  }
+  closeModal(ignoreIsModalOpen?: boolean) {
+    this.close.emit(ignoreIsModalOpen);
   }
 }

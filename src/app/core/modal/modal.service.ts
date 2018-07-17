@@ -1,14 +1,15 @@
 import { ComponentFactoryResolver, Injectable,
-         ViewContainerRef, ApplicationRef }         from '@angular/core';
+         ViewContainerRef, ApplicationRef, ComponentRef }         from '@angular/core';
 import { ModalComponent }                           from './modal.component';
 import { Subscription }                             from 'rxjs/Subscription';
 
 @Injectable()
 export class ModalService {
-  private modalComponentRef;
+  private modalComponentRef: ComponentRef<ModalComponent>;
   private contentComponentRef;
   private rootViewContainerRef: ViewContainerRef;
   private subscriptions: Array<Subscription> = [];
+  private isModalOpen: boolean;
 
   constructor(
     private componentFactoryResolver: ComponentFactoryResolver,
@@ -46,17 +47,28 @@ export class ModalService {
       }
     }
 
-    this.subscriptions.push(this.modalComponentRef.instance['close'].subscribe(() => this.close()));
+    this.subscriptions.push(this.modalComponentRef.instance['close'].subscribe((ignoreIsModalOpen) => this.close(ignoreIsModalOpen)));
     this.contentComponentRef.changeDetectorRef.detectChanges();
+    this.isModalOpen = true;
   }
 
-  close() {
+  getIsModalOpen() {
+    return this.isModalOpen;
+  }
+
+  // TODO: Ashkan 7/17/2018:
+  // this will close the modal if the previous page is the same that we are in it
+  // see modal.component.ts to find out what is ignoreIsModalOpen actually is
+  close(ignoreIsModalOpen?: boolean) {
     // cleanup
     this.contentComponentRef.destroy();
     this.modalComponentRef.destroy();
     this.subscriptions.map((subscribe) => {
       subscribe.unsubscribe()
     });
+    if (!ignoreIsModalOpen) {
+      this.isModalOpen = false;
+    }
   }
 }
 
