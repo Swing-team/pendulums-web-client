@@ -33,6 +33,7 @@ import { SyncService }                  from './services/sync.service';
 import { AuthInterceptor }              from './auth.interceptor';
 import { AuthGuardService }             from './services/router-guards/auth-guard.service';
 import { AnonymousGuardService }        from './services/router-guards/anonymous-guard.service';
+import { ModalRouterGuardService }      from './services/router-guards/modal-router-guard.service'
 import { PageLoaderService }            from './services/page-loader.service';
 import { AppStateSelectors }            from '../shared/state/app-state.selectors';
 import { ProjectsSelectors }            from '../shared/state/project/projects.selectors';
@@ -63,6 +64,7 @@ import { RouterChangeListenerService }  from './services/roueter-change-listener
     { provide: reducerToken, useValue: reducers },
     AuthGuardService,
     AnonymousGuardService,
+    ModalRouterGuardService,
     ErrorService,
     PageLoaderService,
     ModalService,
