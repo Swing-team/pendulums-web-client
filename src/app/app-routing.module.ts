@@ -9,7 +9,8 @@ import { ActivitiesComponent }          from './dashboard/activities/list-activi
 import { ProfileSettingComponent }      from './profile-setting/profile-setting.component';
 import { AuthGuardService }             from './core/services/router-guards/auth-guard.service';
 import { AnonymousGuardService }        from './core/services/router-guards/anonymous-guard.service';
-import {NotFoundComponent} from "./not-found/not-found.component";
+import { ModalRouterGuardService }      from './core/services/router-guards/modal-router-guard.service';
+import { NotFoundComponent }            from './not-found/not-found.component';
 
 const appRoutes: Routes = [
   {
@@ -40,16 +41,19 @@ const appRoutes: Routes = [
   {
     path: 'dashboard',
     canActivate: [AuthGuardService],
+    canDeactivate: [ModalRouterGuardService],
     component: DashboardComponent
   },
   {
     path: 'activities/:projectId',
     canActivate: [AuthGuardService],
+    canDeactivate: [ModalRouterGuardService],
     component: ActivitiesComponent
   },
   {
     path: 'profile',
     canActivate: [AuthGuardService],
+    canDeactivate: [ModalRouterGuardService],
     component: ProfileSettingComponent
   },
   {
