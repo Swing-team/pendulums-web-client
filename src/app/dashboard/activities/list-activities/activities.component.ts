@@ -17,7 +17,7 @@ import { Store }                            from '@ngrx/store';
 import { AppState }                         from '../../../shared/state/appState';
 import { Project }                          from '../../../shared/state/project/project.model';
 import { User }                             from '../../../shared/state/user/user.model';
-import { cloneDeep }                        from 'lodash';
+import { cloneDeep, uniqBy }                  from 'lodash';
 import { PageLoaderService }                from '../../../core/services/page-loader.service';
 import { Subscription }                     from 'rxjs/Subscription';
 import { ChartComponent }                   from './chart-statistics/chart.component';
@@ -282,6 +282,7 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
         activities.map((activity) => {
           if (activity.stoppedAt) {
             this.tempArray.push(activity);
+            this.tempArray = uniqBy(this.tempArray, 'id');
           }
         });
         this.groupByActivities();
