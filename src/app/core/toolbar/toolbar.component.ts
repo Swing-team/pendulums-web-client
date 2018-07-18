@@ -212,6 +212,11 @@ export class ToolbarComponent implements OnInit, OnDestroy  {
               if (this.selectedProject.id === this.currentActivityCopy.project) {
                 this.store.dispatch(this.currentActivityActions.clearCurrentActivity());
               }
+            }  else if (error.status === 400) {
+              // todo: this section will handle with socket message
+              this.showError('You have current activity on server please refresh your browser.');
+              // we have to clear current activity
+              this.store.dispatch(this.currentActivityActions.clearCurrentActivity());
             } else {
               this.showError('Server communication error.');
             }
