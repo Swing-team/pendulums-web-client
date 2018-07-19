@@ -3,28 +3,30 @@
 $projectImageSize: 100px
 
 .ps-header-input
-  border-left: 3px solid $ps-primary
-  border-right: 3px solid $ps-primary
-  border-top: none
-  border-bottom: none
-  border-radius: 0
-  margin-top: 20px
-  margin-bottom: 20px
-  font-size: 25px
+  border: none
+  font-size: 30px
   box-shadow: none
   text-align: center
-  &:not(:focus) + label
-    background-color: $white
-    padding: 4px
-    z-index: 2
-    color: $ps-primary
-    text-transform: uppercase
-    font-weight: 500
-    line-height: 2rem
-  &:hover
-    background-color: $powderBlue
-  &:focus
-    background-color: $powderBlue
+  &.input
+    border-left: 3px solid $ps-primary
+    border-right: 3px solid $ps-primary
+    border-top: none
+    border-bottom: none
+    border-radius: 0
+    margin-top: 20px
+    margin-bottom: 20px
+    &:not(:focus) + label
+      background-color: $white
+      padding: 4px
+      z-index: 2
+      color: $ps-primary
+      text-transform: uppercase
+      font-weight: 500
+      line-height: 2rem
+    &:hover
+      background-color: $powderBlue
+    &:focus
+      background-color: $powderBlue
   @media (max-width: 480px)
     font-size: 20px
 
