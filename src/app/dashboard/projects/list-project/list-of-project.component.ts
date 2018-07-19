@@ -21,7 +21,6 @@ export class ListOfProjectComponent {
   @Input() currentActivity: Observable<Activity>;
 
   constructor (
-    private store: Store<AppState>,
     private modalService: ModalService,
     private errorService: ErrorService) {
 

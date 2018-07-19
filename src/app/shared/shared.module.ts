@@ -20,10 +20,6 @@ import { SwingTagInputComponent }  from './swing-tag-input/swing-tag-input.compo
     SwingTagInputComponent
   ],
   exports:      [
-    IdenticonHashDirective,
-    SwingSelectComponent
-  ],
-  exports:      [
     CommonModule,
     FormsModule,
     HttpClientModule,

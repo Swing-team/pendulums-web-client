@@ -7,6 +7,7 @@ import { Router }                                 from '@angular/router';
 import { Observable }                             from 'rxjs/Observable';
 import { Store }                                  from '@ngrx/store';
 import { AppState }                               from './shared/state/appState';
+import { UserActions }                            from './shared/state/user/user.actions';
 import { AuthenticationService }                  from './core/services/authentication.service';
 import { ProjectsActions }                        from './shared/state/project/projects.actions';
 import { StatusActions }                          from './shared/state/status/status.actions';
