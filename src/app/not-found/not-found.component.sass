@@ -1,18 +1,23 @@
 @import "../../sass/variables"
 
-.ps-not-found-no-toolbar
-  margin-top: -60px
+.ps-not-found-with-toolbar
+  top: 64px !important
 
 .ps-not-found-background
   background: url(../../assets/images/404.jpg) no-repeat center center
   background-size: cover
+  position: absolute
+  top: 0
+  left: 0
+  width: 100%
   justify-content: flex-end
   .ps-not-found-body
     flex-grow: 0 !important
-    padding: 4rem 1.5rem
+    padding: 6rem 1.5rem
     .ps-not-found-link
       color: $white
       font-weight: 500
+      font-size: 1.2rem
       transition: all ease-in-out $ps-transitions
       &:hover
         color: $yellow !important

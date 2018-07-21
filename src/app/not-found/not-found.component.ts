@@ -1,5 +1,4 @@
-import { Component, Inject }    from '@angular/core';
-import { APP_CONFIG }           from '../app.config';
+import {Component, OnDestroy} from '@angular/core';
 import { User }                 from '../shared/state/user/user.model';
 import { Subscription }         from 'rxjs/Subscription';
 import { AppState }             from '../shared/state/appState';
@@ -12,14 +11,19 @@ import { Store }                from '@ngrx/store';
   styleUrls: ['./not-found.component.sass'],
 })
 
-export class NotFoundComponent {
+export class NotFoundComponent implements OnDestroy {
   user: User;
   private subscriptions: Array<Subscription> = [];
 
-  constructor (@Inject(APP_CONFIG) private config,
-               private store: Store<AppState>) {
+  constructor (private store: Store<AppState>) {
     this.subscriptions.push(store.select('user').subscribe((user: User) => {
       this.user = user;
     }));
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.map((subscribe) => {
+      subscribe.unsubscribe()
+    });
   }
 }

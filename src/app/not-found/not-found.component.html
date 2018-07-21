@@ -1,8 +1,8 @@
-<section class="hero ps-not-found-background is-fullheight" [ngClass]="{'ps-not-found-no-toolbar': !user.id}">
+<section class="hero ps-not-found-background is-fullheight" [ngClass]="{'ps-not-found-with-toolbar': user.id}">
   <div class="hero-body ps-not-found-body">
     <div class="container">
       <div class="">
-        <a *ngIf="!user.id" class="ps-not-found-link" [routerLink]="['']">take me home</a>
+        <a class="ps-not-found-link" [routerLink]="['']">take me home</a>
       </div>
     </div>
   </div>
