@@ -103,7 +103,7 @@
           </table>
         </div>
         <footer class="card-footer ps-project-item-footer">
-          <span class="card-footer-item">
+          <span class="card-footer-item ps-project-item-footer-arrow">
             <span *ngIf="showMoreStart !== 0" (click)="decreasePointer()">
               <i class="icon-back"></i>
             </span>
@@ -112,7 +112,7 @@
             <p><b>show less</b></p>
             <p class="ps-project-item-show-more-icon"><b><i class="icon-dot-3"></i></b></p>
           </span>
-          <span class="card-footer-item">
+          <span class="card-footer-item ps-project-item-footer-arrow">
             <span *ngIf="showMoreEnd < project.activities.length" (click)="increasePointer()">
               <i class="icon-arrow-right"></i>
             </span>

@@ -203,7 +203,6 @@
         .card-footer-item
           border: unset
           padding: unset
-          cursor: pointer
           transition: all ease-in-out $ps-transitions
           &:hover
             color: rgba(0,0,0,0.8)
@@ -211,8 +210,11 @@
             font-size: 1.2rem
           .icon-back
             font-size: 1.2rem
+          &.ps-project-item-footer-arrow
+            cursor: pointer
         .ps-project-item-show-more
           display: table
+          cursor: pointer
           p
             height: 15px
           &.ps-project-item-show-more-icon
