@@ -60,9 +60,6 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     // to initialize webSocket connection
     const responseResults = this.syncService.init();
-    Promise.all(responseResults).then(() => {
-      this.pageLoaderService.hideLoading();
-    });
 
     // to handle 403 interceptor by isLogin that has been handle in signOut and authInterceptor
     this.status.subscribe((status: Status) => {
@@ -85,6 +82,13 @@ export class AppComponent implements OnInit {
         this.netConnected = true;
       }
     });
+
+    // to handle loading
+    Promise.all(responseResults).then(() => {
+      setTimeout(() => {
+        this.pageLoaderService.hideLoading();
+      }, 1000)
+    })
   }
 
   signOut() {
