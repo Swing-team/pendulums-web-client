@@ -45,6 +45,7 @@ export class CreateProjectComponent {
     } else {
       if (!this.formSubmitted) {
         this.formSubmitted = true;
+        // todo: please create dto model in order to use in interactions with server
         delete this.project['id'];
         delete this.project['recentActivityName'];
         delete this.project['image'];
