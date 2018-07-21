@@ -3,7 +3,7 @@ import * as _ from 'lodash';
 import {
   Component, HostListener,
   Inject, OnDestroy, OnInit, ViewChild,
-} from '@angular/core';
+}                                           from '@angular/core';
 import { Observable }                       from 'rxjs/Observable';
 import { APP_CONFIG }                       from '../../../app.config';
 import { ActivityService }                  from '../../shared/activity.service';
@@ -17,7 +17,7 @@ import { Store }                            from '@ngrx/store';
 import { AppState }                         from '../../../shared/state/appState';
 import { Project }                          from '../../../shared/state/project/project.model';
 import { User }                             from '../../../shared/state/user/user.model';
-import { cloneDeep, uniqBy }                  from 'lodash';
+import { cloneDeep, uniqBy }                from 'lodash';
 import { PageLoaderService }                from '../../../core/services/page-loader.service';
 import { Subscription }                     from 'rxjs/Subscription';
 import { ChartComponent }                   from './chart-statistics/chart.component';
@@ -167,7 +167,6 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
 
   updateActivities(params) {
     this.tempArray = this.tempArray.concat(params);
-    this.sortArrayByDate();
     this.groupByActivities();
     // Now re-render chart component
     if (this.ChartComponent) {
@@ -176,6 +175,8 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
   }
 
   groupByActivities() {
+    // we sort tempArray list here because list sort maybe destroyed by add or edit functionality
+    this.sortArrayByDate();
     this.projectActivities = [];
     this.projectActivities = _.chain(this.tempArray)
       .groupBy((activity: Activity) => {
