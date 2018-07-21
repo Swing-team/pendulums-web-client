@@ -48,7 +48,11 @@ export class SignInComponent {
             this.submitted = false;
             console.log('error is: ', error);
             if (error.status === 400) {
-              this.errorMessage = 'Email or password mismatch';
+              if (JSON.parse(error.error).type === 1) {
+                this.errorMessage = 'Please verify your email (the sent email may be in your spam folder).';
+              } else {
+                this.errorMessage = 'Email or password mismatch';
+              }
             } else {
               this.errorMessage = 'Server communication error';
             }
