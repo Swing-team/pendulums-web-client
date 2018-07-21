@@ -46,6 +46,7 @@ export class CreateProjectComponent {
       if (!this.formSubmitted) {
         this.formSubmitted = true;
         delete this.project['id'];
+        delete this.project['recentActivityName'];
         delete this.project['image'];
         delete this.project['activities'];
         const formData = new FormData();
