@@ -13,13 +13,17 @@ export class SignUpComponent {
   errorMessage: string;
   private newUser = {email: null, password: null};
   submitted = false;
-  haveResponOfSubmit = false;
+  haveResponseOfSubmit = false;
+  // this field is used just to handle coming soon text
+  // todo: please delete this field and its usages and its css after google sign up implemented
+  comingSoon = false;
 
   constructor(
     private authService: AuthenticationService,
   ) {}
 
   signUp() {
+    this.comingSoon = false;
     if (!this.submitted) {
       this.submitted = true;
       this.errorMessage = null;
@@ -27,7 +31,7 @@ export class SignUpComponent {
         this.newUser.email = this.newUser.email.toLowerCase();
         this.authService.signUp(this.newUser)
           .then(() => {
-            this.haveResponOfSubmit = true;
+            this.haveResponseOfSubmit = true;
             this.submitted = false;
           })
           .catch(error => {
@@ -47,6 +51,13 @@ export class SignUpComponent {
       }
     }
   };
+
+  signUpWithGoogle() {
+    // todo: please clear this code section after google sign up implemented
+    this.errorMessage = null;
+    this.comingSoon = true;
+    console.log('coming soon.');
+  }
 
   validation(newUser): boolean {
     if (!EMAIL_REGEX.test(newUser.email)) {

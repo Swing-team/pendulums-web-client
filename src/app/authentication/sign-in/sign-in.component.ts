@@ -18,6 +18,9 @@ export class SignInComponent {
   errorMessage: string;
   authUser = {email: null, password: null};
   submitted = false;
+  // this field is used just to handle coming soon text
+  // todo: please delete this field and its usages and its css after google sign in implemented
+  comingSoon = false;
 
   constructor(
     private authService: AuthenticationService,
@@ -28,6 +31,7 @@ export class SignInComponent {
   ) {}
 
   signIn() {
+    this.comingSoon = false;
     if (!this.submitted) {
       this.submitted = true;
       this.errorMessage = null;
@@ -54,6 +58,13 @@ export class SignInComponent {
       }
     }
   };
+
+  signInWithGoogle() {
+    // todo: please clear this code section after google sign in implemented
+    this.errorMessage = null;
+    this.comingSoon = true;
+    console.log('coming soon.');
+  }
 
   validation(authUser): boolean {
     if (!EMAIL_REGEX.test(authUser.email)) {

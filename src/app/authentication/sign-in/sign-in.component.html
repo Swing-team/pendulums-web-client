@@ -33,6 +33,9 @@
                 <p [style.visibility]="errorMessage ? 'unset' : 'hidden'" class="control ps-login-error is-fullwidth">
                   {{errorMessage}}
                 </p>
+                <p [style.visibility]="comingSoon ? 'unset' : 'hidden'" class="control ps-login-coming-soon is-fullwidth">
+                  Coming soon!
+                </p>
               </div>
               <div class="field">
                 <p class="control">
@@ -42,8 +45,8 @@
               </div>
               <div class="field">
                 <p class="control">
-                  <button class="button is-fullwidth ps-auth-buttons ps-google-login" title="coming soon!">Sign in with google
-                  </button>
+                  <a class="button is-fullwidth ps-auth-buttons ps-google-login" (click)="signInWithGoogle()" title="coming soon!">Sign in with google
+                  </a>
                 </p>
               </div>
               <br>
