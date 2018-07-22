@@ -22,6 +22,8 @@ import { PageLoaderService }                from '../../../core/services/page-lo
 import { Subscription }                     from 'rxjs/Subscription';
 import { ChartComponent }                   from './chart-statistics/chart.component';
 
+type ActivityWithIsActive = Activity & {isActive?: boolean};
+
 @Component({
   selector: 'activities',
   templateUrl: './activities.component.html',
@@ -42,7 +44,8 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
   // no conflict with currentActivity
   private currentActivity: Observable<Activity>;
   // we need copy of currentActivity to show it in list of activities if it is belong to current project
-  currentActivityCopy: Activity;
+  currentActivityCopy: ActivityWithIsActive;
+  currentActivities: Array<ActivityWithIsActive> = [];
   userAccess = false;
   selectedUsers = [];
   selectedItemIndex = [];
@@ -99,21 +102,46 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
             this.FirstProjectsSubscribe = false;
             this.tempArray = [];
             this.getActivitiesFromServer();
+            this.getCurrentActivitiesFromServer();
           }
         }
       }
     }));
     if (this.currentActivity) {
       this.subscriptions.push(this.currentActivity.subscribe(currentActivity => {
+        console.log(currentActivity);
+
         if (currentActivity.project === this.projectId) {
-          this.currentActivityCopy = currentActivity;
+          this.currentActivityCopy = _.cloneDeep(currentActivity);
+          this.currentActivityCopy.isActive = true;
+          for (let i = 0; i < this.currentActivities.length; i++) {
+            console.log('i = ', i);
+            console.log('currentActivitiesArray = ', this.currentActivities[i].user);
+            console.log('currentActivityCopy = ', this.currentActivityCopy);
+
+
+            if (this.currentActivities[i].user === this.currentActivityCopy.user) {
+              console.log('hi');
+
+              this.currentActivities.splice(i, 1);
+            }
+          }
+          this.currentActivities.push(this.currentActivityCopy);
         }
+
         if (!currentActivity.startedAt && this.currentActivityCopy) {
           if (this.currentActivityCopy.startedAt) {
             this.tempArray = [];
             this.pageNumber = 0;
             this.getActivitiesFromServer();
+            // this.getCurrentActivitiesFromServer();
+            for (let i = 0; i < this.currentActivities.length; i++) {
+              if (this.currentActivities[i].user === this.currentActivityCopy.user) {
+                this.currentActivities.splice(i, 1);
+              }
+            }
           }
+
           this.currentActivityCopy = null;
         }
       }));
@@ -273,6 +301,16 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
     }
   }
 
+  getCurrentActivitiesFromServer() {
+    this.activityService.getCurrentActivities(this.projectId).then((currentActivities) => {
+      this.currentActivities = currentActivities.map((userCurrentActivity: any) => {
+        userCurrentActivity.isActive = true;
+        return userCurrentActivity;
+      });
+      console.log(this.currentActivities);
+    });
+  }
+
   getActivitiesFromServer() {
     if (this.selectedUsers.length > 0) {
       this.activityService.getActivities(this.projectId, this.selectedUsers, this.pageNumber).then((activities) => {
@@ -346,6 +384,13 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
     this.selectedUsers = [];
     event.map((user) => {
       this.selectedUsers.push(user.item.id);
+    });
+    this.currentActivities.map((userCurrentActivity) => {
+      if (this.selectedUsers.indexOf(userCurrentActivity.user) > -1) {
+        userCurrentActivity.isActive = true;
+      } else {
+        userCurrentActivity.isActive = false;
+      }
     });
     this.tempArray = [];
     this.pageNumber = 0;

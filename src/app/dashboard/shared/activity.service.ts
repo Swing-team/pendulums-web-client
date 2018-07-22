@@ -65,6 +65,14 @@ export class ActivityService {
       .catch(this.handleError);
   }
 
+  getCurrentActivities(projectId): Promise<Activity[]> {
+    return this.http
+      .get(this.config.apiEndpoint + '/projects/' + projectId + '/activities/currentActivities', this.config.httpOptions)
+      .toPromise()
+      .then(response => response as Activity[])
+      .catch(this.handleError);
+  }
+
   getStat(projectId, users, fromDate, toDate): Promise<any> {
     const httpParams = new HttpParams()
       .set('users', JSON.stringify(users))
