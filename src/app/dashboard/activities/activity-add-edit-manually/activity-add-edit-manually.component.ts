@@ -292,7 +292,6 @@ export class AddManuallyActivityComponent implements OnInit {
       }
       if (this.currentActivity) {
         if (this.currentActivity.startedAt) {
-          console.log('this.currentActivity', this.currentActivity);
           if (Number(this.currentActivity.startedAt) < tempFromDate) {
             finalCheck = false;
             this.showError('The start time could not be after current activity start time');

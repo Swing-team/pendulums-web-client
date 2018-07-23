@@ -109,20 +109,11 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
     }));
     if (this.currentActivity) {
       this.subscriptions.push(this.currentActivity.subscribe(currentActivity => {
-        console.log(currentActivity);
-
         if (currentActivity.project === this.projectId) {
           this.currentActivityCopy = _.cloneDeep(currentActivity);
           this.currentActivityCopy.isActive = true;
           for (let i = 0; i < this.currentActivities.length; i++) {
-            console.log('i = ', i);
-            console.log('currentActivitiesArray = ', this.currentActivities[i].user);
-            console.log('currentActivityCopy = ', this.currentActivityCopy);
-
-
             if (this.currentActivities[i].user === this.currentActivityCopy.user) {
-              console.log('hi');
-
               this.currentActivities.splice(i, 1);
             }
           }
