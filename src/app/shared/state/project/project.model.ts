@@ -10,6 +10,8 @@ export class Project {
   teamMembers: Array<TeamMember>;
   admins: Array<TeamMember>;
   recentActivityName: string = null;
+  // [white == 0, salmon == 1, blue == 2, black == 3, yellow == 4, pink == 5]
+  colorPalette = 0;
 
   constructor() {}
 }

@@ -3,30 +3,30 @@
 $projectImageSize: 100px
 
 .ps-header-input
-  border: none
-  font-size: 30px
+  border-left: 3px solid $ps-primary
+  border-right: 3px solid $ps-primary
+  border-top: none
+  border-bottom: none
+  border-radius: 0
+  margin-left: 10px
+  font-size: 24px
   box-shadow: none
   text-align: center
-  &.input
-    border-left: 3px solid $ps-primary
-    border-right: 3px solid $ps-primary
-    border-top: none
-    border-bottom: none
-    border-radius: 0
-    margin-top: 20px
-    margin-bottom: 20px
-    &:not(:focus) + label
-      background-color: $white
-      padding: 4px
-      z-index: 2
-      color: $ps-primary
-      text-transform: uppercase
-      font-weight: 500
-      line-height: 2rem
-    &:hover
-      background-color: $powderBlue
-    &:focus
-      background-color: $powderBlue
+  &.ps-header-input-disabled
+    cursor: default !important
+    background-color: transparent !important
+  &:not(:focus) + label
+    background-color: $white
+    padding: 4px
+    z-index: 2
+    color: $ps-primary
+    text-transform: uppercase
+    font-weight: 500
+    line-height: 2rem
+  &:hover
+    background-color: $powderBlue
+  &:focus
+    background-color: $powderBlue
   @media (max-width: 480px)
     font-size: 20px
 
@@ -38,19 +38,21 @@ $projectImageSize: 100px
   color: $pink
   font-size:  0.9rem !important
 
-.ps-image-container
-  width: $projectImageSize
-  height: $projectImageSize
-  position: relative
-  border-radius: 4px
-  overflow: hidden
+.ps-header-vertical-align
+  flex-direction: column
+  display: flex
+  justify-content: space-between
+
+.ps-padding-left
+  padding-left: 10px !important
+  padding-right: 10px !important
 
 .ps-container
+  min-height: 150px
   display: flex
   flex-direction: column
   justify-content: center
   align-items: center
-
 
 .ps-checkbox-container
   width: 100%
@@ -89,3 +91,114 @@ $projectImageSize: 100px
   background-size: cover
   border-radius: $radius !important
   cursor: pointer
+  &.ps-image-resize-disabled
+    cursor: default
+
+.ps-project-details-color-picker-container
+  display: inline-flex
+  margin-left: 10px
+  .ps-project-details-color-picker-title
+    align-self: center
+    font-size: 16px
+  .ps-project-details-palette-container
+    position: relative
+    .ps-project-details-color
+      margin: 5px
+      .button
+        border-radius: 100%
+        border-color: $black
+        height: 30px !important
+        width: 30px !important
+        transition: all ease-in-out $ps-transitions
+        &.ps-project-details-color-disabled
+          cursor: default
+        &.ps-project-details-palette-item-back-salmon
+          background: $salmon
+          &:hover
+            background-color: $salmon-light !important
+            &.ps-project-details-color-disabled
+              background-color: $salmon !important
+        &.ps-project-details-palette-item-back-white1
+          background: $white1
+          &:hover
+            background-color: darken($white1, 5) !important
+            &.ps-project-details-color-disabled
+              background-color: $white1 !important
+        &.ps-project-details-palette-item-back-blue
+          background: $ps-card-blue
+          &:hover
+            background-color: $ps-card-blue-light !important
+            &.ps-project-details-color-disabled
+              background-color: $ps-card-blue !important
+        &.ps-project-details-palette-item-back-black
+          background: $black
+          &:hover
+            background-color: $black-light !important
+            &.ps-project-details-color-disabled
+              background-color: $black !important
+        &.ps-project-details-palette-item-back-yellow
+          background: $yellow
+          &:hover
+            background-color: $yellow-light !important
+            &.ps-project-details-color-disabled
+              background-color: $yellow !important
+        &.ps-project-details-palette-item-back-pink
+          background: $ps-card-pink
+          &:hover
+            background-color: $ps-card-pink-light !important
+            &.ps-project-details-color-disabled
+              background-color: $ps-card-pink !important
+    .ps-project-details-palette
+      position: absolute
+      top: 35px
+      left: -115px
+      padding: 10px
+      background: rgba(0,0,0,0.8)
+      z-index: 99
+      color: $white1
+      font-size: 16px
+      border-radius: $radius
+      .ps-project-details-palette-colors-section
+        display: inline-flex
+        .ps-project-details-palette-item
+          margin: 5px
+          .button
+            border-radius: 100%
+            height: 30px !important
+            width: 30px !important
+            transition: all ease-in-out $ps-transitions
+            &.ps-project-details-palette-item-back-salmon
+              background: $salmon
+              &:hover
+                background-color: $salmon-light !important
+            &.ps-project-details-palette-item-back-white1
+              background: $white1
+              &:hover
+                background-color: darken($white1, 5) !important
+            &.ps-project-details-palette-item-back-blue
+              background: $ps-card-blue
+              &:hover
+                background-color: $ps-card-blue-light !important
+            &.ps-project-details-palette-item-back-black
+              background: $black
+              &:hover
+                background-color: $black-light !important
+            &.ps-project-details-palette-item-back-yellow
+              background: $yellow
+              &:hover
+                background-color: $yellow-light !important
+            &.ps-project-details-palette-item-back-pink
+              background: $ps-card-pink
+              &:hover
+                background-color: $ps-card-pink-light !important
+      @media (max-width: 400px)
+        left: -160px
+
+.ps-submit-button
+  position: absolute
+  bottom: 0
+  width: 100%
+  .button
+    border-radius: 0
+  @media (max-width: 480px)
+    margin-left: -10px

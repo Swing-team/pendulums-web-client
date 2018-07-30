@@ -6,10 +6,8 @@
   border-top: none
   border-bottom: none
   border-radius: 0
-  margin-top: 20px
-  margin-bottom: 20px
   margin-left: 10px
-  font-size: 30px
+  font-size: 24px
   box-shadow: none
   text-align: center
   &:not(:focus) + label
@@ -28,7 +26,9 @@
     font-size: 20px
 
 .ps-header-vertical-align
-  margin: auto !important
+  flex-direction: column
+  display: flex
+  justify-content: space-between
 
 .ps-body-input
   box-shadow: none
@@ -40,6 +40,91 @@
 
 .ps-left-border
   border-left: 1px solid $yellow
+
+.ps-project-create-color-picker-container
+  display: inline-flex
+  margin-left: 10px
+  .ps-project-create-color-picker-title
+    align-self: center
+    font-size: 16px
+  .ps-project-create-palette-container
+    position: relative
+    .ps-project-create-color
+      margin: 5px
+      .button
+        border-radius: 100%
+        border-color: $black !important
+        height: 30px !important
+        width: 30px !important
+        transition: all ease-in-out $ps-transitions
+        &.ps-project-create-palette-item-back-salmon
+          background: $salmon
+          &:hover
+            background-color: $salmon-light !important
+        &.ps-project-create-palette-item-back-white1
+          background: $white1
+          &:hover
+            background-color: darken($white1, 5) !important
+        &.ps-project-create-palette-item-back-blue
+          background: $ps-card-blue
+          &:hover
+            background-color: $ps-card-blue-light !important
+        &.ps-project-create-palette-item-back-black
+          background: $black
+          &:hover
+            background-color: $black-light !important
+        &.ps-project-create-palette-item-back-yellow
+          background: $yellow
+          &:hover
+            background-color: $yellow-light !important
+        &.ps-project-create-palette-item-back-pink
+          background: $ps-card-pink
+          &:hover
+            background-color: $ps-card-pink-light !important
+    .ps-project-create-palette
+      position: absolute
+      top: 35px
+      padding: 10px
+      background: rgba(0,0,0,0.8)
+      z-index: 99
+      color: $white1
+      font-size: 16px
+      border-radius: $radius
+      .ps-project-create-palette-colors-section
+        display: inline-flex
+        .ps-project-create-palette-item
+          margin: 5px
+          .button
+            border-radius: 100%
+            height: 30px !important
+            width: 30px !important
+            transition: all ease-in-out $ps-transitions
+            &.ps-project-create-palette-item-back-salmon
+              background: $salmon
+              &:hover
+                background-color: $salmon-light !important
+            &.ps-project-create-palette-item-back-white1
+              background: $white1
+              &:hover
+                background-color: darken($white1, 5) !important
+            &.ps-project-create-palette-item-back-blue
+              background: $ps-card-blue
+              &:hover
+                background-color: $ps-card-blue-light !important
+            &.ps-project-create-palette-item-back-black
+              background: $black
+              &:hover
+                background-color: $black-light !important
+            &.ps-project-create-palette-item-back-yellow
+              background: $yellow
+              &:hover
+                background-color: $yellow-light !important
+            &.ps-project-create-palette-item-back-pink
+              background: $ps-card-pink
+              &:hover
+                background-color: $ps-card-pink-light !important
+      @media (max-width: 550px)
+        right: 0
 
 .ps-body-button
   font-size: 25px
@@ -83,6 +168,8 @@
   bottom: 0
   width: 100%
   margin-left: -20px
+  .button
+    border-radius: 0 0 $radius $radius
   @media (max-width: 480px)
     margin-left: -10px
 

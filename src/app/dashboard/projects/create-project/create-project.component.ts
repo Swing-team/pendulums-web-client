@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { Component, Input, ViewChild }  from '@angular/core';
+import {Component, HostListener, Input, ViewChild} from '@angular/core';
 import { Project }                      from '../../../shared/state/project/project.model';
 import { Md5 }                          from 'ts-md5/dist/md5';
 import { ProjectService }               from '../../shared/projects.service';
@@ -21,6 +21,7 @@ const EMAIL_REGEX = /^(?=.{8,64}$)[\w!#$%&'*+/=?`{|}~^-]+(?:\.[\w!#$%&'*+/=?`{|}
 export class CreateProjectComponent {
   @ViewChild('projectImageCanvasElem') projectImageCanvasElem;
   @ViewChild('canvasPreviewImageElem') canvasPreviewImageElem;
+  @ViewChild('projectCreatePalette') projectCreatePalette;
   @Input() currentUser: User;
   roles = ['team member', 'admin'];
   project: Project = new Project();
@@ -29,6 +30,7 @@ export class CreateProjectComponent {
   canvasPreviewImage: string;
   fileTypeString: string;
   formSubmitted = false;
+  showPaletteBoollean = false;
   md5: any;
 
   constructor(private projectServices: ProjectService,
@@ -86,6 +88,15 @@ export class CreateProjectComponent {
       this.project.invitedUsers.push(_.cloneDeep(this.user));
       this.user = {email: null, role: this.roles[0]};
     }
+  }
+
+  togglePalette() {
+    this.showPaletteBoollean = !this.showPaletteBoollean;
+  }
+
+  selectColor(colorIndex) {
+    this.project.colorPalette = colorIndex;
+    this.togglePalette();
   }
 
   userEmailHash(email) {
@@ -172,7 +183,15 @@ export class CreateProjectComponent {
     return true;
   }
 
-  showError(error) {
+  @HostListener('document:click', ['$event'])
+  onClick(event) {
+    if (this.showPaletteBoollean && !this.projectCreatePalette.nativeElement.contains(event.target)
+      && event.target.id !== 'id2') {
+      this.togglePalette();
+    }
+  }
+
+    showError(error) {
     this.errorService.show({
       input: error
     });

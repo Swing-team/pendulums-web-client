@@ -1,5 +1,7 @@
-import { Component, Inject, Input,
-         OnInit, ViewChild}               from '@angular/core';
+import {
+  Component, HostListener, Inject, Input,
+  OnInit, ViewChild
+} from '@angular/core';
 import { Project }                        from '../../../../shared/state/project/project.model';
 import { ProjectService }                 from '../../../shared/projects.service';
 import { cloneDeep }                      from 'lodash';
@@ -22,10 +24,12 @@ export class ProjectDetailsComponent implements OnInit {
   formSubmitted = false;
   @ViewChild('projectImageCanvasElem') projectImageCanvasElem;
   @ViewChild('canvasPreviewImageElem') canvasPreviewImageElem;
+  @ViewChild('projectDetailsPalette') projectDetailsPalette;
   previewImage: String;
   canvasPreviewImage: string;
   fileTypeString: string;
   imageIsEdited: boolean;
+  showPaletteBoollean: boolean;
 
   constructor(private projectServices: ProjectService,
               @Inject(APP_CONFIG) private config,
@@ -42,6 +46,15 @@ export class ProjectDetailsComponent implements OnInit {
     }
   }
 
+  togglePalette() {
+    this.showPaletteBoollean = !this.showPaletteBoollean;
+  }
+
+  selectColor(colorIndex) {
+    this.clonedProject.colorPalette = colorIndex;
+    this.togglePalette();
+  }
+
   updateProject() {
     if (!this.clonedProject.name || /^\s*$/.test(this.clonedProject.name) || !this.clonedProject.name.trim()) {
       this.showError('Project name is empty');
@@ -49,7 +62,7 @@ export class ProjectDetailsComponent implements OnInit {
       if (!this.formSubmitted) {
         this.formSubmitted = true;
         const formData = new FormData();
-        formData.append('project', JSON.stringify({name: this.clonedProject.name}));
+        formData.append('project', JSON.stringify({name: this.clonedProject.name, colorPalette: this.clonedProject.colorPalette}));
         this.projectImageCanvasElem.nativeElement.toBlob(blob => {
           if (blob.size > 500000) {
             this.formSubmitted = false;
@@ -138,5 +151,13 @@ export class ProjectDetailsComponent implements OnInit {
     this.errorService.show({
       input: error
     });
+  }
+
+  @HostListener('document:click', ['$event'])
+  onClick(event) {
+    if (this.showPaletteBoollean && !this.projectDetailsPalette.nativeElement.contains(event.target)
+      && event.target.id !== 'id2') {
+      this.togglePalette();
+    }
   }
 }

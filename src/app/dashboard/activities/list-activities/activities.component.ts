@@ -329,7 +329,7 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
     }
   }
 
-  UpdatePageLoader (chartLoaded?) {
+  UpdatePageLoader(chartLoaded?) {
     if (chartLoaded) {
       this.chartLoaded = chartLoaded;
     } else if (this.projectActivities.length === 0) {

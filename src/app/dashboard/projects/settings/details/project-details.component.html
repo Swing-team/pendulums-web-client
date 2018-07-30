@@ -1,29 +1,57 @@
 <form *ngIf="!readOnly" (ngSubmit)="updateProject()" #test="ngForm" novalidate>
   <div dir="auto" class="ps-container">
-    <div class="ps-image-container">
-      <div style="padding: unset">
-        <div>
-          <input #projectImageElem type="file" name="projectImage" style="display:none" (change)="getFiles($event)"
-                accept="image/">
-          <figure [ngStyle]="{'background-image': previewImage ? 'url(' + previewImage + ')' : 'url(\'../../../../../assets/images/placeholder.png\')'}"
-          (click)="projectImageElem.click()" class="ps-image-resize">
-          </figure>
+    <div class="columns is-gapless is-mobile">
+      <div class="ps-header-vertical-align">
+        <div style="padding: unset">
+          <div class="image">
+            <input #projectImageElem type="file" name="projectImage" style="display:none" (change)="getFiles($event)" accept="image/">
+            <figure [ngStyle]="{'background-image': previewImage ? 'url(' + previewImage + ')' : 'url(\'../../../../../assets/images/placeholder.png\')'}"
+                    (click)="projectImageElem.click()" class="ps-image-resize">
+            </figure>
+            <span (click)="projectImageElem.click()" class="icon-pencil ps-pencil-image-change" ></span>
+          </div>
+        </div>
+        <div style="display: none;">
+          <img #canvasPreviewImageElem [src]="canvasPreviewImage" style="max-width: unset;" (load)="resizeImage()">
+          <canvas #projectImageCanvasElem></canvas>
         </div>
       </div>
-      <div style="display: none;">
-        <img #canvasPreviewImageElem [src]="canvasPreviewImage" style="max-width: unset;" (load)="resizeImage()">
-        <canvas #projectImageCanvasElem></canvas>
+      <div class="column ps-header-vertical-align ps-padding-left">
+        <input [(ngModel)]="clonedProject.name" name="name" class="input ps-header-input"
+               placeholder="untitled project..." type="text">
+
+        <div class="ps-project-details-color-picker-container">
+          <p class="ps-project-details-color-picker-title"> Project color : </p>
+          <div class="ps-project-details-palette-container">
+            <p class="ps-project-details-color" title="click to change color">
+              <a id="id2" class="button is-fullwidth" (click)="togglePalette()"
+                 [ngClass]="{'ps-project-details-palette-item-back-white1': clonedProject.colorPalette == 0,
+                             'ps-project-details-palette-item-back-salmon': clonedProject.colorPalette == 1,
+                             'ps-project-details-palette-item-back-blue': clonedProject.colorPalette == 2,
+                             'ps-project-details-palette-item-back-black': clonedProject.colorPalette == 3,
+                             'ps-project-details-palette-item-back-yellow': clonedProject.colorPalette == 4,
+                             'ps-project-details-palette-item-back-pink': clonedProject.colorPalette == 5}">
+              </a>
+            </p>
+            <div #projectDetailsPalette [ngStyle]="{'display': showPaletteBoollean ? 'block' : 'none'}" class="ps-project-details-palette">
+              <div class="ps-project-details-palette-colors-section">
+                <div *ngFor='let index of [0,1,2,3,4,5]' class="ps-project-details-palette-item">
+                  <a id="id1" class="button is-fullwidth" (click)="selectColor(index)"
+                     [ngClass]="{'ps-project-details-palette-item-back-white1': index == 0,
+                                 'ps-project-details-palette-item-back-salmon': index == 1,
+                                 'ps-project-details-palette-item-back-blue': index == 2,
+                                 'ps-project-details-palette-item-back-black': index == 3,
+                                 'ps-project-details-palette-item-back-yellow': index == 4,
+                                 'ps-project-details-palette-item-back-pink': index == 5}">
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <span (click)="projectImageElem.click()" class="icon-pencil ps-pencil-image-change" ></span>
     </div>
-    <div>
-      <div class="field">
-        <p class="control">
-          <input [(ngModel)]="clonedProject.name" name="name" class="input ps-header-input"
-                placeholder="untitled project..." type="text">
-        </p>
-      </div>
-    </div>
+
     <!--<div class="ps-checkbox-container">-->
     <!--<span class="ps-text-gray-small">Members can see other members</span>-->
     <!--<swing-switch [defaultValue]="false"></swing-switch>-->
@@ -33,29 +61,55 @@
     <!--<swing-switch [defaultValue]="false"></swing-switch>-->
     <!--</div>-->
 
-    <p class="control">
-      <button class="button is-primary"
-              type="submit" [disabled]="formSubmitted" [ngClass]="{'is-loading': formSubmitted}">
-        Update project
-      </button>
-    </p>
+    <div class="ps-submit-button">
+      <p class="control">
+        <button class="button is-primary is-fullwidth"
+                type="submit" [disabled]="formSubmitted" [ngClass]="{'is-loading': formSubmitted}">
+          Update project
+        </button>
+      </p>
+    </div>
   </div>
 </form>
 
 <div *ngIf="readOnly" dir="auto" class="ps-container">
-  <div class="ps-image-container">
-    <div style="padding: unset">
-      <figure class="image is-1by1">
-        <img [src]="clonedProject.image ? previewImage : '../../../../../assets/images/placeholder.png'">
-      </figure>
+  <div dir="auto" class="ps-container">
+    <div class="columns is-gapless is-mobile">
+      <div class="ps-header-vertical-align">
+        <div style="padding: unset">
+          <div class="image">
+            <input #projectImageElem type="file" name="projectImage" style="display:none" (change)="getFiles($event)"
+                   accept="image/">
+            <figure [ngStyle]="{'background-image': previewImage ? 'url(' + previewImage + ')' : 'url(\'../../../../../assets/images/placeholder.png\')'}"
+                    class="ps-image-resize ps-image-resize-disabled">
+            </figure>
+          </div>
+        </div>
+        <div style="display: none;">
+          <img #canvasPreviewImageElem [src]="canvasPreviewImage" style="max-width: unset;" (load)="resizeImage()">
+          <canvas #projectImageCanvasElem></canvas>
+        </div>
+      </div>
+      <div class="column ps-header-vertical-align ps-padding-left">
+        <input [(ngModel)]="clonedProject.name" name="name" class="input ps-header-input ps-header-input-disabled"
+               placeholder="untitled project..." type="text" [disabled]="true">
+
+        <div class="ps-project-details-color-picker-container">
+          <p class="ps-project-details-color-picker-title"> Project color : </p>
+          <div class="ps-project-details-palette-container">
+            <p class="ps-project-details-color">
+              <a class="button is-fullwidth ps-project-details-color-disabled"
+                 [ngClass]="{'ps-project-details-palette-item-back-white1': clonedProject.colorPalette == 0,
+                             'ps-project-details-palette-item-back-salmon': clonedProject.colorPalette == 1,
+                             'ps-project-details-palette-item-back-blue': clonedProject.colorPalette == 2,
+                             'ps-project-details-palette-item-back-black': clonedProject.colorPalette == 3,
+                             'ps-project-details-palette-item-back-yellow': clonedProject.colorPalette == 4,
+                             'ps-project-details-palette-item-back-pink': clonedProject.colorPalette == 5}">
+              </a>
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
-  <div class="ps-project-name-container">
-    <span class="ps-header-input">
-      Project name:
-    </span>
-    <span class="ps-header-input">
-    {{clonedProject.name}}
-    </span>
   </div>
 </div>

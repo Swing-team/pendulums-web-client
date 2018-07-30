@@ -1,10 +1,10 @@
 <div class="columns is-gapless is-mobile ps-project-item">
-  <div [ngClass]="{'ps-back-salmon': project.id.charCodeAt(project.id.length - 1) % 6 == 0,
-                   'ps-back-white1': project.id.charCodeAt(project.id.length - 1) % 6 == 1,
-                   'ps-back-blue': project.id.charCodeAt(project.id.length - 1) % 6 == 2,
-                   'ps-back-black': project.id.charCodeAt(project.id.length - 1) % 6 == 3,
-                   'ps-back-yellow': project.id.charCodeAt(project.id.length - 1) % 6 == 4,
-                   'ps-back-pink': project.id.charCodeAt(project.id.length - 1) % 6 == 5}" class="column">
+  <div [ngClass]="{'ps-back-white1': project.colorPalette == 0,
+                   'ps-back-salmon': project.colorPalette == 1,
+                   'ps-back-blue': project.colorPalette == 2,
+                   'ps-back-black': project.colorPalette == 3,
+                   'ps-back-yellow': project.colorPalette == 4,
+                   'ps-back-pink': project.colorPalette == 5}" class="column">
     <div class="card ps-project-item-card">
       <div class="card-content ps-project-item-card-content">
         <div class="media ps-project-item-card-content-media">
