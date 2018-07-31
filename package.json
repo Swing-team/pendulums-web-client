@@ -8,7 +8,10 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "electron:ng:build": "ng build --base-href ./ --output-path='../electron-app/app' --prod",
+    "electron:tsc": "tsc ./electron-app/main.ts",
+    "electron:start": "npm run electron:tsc && electron ./electron-app/main.js"
   },
   "private": true,
   "dependencies": {
@@ -45,6 +48,7 @@
     "@types/lodash": "^4.14.108",
     "@types/node": "~6.0.110",
     "codelyzer": "~4.0.2",
+    "electron": "^2.0.5",
     "jasmine-core": "~2.5.2",
     "jasmine-spec-reporter": "~3.2.0",
     "karma": "~1.4.1",
