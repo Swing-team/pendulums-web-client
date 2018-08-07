@@ -22,7 +22,7 @@ export class AuthenticationService {
 
   signIn(captchaResponse, authUser): Promise<any> {
     return this.http
-      .post(this.config.apiEndpoint + '/auth/admin/signin?g-recaptcha-response=' + captchaResponse,
+      .post(this.config.apiEndpoint + '/auth/signin?g-recaptcha-response=' + captchaResponse,
       JSON.stringify(authUser), this.options)
       .toPromise()
       .then(() => {})
