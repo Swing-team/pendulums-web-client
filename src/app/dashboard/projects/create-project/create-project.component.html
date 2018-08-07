@@ -6,7 +6,7 @@
           <div style="padding: unset">
             <div class="image">
               <input #projectImageElem type="file" name="projectImage" style="display:none" (change)="getFiles($event)" accept="image/">
-              <figure [ngStyle]="{'background-image': previewImage ? 'url(' + previewImage + ')' : 'url(\'../../../../../assets/images/placeholder.png\')'}"
+              <figure [ngStyle]="{'background-image': previewImage ? 'url(' + previewImage + ')' : 'url(\'assets/images/placeholder.png\')'}"
               (click)="projectImageElem.click()" class="ps-image-resize">
               </figure>
               <span (click)="projectImageElem.click()" class="icon-pencil ps-pencil-image-change" ></span>

@@ -109,7 +109,7 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
         inputs: {
           initialImage: this.userEdit.profileImage ? this.config.imagesEndpoint
           + '/profile/' + this.userEdit.profileImage :
-          '../../../assets/images/placeholder.png'
+          'assets/images/placeholder.png'
         },
         customStyles: {'width': '350px', 'overflow': 'initial'}
       });
