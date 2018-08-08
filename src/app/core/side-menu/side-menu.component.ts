@@ -7,6 +7,7 @@ import { APP_CONFIG }                    from '../../app.config';
 import { Md5 }                           from 'ts-md5/dist/md5';
 import { Router }                        from '@angular/router';
 import { ErrorService }                  from '../error/error.service';
+import { VERSION }                       from '../../../environments/version';
 
 @Component({
   selector: 'side-menu',
@@ -29,7 +30,10 @@ export class SideMenuComponent implements OnInit {
   constructor (@Inject(APP_CONFIG) private config,
                private router: Router,
                private errorService: ErrorService,
-               private eRef: ElementRef) {}
+               private eRef: ElementRef) {
+                 console.log(VERSION);
+
+               }
 
   ngOnInit() {
     this.emailHash = Md5.hashStr(this.user.email);

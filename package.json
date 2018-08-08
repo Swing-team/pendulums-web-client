@@ -4,7 +4,9 @@
   "license": "GPL-3.0-or-later",
   "scripts": {
     "ng": "ng",
+    "prestart": "node version.js",
     "start": "ng serve",
+    "prebuild": "node version.js",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
@@ -27,6 +29,7 @@
     "core-js": "^2.5.6",
     "d3": "^3.5.17",
     "dexie": "^1.5.1",
+    "fs-extra": "^7.0.0",
     "jdenticon": "^1.8.0",
     "lodash": "^4.17.10",
     "moment": "^2.22.1",
