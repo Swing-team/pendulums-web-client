@@ -22,6 +22,7 @@ import { SideMenuComponent }            from './side-menu/side-menu.component';
 import { ModalComponent }               from './modal/modal.component';
 import { NotificationComponent }        from './side-menu/notification/notification.component';
 import { NotificationService }          from './side-menu/notification/notification.service';
+import { AppInfoComponent }             from './side-menu/app-info/app-info.component';
 import { ImgCropperComponent }          from '../profile-setting/image-cropper/image-cropper.component';
 import { ImageCropperModule }           from 'ng2-img-cropper';
 import { ErrorComponent }               from './error/error.component';
@@ -53,7 +54,8 @@ import { RouterChangeListenerService }  from './services/roueter-change-listener
     ErrorComponent,
     ModalComponent,
     NotificationComponent,
-    ImgCropperComponent
+    ImgCropperComponent,
+    AppInfoComponent
   ],
   exports:      [
     ToolbarComponent,
@@ -87,7 +89,8 @@ import { RouterChangeListenerService }  from './services/roueter-change-listener
   entryComponents: [
     ModalComponent,
     ErrorComponent,
-    ImgCropperComponent
+    ImgCropperComponent,
+    AppInfoComponent
   ]
 })
 export class CoreModule {
