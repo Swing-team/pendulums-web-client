@@ -9,7 +9,6 @@ import { Router }                        from '@angular/router';
 import { ErrorService }                  from '../error/error.service';
 import { ModalService }                  from '../modal/modal.service';
 import { AppInfoComponent }              from './app-info/app-info.component';
-import { VERSION }                       from '@angular/compiler';
 
 @Component({
   selector: 'side-menu',
@@ -129,9 +128,7 @@ export class SideMenuComponent implements OnInit {
   showInfoModal() {
     this.modalService.show({
       component: AppInfoComponent,
-      inputs: {
-        version: VERSION
-      }
+      inputs: {}
     });
   }
 

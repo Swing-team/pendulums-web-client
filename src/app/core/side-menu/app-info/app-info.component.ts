@@ -1,15 +1,18 @@
-import { Component, Input }                     from '@angular/core';
-import { VERSION }                              from '../../../../environments/version';
+import { Component, OnInit }                     from '@angular/core';
+import { VERSION }                               from '../../../../environments/version';
 
 @Component({
   selector: 'app-info',
   templateUrl: './app-info.component.html',
   styleUrls: ['./app-info.component.sass']
 })
-export class AppInfoComponent {
+export class AppInfoComponent implements OnInit {
 
-  @Input() version: string;
+  appVersion: string;
 
   constructor() { }
 
+  ngOnInit() {
+    this.appVersion = VERSION
+  }
 }
