@@ -38,7 +38,7 @@ import { ModalRouterGuardService }      from './services/router-guards/modal-rou
 import { PageLoaderService }            from './services/page-loader.service';
 import { AppStateSelectors }            from '../shared/state/app-state.selectors';
 import { ProjectsSelectors }            from '../shared/state/project/projects.selectors';
-import { RouterChangeListenerService }  from './services/roueter-change-listener.service';
+import { RouterChangeListenerService }  from './services/router-change-listener.service';
 
 @NgModule({
   imports:      [
