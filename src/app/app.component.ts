@@ -15,6 +15,7 @@ import { CurrentActivityActions }                 from './shared/state/current-a
 import { SyncService }                            from './core/services/sync.service';
 import { Status }                                 from './shared/state/status/status.model';
 import { PageLoaderService }                      from './core/services/page-loader.service';
+import { AppService }                             from './core/services/app.service';
 import { UnSyncedActivityActions }                from './shared/state/unsynced-activities/unsynced-activities.actions';
 import { AppStateSelectors }                      from './shared/state/app-state.selectors';
 
@@ -45,6 +46,7 @@ export class AppComponent implements OnInit {
     private router: Router,
     private syncService: SyncService,
     private pageLoaderService: PageLoaderService,
+    private appService: AppService,
     private unSyncedActivityActions: UnSyncedActivityActions,
     appStateSelectors: AppStateSelectors,
     // needed for dynamically loaded components
@@ -67,7 +69,11 @@ export class AppComponent implements OnInit {
         this.store.dispatch(this.userActions.clearUser());
         this.store.dispatch(this.projectsActions.clearProjects());
         this.store.dispatch(this.currentActivityActions.clearCurrentActivity());
-        this.store.dispatch(this.statusActions.loadStatus({netStatus: true, isLogin: null}));
+        if (this.appService.getAppVersion()) {
+          this.store.dispatch(this.statusActions.loadStatus({netStatus: true, isLogin: null, appUpdate: true}));
+        } else {
+          this.store.dispatch(this.statusActions.loadStatus({netStatus: true, isLogin: null, appUpdate: false}));
+        }
         // we think we don't need to keep unSynced data any more after user sign out or get 403
         this.store.dispatch(this.unSyncedActivityActions.clearUnSyncedActivity());
         this.syncService.closeConnection();

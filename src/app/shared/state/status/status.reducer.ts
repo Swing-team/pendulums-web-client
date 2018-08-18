@@ -5,6 +5,7 @@ import { ActionWithPayload } from '../action-with-payload';
 const initialState: Status = {
   netStatus: null,
   isLogin: null,
+  appUpdate: null
 };
 
 export default function reducer(state = initialState, action:  ActionWithPayload<any>) {

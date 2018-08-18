@@ -36,9 +36,11 @@ import { AuthGuardService }             from './services/router-guards/auth-guar
 import { AnonymousGuardService }        from './services/router-guards/anonymous-guard.service';
 import { ModalRouterGuardService }      from './services/router-guards/modal-router-guard.service'
 import { PageLoaderService }            from './services/page-loader.service';
+import { AppService }                   from './services/app.service';
 import { AppStateSelectors }            from '../shared/state/app-state.selectors';
 import { ProjectsSelectors }            from '../shared/state/project/projects.selectors';
 import { RouterChangeListenerService }  from './services/router-change-listener.service';
+import { InviteNotifComponent }         from './side-menu/notification/invite-notif/invite-notif.component';
 
 @NgModule({
   imports:      [
@@ -55,7 +57,8 @@ import { RouterChangeListenerService }  from './services/router-change-listener.
     ModalComponent,
     NotificationComponent,
     ImgCropperComponent,
-    AppInfoComponent
+    AppInfoComponent,
+    InviteNotifComponent
   ],
   exports:      [
     ToolbarComponent,
@@ -83,6 +86,7 @@ import { RouterChangeListenerService }  from './services/router-change-listener.
     DexieService,
     DatabaseService,
     SyncService,
+    AppService,
     RouterChangeListenerService,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],

@@ -8,6 +8,7 @@ import { Md5 }                           from 'ts-md5/dist/md5';
 import { Router }                        from '@angular/router';
 import { ErrorService }                  from '../error/error.service';
 import { ModalService }                  from '../modal/modal.service';
+import { AppService }                    from '../services/app.service';
 import { AppInfoComponent }              from './app-info/app-info.component';
 
 @Component({
@@ -27,12 +28,14 @@ export class SideMenuComponent implements OnInit {
   pendulumNotification: boolean;
   notificationIsActive = false;
   activeItemNumber = 0;
+  notifNum = 0;
 
   constructor (@Inject(APP_CONFIG) private config,
                private router: Router,
                private errorService: ErrorService,
                private eRef: ElementRef,
-               private modalService: ModalService) {
+               private modalService: ModalService,
+               private appService: AppService) {
                }
 
   ngOnInit() {
@@ -45,6 +48,10 @@ export class SideMenuComponent implements OnInit {
     }
     if (this.router.url === '/profile') {
       this.activeItemNumber = 1;
+    }
+
+    if (this.appService.getAppVersion()) {
+      this.notifNum += 1;
     }
   }
 

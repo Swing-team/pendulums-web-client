@@ -9,6 +9,7 @@ import { DatabaseService }              from '../core/services/database/database
 import { Store }                        from '@ngrx/store';
 import { AppState }                     from '../shared/state/appState';
 import { ModalService }                 from '../core/modal/modal.service';
+import { AppService }                   from '../core/services/app.service';
 import { AppStateSelectors }            from '../shared/state/app-state.selectors';
 import { AppInfoComponent }             from '../core/side-menu/app-info/app-info.component';
 import { RouterChangeListenerService }  from '../core/services/router-change-listener.service';
@@ -32,6 +33,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                appStateSelectors: AppStateSelectors,
                private db: DatabaseService,
                private modalService: ModalService,
+               private appService: AppService,
                // this service needed to handle router changes so don't remove it
                private routerChangeListenerService: RouterChangeListenerService) {
 
