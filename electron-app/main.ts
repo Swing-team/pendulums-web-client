@@ -3,8 +3,10 @@ import {
     BrowserWindow,
     Tray,
     shell,
+    Menu,
     ipcMain
 }  from 'electron';
+import * as menubar from 'menubar';
 import * as path from 'path';
 import * as url from 'url';
 
@@ -12,10 +14,35 @@ import * as url from 'url';
 // be closed automatically when the JavaScript object is garbage collected.
 let win;
 let willExitApp = false;
-// let trayWindow;
-// let trayMenu;
-// let trayIconPath = path.join(__dirname, '../images/trayIcon.png');
-// let trayVisibility = false;
+let tray;
+let trayWindow;
+const trayIconPath = path.join(__dirname, './images/tray-image.png');
+let trayVisibility = false;
+let mb;
+
+const createMenubar = () => {
+  this.tray = new Tray(trayIconPath);
+  this.mb = menubar({
+    dir: __dirname,
+    tooltip: 'Pendulums',
+    icon: __dirname + './images/tray-image.png',
+    width: 300,
+    height: 140,
+    resizable: false,
+    alwaysOnTop : true,
+    tray: this.tray
+  });
+  this.mb.on('after-create-window', () => {
+    this.mb.window.loadURL(url.format({
+      pathname: path.join(__dirname, './tray/tray.html'),
+      protocol: 'file:',
+      slashes: true
+    }));
+  });
+  this.mb.on('focus-lost', () => {
+    this.mb.window.hide()
+  });
+};
 
 const createWindow = () => {
     // Create the browser window.
@@ -29,12 +56,14 @@ const createWindow = () => {
 
     // and load the index.html of the app.
     // win.loadURL(url.format({
-    //     pathname: path.join(__dirname, '../app/index.html'),
+    //     pathname: path.join(__dirname, './app/index.html'),
     //     protocol: 'file:',
     //     slashes: true
     // }));
 
     win.loadURL('http://localhost:4200');
+
+    win.webContents.openDevTools();
 
     // Emitted when the window is closed.
     win.on('closed', () => {
@@ -53,96 +82,108 @@ const createWindow = () => {
 };
 
 const createTrayWindow = () => {
-    // let tray = new Tray(trayIconPath);
-    // // width: 450,
-    // //     height: 100,
-    // trayWindow = new BrowserWindow({
-    //     width: 450,
-    //     height: 800,
-    //     show: true, // TODO: Change the show attr to false
-    //     frame: false,
-    //     fullscreenable: false,
-    //     minimizable: false,
-    //     resizable: false,
-    //     movable: false,
-    //     'node-integration': false
-    // });
-    // trayWindow.loadURL(url.format({
-    //     pathname: path.join(__dirname, '../tray/index.html'),
-    //     protocol: 'file:',
-    //     slashes: true
-    // }));
+  this.tray = new Tray(trayIconPath);
+  // initialTrayMenu();
+  // width: 450,
+  // height: 100,
+  this.trayWindow = new BrowserWindow({
+    width: 300,
+    height: 140,
+    show: false, // TODO: Change the show attr to false
+    frame: false,
+    fullscreenable: false,
+    minimizable: false,
+    resizable: false,
+    movable: false,
+    // 'node-integration': false
+  });
+  this.trayWindow.loadURL(url.format({
+    pathname: path.join(__dirname, './tray/tray.html'),
+    protocol: 'file:',
+    slashes: true
+  }));
 
-    // trayWindow.webContents.openDevTools();
+  this.trayWindow.webContents.openDevTools();
 
-    // trayWindow.on('blur', function () {
-    //     toggleTrayWindow();
-    // });
 
-    // const position = getTrayWindowPosition();
-    // trayWindow.setPosition(position.x, position.y, true);
-    // tray.on('click', function (event) {
-    //     toggleTrayWindow();
-    // });
+  // this.trayWindow.on('blur', () => {
+  //   toggleTrayWindow();
+  // });
+
+
+  // const position = getTrayWindowPosition();
+  // this.trayWindow.setPosition(position.x, position.y, true);
+
+  // this.tray.on('click', () => {
+  //   toggleTrayWindow();
+  // });
 };
 
 const toggleTrayWindow = () => {
-    // if (trayVisibility) {
-    //     trayWindow.hide();
-    //     trayVisibility = false;
-    // } else {
-    //     trayWindow.show();
-    //     trayVisibility = true;
-    // }
+  if (this.trayVisibility) {
+    this.trayWindow.hide();
+    this.trayVisibility = false;
+  } else {
+    this.trayWindow.show();
+    this.trayVisibility = true;
+  }
 };
 
 const getTrayWindowPosition = () => {
-    // const windowBounds = trayWindow.getBounds();
-    // const trayBounds = tray.getBounds();
+  const windowBounds = this.trayWindow.getBounds();
+  const trayBounds = this.tray.getBounds();
 
-    // // Center window horizontally below the tray icon
-    // const x = Math.round(trayBounds.x + (trayBounds.width / 2) - (windowBounds.width / 2));
+  // Center window horizontally below the tray icon
+  const x = Math.round(trayBounds.x + (trayBounds.width / 2) - (windowBounds.width / 2));
 
-    // return {x: x, y: 0}
+  // Position window 4 pixels vertically below the tray icon
+  const y = Math.round(trayBounds.y + trayBounds.height + 3);
+
+  return {x: x , y: y}
 };
 
 
-ipcMain.on('close_app', () => {
-    app.quit();
-});
-ipcMain.on('open_website', () => {
-    shell.openExternal('https://app.pendulums.io');
-});
-ipcMain.on('open_app', () => {
-    win.show();
+// ipcMain.on('close_app', () => {
+//     app.quit();
+// });
+// ipcMain.on('open_website', () => {
+//     shell.openExternal('https://app.pendulums.io');
+// });
+// ipcMain.on('open_app', () => {
+//     win.show();
+// });
+//
+// ipcMain.on('current_activity_changed', (event, arg) => {
+//     communicateWithTray('current_activity_changed', arg);
+// });
+// ipcMain.on('user_logged_in', (event, arg) => {
+//     communicateWithTray('user_logged_in', arg);
+// });
+// ipcMain.on('projects_changes', (event, arg) => {
+//     communicateWithTray('projects_changes', arg);
+// });
+//
+
+ipcMain.on('projects_ready', (event, arg) => {
+  console.log('projects_ready')
+  // communicateWithTray('projects_ready', arg);
 });
 
-ipcMain.on('current_activity_changed', (event, arg) => {
-    communicateWithTray('current_activity_changed', arg);
-});
-ipcMain.on('user_logged_in', (event, arg) => {
-    communicateWithTray('user_logged_in', arg);
-});
-ipcMain.on('projects_changes', (event, arg) => {
-    communicateWithTray('projects_changes', arg);
-});
-
-ipcMain.on('playOrStop', () => {
-    win.webContents.send('playOrStop');
+ipcMain.on('startOrStop', (event, message) => {
+  win.webContents.send('startOrStop', message);
 });
 
 const communicateWithTray = (channelName, data) => {
-    // if (trayWindow) {
-    //     trayWindow.webContents.send(channelName, data);
-    // }
+  this.mb.window.webContents.send(channelName, data);
 };
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', () => {
-    createWindow();
-    // createTrayWindow();
+  createWindow();
+  // createTrayWindow();
+  createMenubar();
 });
 
 // Quit when all windows are closed.
@@ -164,6 +205,6 @@ app.on('activate', () => {
     if (win === null) {
         createWindow();
     } else {
-        win.show();
+        this.win.show();
     }
 });

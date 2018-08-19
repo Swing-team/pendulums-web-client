@@ -27,6 +27,7 @@ import { ImageCropperModule }           from 'ng2-img-cropper';
 import { ErrorComponent }               from './error/error.component';
 import { ErrorService }                 from './error/error.service';
 import { DatabaseService }              from './services/database/database.service';
+import { StopStartActivityService }     from './services/stop-start-activity.service';
 import { DexieService }                 from './services/database/dexie.service';
 import { StatusActions }                from '../shared/state/status/status.actions';
 import { SyncService }                  from './services/sync.service';
@@ -81,6 +82,7 @@ import { RouterChangeListenerService }  from './services/roueter-change-listener
     DexieService,
     DatabaseService,
     SyncService,
+    StopStartActivityService,
     RouterChangeListenerService,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],

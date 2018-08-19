@@ -9,7 +9,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "electron:ng:build": "ng build --base-href ./ --output-path='../electron-app/app' --prod",
+    "electron:ng:serve": "ng serve --app 1",
+    "electron:ng:build": "ng build --app 1 --base-href ./ --output-path='./electron-app/app' --prod",
     "electron:tsc": "tsc ./electron-app/main.ts",
     "electron:start": "npm run electron:tsc && electron ./electron-app/main.js"
   },
@@ -39,7 +40,8 @@
     "rxjs": "^5.5.10",
     "socket.io-client": "^2.1.1",
     "ts-md5": "^1.2.4",
-    "zone.js": "^0.8.26"
+    "zone.js": "^0.8.26",
+    "menubar": "^5.2.3"
   },
   "devDependencies": {
     "@angular/cli": "~1.5.0",
