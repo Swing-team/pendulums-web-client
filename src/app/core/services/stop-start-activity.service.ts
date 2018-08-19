@@ -8,6 +8,7 @@ import { ProjectsActions } from '../../shared/state/project/projects.actions';
 import { AppState } from '../../shared/state/appState';
 import { Status } from '../../shared/state/status/status.model';
 import { Project } from '../../shared/state/project/project.model';
+import { User } from '../../shared/state/user/user.model';
 import { cloneDeep }                      from 'lodash';
 import { userRoleInProject } from '../../dashboard/shared/utils';
 import * as moment from 'moment';
@@ -16,6 +17,7 @@ import * as moment from 'moment';
 export class StopStartActivityService {
   private currentActivityCopy: Activity;
   private status: Status;
+  private user: User;
 
   constructor( private activityService: ActivityService,
               private store: Store<AppState>,
@@ -28,20 +30,29 @@ export class StopStartActivityService {
     store.select('status').subscribe((status: Status) => {
       this.status = cloneDeep(status);
     });
+    store.select('user').subscribe((user: User) => {
+      this.user = cloneDeep(user);
+    });
   }
 
-  startActivity(activity: Activity, project: Project) {
-    if (this.currentActivityCopy.startedAt) {
-      this.stopActivity().then(() => {
-        this.startActivityAtServer(activity, project).then(() => {
-          console.log('activity started')
+  startActivity(activity: Activity, project: Project): Promise<any> {
+    // first of all we set user id of activity from state because electron app doesn't have this id so this service do it by itself
+    activity.user = this.user.id;
+    return new Promise((resolve, reject) => {
+      if (this.currentActivityCopy.startedAt) {
+        this.stopActivity().then(() => {
+          this.startActivityAtServer(activity, project).then(() => {
+            console.log('activity started')
+            resolve();
+          });
         });
-      });
-    } else {
-      this.startActivityAtServer(activity, project).then(() => {
-        console.log('activity started')
-      });
-    }
+      } else {
+        this.startActivityAtServer(activity, project).then(() => {
+          console.log('activity started');
+          resolve();
+        });
+      }
+    })
   }
 
   startActivityAtServer(activity: Activity, project: Project): Promise<any> {
@@ -164,6 +175,8 @@ export class StopStartActivityService {
           this.store.dispatch(this.currentActivityActions.clearCurrentActivity());
           resolve();
         }
+      } else {
+        reject();
       }
     });
   }

@@ -163,15 +163,18 @@ const getTrayWindowPosition = () => {
 //     communicateWithTray('projects_changes', arg);
 // });
 //
-ipcMain.on('playOrStop', (event, message) => {
-    win.webContents.send('playOrStop');
-    console.log(event, message);
+
+ipcMain.on('projects_ready', (event, arg) => {
+  console.log('projects_ready')
+  // communicateWithTray('projects_ready', arg);
+});
+
+ipcMain.on('startOrStop', (event, message) => {
+  win.webContents.send('startOrStop', message);
 });
 
 const communicateWithTray = (channelName, data) => {
-    // if (trayWindow) {
-    //     trayWindow.webContents.send(channelName, data);
-    // }
+  this.mb.window.webContents.send(channelName, data);
 };
 
 // This method will be called when Electron has finished

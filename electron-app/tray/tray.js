@@ -9,6 +9,85 @@ var ActivityNameLabel = '';
 var taskName = '';
 var timeDuration = 0;
 var toggleStopStartBoolean = false;
+var projTest = {
+    "teamMembers": [
+      {
+        "id": "58c029c748f21b100025d15d",
+        "email": "test@test.com",
+        "name": "Mr Pendulum",
+        "profileImage": "seed/member-profile.png",
+        "currentActivity": null
+      }
+    ],
+    "admins": [],
+    "activities": [
+      {
+        "createdAt": 1534663972963,
+        "updatedAt": 1534663973152,
+        "id": "5b791d2462c48400255cfa8d",
+        "name": "untitled activity",
+        "startedAt": "1534659662341",
+        "stoppedAt": "1534659675444",
+        "project": "5b5edcde733088001edd8b41",
+        "user": "58c029c748f21b100025d15d"
+      },
+      {
+        "createdAt": 1534663972956,
+        "updatedAt": 1534663973162,
+        "id": "5b791d2462c48400255cfa8c",
+        "name": "untitled activity",
+        "startedAt": "1534659596958",
+        "stoppedAt": "1534659602026",
+        "project": "5b5edcde733088001edd8b41",
+        "user": "58c029c748f21b100025d15d"
+      },
+      {
+        "createdAt": 1534663972943,
+        "updatedAt": 1534663973149,
+        "id": "5b791d2462c48400255cfa89",
+        "name": "untitled activity",
+        "startedAt": "1534659146501",
+        "stoppedAt": "1534659366764",
+        "project": "5b5edcde733088001edd8b41",
+        "user": "58c029c748f21b100025d15d"
+      },
+      {
+        "createdAt": 1534663972954,
+        "updatedAt": 1534663973159,
+        "id": "5b791d2462c48400255cfa8b",
+        "name": "untitled activity",
+        "startedAt": "1534659021517",
+        "stoppedAt": "1534659027533",
+        "project": "5b5edcde733088001edd8b41",
+        "user": "58c029c748f21b100025d15d"
+      },
+      {
+        "createdAt": 1534663972966,
+        "updatedAt": 1534663973145,
+        "id": "5b791d2462c48400255cfa8e",
+        "name": "untitled activity",
+        "startedAt": "1534658758348",
+        "stoppedAt": "1534658772180",
+        "project": "5b5edcde733088001edd8b41",
+        "user": "58c029c748f21b100025d15d"
+      }
+    ],
+    "createdAt": 1532943582884,
+    "updatedAt": 1533028787191,
+    "id": "5b5edcde733088001edd8b41",
+    "name": "cv",
+    "image": "",
+    "colorPalette": 1,
+    "invitedUsers": [],
+    "owner": {
+      "id": "58c029c748f21b100025d15d",
+      "email": "test@test.com",
+      "name": "Mr Pendulum",
+      "profileImage": "seed/member-profile.png",
+      "currentActivity": null
+    },
+    "recentActivityName": "untitled activity"
+  };
 
 // top menu
 let menu = new Menu();
@@ -43,6 +122,10 @@ menu = Menu.buildFromTemplate(trayMenuTemplate);
 document.addEventListener('DOMContentLoaded', function() {
   init();
 }, false);
+
+ipc.on('projects_ready', (event, message) => {
+
+});
 
 function init() {
   setInterval(timer, 1000);
@@ -81,8 +164,6 @@ function openTopMenu() {
 
 function toggleStopStart() {
   toggleStopStartBoolean = !toggleStopStartBoolean;
-  console.log('started', toggleStopStartBoolean);
-  ipc.send('playOrStop', null);
   if (toggleStopStartBoolean) {
     // just for test
     u('#loading').addClass("is-loading");
@@ -91,6 +172,7 @@ function toggleStopStart() {
     }, 1500);
     // end of test
 
+    // ui logic
     u('i#stopButton').removeClass("ps-hide-item");
     u('i#playButton').addClass("ps-hide-item");
 
@@ -98,6 +180,14 @@ function toggleStopStart() {
     u('#timeSpan').addClass("ps-show-time");
 
     u('#inputContainer').removeClass("ps-hide-item");
+
+    // data flow logic
+    ipc.send('startOrStop',
+      {
+        activity: {name: "khodam", project: "5b5edcde733088001edd8b41", startedAt: "1534659146501"},
+        project : this.projTest
+      });
+
   } else {
     // just for test
     u('#loading').addClass("is-loading");
@@ -106,6 +196,7 @@ function toggleStopStart() {
     }, 1500);
     // end of test
 
+    // ui logic
     u('i#stopButton').addClass("ps-hide-item");
     u('i#playButton').removeClass("ps-hide-item");
 
@@ -113,6 +204,9 @@ function toggleStopStart() {
     u('#timeSpan').removeClass("ps-show-time");
 
     u('#inputContainer').addClass("ps-hide-item");
+
+    // data flow logic
+    ipc.send('startOrStop', null);
   }
 }
 
