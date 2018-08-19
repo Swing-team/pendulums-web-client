@@ -182,11 +182,7 @@ export class SyncService {
         } else {
           this.store.dispatch(this.currentActivityActions.clearCurrentActivity());
         }
-        if (this.appService.getAppVersion()) {
-          this.store.dispatch(this.statusActions.loadStatus({netStatus: true, isLogin: true, appUpdate: true}));
-        } else {
-          this.store.dispatch(this.statusActions.loadStatus({netStatus: true, isLogin: true, appUpdate: false}));
-        }
+        this.store.dispatch(this.statusActions.updateStatus({netStatus: true, isLogin: true}));
         this.dBService
           .removeAll('activeUser')
           .then(() => {

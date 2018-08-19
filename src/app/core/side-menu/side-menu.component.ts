@@ -23,12 +23,12 @@ export class SideMenuComponent implements OnInit {
   @Output() clickedToCloseMenu = new EventEmitter();
   @Input() user: User;
   @Input() netConnected: boolean;
+  @Input() notifNum: number;
   @ViewChild('notifications') notifications;
   emailHash: any;
   pendulumNotification: boolean;
   notificationIsActive = false;
   activeItemNumber = 0;
-  notifNum = 0;
 
   constructor (@Inject(APP_CONFIG) private config,
                private router: Router,
@@ -48,10 +48,6 @@ export class SideMenuComponent implements OnInit {
     }
     if (this.router.url === '/profile') {
       this.activeItemNumber = 1;
-    }
-
-    if (this.appService.getAppVersion()) {
-      this.notifNum += 1;
     }
   }
 

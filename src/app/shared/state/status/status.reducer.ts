@@ -5,7 +5,7 @@ import { ActionWithPayload } from '../action-with-payload';
 const initialState: Status = {
   netStatus: null,
   isLogin: null,
-  appUpdate: null
+  updateNeeded: null
 };
 
 export default function reducer(state = initialState, action:  ActionWithPayload<any>) {
@@ -22,6 +22,10 @@ export default function reducer(state = initialState, action:  ActionWithPayload
     case StatusActions.UPDATE_IS_LOGIN: {
       // copied whole of state of status because it may change in future and have more properties
       return Object.assign({}, state , { isLogin: action.payload});
+    }
+
+    case StatusActions.UPDATE_STATUS: {
+      return Object.assign({}, state, action.payload);
     }
 
     case StatusActions.CLEAR_STATUS: {

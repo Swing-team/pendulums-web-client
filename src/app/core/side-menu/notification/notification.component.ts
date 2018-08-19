@@ -5,7 +5,7 @@ import {
 import { APP_CONFIG }                    from '../../../app.config';
 import { User }                          from '../../../shared/state/user/user.model';
 import { AppService }                    from '../../services/app.service';
-import { VERSION }                              from 'environments/version';
+import { VERSION }                       from 'environments/version';
 
 @Component({
   selector: 'notification',
@@ -17,17 +17,15 @@ export class NotificationComponent implements OnInit {
   @Input() user: User;
   @Output() clickedOutSideOfNotification = new EventEmitter();
   isUpdateAvalable: boolean;
-  Version: string
 
   constructor (@Inject(APP_CONFIG) private config,
                private ref: ElementRef,
                private appService: AppService) {}
   ngOnInit() {
-    this.Version = VERSION;
     this.pendingInvitations = this.user.pendingInvitations;
-    if (this.appService.getAppVersion()) {
-      this.isUpdateAvalable = true;
-    }
+    this.appService.getAppVersion().then((version) => {
+      this.isUpdateAvalable = version > VERSION;
+    })
   }
 
   @HostListener('document:click', ['$event'])

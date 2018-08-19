@@ -5,6 +5,7 @@ import { UserActions } from '../../../../shared/state/user/user.actions';
 import { ProjectsActions } from '../../../../shared/state/project/projects.actions';
 import { NotificationService } from '../notification.service';
 import { NotificationComponent } from '../notification.component';
+import { Project } from '../../../../shared/state/project/project.model';
 
 @Component({
   selector: 'app-invite-notif',
@@ -12,11 +13,11 @@ import { NotificationComponent } from '../notification.component';
   styleUrls: ['./invite-notif.component.sass']
 })
 export class InviteNotifComponent implements OnInit {
+  @Input() project: Project
   pendingInvitations: Array<object>;
   denyDisabledIndex = -1;
   acceptDisabledIndex = -1;
   user: any;
-  haveUpdate: boolean;
 
   constructor(private userActions: UserActions,
               private projectsActions: ProjectsActions,
@@ -26,8 +27,6 @@ export class InviteNotifComponent implements OnInit {
 
   ngOnInit() {
     this.user = this.notificationComponent.user
-    this.haveUpdate = this.notificationComponent.isUpdateAvalable;
-    this.pendingInvitations = this.notificationComponent.pendingInvitations
   }
 
   accept(projectId, i) {
