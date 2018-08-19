@@ -4,11 +4,15 @@ import {
     Tray,
     shell,
     Menu,
-    ipcMain
+    ipcMain,
+    protocol
 }  from 'electron';
-import * as menubar from 'menubar';
+// import * as menubar from 'menubar';
 import * as path from 'path';
 import * as url from 'url';
+import * as fs from 'fs';
+import * as Positioner from 'electron-positioner';
+
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -16,33 +20,40 @@ let win;
 let willExitApp = false;
 let tray;
 let trayWindow;
-const trayIconPath = path.join(__dirname, './images/tray-image.png');
-let trayVisibility = false;
-let mb;
+let trayIconPath;
 
-const createMenubar = () => {
-  this.tray = new Tray(trayIconPath);
-  this.mb = menubar({
-    dir: __dirname,
-    tooltip: 'Pendulums',
-    icon: __dirname + './images/tray-image.png',
-    width: 300,
-    height: 140,
-    resizable: false,
-    alwaysOnTop : true,
-    tray: this.tray
-  });
-  this.mb.on('after-create-window', () => {
-    this.mb.window.loadURL(url.format({
-      pathname: path.join(__dirname, './tray/tray.html'),
-      protocol: 'file:',
-      slashes: true
-    }));
-  });
-  this.mb.on('focus-lost', () => {
-    this.mb.window.hide()
-  });
-};
+if (process.platform === 'win32') {
+    trayIconPath = path.join(__dirname, '../images/tray/tray.ico');
+} else {
+    trayIconPath = path.join(__dirname, '../images/tray/tray.png');
+}
+
+let trayVisibility = false;
+// let mb;
+
+// const createMenubar = () => {
+//   this.tray = new Tray(trayIconPath);
+//   this.mb = menubar({
+//     dir: __dirname,
+//     tooltip: 'Pendulums',
+//     icon: __dirname + '../images/tray-image.png',
+//     width: 300,
+//     height: 140,
+//     resizable: false,
+//     alwaysOnTop : true,
+//     tray: this.tray
+//   });
+//   this.mb.on('after-create-window', () => {
+//     this.mb.window.loadURL(url.format({
+//       pathname: path.join(__dirname, '../tray/tray.html'),
+//       protocol: 'file:',
+//       slashes: true
+//     }));
+//   });
+//   this.mb.on('focus-lost', () => {
+//     this.mb.window.hide()
+//   });
+// };
 
 const createWindow = () => {
     // Create the browser window.
@@ -53,6 +64,16 @@ const createWindow = () => {
         minWidth: 770,
         minHeight: 630
     });
+
+    protocol.registerBufferProtocol('pendulums', (request, callback) => {
+      callback({ mimeType: 'text/html', data: fs.readFileSync(path.join(__dirname, URL[1])) });
+  }, (error) => {
+      if (error) {
+          console.error('Failed to register protocol');
+      }
+    });
+  
+
 
     // and load the index.html of the app.
     // win.loadURL(url.format({
@@ -89,7 +110,7 @@ const createTrayWindow = () => {
   this.trayWindow = new BrowserWindow({
     width: 300,
     height: 140,
-    show: false, // TODO: Change the show attr to false
+    show: true, // TODO: Change the show attr to false
     frame: false,
     fullscreenable: false,
     minimizable: false,
@@ -97,8 +118,12 @@ const createTrayWindow = () => {
     movable: false,
     // 'node-integration': false
   });
+
+  const positioner = new Positioner(this.trayWindow);  
+  const position = positioner.calculate('trayCenter', this.tray.getBounds()); 
+
   this.trayWindow.loadURL(url.format({
-    pathname: path.join(__dirname, './tray/tray.html'),
+    pathname: path.join(__dirname, '../tray/tray.html'),
     protocol: 'file:',
     slashes: true
   }));
@@ -112,11 +137,11 @@ const createTrayWindow = () => {
 
 
   // const position = getTrayWindowPosition();
-  // this.trayWindow.setPosition(position.x, position.y, true);
+  this.trayWindow.setPosition(position.x, position.y, true);
 
-  // this.tray.on('click', () => {
-  //   toggleTrayWindow();
-  // });
+  this.tray.on('click', () => {
+    toggleTrayWindow();
+  });
 };
 
 const toggleTrayWindow = () => {
@@ -129,18 +154,18 @@ const toggleTrayWindow = () => {
   }
 };
 
-const getTrayWindowPosition = () => {
-  const windowBounds = this.trayWindow.getBounds();
-  const trayBounds = this.tray.getBounds();
+// const getTrayWindowPosition = () => {
+//   const windowBounds = this.trayWindow.getBounds();
+//   const trayBounds = this.tray.getBounds();
 
-  // Center window horizontally below the tray icon
-  const x = Math.round(trayBounds.x + (trayBounds.width / 2) - (windowBounds.width / 2));
+//   // Center window horizontally below the tray icon
+//   const x = Math.round(trayBounds.x + (trayBounds.width / 2) - (windowBounds.width / 2));
 
-  // Position window 4 pixels vertically below the tray icon
-  const y = Math.round(trayBounds.y + trayBounds.height + 3);
+//   // Position window 4 pixels vertically below the tray icon
+//   const y = Math.round(trayBounds.y + trayBounds.height + 3);
 
-  return {x: x , y: y}
-};
+//   return {x: x , y: y}
+// };
 
 
 // ipcMain.on('close_app', () => {
@@ -164,26 +189,21 @@ const getTrayWindowPosition = () => {
 // });
 //
 
-ipcMain.on('projects_ready', (event, arg) => {
-  console.log('projects_ready')
-  // communicateWithTray('projects_ready', arg);
-});
-
 ipcMain.on('startOrStop', (event, message) => {
   win.webContents.send('startOrStop', message);
 });
 
-const communicateWithTray = (channelName, data) => {
-  this.mb.window.webContents.send(channelName, data);
-};
+// const communicateWithTray = (channelName, data) => {
+//   this.trayWindow.webContents.send(channelName, data);
+// };
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', () => {
   createWindow();
-  // createTrayWindow();
-  createMenubar();
+  createTrayWindow();
+  // createMenubar();
 });
 
 // Quit when all windows are closed.
