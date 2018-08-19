@@ -34,8 +34,7 @@ export class SideMenuComponent implements OnInit {
                private router: Router,
                private errorService: ErrorService,
                private eRef: ElementRef,
-               private modalService: ModalService,
-               private appService: AppService) {
+               private modalService: ModalService) {
                }
 
   ngOnInit() {
