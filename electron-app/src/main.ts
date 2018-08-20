@@ -20,6 +20,8 @@ let win;
 let willExitApp = false;
 let tray;
 let trayWindow;
+let trayVisibility = false;
+// let mb;
 let trayIconPath;
 
 if (process.platform === 'win32') {
@@ -28,8 +30,6 @@ if (process.platform === 'win32') {
     trayIconPath = path.join(__dirname, '../images/tray/tray.png');
 }
 
-let trayVisibility = false;
-// let mb;
 
 // const createMenubar = () => {
 //   this.tray = new Tray(trayIconPath);
@@ -72,7 +72,7 @@ const createWindow = () => {
           console.error('Failed to register protocol');
       }
     });
-  
+
 
 
     // and load the index.html of the app.
@@ -119,8 +119,8 @@ const createTrayWindow = () => {
     // 'node-integration': false
   });
 
-  const positioner = new Positioner(this.trayWindow);  
-  const position = positioner.calculate('trayCenter', this.tray.getBounds()); 
+  const positioner = new Positioner(this.trayWindow);
+  const position = positioner.calculate('trayCenter', this.tray.getBounds());
 
   this.trayWindow.loadURL(url.format({
     pathname: path.join(__dirname, '../tray/tray.html'),
@@ -168,34 +168,49 @@ const toggleTrayWindow = () => {
 // };
 
 
-// ipcMain.on('close_app', () => {
-//     app.quit();
-// });
-// ipcMain.on('open_website', () => {
-//     shell.openExternal('https://app.pendulums.io');
-// });
-// ipcMain.on('open_app', () => {
-//     win.show();
-// });
-//
+ipcMain.on('tray-close-app', () => {
+    app.quit();
+});
+
+ipcMain.on('tray-open-website', () => {
+    shell.openExternal('https://app.pendulums.io');
+});
+
+ipcMain.on('tray-open-app', () => {
+    win.show();
+});
+
 // ipcMain.on('current_activity_changed', (event, arg) => {
 //     communicateWithTray('current_activity_changed', arg);
 // });
 // ipcMain.on('user_logged_in', (event, arg) => {
 //     communicateWithTray('user_logged_in', arg);
 // });
-// ipcMain.on('projects_changes', (event, arg) => {
-//     communicateWithTray('projects_changes', arg);
-// });
-//
 
-ipcMain.on('startOrStop', (event, message) => {
-  win.webContents.send('startOrStop', message);
+ipcMain.on('win-projects-ready', (event, arg) => {
+  this.trayWindow.webContents.send('tray-projects-ready', arg);
 });
 
-// const communicateWithTray = (channelName, data) => {
-//   this.trayWindow.webContents.send(channelName, data);
-// };
+ipcMain.on('win-user-ready', (event, arg) => {
+  this.trayWindow.webContents.send('tray-user-ready', arg);
+});
+
+ipcMain.on('tray-start-or-stop', (event, message) => {
+  win.webContents.send('win-start-or-stop', message);
+});
+
+ipcMain.on('win-currentActivity-ready', (event, message) => {
+  this.trayWindow.webContents.send('tray-currentActivity-ready', message);
+});
+
+ipcMain.on('tray-rename-activity', (event, message) => {
+  win.webContents.send('win-rename-activity', message);
+});
+
+
+const communicateWithTray = (channelName, data) => {
+  this.trayWindow.webContents.send(channelName, data);
+};
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.

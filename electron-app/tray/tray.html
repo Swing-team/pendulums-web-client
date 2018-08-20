@@ -14,13 +14,14 @@
       <div class="ps-tray-top-menu-select" onclick="openTopMenu()" style="color: white">
       </div>
     </div>
-    <nav class="ps-nav">
+    <nav class="ps-nav ps-hide-item" id="tray">
       <div class="ps-nav-level0">
         <div class="ps-nav-select-container" id="selectContainer">
           <select placeholder="Select Project"
                   id="select"
                   class="ps-toolbar-select"
                   onchange="selectProject()">
+            <option>Select Project ...</option>
           </select>
         </div>
       </div>
@@ -37,7 +38,7 @@
           <span class="ps-display-span-time" id="timeValue"></span>
         </div>
         <div class="ps-toolbar-play">
-          <div onclick="toggleStopStart()">
+          <div onclick="toggleStopStartFunction()">
             <a class="button ps-toolbar-button" id="loading">
                 <span class="icon">
                   <i id="stopButton" class="icon-stop ps-hide-item" title="Stop activity"></i>
@@ -48,6 +49,15 @@
         </div>
       </div>
     </nav>
+    <div id="logInNeeded" class="ps-log-in-needed">
+      <img class="ps-log-in-logo" src="../app/assets/images/logo-blue.png">
+      <div class="ps-log-in-text">
+        You need to sign in
+      </div>
+      <button class="ps-log-in-button" onclick="openApp()">
+        Open App
+      </button>
+    </div>
   </div>
   </body>
 </html>

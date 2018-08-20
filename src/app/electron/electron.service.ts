@@ -12,7 +12,7 @@ export class ElectronService {
     private store: Store<AppState>,
     private appStateSelectors: AppStateSelectors,
   ) {
-    ipcRenderer.on('startOrStop', (event, message) => {
+    ipcRenderer.on('win-start-or-stop', (event, message) => {
       if (message) {
         this.stopStartActivityService.startActivity(message.activity, message.project).then(() => {
         })
@@ -20,10 +20,24 @@ export class ElectronService {
         this.stopStartActivityService.stopActivity().then(() => {
         })
       }
-    })
+    });
+
+    ipcRenderer.on('win-rename-activity', (event, message) => {
+      if (message) {
+        this.stopStartActivityService.nameActivity(message)
+      }
+    });
 
     store.select(appStateSelectors.getProjectsArray).subscribe((projects) => {
-      ipcRenderer.send('projects_ready', projects);
+      ipcRenderer.send('win-projects-ready', projects);
+    });
+
+    store.select('currentActivity').subscribe((currentActivity) => {
+      ipcRenderer.send('win-currentActivity-ready', currentActivity);
+    });
+
+    store.select('user').subscribe((user) => {
+      ipcRenderer.send('win-user-ready', user);
     });
   }
 }
