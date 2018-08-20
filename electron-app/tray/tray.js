@@ -16,26 +16,22 @@ let menu = new Menu();
 const trayMenuTemplate = [
   {
     label: 'Open App',
-    id: 'color-scale',
-    enabled: false,
     click: function () {
-      console.log('Clicked on settings');
-      updateTrayMenu()
+      openApp();
     }
   },
 
   {
     label: 'Open web',
     click: function () {
-      updateTrayMenu();
-      console.log('Clicked on settings')
+      ipcRenderer.send('tray-open-website');
     }
   },
 
   {
     label: 'Quit',
     click: function () {
-      console.log('Clicked on Help')
+      ipcRenderer.send('tray-close-app');
     }
   }
 ];
@@ -221,4 +217,8 @@ function  getTime(duration) {
     result = seconds + ' sec';
   }
   return result;
+}
+
+function  openApp() {
+  ipcRenderer.send('tray-open-app');
 }

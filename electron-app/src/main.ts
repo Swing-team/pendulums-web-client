@@ -109,7 +109,7 @@ const createTrayWindow = () => {
   // height: 100,
   this.trayWindow = new BrowserWindow({
     width: 300,
-    height: 140,
+    height: 400,
     show: true, // TODO: Change the show attr to false
     frame: false,
     fullscreenable: false,
@@ -168,16 +168,18 @@ const toggleTrayWindow = () => {
 // };
 
 
-// ipcMain.on('close_app', () => {
-//     app.quit();
-// });
-// ipcMain.on('open_website', () => {
-//     shell.openExternal('https://app.pendulums.io');
-// });
-// ipcMain.on('open_app', () => {
-//     win.show();
-// });
-//
+ipcMain.on('tray-close-app', () => {
+    app.quit();
+});
+
+ipcMain.on('tray-open-website', () => {
+    shell.openExternal('https://app.pendulums.io');
+});
+
+ipcMain.on('tray-open-app', () => {
+    win.show();
+});
+
 // ipcMain.on('current_activity_changed', (event, arg) => {
 //     communicateWithTray('current_activity_changed', arg);
 // });
