@@ -109,7 +109,7 @@ const createTrayWindow = () => {
   // height: 100,
   this.trayWindow = new BrowserWindow({
     width: 300,
-    height: 400,
+    height: 140,
     show: true, // TODO: Change the show attr to false
     frame: false,
     fullscreenable: false,

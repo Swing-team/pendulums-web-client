@@ -59,13 +59,13 @@ body {
   height: 100%;
 }
 .ps-log-in-needed .ps-log-in-logo {
-  height: 50px;
-  width: 50px;
+  height: 35px;
+  width: 35px;
   margin: 0 auto;
 }
 .ps-log-in-needed .ps-log-in-text{
   text-align: center;
-  padding: 15px;
+  padding: 10px;
   color: #46476f;
 }
 .ps-log-in-needed .ps-log-in-button{
