@@ -139,14 +139,14 @@ function toggleStopStartView() {
 
 function toggleStopStartFunction() {
   // just for test
-  u('#loading').addClass("is-loading");
-  setTimeout(function () {
-    u('#loading').removeClass("is-loading");
-  }, 1500);
+  // u('#loading').addClass("is-loading");
+  // setTimeout(function () {
+  //   u('#loading').removeClass("is-loading");
+  // }, 1500);
   // end of test
 
   currentActivityCopy = {
-    name: "khodam",
+    name: projects[selectedProjectIndex].recentActivityName ? projects[selectedProjectIndex].recentActivityName: 'Untitled Activity',
     project: projects[selectedProjectIndex].id,
     startedAt: new Date().getTime().toString()
   };
