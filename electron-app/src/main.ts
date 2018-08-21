@@ -191,6 +191,14 @@ ipcMain.on('win-projects-ready', (event, arg) => {
   this.trayWindow.webContents.send('tray-projects-ready', arg);
 });
 
+ipcMain.on('win-selected-project-ready', (event, arg) => {
+  this.trayWindow.webContents.send('tray-selected-project-ready', arg);
+});
+
+ipcMain.on('tray-project-selected', (event, message) => {
+  win.webContents.send('win-project-selected', message);
+});
+
 ipcMain.on('win-user-ready', (event, arg) => {
   this.trayWindow.webContents.send('tray-user-ready', arg);
 });
@@ -206,7 +214,6 @@ ipcMain.on('win-currentActivity-ready', (event, message) => {
 ipcMain.on('tray-rename-activity', (event, message) => {
   win.webContents.send('win-rename-activity', message);
 });
-
 
 const communicateWithTray = (channelName, data) => {
   this.trayWindow.webContents.send(channelName, data);

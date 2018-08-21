@@ -29,6 +29,7 @@ export class AppComponent implements OnInit {
   user: Observable<any>;
   status: Observable<any>;
   private projects: Observable<any>;
+  private selectedProject: Observable<string>;
   private currentActivity: Observable<any>;
   private previousLoginStatus = null;
   SideMenuIsActive = false;
@@ -50,13 +51,14 @@ export class AppComponent implements OnInit {
     private pageLoaderService: PageLoaderService,
     private appService: AppService,
     private unSyncedActivityActions: UnSyncedActivityActions,
-    appStateSelectors: AppStateSelectors,
+    private appStateSelectors: AppStateSelectors,
     // needed for dynamically loaded components
     public viewContainerRef: ViewContainerRef
   ) {
     // to initialize state
     this.user = store.select('user');
     this.projects = store.select(appStateSelectors.getProjectsArray);
+    this.selectedProject = store.select(appStateSelectors.getSelectedProject);
     this.currentActivity = store.select('currentActivity');
     this.status = store.select('status');
   }

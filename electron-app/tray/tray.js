@@ -42,7 +42,6 @@ document.addEventListener('DOMContentLoaded', function() {
 }, false);
 
 ipcRenderer.on('tray-user-ready', (event, message) => {
-  console.log('tray-user-ready', message);
   user = message;
   if (user.id) {
     u('#tray').removeClass('ps-hide-item');
@@ -55,8 +54,10 @@ ipcRenderer.on('tray-user-ready', (event, message) => {
 
 ipcRenderer.on('tray-projects-ready', (event, message) => {
   projects = message;
-  initialSelect();
-  console.log('hi', message)
+});
+
+ipcRenderer.on('tray-selected-project-ready', (event, message) => {
+  initialSelectedProjectIndex(message);
 });
 
 ipcRenderer.on('tray-currentActivity-ready', (event, message) => {
@@ -66,7 +67,6 @@ ipcRenderer.on('tray-currentActivity-ready', (event, message) => {
   } else {
     started = false;
   }
-  initialSelectedProject();
   initialActivityNameInput();
   initialActivityLabel();
   toggleStopStartView();
@@ -88,28 +88,38 @@ function initialActivityNameInput() {
   document.getElementById('activityNameElm').value = taskName;
 }
 
+function initialSelectedProjectIndex(selectedProjectId) {
+  for (var i = 0; i < projects.length; i++) {
+    if(projects[i].id === selectedProjectId) {
+      selectedProjectIndex = i;
+    }
+  }
+  initialProjects();
+}
+
+function initialProjects() {
+  let tempItem = projects[selectedProjectIndex];
+  projects.splice(selectedProjectIndex, 1);
+  projects.unshift(tempItem);
+  initialSelect();
+}
+
 function initialSelect() {
   u('#select').empty();
   var index = -1;
   var cb = function(project) {
-    index++;
-    return "<option value=" + index + ">" + project.name + "</option>"
+    if(project) {
+      index++;
+      return "<option value=" + index + ">" + project.name + "</option>"
+    }
   };
   u('#select').append(cb, projects);
-}
 
-function initialSelectedProject() {
-  if (currentActivityCopy.startedAt) {
-    for (var i = 0; i < projects.length; i++) {
-      if(projects[i].id === currentActivityCopy.project) {
-        selectedProjectIndex = i;
-      }
-    }
-  }
 }
 
 function selectProject() {
   selectedProjectIndex = document.getElementById("select").value;
+  ipcRenderer.send('tray-project-selected', projects[selectedProjectIndex].id);
 }
 
 function openTopMenu() {

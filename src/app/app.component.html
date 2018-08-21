@@ -1,4 +1,4 @@
-<toolbar *ngIf="(user | async).id" [user]="user | async" [projects]="projects | async" [currentActivity]="currentActivity"
+<toolbar *ngIf="(user | async).id" [user]="user | async" [selectedProjectInput]="selectedProject" [projects]="projects | async" [currentActivity]="currentActivity"
          [status]="status | async" class="ps-toolbar" (onMenuItemClicked)="showSideMenu($event)" ></toolbar>
 <side-menu #sideMenu *ngIf="(user | async).id" [user]="user | async" [netConnected]="netConnected" [notifNum]="notifNum" (onSignoutClicked)="signOut()" (clickedToCloseMenu)="closeMenu()"
            class="ps-side-menu" [ngClass]="{'ps-side-menu-show': SideMenuIsActive}" (clickedOutsideOfMenu)="clickedOutSideOfMenu($event)"></side-menu>

@@ -59,7 +59,7 @@ export class StopStartActivityService {
     return new Promise((resolve, reject) => {
       // we decided to put all data in db by default and then send it to server
       this.store.dispatch(this.currentActivityActions.loadCurrentActivity(activity));
-
+      this.store.dispatch(this.projectsActions.updateSelectedProject(activity.project));
       // update project recent activities
       this.manageProjectRecentActivitiesInState(activity, project);
 
@@ -176,7 +176,7 @@ export class StopStartActivityService {
           resolve();
         }
       } else {
-        reject();
+        resolve();
       }
     });
   }

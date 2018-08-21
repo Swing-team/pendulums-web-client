@@ -17,4 +17,5 @@ export class AppStateSelectors {
   constructor(private projectsSelectors: ProjectsSelectors) { }
   getProjectsState = (state: AppState) => state.projects;
   getProjectsArray = createSelector(this.getProjectsState, this.projectsSelectors.getAllArray);
+  getSelectedProject = createSelector(this.getProjectsState, this.projectsSelectors.getSelectedProject);
 }

@@ -30,6 +30,7 @@ body {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  overflow: hidden;
 }
 .ps-tray-menu .ps-tray-top-menu-select {
   background-color: #4b4942;
@@ -39,16 +40,11 @@ body {
   border: none;
   width: 20px;
   position: relative;
-}
-.ps-tray-top-menu-select:after {
-  content: '...';
-  font: 10px "Consolas", monospace;
-  background-color: #4b4942;
-  color: #f2f2f2;
-  position: absolute;
-  pointer-events: none;
-  cursor: pointer;
   transform: rotate(90deg);
+  transition: all ease-in-out 200ms
+}
+.ps-tray-menu .ps-tray-top-menu-select:hover {
+  color: #67699f;
 }
 
 .ps-log-in-needed {
@@ -145,7 +141,7 @@ body {
 .ps-nav .ps-nav-level0 .ps-nav-select-container {
   background-color: #f2f8f8;
   color: #46476f;
-  height: 40px;
+  height: 46px;
   width: auto;
   font-weight: 500;
   font-size: 24px;
@@ -154,7 +150,7 @@ body {
   padding-right: 20px;
   display: flex;
   align-items: center;
-  margin-top: 5px;
+  margin-top: 8px;
 }
 .ps-nav .ps-nav-level0 .ps-nav-select-container .ps-toolbar-select {
   width: 200px;
