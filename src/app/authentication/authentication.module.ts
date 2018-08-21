@@ -7,11 +7,13 @@ import {SignUpComponent} from './sign-up/sign-up.component';
 import {AppRoutingModule} from '../app-routing.module';
 import {ForgotPasswordComponent} from './forgot-password/forgot-password.component';
 import {ResetPasswordComponent} from './reset-password/reset-password.component';
+import {RecaptchaModule} from 'ng-recaptcha';
 
 @NgModule({
   imports: [
     AppRoutingModule,
-    SharedModule
+    SharedModule,
+    RecaptchaModule.forRoot()
   ],
   declarations: [
     SignInComponent,
