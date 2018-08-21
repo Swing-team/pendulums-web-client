@@ -47,6 +47,7 @@ export class ModalService {
       }
     }
 
+    document.getElementsByTagName('html')[0].classList.add('ps-scroll-lock');
     this.subscriptions.push(this.modalComponentRef.instance['close'].subscribe((ignoreIsModalOpen) => this.close(ignoreIsModalOpen)));
     this.contentComponentRef.changeDetectorRef.detectChanges();
     this.isModalOpen = true;
@@ -69,6 +70,7 @@ export class ModalService {
     if (!ignoreIsModalOpen) {
       this.isModalOpen = false;
     }
+    document.getElementsByTagName('html')[0].classList.remove('ps-scroll-lock');
   }
 }
 
