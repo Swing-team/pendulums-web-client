@@ -30,6 +30,7 @@ export class ToolbarComponent implements OnInit, OnDestroy  {
   @Input() user: User;
   @Input() status: Status;
   @Input() projects: Array<Project>;
+  @Input() selectedProjectInput: Observable<string>;
   @Input() currentActivity: Observable<Activity>;
   @Output() onMenuItemClicked = new EventEmitter();
   @ViewChild('activityNameElm') activityNameElm;
@@ -104,6 +105,10 @@ export class ToolbarComponent implements OnInit, OnDestroy  {
         }
       }));
     }
+
+    this.subscriptions.push(this.selectedProjectInput.subscribe(selectedProjectInput => {
+      this.findSelectedProject(selectedProjectInput);
+    }));
   }
 
   ngOnDestroy() {
@@ -156,6 +161,21 @@ export class ToolbarComponent implements OnInit, OnDestroy  {
     this.selectedProjectIndex = event.index;
     this.selectedProject = event.selectedItem;
     this.taskName = this.selectedProject.recentActivityName;
+    this.store.dispatch(this.projectsActions.updateSelectedProject(this.selectedProject.id));
+  }
+
+  findSelectedProject(selectedProjectInput) {
+    if (selectedProjectInput) {
+      this.projects.map((project, index) => {
+        if (project.id === selectedProjectInput) {
+          this.selectedProject = project;
+          this.selectedProjectIndex = index;
+        }
+      });
+    } else {
+      this.selectedProject = this.projects[0];
+      this.selectedProjectIndex = 0;
+    }
   }
 
   toggleShowTimeDuration() {
@@ -187,6 +207,8 @@ export class ToolbarComponent implements OnInit, OnDestroy  {
 
       // we decided to put all data in db by default and then send it to server
       this.store.dispatch(this.currentActivityActions.loadCurrentActivity(activity));
+      this.store.dispatch(this.projectsActions.updateSelectedProject(activity.project));
+
 
       // update project recent activities
       this.manageProjectRecentActivitiesInState(this.selectedProject, activity);
