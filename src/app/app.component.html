@@ -1,7 +1,9 @@
 <toolbar *ngIf="(user | async).id" [user]="user | async" [selectedProjectInput]="selectedProject" [projects]="projects | async" [currentActivity]="currentActivity"
          [status]="status | async" class="ps-toolbar" (onMenuItemClicked)="showSideMenu($event)" ></toolbar>
+<div class="ps-guster-handler" (swiperight)="showSideMenu($event)"></div>
 <side-menu #sideMenu *ngIf="(user | async).id" [user]="user | async" [netConnected]="netConnected" [notifNum]="notifNum" (onSignoutClicked)="signOut()" (clickedToCloseMenu)="closeMenu()"
-           class="ps-side-menu" [ngClass]="{'ps-side-menu-show': SideMenuIsActive}" (clickedOutsideOfMenu)="clickedOutSideOfMenu($event)"></side-menu>
+           class="ps-side-menu" [ngClass]="{'ps-side-menu-show': SideMenuIsActive}" (clickedOutsideOfMenu)="clickedOutSideOfMenu($event)"
+           (swipeleft)="closeMenu()"></side-menu>
 
 <div class="ps-main-content has-text-centered" [ngClass]="{'ps-main-signed-in-content-with-side': (user | async).id, 'ps-main-signed-in-content-without-side': !SideMenuIsActive}">
   <div *ngIf="!netConnected" class="offline-indicator has-text-centered">
