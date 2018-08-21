@@ -2,15 +2,15 @@
   you have invited to <strong>{{project.name}}</strong> project.
 </p>
 <nav class="level is-mobile">
-    <button class="level-item button is-small is-outlined ps-notification-button-accept" (click)="accept(project.id, i)"
-            [ngClass]="{'is-loading': acceptDisabledIndex === i, 'is-success': acceptDisabledIndex !== i}" [disabled]="denyDisabledIndex === i">
+    <button class="level-item button is-small is-outlined ps-notification-button-accept" (click)="accept(project.id)"
+            [ngClass]="{'is-loading': acceptDisabledIndex === true, 'is-success': acceptDisabledIndex === false}" [disabled]="denyDisabledIndex">
       <span class="icon">
         <i class="icon-check"></i>
         </span>
       <span>accept</span>
     </button>
-    <button class="level-item button is-small is-outlined ps-notification-button-deny" (click)="deny(project.id, i)"
-        [ngClass]="{'is-loading': denyDisabledIndex === i, 'is-danger': denyDisabledIndex !== i}" [disabled]="acceptDisabledIndex === i">
+    <button class="level-item button is-small is-outlined ps-notification-button-deny" (click)="deny(project.id)"
+        [ngClass]="{'is-loading': denyDisabledIndex === true, 'is-danger': denyDisabledIndex === false}" [disabled]="acceptDisabledIndex">
       <span class="icon">
         <i class="icon-cancel"></i>
         </span>
