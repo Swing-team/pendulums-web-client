@@ -13,7 +13,7 @@
   </div>
   <div class="nav-center ps-nav-center">
     <div class="nav-item" *ngIf="currentActivityCopy.startedAt">
-      <input id="activityNameElm" #activityNameElm class="input is-small ps-nav-input" [(ngModel)]="taskName" placeholder="Task name" type="text"
+      <input id="activityNameElm" #activityNameElm class="input is-small ps-nav-input" [(ngModel)]="taskName" placeholder="Activity name" type="text"
              (change)="nameActivity($event)"/>
       <label class="ps-nav-label" for="activityNameElm" title="{{currentActivityCopy.name}}">{{currentActivityCopy.name}}&nbsp;-&nbsp;{{selectedProject.name ? selectedProject.name : ''}}</label>
     </div>
