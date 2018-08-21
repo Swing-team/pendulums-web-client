@@ -176,7 +176,7 @@ export class StopStartActivityService {
           resolve();
         }
       } else {
-        reject();
+        resolve();
       }
     });
   }
