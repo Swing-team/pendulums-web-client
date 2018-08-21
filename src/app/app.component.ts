@@ -15,8 +15,10 @@ import { CurrentActivityActions }                 from './shared/state/current-a
 import { SyncService }                            from './core/services/sync.service';
 import { Status }                                 from './shared/state/status/status.model';
 import { PageLoaderService }                      from './core/services/page-loader.service';
+import { AppService }                             from './core/services/app.service';
 import { UnSyncedActivityActions }                from './shared/state/unsynced-activities/unsynced-activities.actions';
 import { AppStateSelectors }                      from './shared/state/app-state.selectors';
+import { VERSION }                                from 'environments/version';
 
 @Component({
   selector: 'app-root',
@@ -32,6 +34,7 @@ export class AppComponent implements OnInit {
   private previousLoginStatus = null;
   SideMenuIsActive = false;
   netConnected: boolean;
+  notifNum = 0;
 
   @ViewChild('sideMenu', { read: ElementRef }) sideMenu: ElementRef;
   @ViewChild('menuIcon', { read: ElementRef }) menuIcon: ElementRef;
@@ -46,6 +49,7 @@ export class AppComponent implements OnInit {
     private router: Router,
     private syncService: SyncService,
     private pageLoaderService: PageLoaderService,
+    private appService: AppService,
     private unSyncedActivityActions: UnSyncedActivityActions,
     private appStateSelectors: AppStateSelectors,
     // needed for dynamically loaded components
@@ -63,13 +67,19 @@ export class AppComponent implements OnInit {
     // to initialize webSocket connection
     const responseResults = this.syncService.init();
 
+    this.appService.getAppVersion().then((version) => {
+      this.store.dispatch(this.statusActions.updateStatus({updateNeeded: version > VERSION}));
+      if (version > VERSION) {
+        this.notifNum = 1;
+      }
+    });
     // to handle 403 interceptor by isLogin that has been handle in signOut and authInterceptor
     this.status.subscribe((status: Status) => {
       if ((status.isLogin === false) && status.isLogin !== this.previousLoginStatus) {
         this.store.dispatch(this.userActions.clearUser());
         this.store.dispatch(this.projectsActions.clearProjects());
         this.store.dispatch(this.currentActivityActions.clearCurrentActivity());
-        this.store.dispatch(this.statusActions.loadStatus({netStatus: true, isLogin: null}));
+        this.store.dispatch(this.statusActions.updateStatus({netStatus: true, isLogin: null}));
         // we think we don't need to keep unSynced data any more after user sign out or get 403
         this.store.dispatch(this.unSyncedActivityActions.clearUnSyncedActivity());
         this.syncService.closeConnection();

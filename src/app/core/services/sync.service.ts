@@ -13,6 +13,7 @@ import { CurrentActivityActions }       from '../../shared/state/current-activit
 import { UnSyncedActivityActions }      from 'app/shared/state/unsynced-activities/unsynced-activities.actions';
 import { Router }                       from '@angular/router';
 import { UserService }                  from './user.service';
+import { AppService }                   from './app.service';
 import { Observable }                   from 'rxjs/Observable';
 import { Status }                       from '../../shared/state/status/status.model';
 
@@ -36,7 +37,8 @@ export class SyncService {
               private userActions: UserActions,
               private projectsActions: ProjectsActions,
               private currentActivityActions: CurrentActivityActions,
-              private unSyncedActivityActions: UnSyncedActivityActions) {
+              private unSyncedActivityActions: UnSyncedActivityActions,
+              private appService: AppService) {
     this.status = store.select('status');
     this.currentActivity = store.select('currentActivity');
     this.status.subscribe((status: Status) => {
@@ -180,7 +182,7 @@ export class SyncService {
         } else {
           this.store.dispatch(this.currentActivityActions.clearCurrentActivity());
         }
-        this.store.dispatch(this.statusActions.loadStatus({netStatus: true, isLogin: true}));
+        this.store.dispatch(this.statusActions.updateStatus({netStatus: true, isLogin: true}));
         this.dBService
           .removeAll('activeUser')
           .then(() => {

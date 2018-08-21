@@ -20,7 +20,7 @@
           </div>
           <div *ngIf="userNameEdited">
             <input [(ngModel)]="userEdit.name" class="input ps-user-name"
-                   placeholder="Untitled name" type="text">
+                   placeholder="no name" type="text">
             <a  *ngIf="!editButtonDisabled" class="button ps-edit-profile-parent-btn" (click)="toggleView()">
               <span class="icon">
                 <i class="ps-edit-profile-button icon-cancel" [ngClass]="{'has-text-danger': !editButtonDisabled}"></i>

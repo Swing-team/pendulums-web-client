@@ -22,6 +22,7 @@ import { SideMenuComponent }            from './side-menu/side-menu.component';
 import { ModalComponent }               from './modal/modal.component';
 import { NotificationComponent }        from './side-menu/notification/notification.component';
 import { NotificationService }          from './side-menu/notification/notification.service';
+import { AppInfoComponent }             from './side-menu/app-info/app-info.component';
 import { ImgCropperComponent }          from '../profile-setting/image-cropper/image-cropper.component';
 import { ImageCropperModule }           from 'ng2-img-cropper';
 import { ErrorComponent }               from './error/error.component';
@@ -36,9 +37,11 @@ import { AuthGuardService }             from './services/router-guards/auth-guar
 import { AnonymousGuardService }        from './services/router-guards/anonymous-guard.service';
 import { ModalRouterGuardService }      from './services/router-guards/modal-router-guard.service'
 import { PageLoaderService }            from './services/page-loader.service';
+import { AppService }                   from './services/app.service';
 import { AppStateSelectors }            from '../shared/state/app-state.selectors';
 import { ProjectsSelectors }            from '../shared/state/project/projects.selectors';
-import { RouterChangeListenerService }  from './services/roueter-change-listener.service';
+import { RouterChangeListenerService }  from './services/router-change-listener.service';
+import { InviteNotifComponent }         from './side-menu/notification/invite-notif/invite-notif.component';
 
 @NgModule({
   imports:      [
@@ -54,7 +57,9 @@ import { RouterChangeListenerService }  from './services/roueter-change-listener
     ErrorComponent,
     ModalComponent,
     NotificationComponent,
-    ImgCropperComponent
+    ImgCropperComponent,
+    AppInfoComponent,
+    InviteNotifComponent
   ],
   exports:      [
     ToolbarComponent,
@@ -83,13 +88,15 @@ import { RouterChangeListenerService }  from './services/roueter-change-listener
     DatabaseService,
     SyncService,
     StopStartActivityService,
+    AppService,
     RouterChangeListenerService,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],
   entryComponents: [
     ModalComponent,
     ErrorComponent,
-    ImgCropperComponent
+    ImgCropperComponent,
+    AppInfoComponent
   ]
 })
 export class CoreModule {

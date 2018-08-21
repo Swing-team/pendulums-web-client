@@ -1,0 +1,20 @@
+<p>
+  you have invited to <strong>{{project.name}}</strong> project.
+</p>
+<nav class="level is-mobile">
+    <button class="level-item button is-small is-outlined ps-notification-button-accept" (click)="accept(project.id)"
+            [ngClass]="{'is-loading': acceptDisabledIndex === true, 'is-success': acceptDisabledIndex === false}" [disabled]="denyDisabledIndex">
+      <span class="icon">
+        <i class="icon-check"></i>
+        </span>
+      <span>accept</span>
+    </button>
+    <button class="level-item button is-small is-outlined ps-notification-button-deny" (click)="deny(project.id)"
+        [ngClass]="{'is-loading': denyDisabledIndex === true, 'is-danger': denyDisabledIndex === false}" [disabled]="acceptDisabledIndex">
+      <span class="icon">
+        <i class="icon-cancel"></i>
+        </span>
+      <span>deny</span>
+    </button>
+</nav>
+

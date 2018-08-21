@@ -3,7 +3,7 @@
     <div class="container">
       <div class="columns is-mobile is-centered">
         <div class="column is-one-third-desktop is-11-mobile is-half-tablet ps-auth-back">
-          <form (ngSubmit)="signIn()" #signinForm="ngForm" novalidate>
+          <form (ngSubmit)="captchaRef.execute()" #signinForm="ngForm" novalidate>
             <div dir="auto">
               <div class="ps-auth-logo-container">
                 <figure class="ps-auth-logo">
@@ -37,13 +37,19 @@
                   Coming soon!
                 </p>
               </div>
-              <div class="field">
-                <div class="g-recaptcha" style="padding-left: 8px; padding-bottom: 30px" data-sitekey="6LcvEGgUAAAAAAc6K3L6rli9XH56-boFqJ_XZZDE"></div>
-              </div>
+              <re-captcha
+                #captchaRef="reCaptcha"
+                siteKey="6LemsWoUAAAAAC7BBVoRzxiMDPd0Jey5DQ2h4uGp"
+                size="invisible"
+                (resolved)="$event && signIn($event)"
+              ></re-captcha>
               <div class="field">
                 <p class="control">
-                  <button class="button is-fullwidth is-primary ps-auth-buttons" type="submit" [disabled]="submitted"
-                          [ngClass]="{'is-loading': submitted}">Sign in</button>
+                  <button
+                    class="button is-fullwidth is-primary ps-auth-buttons"
+                    type="submit"
+                    [disabled]="submitted"
+                    [ngClass]="{'is-loading': submitted}">Sign in</button>
                 </p>
               </div>
               <div class="field">

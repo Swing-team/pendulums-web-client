@@ -1,4 +1,3 @@
-import 'rxjs/add/operator/switchMap';
 import {
   Component, EventEmitter, HostListener, Inject, Input, OnChanges,
   OnInit, Output, SimpleChange, ViewEncapsulation
