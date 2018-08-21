@@ -1,4 +1,4 @@
-import { Component, OnInit }                        from '@angular/core';
+import { Component }                        from '@angular/core';
 import { AuthenticationService }            from '../../core/services/authentication.service';
 import { Router }                           from '@angular/router';
 import { Store }                            from '@ngrx/store';
@@ -14,7 +14,7 @@ const EMAIL_REGEX = /^(?=.{8,64}$)[\w!#$%&'*+/=?`{|}~^-]+(?:\.[\w!#$%&'*+/=?`{|}
   styleUrls: ['./sign-in.component.sass']
 })
 
-export class SignInComponent implements OnInit {
+export class SignInComponent {
   errorMessage: string;
   authUser = {email: null, password: null};
   submitted = false;
@@ -30,52 +30,44 @@ export class SignInComponent implements OnInit {
     private syncService: SyncService
   ) {}
 
-  ngOnInit() {
-    const node = document.createElement('script');
-    node.src = 'https://www.google.com/recaptcha/api.js';
-    node.type = 'text/javascript';
-    node.async = true;
-    document.getElementsByTagName('head')[0].appendChild(node);
-  }
-
-  signIn() {
-    this.comingSoon = false;
-    const gRecaptchaResponse = window['grecaptcha'].getResponse();
-    if (!this.submitted) {
-      this.submitted = true;
-      this.errorMessage = null;
-      if (this.validation(this.authUser)) {
-        this.authUser.email = this.authUser.email.toLowerCase();
-        this.authService.signIn(gRecaptchaResponse, this.authUser)
-          .then(() => {
-            this.removeRecaptchaFromDom();
-            this.store.dispatch(this.statusActions.updateIsLogin(true));
-            this.syncService.init();
-            this.router.navigate(['dashboard']);
-            this.submitted = false;
-          })
-          .catch(error => {
-            this.submitted = false;
-            window['grecaptcha'].reset();
-            console.log('error is: ', error);
-            if (error.status === 400) {
-              if (JSON.parse(error.error).type === 1) {
-                this.errorMessage = 'Please verify your email (the sent email may be in your spam folder).';
-              } else if (JSON.parse(error.error).type === 0) {
-                this.errorMessage = 'Email or password mismatch';
-              } else if (JSON.parse(error.error).type === 3) {
-                this.errorMessage = 'Please fill(Refill) reCpatcha';
+  signIn(captchaResponse: string) {
+    if (captchaResponse) {
+      this.comingSoon = false;
+      if (!this.submitted) {
+        this.submitted = true;
+        this.errorMessage = null;
+        if (this.validation(this.authUser)) {
+          this.authUser.email = this.authUser.email.toLowerCase();
+          this.authService.signIn(captchaResponse, this.authUser)
+            .then(() => {
+              this.store.dispatch(this.statusActions.updateIsLogin(true));
+              this.syncService.init();
+              this.router.navigate(['dashboard']);
+              this.submitted = false;
+            })
+            .catch(error => {
+              this.submitted = false;
+              window['grecaptcha'].reset();
+              console.log('error is: ', error);
+              if (error.status === 400) {
+                if (JSON.parse(error.error).type === 1) {
+                  this.errorMessage = 'Please verify your email (the sent email may be in your spam folder).';
+                } else if (JSON.parse(error.error).type === 0) {
+                  this.errorMessage = 'Email or password mismatch';
+                } else if (JSON.parse(error.error).type === 3) {
+                  this.errorMessage = 'reCpatcha Error please try again';
+                }
+              } else {
+                this.errorMessage = 'Server communication error';
               }
-            } else {
-              this.errorMessage = 'Server communication error';
-            }
-          });
-      } else {
-        this.submitted = false;
-        window['grecaptcha'].reset();
+            });
+        } else {
+          this.submitted = false;
+          window['grecaptcha'].reset();
+        }
       }
     }
-  };
+  }
 
   signInWithGoogle() {
     // todo: please clear this code section after google sign in implemented
@@ -96,15 +88,5 @@ export class SignInComponent implements OnInit {
       return false;
     }
     return true;
-  }
-
-  removeRecaptchaFromDom() {
-    const tags = document.getElementsByTagName('script');
-    for (const tag of [].slice.call(tags)) {
-      if (tag && tag.getAttribute('src') !== null &&
-        tag.getAttribute('src').indexOf('recaptcha') !== -1) {
-          tag.parentNode.removeChild(tag);
-      }
-    }
   }
 }
