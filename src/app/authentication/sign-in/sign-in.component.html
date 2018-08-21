@@ -3,7 +3,7 @@
     <div class="container">
       <div class="columns is-mobile is-centered">
         <div class="column is-one-third-desktop is-11-mobile is-half-tablet ps-auth-back">
-          <form (ngSubmit)="signIn()" #signinForm="ngForm" novalidate>
+          <form (ngSubmit)="captchaRef.execute()" #signinForm="ngForm" novalidate>
             <div dir="auto">
               <div class="ps-auth-logo-container">
                 <figure class="ps-auth-logo">
@@ -48,7 +48,6 @@
                   <button
                     class="button is-fullwidth is-primary ps-auth-buttons"
                     type="submit"
-                    (click)="captchaRef.execute()"
                     [disabled]="submitted"
                     [ngClass]="{'is-loading': submitted}">Sign in</button>
                 </p>

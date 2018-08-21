@@ -15,8 +15,8 @@ import { Project } from '../../../../shared/state/project/project.model';
 export class InviteNotifComponent implements OnInit {
   @Input() project: Project
   pendingInvitations: Array<object>;
-  denyDisabledIndex = -1;
-  acceptDisabledIndex = -1;
+  denyDisabledIndex = false;
+  acceptDisabledIndex = false;
   user: any;
 
   constructor(private userActions: UserActions,
@@ -29,9 +29,9 @@ export class InviteNotifComponent implements OnInit {
     this.user = this.notificationComponent.user
   }
 
-  accept(projectId, i) {
-    if (this.acceptDisabledIndex < 0 && this.denyDisabledIndex < 0) {
-      this.acceptDisabledIndex = i;
+  accept(projectId) {
+    if (!this.acceptDisabledIndex) {
+      this.acceptDisabledIndex = true;
       this.notificationService.accept(projectId).then((project) => {
         project.activities = [];
         this.store.dispatch(this.projectsActions.addProject(project));
@@ -41,18 +41,18 @@ export class InviteNotifComponent implements OnInit {
           }
         });
         this.store.dispatch(this.userActions.loadUser(this.user));
-        this.acceptDisabledIndex = -1;
+        this.acceptDisabledIndex = false;
       })
         .catch(error => {
           console.log('error is: ', error);
-          this.acceptDisabledIndex = -1;
+          this.acceptDisabledIndex = false;
         });
     }
   }
 
-  deny(projectId, i) {
-    if (this.denyDisabledIndex < 0 && this.acceptDisabledIndex < 0) {
-      this.denyDisabledIndex = i;
+  deny(projectId) {
+    if (!this.denyDisabledIndex ) {
+      this.denyDisabledIndex = true;
       this.notificationService.deny(projectId).then((Id) => {
         this.user.pendingInvitations.map((obj, index) => {
           if (obj.id === projectId) {
@@ -60,11 +60,11 @@ export class InviteNotifComponent implements OnInit {
           }
         });
         this.store.dispatch(this.userActions.loadUser(this.user));
-        this.denyDisabledIndex = -1;
+        this.denyDisabledIndex = false;
       })
         .catch(error => {
           console.log('error is: ', error);
-          this.denyDisabledIndex = -1;
+          this.denyDisabledIndex = false;
         });
     }
   }
