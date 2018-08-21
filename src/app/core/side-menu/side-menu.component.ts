@@ -7,6 +7,9 @@ import { APP_CONFIG }                    from '../../app.config';
 import { Md5 }                           from 'ts-md5/dist/md5';
 import { Router }                        from '@angular/router';
 import { ErrorService }                  from '../error/error.service';
+import { ModalService }                  from '../modal/modal.service';
+import { AppService }                    from '../services/app.service';
+import { AppInfoComponent }              from './app-info/app-info.component';
 
 @Component({
   selector: 'side-menu',
@@ -20,6 +23,7 @@ export class SideMenuComponent implements OnInit {
   @Output() clickedToCloseMenu = new EventEmitter();
   @Input() user: User;
   @Input() netConnected: boolean;
+  @Input() notifNum: number;
   @ViewChild('notifications') notifications;
   emailHash: any;
   pendulumNotification: boolean;
@@ -29,7 +33,9 @@ export class SideMenuComponent implements OnInit {
   constructor (@Inject(APP_CONFIG) private config,
                private router: Router,
                private errorService: ErrorService,
-               private eRef: ElementRef) {}
+               private eRef: ElementRef,
+               private modalService: ModalService) {
+               }
 
   ngOnInit() {
     this.emailHash = Md5.hashStr(this.user.email);
@@ -119,6 +125,13 @@ export class SideMenuComponent implements OnInit {
         }
       }
     }
+  }
+
+  showInfoModal() {
+    this.modalService.show({
+      component: AppInfoComponent,
+      inputs: {}
+    });
   }
 
   showError(error) {

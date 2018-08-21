@@ -37,6 +37,7 @@ export class ToolbarComponent implements OnInit, OnDestroy  {
   showTimeDuration = false;
   stopStartButtonDisabled = false;
   selectedProjectIndex: any;
+  hasNotification = false;
   private selectedProject: Project;
   private taskName: string;
   private timeDuration: string;
@@ -56,6 +57,10 @@ export class ToolbarComponent implements OnInit, OnDestroy  {
   }
 
   ngOnInit() {
+    if (this.user.pendingInvitations.length > 0 || this.status.updateNeeded) {
+      this.hasNotification = true;
+    }
+
     this.selectedProjectIndex = 0;
 
     if (this.projects.length > 0) {

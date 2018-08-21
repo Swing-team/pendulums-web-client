@@ -247,7 +247,7 @@ export class AddManuallyActivityComponent implements OnInit {
   validateForm(): boolean {
     let finalCheck = true ;
     if (this.IsNullOrWhiteSpace(this.activityModel.name)) {
-      this.activityModel.name = 'Untitled name';
+      this.activityModel.name = 'Untitled activity';
     }
     if (this.fromDate && this.toDate) {
       const tempCheck = this.checkDate();

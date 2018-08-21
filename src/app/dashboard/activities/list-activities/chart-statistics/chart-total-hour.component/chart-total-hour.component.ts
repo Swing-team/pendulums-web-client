@@ -23,7 +23,7 @@ export class ChartTotalHourComponent implements OnChanges {
   totalHours = 0;
   result = '';
 
-  constructor(@Inject(APP_CONFIG) private config,) {
+  constructor(@Inject(APP_CONFIG) private config) {
   }
 
   ngOnChanges(changes: {[propKey: string]: SimpleChange}) {

@@ -32,6 +32,7 @@ export class NotificationService {
       .catch(this.handleError);
   }
 
+  // TODO: add somthing to get notifications in here service or in state
   private handleError(error: any): Promise<any> {
     console.error('An error occurred', error);
     return Promise.reject(error);
