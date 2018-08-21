@@ -1,6 +1,6 @@
 import {
   Component, ElementRef, EventEmitter,
-  HostListener, Input, OnInit, Output
+  HostListener, Input, OnChanges, OnInit, Output, SimpleChange
 } from '@angular/core';
 
 @Component({
@@ -8,7 +8,7 @@ import {
   templateUrl: './swing-select.component.html',
   styleUrls: ['./swing-select.component.sass']
 })
-export class SwingSelectComponent implements OnInit {
+export class SwingSelectComponent implements OnInit, OnChanges {
   @Input() type: String = 'singleSelect';
   @Input() items: Array<any>;
   @Input() label: String = 'Select';
@@ -48,6 +48,12 @@ export class SwingSelectComponent implements OnInit {
           this.prepareTagsList(tempItem);
         }
       });
+    }
+  }
+
+  ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
+    if (changes.selectedItemIndex && changes.selectedItemIndex.currentValue) {
+      this.selectedItem = this.items[this.selectedItemIndex[0]];
     }
   }
 

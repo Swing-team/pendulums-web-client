@@ -3,7 +3,8 @@ import { Projects }           from './projects.model';
 import { ActionWithPayload }  from '../action-with-payload';
 
 const initialState: Projects = {
-  entities: {}
+  entities: {},
+  selectedProject: null
 };
 
 export default function reducer(state = initialState, action: ActionWithPayload<any>) {
@@ -54,6 +55,12 @@ export default function reducer(state = initialState, action: ActionWithPayload<
     case ProjectsActions.UPDATE_PROJECT: {
       const newState = JSON.parse(JSON.stringify(state));
       newState.entities[action.payload.id] = action.payload;
+      return newState;
+    }
+
+    case ProjectsActions.UPDATE_SELECTED_PROJECT: {
+      const newState = JSON.parse(JSON.stringify(state));
+      newState.selectedProject = action.payload;
       return newState;
     }
 

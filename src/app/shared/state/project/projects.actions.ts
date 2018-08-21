@@ -20,6 +20,7 @@ export class ProjectsActions {
   static UPDATE_PROJECT_ACTIVITIES = 'UPDATE_PROJECT_ACTIVITIES';
   static ADD_ACTIVITY_TO_PROJECT = 'ADD_ACTIVITY_TO_PROJECT';
   static REMOVE_PROJECT_ACTIVITIES = 'REMOVE_PROJECT_ACTIVITIES';
+  static UPDATE_SELECTED_PROJECT = 'UPDATE_SELECTED_PROJECT';
 
   loadProjects(projects: Projects):  ActionWithPayload<Projects> {
     return {
@@ -59,6 +60,13 @@ export class ProjectsActions {
     return {
       type: ProjectsActions.UPDATE_PROJECT,
       payload: project
+    };
+  }
+
+  updateSelectedProject(projectId: string): ActionWithPayload<string> {
+    return {
+      type: ProjectsActions.UPDATE_SELECTED_PROJECT,
+      payload: projectId
     };
   }
 

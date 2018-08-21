@@ -4,9 +4,13 @@
 /dist
 /tmp
 /out-tsc
+/electron-app/dist
+/electron-app/app
+/electron-app/src/main.js
 
 # dependencies
 /node_modules
+/electron-app/node_modules
 
 # IDEs and editors
 /.idea

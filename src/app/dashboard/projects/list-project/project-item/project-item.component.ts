@@ -137,6 +137,7 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
 
     // we decided to put all data in db by default and then send it to server
     this.store.dispatch(this.currentActivityActions.loadCurrentActivity(this.activity));
+    this.store.dispatch(this.projectsActions.updateSelectedProject(this.activity.project));
 
     // update project recent activities
     this.manageProjectRecentActivitiesInState(this.activity.project, this.activity);

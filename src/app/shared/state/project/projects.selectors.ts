@@ -16,5 +16,6 @@ import { Projects }                   from './projects.model';
 @Injectable()
 export class ProjectsSelectors {
   getEntities = (state: Projects) => state.entities;
+  getSelectedProject = (state: Projects) => state.selectedProject;
   getAllArray = createSelector(this.getEntities, entities => { return values<Project>(entities); });
 }
