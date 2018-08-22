@@ -13,6 +13,7 @@ import { ErrorService }                     from '../error/error.service';
 import { User }                             from '../../shared/state/user/user.model';
 import { Subscription }                     from 'rxjs/Subscription';
 import { StopStartActivityService }         from '../services/stop-start-activity.service';
+import { Status }                           from '../../shared/state/status/status.model';
 
 @Component({
   selector: 'toolbar',
@@ -22,6 +23,7 @@ import { StopStartActivityService }         from '../services/stop-start-activit
 
 export class ToolbarComponent implements OnInit, OnDestroy  {
   @Input() user: User;
+  @Input() status: Status;
   @Input() projects: Array<Project>;
   @Input() selectedProjectInput: Observable<string>;
   @Input() currentActivity: Observable<Activity>;
