@@ -40,9 +40,9 @@ export class StopStartActivityService {
     activity.user = this.user.id;
     return new Promise((resolve, reject) => {
       if (this.currentActivityCopy.startedAt) {
-        this.stopActivity().then(() => {
+        this.stopActivity(project).then(() => {
           this.startActivityAtServer(activity, project).then(() => {
-            console.log('activity started')
+            console.log('activity started');
             resolve();
           });
         });
@@ -77,6 +77,7 @@ export class StopStartActivityService {
           .catch(error => {
             // todo: check errors
             if (error.status === 404) {
+              console.log('Project has been deleted before.');
               this.store.dispatch(this.projectsActions.removeProject(activity.project));
 
               // if we have current activity on deleted project we should clear it
@@ -85,6 +86,7 @@ export class StopStartActivityService {
               }
             } else if (error.status === 400) {
               // todo: this section will handle with socket message
+              console.log('You have current activity on server please refresh your browser.');
               // we have to clear current activity
               this.store.dispatch(this.currentActivityActions.clearCurrentActivity());
             } else {
@@ -101,6 +103,10 @@ export class StopStartActivityService {
 
   manageProjectRecentActivitiesInState(activity: Activity, project: Project) {
     const userRoll = userRoleInProject(project, activity.user);
+
+    // activityPushType field used to manage the procedure we should update project recent activities in state
+    // if it be "push" means that user is team member or project has just 1 team member and we just need to push activity to recent activities
+    // if it be "edit" means that user is admin/owner and project members are more that 1 so we should update recent activities
     let activityPushType = 'edit';
     if (userRoll === 'team member') {
       activityPushType = 'push';
@@ -115,7 +121,7 @@ export class StopStartActivityService {
     }
   }
 
-  stopActivity(): Promise<any> {
+  stopActivity(project: Project): Promise<any> {
     return new Promise((resolve, reject) => {
       if (this.currentActivityCopy.startedAt) {
         // first we need divide time to separated days
@@ -148,7 +154,7 @@ export class StopStartActivityService {
         }
 
         // we must save divided activities and original activity in db
-        this.pushDividedActivitiesToDb(dividedActivitiesArray);
+        this.pushDividedActivitiesToDb(dividedActivitiesArray, project);
 
         if (this.status.netStatus) {
           // now we will try to store all data at server
@@ -181,13 +187,13 @@ export class StopStartActivityService {
     });
   }
 
-  pushDividedActivitiesToDb (dividedActivitiesResult) {
+  pushDividedActivitiesToDb (dividedActivitiesResult, project) {
     // store an original activity
     this.store.dispatch(this.unSyncedActivityActions.addUnSyncedActivity(this.currentActivityCopy));
-    this.store.dispatch(this.projectsActions.updateProjectActivities(this.currentActivityCopy.project, this.currentActivityCopy));
+    this.manageProjectRecentActivitiesInState(this.currentActivityCopy, project);
     // store all divided activities
     dividedActivitiesResult.map((item) => {
-      this.store.dispatch(this.unSyncedActivityActions.addUnSyncedActivity(item));
+      this.manageProjectRecentActivitiesInState(item, project);
       this.store.dispatch(this.projectsActions.updateProjectActivities(item.project, item));
     });
   }

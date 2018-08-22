@@ -167,7 +167,11 @@ function toggleStopStartFunction() {
         project : projects[selectedProjectIndex],
       });
   } else {
-    ipcRenderer.send('tray-start-or-stop', null);
+    ipcRenderer.send('tray-start-or-stop',
+      {
+        activity: null,
+        project : projects[selectedProjectIndex],
+      });
   }
 }
 
