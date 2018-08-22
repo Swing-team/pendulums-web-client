@@ -90,6 +90,60 @@
     .ps-hidden
       background-color: $ps-card-pink-light !important
 
+.ps-back-red
+  .ps-project-item-card
+    border-radius: $radius
+    background: $ps-card-red
+    color: $paper !important
+    .ps-hidden
+      background-color: $ps-card-red-light !important
+    .ps-owner-name
+      color: rgba(255,255,255,0.5) !important
+    .ps-project-item-card-content
+      .ps-project-item-card-content-media
+        border-bottom: 1px solid rgba(255,255,255,0.3) !important
+    .ps-item-table
+      td
+        color: $paper !important
+    .ps-header-icon-container
+      .ps-project-icons
+        color: rgba(255,255,255,0.5) !important
+        transition: all ease-in-out $ps-transitions
+        &:hover
+          color: rgba(255,255,255,0.8) !important
+    .ps-project-item-footer
+      color: rgba(255,255,255,0.5) !important
+      .card-footer-item
+        &:hover
+          color: rgba(255,255,255,0.8) !important
+
+.ps-back-green
+  .ps-project-item-card
+    border-radius: $radius
+    background: $ps-card-green
+    color: $paper !important
+    .ps-hidden
+      background-color: $ps-card-green-light !important
+    .ps-owner-name
+      color: rgba(255,255,255,0.5) !important
+    .ps-project-item-card-content
+      .ps-project-item-card-content-media
+        border-bottom: 1px solid rgba(255,255,255,0.3) !important
+    .ps-item-table
+      td
+        color: $paper !important
+    .ps-header-icon-container
+      .ps-project-icons
+        color: rgba(255,255,255,0.5) !important
+        transition: all ease-in-out $ps-transitions
+        &:hover
+          color: rgba(255,255,255,0.8) !important
+    .ps-project-item-footer
+      color: rgba(255,255,255,0.5) !important
+      .card-footer-item
+        &:hover
+          color: rgba(255,255,255,0.8) !important
+
 .ps-project-item
   height: $item-size
   .ps-project-item-card
