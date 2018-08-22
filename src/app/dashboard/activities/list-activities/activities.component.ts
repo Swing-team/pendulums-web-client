@@ -129,10 +129,11 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
             for (let i = 0; i < this.currentActivities.length; i++) {
               if (this.currentActivities[i].user === this.currentActivityCopy.user) {
                 this.currentActivities.splice(i, 1);
+                // Now re-render chart component
+                this.ChartComponent.getStatAndPrepareData();
               }
             }
           }
-
           this.currentActivityCopy = null;
         }
       }));
