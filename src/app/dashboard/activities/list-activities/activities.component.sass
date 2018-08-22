@@ -3,10 +3,8 @@
 .ps-activities-container
   position: relative
   .ps-activities-stat-wrapper
-    padding-top: 100px
+    padding-top: 60px
     margin-bottom: 0 !important
-    @media (max-width: 480px)
-      padding-top: 140px
   .ps-activities-column
     padding-top: 0 !important
 
@@ -44,55 +42,60 @@
   min-height: 80px
   padding-top: 30px
 
-.ps-activity-top-button
-  cursor: pointer
-  font-size: 1.5rem
-  line-height: 3rem
-  position: absolute
-  color: $ps-primary
-  background-color: $paper
-  border-radius: 100%
-  border: none
-  height: 50px
-  width: 50px
-  z-index: 5
-  top: 30px
-  right: 50px
-  transition: all ease-in-out $ps-transitions
-  &:hover
-    background-color: darken($paper, 10)
-  @media (max-width: 700px)
-    height: 40px
-    width: 40px
-    top: 30px
-    right: 5px
-    font-size: 1.2rem
-    line-height: 2.5rem
-  @media (max-width: 400px)
-    top: 20px
+.ps-project-name-container
+  display: flex
+  height: 40px
+  width: auto
+  margin-top: 20px
+  margin-bottom: 20px
+  justify-content: space-around
+  flex-wrap: wrap
+  .ps-project-name
+    display: flex
+    text-align: center
+    min-width: 300px
+    border-radius: $radius
+    color: $paper
+    background: $cornflowerBlue
+    padding: 10px
+    font-size: 1rem
+    white-space: nowrap
+    text-overflow: ellipsis
+    overflow: hidden
 
-.icon-back
-  &:before
-    margin-left: 0
-
-.ps-activity-back
-  left: 50px !important
-  @media (max-width: 700px)
-    left: 5px !important
-
-.ps-stat-user-filter-wrapper
-  background-color: $paper
-  position: absolute
-  top: 37px
-  right: 25%
-  width: 50%
-  @media (max-width: 700px)
-    top: 30px
-    right: 25%
-  @media (max-width: 400px)
-    top: 80px
-    right: 5%
-    width: 90%
+.pa-stuff-container
+  display: flex
+  align-items: center
+  justify-content: space-around
+  .ps-activity-top-button
+    cursor: pointer
+    font-size: 1.5rem
+    line-height: 3rem
+    color: $ps-primary
+    background-color: $paper
+    border-radius: 100%
+    border: none
+    height: 50px
+    width: 50px
+    z-index: 5
+    transition: all ease-in-out $ps-transitions
+    &:hover
+      background-color: darken($paper, 10)
+    @media (max-width: 700px)
+      height: 40px
+      width: 40px
+      font-size: 1.2rem
+      line-height: 2.5rem
+    .icon-back
+      &:before
+        margin-left: 0
+  .ps-stat-user-filter-wrapper
+    margin-left: 10px
+    margin-right: 10px
+    background-color: $paper
+    max-height: 40px
+    max-width: 500px
+    flex-grow: 1
 
 .ps-no-display
   display: none
