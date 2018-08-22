@@ -221,7 +221,7 @@ export class ToolbarComponent implements OnInit, OnDestroy  {
   }
 
   stopActivity() {
-    this.stopStartActivityService.stopActivity().then(() => {
+    this.stopStartActivityService.stopActivity(this.selectedProject).then(() => {
       this.stopStartButtonDisabled = false;
       this.showError('The activity stopped');
     });

@@ -40,7 +40,7 @@ export class StopStartActivityService {
     activity.user = this.user.id;
     return new Promise((resolve, reject) => {
       if (this.currentActivityCopy.startedAt) {
-        this.stopActivity().then(() => {
+        this.stopActivity(project).then(() => {
           this.startActivityAtServer(activity, project).then(() => {
             console.log('activity started');
             resolve();
@@ -121,7 +121,7 @@ export class StopStartActivityService {
     }
   }
 
-  stopActivity(): Promise<any> {
+  stopActivity(project: Project): Promise<any> {
     return new Promise((resolve, reject) => {
       if (this.currentActivityCopy.startedAt) {
         // first we need divide time to separated days
@@ -154,7 +154,7 @@ export class StopStartActivityService {
         }
 
         // we must save divided activities and original activity in db
-        this.pushDividedActivitiesToDb(dividedActivitiesArray);
+        this.pushDividedActivitiesToDb(dividedActivitiesArray, project);
 
         if (this.status.netStatus) {
           // now we will try to store all data at server
@@ -187,13 +187,13 @@ export class StopStartActivityService {
     });
   }
 
-  pushDividedActivitiesToDb (dividedActivitiesResult) {
+  pushDividedActivitiesToDb (dividedActivitiesResult, project) {
     // store an original activity
     this.store.dispatch(this.unSyncedActivityActions.addUnSyncedActivity(this.currentActivityCopy));
-    this.store.dispatch(this.projectsActions.updateProjectActivities(this.currentActivityCopy.project, this.currentActivityCopy));
+    this.manageProjectRecentActivitiesInState(this.currentActivityCopy, project);
     // store all divided activities
     dividedActivitiesResult.map((item) => {
-      this.store.dispatch(this.unSyncedActivityActions.addUnSyncedActivity(item));
+      this.manageProjectRecentActivitiesInState(item, project);
       this.store.dispatch(this.projectsActions.updateProjectActivities(item.project, item));
     });
   }

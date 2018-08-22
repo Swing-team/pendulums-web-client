@@ -114,7 +114,7 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
   }
 
   stopActivity() {
-    this.stopStartActivityService.stopActivity().then(() => {
+    this.stopStartActivityService.stopActivity(this.project).then(() => {
       this.activityButtonDisabled = false;
       this.showError('The activity stopped');
     });

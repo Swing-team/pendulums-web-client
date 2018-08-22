@@ -15,11 +15,11 @@ export class ElectronService {
     private projectsActions: ProjectsActions
   ) {
     ipcRenderer.on('win-start-or-stop', (event, message) => {
-      if (message) {
+      if (message.activity) {
         this.stopStartActivityService.startActivity(message.activity, message.project).then(() => {
         })
       } else {
-        this.stopStartActivityService.stopActivity().then(() => {
+        this.stopStartActivityService.stopActivity(message.project).then(() => {
         })
       }
     });
