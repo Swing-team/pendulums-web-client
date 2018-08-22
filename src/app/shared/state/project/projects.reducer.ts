@@ -131,16 +131,28 @@ export default function reducer(state = initialState, action: ActionWithPayload<
     case ProjectsActions.UPDATE_PROJECT_ACTIVITIES: {
       const newState = JSON.parse(JSON.stringify(state));
 
-      const usersWithActivity = [];
+      const dueActivities = [];
+      const doneActivities = [];
+      const noActivities = [];
+
       newState.entities[action.payload.projectId].activities.map((activity) => {
-        usersWithActivity.push(activity.user);
+        if (activity.user !== action.payload.activity.user) {
+          if (activity.stoppedAt) {
+            doneActivities.push(activity);
+          } else if (activity.startedAt) {
+            dueActivities.push(activity);
+          } else {
+            noActivities.push(activity);
+          }
+        }
       });
-      const userIndex = usersWithActivity.indexOf(action.payload.activity.user);
-      if (userIndex === -1) {
-        newState.entities[action.payload.projectId].activities.push(action.payload.activity)
+
+      if (action.payload.activity.stoppedAt) {
+        doneActivities.unshift(action.payload.activity);
       } else {
-        newState.entities[action.payload.projectId].activities[userIndex] = action.payload.activity;
+        dueActivities.unshift(action.payload.activity);
       }
+      newState.entities[action.payload.projectId].activities = (dueActivities.concat(doneActivities)).concat(noActivities);
 
       newState.entities[action.payload.projectId].recentActivityName = action.payload.activity.name;
       return newState;
