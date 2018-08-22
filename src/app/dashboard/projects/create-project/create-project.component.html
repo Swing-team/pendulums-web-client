@@ -56,7 +56,7 @@
           <div class="field">
             <p class="control">
               <input [(ngModel)]="user.email" name="Email" class="input ps-body-input ps-email-input"
-                     placeholder="Enter email address ..." type="text">
+                     placeholder="Enter email address ..." type="text" (blur)="invite()">
             </p>
           </div>
         </div>
