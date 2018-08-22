@@ -4,7 +4,7 @@
       <div class="field">
         <p class="control">
           <input [(ngModel)]="user.email" name="Email" class="input ps-body-input ps-email-input"
-                 placeholder="Enter email address ..." type="text" (blur)="invite()">
+                 placeholder="Enter email address ..." type="text" (blur)="invite()" (keyup)="enterKey($event)">
         </p>
       </div>
     </div>
@@ -24,8 +24,7 @@
     <div class="column is-2 ps-line-height">
       <div class="field">
         <p class="control has-text-centered">
-          <a class="button ps-invitation-add-item-button" [ngClass]="{'is-loading': inviteButtonDisabled}"
-             (click)="invite()" title="Invite">
+          <a class="button ps-invitation-add-item-button" [ngClass]="{'is-loading': inviteButtonDisabled}" title="Invite">
             <span class="icon">
               <i class="icon-plus ps-invitation-add-item-button-icon" [ngClass]="{'has-text-success': !inviteButtonDisabled}"></i>
             </span>

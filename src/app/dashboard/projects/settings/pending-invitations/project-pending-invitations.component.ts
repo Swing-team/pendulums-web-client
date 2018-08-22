@@ -42,6 +42,12 @@ export class ProjectPendingInvitationsComponent {
               private errorService: ErrorService) {
   }
 
+  enterKey(event) {
+    if (event.keyCode === 13) {
+      this.invite();
+    }
+  }
+
   invite() {
     const invitedUser = {
       email: this.user.email.toLowerCase(),

@@ -30,7 +30,7 @@ export class CreateProjectComponent {
   canvasPreviewImage: string;
   fileTypeString: string;
   formSubmitted = false;
-  showPaletteBoollean = false;
+  showPaletteBoolean = false;
   md5: any;
 
   constructor(private projectServices: ProjectService,
@@ -42,6 +42,9 @@ export class CreateProjectComponent {
   }
 
   createProject() {
+    if (this.user.email) {
+      this.invite();
+    }
     if (!this.project.name || /^\s*$/.test(this.project.name) || !this.project.name.trim()) {
       this.showError('Project name is empty');
     } else {
@@ -91,7 +94,7 @@ export class CreateProjectComponent {
   }
 
   togglePalette() {
-    this.showPaletteBoollean = !this.showPaletteBoollean;
+    this.showPaletteBoolean = !this.showPaletteBoolean;
   }
 
   selectColor(colorIndex) {
@@ -185,7 +188,7 @@ export class CreateProjectComponent {
 
   @HostListener('document:click', ['$event'])
   onClick(event) {
-    if (this.showPaletteBoollean && !this.projectCreatePalette.nativeElement.contains(event.target)
+    if (this.showPaletteBoolean && !this.projectCreatePalette.nativeElement.contains(event.target)
       && event.target.id !== 'id2') {
       this.togglePalette();
     }

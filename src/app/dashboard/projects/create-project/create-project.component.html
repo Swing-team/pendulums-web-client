@@ -33,7 +33,7 @@
                                'ps-project-create-palette-item-back-pink': project.colorPalette == 5}">
                 </a>
               </p>
-              <div #projectCreatePalette [ngStyle]="{'display': showPaletteBoollean ? 'block' : 'none'}" class="ps-project-create-palette">
+              <div #projectCreatePalette [ngStyle]="{'display': showPaletteBoolean ? 'block' : 'none'}" class="ps-project-create-palette">
                 <div class="ps-project-create-palette-colors-section">
                   <div *ngFor='let index of [0,1,2,3,4,5]' class="ps-project-create-palette-item">
                     <a id="id1" class="button is-fullwidth" (click)="selectColor(index)"
@@ -76,7 +76,7 @@
         <div class="column is-1 ps-line-height" title="Invite user">
           <div class="field">
             <p class="control has-text-centered">
-              <i class="icon-plus ps-body-button" (click)="invite()"></i>
+              <i class="icon-plus ps-body-button"></i>
             </p>
           </div>
         </div>
