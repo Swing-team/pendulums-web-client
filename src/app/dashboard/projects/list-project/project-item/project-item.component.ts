@@ -266,11 +266,11 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
   pushDividedActivitiesToDb (dividedActivitiesResult) {
     // store an original activity
     this.store.dispatch(this.unSyncedActivityActions.addUnSyncedActivity(this.currentActivityCopy));
-    this.store.dispatch(this.projectsActions.updateProjectActivities(this.currentActivityCopy.project, this.currentActivityCopy));
+    this.manageProjectRecentActivitiesInState(this.currentActivityCopy.project, this.currentActivityCopy);
     // store all divided activities
     dividedActivitiesResult.map((item) => {
       this.store.dispatch(this.unSyncedActivityActions.addUnSyncedActivity(item));
-      this.store.dispatch(this.projectsActions.updateProjectActivities(item.project, item));
+      this.manageProjectRecentActivitiesInState(item.project, item);
     });
   }
 
