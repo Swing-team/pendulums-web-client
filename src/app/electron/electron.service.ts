@@ -26,7 +26,7 @@ export class ElectronService {
 
     ipcRenderer.on('win-rename-activity', (event, message) => {
       if (message) {
-        this.stopStartActivityService.nameActivity(message)
+        this.stopStartActivityService.nameActivity(message.taskName, message.project)
       }
     });
 

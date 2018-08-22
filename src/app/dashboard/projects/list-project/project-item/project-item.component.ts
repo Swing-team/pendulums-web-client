@@ -121,7 +121,7 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
   }
 
   nameActivity($event) {
-    this.stopStartActivityService.nameActivity(this.taskName);
+    this.stopStartActivityService.nameActivity(this.taskName, this.project);
     // just for blur out the input
     const target = $event.target;
     target.blur();

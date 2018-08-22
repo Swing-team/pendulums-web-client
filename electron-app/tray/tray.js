@@ -178,7 +178,11 @@ function toggleStopStartFunction() {
 function nameActivity() {
   taskName = document.getElementById("activityNameElm").value;
   console.log('input value:', taskName);
-  ipcRenderer.send('tray-rename-activity',taskName);
+  ipcRenderer.send('tray-rename-activity',
+    {
+      taskName: taskName,
+      project : projects[selectedProjectIndex],
+    });
 }
 
 function timer() {

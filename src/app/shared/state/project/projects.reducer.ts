@@ -121,16 +121,12 @@ export default function reducer(state = initialState, action: ActionWithPayload<
 
     case ProjectsActions.ADD_ACTIVITY_TO_PROJECT: {
       const newState = JSON.parse(JSON.stringify(state));
-      if (!action.payload.activity.stoppedAt) {
-        newState.entities[action.payload.projectId].activities.unshift(action.payload.activity);
-      } else {
-        newState.entities[action.payload.projectId].activities.map((activity, index) => {
-          if (activity.user === action.payload.activity.user && !activity.stoppedAt) {
-            newState.entities[action.payload.projectId].activities.splice(index, 1);
-          }
-        });
-        newState.entities[action.payload.projectId].activities.unshift(action.payload.activity);
-      }
+      newState.entities[action.payload.projectId].activities.map((activity, index) => {
+        if (activity.user === action.payload.activity.user && activity.startedAt === action.payload.activity.startedAt) {
+          newState.entities[action.payload.projectId].activities.splice(index, 1);
+        }
+      });
+      newState.entities[action.payload.projectId].activities.unshift(action.payload.activity);
 
       newState.entities[action.payload.projectId].recentActivityName = action.payload.activity.name;
       return newState;
@@ -163,7 +159,6 @@ export default function reducer(state = initialState, action: ActionWithPayload<
       newState.entities[action.payload.projectId].activities = (dueActivities.concat(doneActivities)).concat(noActivities);
 
       newState.entities[action.payload.projectId].recentActivityName = action.payload.activity.name;
-      console.log('edit', newState.entities[action.payload.projectId].activities)
       return newState;
     }
 

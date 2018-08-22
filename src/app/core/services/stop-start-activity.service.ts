@@ -226,11 +226,11 @@ export class StopStartActivityService {
     this.store.dispatch(this.currentActivityActions.clearCurrentActivity());
   }
 
-  nameActivity(activityName) {
+  nameActivity(activityName, project) {
     if (this.currentActivityCopy.startedAt) {
       this.currentActivityCopy.name = activityName;
       this.store.dispatch(this.currentActivityActions.renameCurrentActivity(this.currentActivityCopy.name));
-      this.store.dispatch(this.projectsActions.updateProjectActivities(this.currentActivityCopy.project, this.currentActivityCopy));
+      this.manageProjectRecentActivitiesInState(this.currentActivityCopy, project);
       if (this.status.netStatus) {
         delete this.currentActivityCopy.stoppedAt;
 

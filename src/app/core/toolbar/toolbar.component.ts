@@ -232,7 +232,7 @@ export class ToolbarComponent implements OnInit, OnDestroy  {
   }
 
   nameActivity($event) {
-    this.stopStartActivityService.nameActivity(this.taskName);
+    this.stopStartActivityService.nameActivity(this.taskName, this.selectedProject);
     // just for blur out the input
     const target = $event.target;
     target.blur();
