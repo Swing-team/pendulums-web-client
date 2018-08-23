@@ -44,29 +44,25 @@
 
 .ps-project-name-container
   display: flex
-  height: 40px
-  width: auto
+  align-items: center
+  width: 100%
   margin-top: 20px
   margin-bottom: 20px
+  padding-left: 8px
+  padding-right: 8px
   justify-content: space-around
-  flex-wrap: wrap
+  flex-direction: row
   .ps-project-name
-    display: flex
-    text-align: center
-    min-width: 300px
+    margin-left: 10px
+    margin-right: 10px
+    min-width: 180px !important
+    width: auto
     border-radius: $radius
     color: $paper
     background: $cornflowerBlue
     padding: 10px
     font-size: 1rem
-    white-space: nowrap
-    text-overflow: ellipsis
-    overflow: hidden
-
-.pa-stuff-container
-  display: flex
-  align-items: center
-  justify-content: space-around
+    justify-content: center
   .ps-activity-top-button
     cursor: pointer
     font-size: 1.5rem
@@ -77,6 +73,8 @@
     border: none
     height: 50px
     width: 50px
+    min-height: 50px
+    min-width: 50px
     z-index: 5
     transition: all ease-in-out $ps-transitions
     &:hover
@@ -84,11 +82,15 @@
     @media (max-width: 700px)
       height: 40px
       width: 40px
+      min-height: 40px
+      min-width: 40px
       font-size: 1.2rem
       line-height: 2.5rem
-    .icon-back
-      &:before
-        margin-left: 0
+
+.pa-stuff-container
+  display: flex
+  align-items: center
+  justify-content: space-around
   .ps-stat-user-filter-wrapper
     margin-left: 10px
     margin-right: 10px

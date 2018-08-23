@@ -1,22 +1,20 @@
 <div class="container ps-activities-container">
   <div class="ps-project-name-container">
-    <div class="ps-project-name">
-      {{project.name}}
-    </div>
-  </div>
-  <div class="pa-stuff-container">
     <div class="ps-activity-top-button icon-back" (click)="goBack()" title="Back"></div>
-    <ng-container *ngIf="userAccess">
-      <div *ngIf="project" class="ps-stat-user-filter-wrapper" title="Select users">
-        <swing-select [type]="'multiSelect'"
-                      [items]="project.teamMembers"
-                      [itemTextAttribute]="['name', 'email']"
-                      (onItemClicked)="getSelectedUsers($event)"
-                      [label]="'Select Users'"
-                      [selectedItemIndex]="selectedItemIndex"></swing-select>
-      </div>
-    </ng-container>
+    <div class="ps-project-name" *ngIf="project">
+      {{project.name}} fsdfsdifhkvjxkj vhxkjvjhxvsdiv dvxjcv vhkxcjvhdsudhf xc
+    </div>
     <div class="ps-activity-top-button icon-plus" (click)="openAddManuallyModal()" title="Add new activity"></div>
+  </div>
+  <div class="pa-stuff-container" *ngIf="userAccess">
+    <div *ngIf="project" class="ps-stat-user-filter-wrapper" title="Select users">
+      <swing-select [type]="'multiSelect'"
+                    [items]="project.teamMembers"
+                    [itemTextAttribute]="['name', 'email']"
+                    (onItemClicked)="getSelectedUsers($event)"
+                    [label]="'Select Users'"
+                    [selectedItemIndex]="selectedItemIndex"></swing-select>
+    </div>
   </div>
   <div class="columns ps-activities-stat-wrapper">
     <div class="column is-offset-1 is-10" style="background-color: white">
