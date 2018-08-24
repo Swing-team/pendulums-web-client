@@ -299,14 +299,12 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
         userCurrentActivity.isActive = true;
         return userCurrentActivity;
       });
-      console.log(this.currentActivities);
     });
   }
 
   getActivitiesFromServer() {
     if (this.selectedUsers.length > 0) {
       this.activityService.getActivities(this.projectId, this.selectedUsers, this.pageNumber).then((activities) => {
-        console.log('activities', activities);
         if (activities.length > 0) {
           this.scrollEnable = true;
         }

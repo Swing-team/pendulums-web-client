@@ -10,7 +10,6 @@ export class DexieService extends Dexie {
       activeUser: '++id',
       appInfo: 'userId',
     }).upgrade((tb) => {
-      console.log('tryuio', tb);
       return tb['userData'].toCollection().modify(data => {
         Object.keys(data.data.projects.entities).forEach(function(key) {
           data.data.projects.entities[key].colorPalette = 0;

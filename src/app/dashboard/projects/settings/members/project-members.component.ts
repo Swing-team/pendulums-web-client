@@ -88,7 +88,6 @@ export class ProjectMembersComponent implements OnInit {
         this.members.push({...member, role: 'team member'});
       }
     });
-    console.log('this.members:', this.members);
   }
 
   userEmailHash(email) {

@@ -45,8 +45,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    console.log('app version is :', VERSION, this.hasSeenInfoModal);
-
     if (!this.hasSeenInfoModal) {
       this.versionControl = this.user.pairwise().subscribe((userInfo) => {
         if (userInfo[0].id === null || userInfo[0].id === undefined || userInfo[0].id === '' || userInfo[1].id !== userInfo[0].id) {
@@ -54,6 +52,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         } else {
           this.userId = userInfo[0].id
         }
+        // FIXME: Mohammad 08-24-2018: cleanup this code!!!
         // the userInDB is {userId: '...', seenVersions: [...]}
         this.db.get('appInfo', this.userId)
         .then((userInDB) => {
