@@ -228,7 +228,7 @@ export class StopStartActivityService {
 
   nameActivity(activityName, project) {
     if (this.currentActivityCopy.startedAt) {
-      this.currentActivityCopy.name = activityName;
+      this.currentActivityCopy.name = activityName.trim() ? activityName : 'Untitled Activity';
       this.store.dispatch(this.currentActivityActions.renameCurrentActivity(this.currentActivityCopy.name));
       this.manageProjectRecentActivitiesInState(this.currentActivityCopy, project);
       if (this.status.netStatus) {

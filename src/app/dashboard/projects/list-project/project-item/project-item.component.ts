@@ -91,7 +91,7 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
 
   startActivity() {
     if (!this.taskName) {
-      this.taskName = 'untitled activity';
+      this.taskName = 'Untitled Activity';
     }
     this.activity = new Activity();
     this.activity.name = this.taskName;

@@ -78,7 +78,7 @@ function init() {
 
 function initialActivityLabel() {
   if( projects[selectedProjectIndex]) {
-    ActivityNameLabel = (currentActivityCopy.name ? currentActivityCopy.name : 'Untitled activity' )+ ' - ' + projects[selectedProjectIndex].name;
+    ActivityNameLabel = (currentActivityCopy.name ? currentActivityCopy.name : 'Untitled Activity' )+ ' - ' + projects[selectedProjectIndex].name;
     u('#activityNameLabel').html(ActivityNameLabel)
   }
 }
