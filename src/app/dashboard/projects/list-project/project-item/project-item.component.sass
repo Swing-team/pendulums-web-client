@@ -121,38 +121,18 @@
   .ps-project-item-card
     border-radius: $radius
     background: $ps-card-green
-    color: $paper !important
     .ps-hidden
       background-color: $ps-card-green-light !important
-    .ps-owner-name
-      color: rgba(255,255,255,0.5) !important
-    .ps-project-item-card-content
-      .ps-project-item-card-content-media
-        border-bottom: 1px solid rgba(255,255,255,0.3) !important
-    .ps-item-table
-      td
-        color: $paper !important
-    .ps-header-icon-container
-      .ps-project-icons
-        color: rgba(255,255,255,0.5) !important
-        transition: all ease-in-out $ps-transitions
-        &:hover
-          color: rgba(255,255,255,0.8) !important
-    .ps-project-item-footer
-      color: rgba(255,255,255,0.5) !important
-      .card-footer-item
-        &:hover
-          color: rgba(255,255,255,0.8) !important
 
-.ps-project-item
+.ps-project-item-container
   height: $item-size
   .ps-project-item-card
-    height: 100%
+    height: $item-size
     border: unset
     overflow-y: hidden
     .ps-project-item-card-content
       padding: 10px !important
-      height: 100%
+      height: $item-size
       display: flex
       flex-direction: column
       &.ps-hidden
@@ -166,24 +146,24 @@
         font-size: 0.85rem
         padding-bottom: 10px
         border-bottom: 1px solid rgba(0,0,0,0.3)
-        .ps-owner-container
-          display: inline-flex
-          max-width: 180px
-          overflow: hidden
-          white-space: nowrap
-          text-overflow: ellipsis
-          .ps-owner-name
-            color: rgba(0,0,0,0.5)
-          @media (max-width: 400px)
-            max-width: 120px
-        .ps-header-icon-container
-          font-size: 1.1rem !important
-          line-height: 1.1rem !important
-          .ps-project-icons
-            color: rgba(0,0,0,0.5)
-            transition: all ease-in-out $ps-transitions
-            &:hover
-              color: rgba(0,0,0,0.8)
+        .ps-media-content
+          display: grid
+          width: 100%
+          .ps-owner-container
+            overflow: hidden
+            white-space: nowrap
+            text-overflow: ellipsis
+            .ps-owner-name
+              color: rgba(0,0,0,0.5)
+          .ps-header-icon-container
+            margin-top: 6px
+            font-size: 1.1rem !important
+            line-height: 1.1rem !important
+            .ps-project-icons
+              color: rgba(0,0,0,0.5)
+              transition: all ease-in-out $ps-transitions
+              &:hover
+                color: rgba(0,0,0,0.8)
         .ps-project-image-container
           height: 80px
           width: 80px
@@ -208,7 +188,6 @@
             margin-left: 2px
         .ps-project-item-card-title
           font-size: 1.5rem
-          max-width: 180px
           overflow: hidden
           white-space: nowrap
           text-overflow: ellipsis
@@ -273,7 +252,3 @@
             height: 15px
           &.ps-project-item-show-more-icon
             height: 10px
-
-
-
-
