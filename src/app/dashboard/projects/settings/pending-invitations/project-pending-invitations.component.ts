@@ -49,29 +49,31 @@ export class ProjectPendingInvitationsComponent {
   }
 
   invite() {
-    const invitedUser = {
-      email: this.user.email.toLowerCase(),
-      role: this.user.role
-    };
+    if (this.user.email) {
+      const invitedUser = {
+        email: this.user.email.toLowerCase(),
+        role: this.user.role
+      };
 
-    if (this.validateInvitedUser()) {
-      if (!this.inviteButtonDisabled) {
-        this.inviteButtonDisabled = true;
-        this.projectService.inviteMember(this.project.id,
-          {
-            invitedUser
-          }
-        )
-          .then(response => {
-            this.store.dispatch(this.projectsActions.addInvitedUser(this.project.id, this.user));
+      if (this.validateInvitedUser()) {
+        if (!this.inviteButtonDisabled) {
+          this.inviteButtonDisabled = true;
+          this.projectService.inviteMember(this.project.id,
+            {
+              invitedUser
+            }
+          )
+            .then(response => {
+              this.store.dispatch(this.projectsActions.addInvitedUser(this.project.id, this.user));
+              this.inviteButtonDisabled = false;
+              this.project.invitedUsers.push(invitedUser);
+              this.user = {email: null, role: this.roles[0]};
+              this.showError('User is invited');
+            }).catch(error => {
             this.inviteButtonDisabled = false;
-            this.project.invitedUsers.push(invitedUser);
-            this.user = {email: null, role: this.roles[0]};
-            this.showError('User is invited');
-          }).catch(error => {
-          this.inviteButtonDisabled = false;
-          this.showError('Server Communication error.');
-        });
+            this.showError('Server Communication error.');
+          });
+        }
       }
     }
   }
