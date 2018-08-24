@@ -60,7 +60,7 @@
           <div class="field">
             <p class="control">
               <input [(ngModel)]="user.email" name="Email" class="input ps-body-input ps-email-input"
-                     placeholder="Enter email address ..." type="text" (blur)="invite()">
+                     placeholder="Enter email address ..." type="text">
             </p>
           </div>
         </div>
@@ -77,7 +77,7 @@
             </p>
           </div>
         </div>
-        <div class="column is-1 ps-line-height" title="Invite user">
+        <div class="column is-1 ps-line-height" title="Invite user" (click)="invite()">
           <div class="field">
             <p class="control has-text-centered">
               <i class="icon-plus ps-body-button"></i>
