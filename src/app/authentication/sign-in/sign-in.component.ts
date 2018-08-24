@@ -55,7 +55,7 @@ export class SignInComponent {
                 } else if (JSON.parse(error.error).type === 0) {
                   this.errorMessage = 'Email or password mismatch';
                 } else if (JSON.parse(error.error).type === 3) {
-                  this.errorMessage = 'reCpatcha Error please try again';
+                  this.errorMessage = 'reCaptcha Error please try again';
                 }
               } else {
                 this.errorMessage = 'Server communication error';
