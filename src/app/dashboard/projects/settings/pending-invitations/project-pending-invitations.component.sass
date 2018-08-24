@@ -9,12 +9,16 @@
     margin: 10px
   span
     line-height: 56px
-  .ps-invited-user-email
-    word-break: break-all
-    padding-left: 10px
-  .ps-invited-user-role
-    text-align: left
-    padding-left: 10px
+  .ps-invited-email-container
+    justify-content: center
+    display: flex
+    flex-direction: column
+    .ps-invited-user-email
+      word-break: break-all
+      padding-left: 10px
+    .ps-invited-user-role
+      text-align: left
+      padding-left: 10px
 
 .ps-empty-list
   min-height: 40px !important
@@ -68,6 +72,9 @@
   border: none
   background-color: transparent
 
+.ps-invited-image
+  vertical-align: middle
+
 .ps-invitation-add-item-button-icon
   font-size: 25px
   border-radius: 100%
@@ -84,9 +91,6 @@
 
 .ps-select:not(.is-multiple)::after
   right: 0.7em
-
-.ps-padding-top
-  padding-top: 8px !important
 
 .ps-margin-bottom
   margin-bottom: 0.5rem !important
