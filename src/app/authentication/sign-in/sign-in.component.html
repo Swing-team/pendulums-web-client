@@ -30,10 +30,10 @@
                 </p>
               </div>
               <div class="field">
-                <p [style.visibility]="errorMessage ? 'unset' : 'hidden'" class="control ps-login-error is-fullwidth">
+                <p [style.visibility]="errorMessage ? 'visible' : 'hidden'" class="control ps-login-error is-fullwidth">
                   {{errorMessage}}
                 </p>
-                <p [style.visibility]="comingSoon ? 'unset' : 'hidden'" class="control ps-login-coming-soon is-fullwidth">
+                <p [style.visibility]="comingSoon ? 'visible' : 'hidden'" class="control ps-login-coming-soon is-fullwidth">
                   Coming soon!
                 </p>
               </div>
@@ -41,8 +41,8 @@
                 #captchaRef="reCaptcha"
                 siteKey="6LemsWoUAAAAAC7BBVoRzxiMDPd0Jey5DQ2h4uGp"
                 size="invisible"
-                (resolved)="$event && signIn($event)"
-              ></re-captcha>
+                (resolved)="$event && signIn($event)">
+              </re-captcha>
               <div class="field">
                 <p class="control">
                   <button
