@@ -24,7 +24,8 @@ import { Status }                           from '../../shared/state/status/stat
 export class ToolbarComponent implements OnInit, OnDestroy  {
   @Input() user: User;
   @Input() status: Status;
-  @Input() projects: Array<Project>;
+  projects: Array<Project>;
+  @Input() projects$: Observable<Project[]>;
   @Input() selectedProjectInput: Observable<string>;
   @Input() currentActivity: Observable<Activity>;
   @Output() onMenuItemClicked = new EventEmitter();
@@ -50,6 +51,10 @@ export class ToolbarComponent implements OnInit, OnDestroy  {
   }
 
   ngOnInit() {
+    this.subscriptions.push(this.projects$.subscribe((projects) => {
+      this.projects = projects;
+    }));
+
     if (this.user.pendingInvitations.length > 0 || this.status.updateNeeded) {
       this.hasNotification = true;
     }
@@ -102,7 +107,6 @@ export class ToolbarComponent implements OnInit, OnDestroy  {
         }
       }));
     }
-
     this.subscriptions.push(this.selectedProjectInput.subscribe(selectedProjectInput => {
       this.findSelectedProject(selectedProjectInput);
     }));
@@ -155,10 +159,7 @@ export class ToolbarComponent implements OnInit, OnDestroy  {
   };
 
   projectSelected(event) {
-    this.selectedProjectIndex = event.index;
-    this.selectedProject = event.selectedItem;
-    this.taskName = this.selectedProject.recentActivityName;
-    this.store.dispatch(this.projectsActions.updateSelectedProject(this.selectedProject.id));
+    this.store.dispatch(this.projectsActions.updateSelectedProject(event.selectedItem.id));
   }
 
   findSelectedProject(selectedProjectInput) {
@@ -166,12 +167,14 @@ export class ToolbarComponent implements OnInit, OnDestroy  {
       this.projects.map((project, index) => {
         if (project.id === selectedProjectInput) {
           this.selectedProject = project;
-          this.selectedProjectIndex = index;
+          this.selectedProjectIndex = [index];
+          this.taskName = this.selectedProject.recentActivityName;
         }
       });
     } else {
-      this.selectedProject = this.projects[0];
-      this.selectedProjectIndex = 0;
+      this.selectedProject = null;
+      this.selectedProjectIndex = null;
+      this.taskName = '';
     }
   }
 
