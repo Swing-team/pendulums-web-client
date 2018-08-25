@@ -207,7 +207,7 @@ export class SyncService {
   initialAppOffline() {
     if (this.tempState) {
       this.store.dispatch(this.userActions.loadUser(this.tempState.user));
-      this.store.dispatch(this.projectsActions.loadDbProjects(this.tempState.projects.entities));
+      this.store.dispatch(this.projectsActions.loadDbProjects(this.tempState.projects));
       this.store.dispatch(this.currentActivityActions.loadCurrentActivity(this.tempState.currentActivity));
       this.store.dispatch(this.unSyncedActivityActions.loadUnSyncedActivity(this.tempState.unSyncedActivity));
       this.store.dispatch(this.statusActions.updateNetStatus(false));

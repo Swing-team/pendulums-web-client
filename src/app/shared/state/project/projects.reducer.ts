@@ -10,7 +10,14 @@ const initialState: Projects = {
 export default function reducer(state = initialState, action: ActionWithPayload<any>) {
   switch (action.type) {
     case ProjectsActions.LOAD_PROJECTS: {
+      let selectedProject = null;
+      if (state.selectedProject) {
+        selectedProject = state.selectedProject;
+      } else if (action.payload.length > 0) {
+        selectedProject = action.payload[0].id
+      }
       return {
+        selectedProject: selectedProject ,
         entities: action.payload.reduce((entities, project) => {
           entities[project.id] = project;
           return entities;
@@ -19,8 +26,16 @@ export default function reducer(state = initialState, action: ActionWithPayload<
     }
 
     case ProjectsActions.LOAD_DB_PROJECTS: {
+      let selectedProject = null;
+      if (action.payload.selectedProject) {
+        selectedProject = action.payload.selectedProject;
+      } else if (Object.keys(action.payload.entities).length > 0) {
+         selectedProject = Object.keys(action.payload.entities)[0];
+
+      }
       return {
-        entities: action.payload
+        entities: action.payload.entities,
+        selectedProject: selectedProject,
       };
     }
 
@@ -34,14 +49,25 @@ export default function reducer(state = initialState, action: ActionWithPayload<
        return {
        entities: Object.assign({}, state.entities, projectState)
        };*/
+
       const newState = JSON.parse(JSON.stringify(state));
       newState.entities[action.payload.id] = action.payload;
+      if (!newState.selectedProject) {
+        newState.selectedProject = Object.keys(newState.entities)[0];
+      }
       return newState;
     }
 
     case ProjectsActions.REMOVE_PROJECT: {
       const newState = JSON.parse(JSON.stringify(state));
       delete newState.entities[action.payload];
+      if (newState.selectedProject === action.payload) {
+        if (Object.keys(newState.entities).length > 0) {
+          newState.selectedProject = Object.keys(newState.entities)[0];
+        } else {
+          newState.selectedProject = null;
+        }
+      }
       return newState;
     }
 
