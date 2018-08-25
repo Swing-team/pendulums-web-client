@@ -1,63 +1,65 @@
-<div class="columns ps-add-manually-row">
-  <div class="column">
-    <div>Activity title: </div>
-    <input class="ps-add-manually-input ps-add-manually-title-input" [(ngModel)]="activityModel.name" placeholder="Activity Name" type="text">
-  </div>
-</div>
-
-<div class="columns ps-add-manually-row">
-  <div class="column is-4">
-    <div>From:</div>
-    <input class="ps-add-manually-input" [ngClass]="{'ps-add-manually-input-error': fromTimeError}"
-           [(ngModel)]="fromTime" (change)="updateFromTime()" type="time">
-    <p class="ps-add-manually-date-error" *ngIf="fromTimeError">{{timeError}}</p>
-  </div>
-  <div class="column">
-    <div>Date</div>
-    <div>
-      <input class="ps-add-manually-input" [ngClass]="{'ps-add-manually-input-error': fromCalenderError}"
-           [(ngModel)]="fromDate" type="text" (focus)="showFromCalender()" >
-      <p class="ps-add-manually-date-error" *ngIf="fromCalenderError">{{dateError}}</p>
+<div class="ps-button-gap">
+  <div class="columns ps-add-manually-row">
+    <div class="column">
+      <div>Activity title: </div>
+      <input class="ps-add-manually-input ps-add-manually-title-input" [(ngModel)]="activityModel.name" placeholder="Activity Name" type="text">
     </div>
-    <div class="ps-add-manually-calendar" *ngIf="fromCalenderShow" >
-      <button class="button is-pulled-right is-small ps-close-calender-button"
-              (click)="closeFromCalender()">
+  </div>
+
+  <div class="columns ps-add-manually-row">
+    <div class="column is-4">
+      <div>From:</div>
+      <input class="ps-add-manually-input" [ngClass]="{'ps-add-manually-input-error': fromTimeError}"
+            [(ngModel)]="fromTime" (change)="updateFromTime()" type="time">
+      <p class="ps-add-manually-date-error" *ngIf="fromTimeError">{{timeError}}</p>
+    </div>
+    <div class="column">
+      <div>Date</div>
+      <div>
+        <input class="ps-add-manually-input" [ngClass]="{'ps-add-manually-input-error': fromCalenderError}"
+            [(ngModel)]="fromDate" type="text" (focus)="showFromCalender()" >
+        <p class="ps-add-manually-date-error" *ngIf="fromCalenderError">{{dateError}}</p>
+      </div>
+      <div class="ps-add-manually-calendar" *ngIf="fromCalenderShow" >
+        <button class="button is-pulled-right is-small ps-close-calender-button"
+                (click)="closeFromCalender()">
+          <span class="icon is-small">X</span>
+        </button>
+        <swing-calendar (dateSelected)="updateFromDate($event)" calendarType="date" [inputDate]="fromDateValue"></swing-calendar>
+      </div>
+    </div>
+  </div>
+
+  <div class="columns ps-add-manually-row">
+    <div class="column is-4">
+      <div>To:</div>
+      <input class="ps-add-manually-input" [ngClass]="{'ps-add-manually-input-error': toTimeError}"
+            [(ngModel)]="toTime" (change)="updateToTime()" type="time">
+      <p class="ps-add-manually-date-error" *ngIf="toTimeError">{{timeError}}</p>
+    </div>
+    <div class="column">
+      <div>Date </div>
+      <div>
+        <input class="ps-add-manually-input" [ngClass]="{'ps-add-manually-input-error': toCalenderError}"
+            [(ngModel)]="toDate" type="text" (focus)="showToCalender()">
+        <p class="ps-add-manually-date-error" *ngIf="toCalenderError">{{dateError}}</p>
+      </div>
+      <div class="ps-add-manually-calendar"  *ngIf="toCalenderShow" >
+        <button class="button is-pulled-right is-small ps-close-calender-button"
+                (click)="closeToCalender()">
         <span class="icon is-small">X</span>
-      </button>
-      <swing-calendar (dateSelected)="updateFromDate($event)" calendarType="date" [inputDate]="fromDateValue"></swing-calendar>
+        </button>
+        <swing-calendar (dateSelected)="updateToDate($event)" calendarType="date" [inputDate]="toDateValue"></swing-calendar>
+      </div>
     </div>
   </div>
-</div>
 
-<div class="columns ps-add-manually-row">
-  <div class="column is-4">
-    <div>To:</div>
-    <input class="ps-add-manually-input" [ngClass]="{'ps-add-manually-input-error': toTimeError}"
-           [(ngModel)]="toTime" (change)="updateToTime()" type="time">
-    <p class="ps-add-manually-date-error" *ngIf="toTimeError">{{timeError}}</p>
-  </div>
-  <div class="column">
-    <div>Date </div>
-    <div>
-      <input class="ps-add-manually-input" [ngClass]="{'ps-add-manually-input-error': toCalenderError}"
-           [(ngModel)]="toDate" type="text" (focus)="showToCalender()">
-      <p class="ps-add-manually-date-error" *ngIf="toCalenderError">{{dateError}}</p>
-    </div>
-    <div class="ps-add-manually-calendar"  *ngIf="toCalenderShow" >
-      <button class="button is-pulled-right is-small ps-close-calender-button"
-              (click)="closeToCalender()">
-       <span class="icon is-small">X</span>
+  <div class="ps-submit-button">
+    <p class="control">
+      <button class="button is-primary is-fullwidth" [ngClass]="{'is-loading': saveButtonDisabled}"
+              [disabled]="saveButtonDisabled" (click)="addActivity()">
+        save
       </button>
-      <swing-calendar (dateSelected)="updateToDate($event)" calendarType="date" [inputDate]="toDateValue"></swing-calendar>
-    </div>
+    </p>
   </div>
-</div>
-
-<div class="ps-submit-button">
-  <p class="control">
-    <button class="button is-primary is-fullwidth" [ngClass]="{'is-loading': saveButtonDisabled}"
-            [disabled]="saveButtonDisabled" (click)="addActivity()">
-      save
-    </button>
-  </p>
 </div>
