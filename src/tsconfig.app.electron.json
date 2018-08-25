@@ -5,6 +5,10 @@
       "**/*.spec.ts",
       "**/app.module.ts",
       "main.ts"
+    ],
+    "include": [
+      "main.electron.ts",
+      "**/app.electron.module.ts",
+      "**/*.electron.service.ts"
     ]
   }
-  

@@ -18,6 +18,9 @@
   },
   "exclude": [
     "test.ts",
-    "**/*.spec.ts"
+    "**/*.spec.ts",
+    "main.electron.ts",
+    "**/app.electron.module.ts",
+    "**/*.electron.service.ts"
   ]
 }
