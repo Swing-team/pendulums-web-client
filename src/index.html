@@ -100,14 +100,14 @@
 
     function initBody() {
       var browser = getBrowser();
-      if ((browser.name === 'Firefox' && browser.version < 58) ||
-        (browser.name === 'Chrome' && browser.version < 61) ||
+      if ((browser.name === 'Firefox' && browser.version < 10000) ||
+        (browser.name === 'Chrome' && browser.version < 10000) ||
         (browser.name === 'Edge' && browser.version < 17) ||
         (browser.name === 'Opera' && browser.version < 51) ||
         (browser.name === 'Safari' && browser.version < 10) ||
         (browser.name === 'IE')) {
         console.log('we do not support this browser version');
-        var html = '<div style="color: white; position:fixed; top: 50%; left: 50%; width:30em; height:18em; margin-top: -9em; margin-left: -15em">' +
+        var html = '<div style="color: white;height: 100vh;padding: 40px;display: flex;justify-content: center;align-items: center;">' +
           '<p>We do not support this browser.<br>' +
           'Please use a modern browser like FireFox 58+, Chrome 62+, Edge 17+, Opera 51+ or Safari 10+.<br><br><br>' +
           'Thank you,<br>' +
