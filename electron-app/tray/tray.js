@@ -63,8 +63,10 @@ ipcRenderer.on('tray-selected-project-ready', (event, message) => {
 ipcRenderer.on('tray-currentActivity-ready', (event, message) => {
   currentActivityCopy = message;
   if(message.startedAt) {
+    // User has current activity
     started = true;
   } else {
+    // User doesn't have current activity
     started = false;
   }
   initialActivityNameInput();
@@ -161,12 +163,14 @@ function toggleStopStartFunction() {
     startedAt: new Date().getTime().toString()
   };
   if (!started) {
+    // Start an activity
     ipcRenderer.send('tray-start-or-stop',
       {
         activity: currentActivityCopy,
         project : projects[selectedProjectIndex],
       });
   } else {
+    // Stop current activity
     ipcRenderer.send('tray-start-or-stop',
       {
         activity: null,

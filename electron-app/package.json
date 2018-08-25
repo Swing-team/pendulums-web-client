@@ -1,48 +1,60 @@
 {
-    "name": "Pendulums",
-    "main": "src/main.js",
-    "version": "0.3.3",
-    "description": "Pendulums desktop application",
-    "author": {
-      "name": "Swing Team",
-      "email": "app.pendulum@egmail.com"
+  "name": "Pendulums",
+  "main": "src/main.js",
+  "version": "0.3.3",
+  "description": "Pendulums desktop application",
+  "author": {
+    "name": "Swing Team",
+    "email": "app.pendulum@egmail.com"
+  },
+  "homepage": "https://pendulums.io",
+  "build": {
+    "appId": "client.pendulums.io",
+    "productName": "Pendulums",
+    "copyright": "Copyright © year ${author}",
+    "asar": true,
+    "electronVersion": "2.0.8",
+    "files": [
+      "src/main.js",
+      "app",
+      "tray",
+      "build/tray*.*"
+    ],
+    "mac": {
+      "icon": "./images/mac/icon.icns",
+      "target": [
+        "dmg"
+      ]
     },
-    "homepage": "https://pendulums.io",
-    "build": {
-      "appId": "client.pendulums.io",
-      "productName": "Pendulums",
-      "copyright": "Copyright © year ${author}",
-      "asar": true,
-      "files": ["src", "app", "images/**"],
-      "mac": {
-        "icon": "./images/mac/icon.icns",
-        "target": ["dmg", "pkg"]
-      },
-      "dmg" : {
-        "background": "./images/mac/dmg-background.jpg",
-        "contents": [
-          {
-            "x": 400,
-            "y": 150
-          },
-          {
-            "x": 240,
-            "y": 150,
-            "type": "link",
-            "path": "/Applications"
-          }
-  ]
-      },
-      "linux": {
-        "target": ["snap", "deb"],
-        "category": "Utility, Productivity",
-        "icon": "./images/linux/icon.icns"
-      },
-      "win": {
-        "icon": "./images/win/icon.ico"
-      }
+    "dmg": {
+      "background": "./build/dmg-background.jpg",
+      "contents": [
+        {
+          "x": 400,
+          "y": 150
+        },
+        {
+          "x": 240,
+          "y": 150,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
     },
-    "dependencies": {
-      "electron-positioner": "^3.0.1"
+    "linux": {
+      "target": [
+        "deb"
+      ],
+      "category": "Utility, Productivity",
+      "icon": "./build/icon.icns"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "./build/icon.ico"
     }
+  },
+  "dependencies": {
+    "electron-positioner": "^3.0.1",
+    "express": "^4.16.3"
   }
+}

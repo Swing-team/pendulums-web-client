@@ -1,14 +1,25 @@
 {
-    "extends": "./tsconfig.app.json",
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "target": "es6",
+    "lib": [
+      "es2016",
+      "dom"
+    ],
+    "outDir": "../out-tsc/app",
+    "module": "es2015",
+    "baseUrl": "",
+    "types": []
+  },
     "exclude": [
       "test.ts",
       "**/*.spec.ts",
       "**/app.module.ts",
       "main.ts"
-    ],
-    "include": [
-      "main.electron.ts",
-      "**/app.electron.module.ts",
-      "**/*.electron.service.ts"
     ]
   }
