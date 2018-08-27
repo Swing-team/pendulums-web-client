@@ -5,7 +5,8 @@ import {
     shell,
     Menu,
     ipcMain,
-    protocol
+    protocol,
+    MenuItemConstructorOptions
 }  from 'electron';
 import * as express from 'express';
 import * as path from 'path';
@@ -108,6 +109,176 @@ const toggleTrayWindow = () => {
   }
 };
 
+const setupApplicationMenu = () => {
+    const template: MenuItemConstructorOptions[] = [
+        {
+          label: 'Edit',
+          submenu: [
+            {
+              role: 'undo'
+            },
+            {
+              role: 'redo'
+            },
+            {
+              type: 'separator'
+            },
+            {
+              role: 'cut'
+            },
+            {
+              role: 'copy'
+            },
+            {
+              role: 'paste'
+            },
+            {
+              role: 'pasteandmatchstyle'
+            },
+            {
+              role: 'delete'
+            },
+            {
+              role: 'selectall'
+            }
+          ]
+        },
+        {
+          label: 'View',
+          submenu: [
+            {
+              role: 'resetzoom'
+            },
+            {
+              role: 'zoomin'
+            },
+            {
+              role: 'zoomout'
+            },
+            {
+              type: 'separator'
+            },
+            {
+              role: 'togglefullscreen'
+            },
+            {
+              type: 'separator'
+            },
+            {
+                role: 'toggledevtools'
+              },
+          ]
+        },
+        {
+          role: 'window',
+          submenu: [
+            {
+              role: 'minimize'
+            },
+            {
+              role: 'close'
+            }
+          ]
+        },
+        {
+          role: 'help',
+          submenu: [
+            {
+                label: 'Donate us',
+                click () {
+                    shell.openExternal('https://www.coinpayments.net/index.php?cmd=_donate&reset=1&merchant=d88653d' + 
+                    'eee05911e2438e35ec41c865e&item_name=Give%20some%20love%20to%20Pendulums%20project&currency=USD&a' + 
+                    'mountf=10.00000000&allow_amount=1&want_shipping=0&allow_extra=1&cstyle=grid2');
+                }
+            },
+            {
+                type: 'separator'
+            },
+            {
+                label: 'Report an Issues',
+                click () {
+                  shell.openExternal('https://github.com/Swing-team/pendulums-web-client/issues')
+                }
+              },
+          ]
+        }
+      ]
+    
+    if (process.platform === 'darwin') {
+        template.unshift({
+            label: 'Pendulums',
+            submenu: [
+                {
+                    role: 'about'
+                },
+                {
+                    type: 'separator'
+                },
+                {
+                    type: 'separator'
+                },
+                {
+                    role: 'hide'
+                },
+                {
+                    role: 'hideothers'
+                },
+                {
+                    role: 'unhide'
+                },
+                {
+                    type: 'separator'
+                },
+                {
+                    role: 'quit'
+                }
+            ]
+        });
+
+        // template[1].submenu.push(
+        //     {
+        //         type: 'separator'
+        //     },
+        //     {
+        //         label: 'Speech',
+        //         submenu: [
+        //             {
+        //                 role: 'startspeaking'
+        //             },
+        //             {
+        //                 role: 'stopspeaking'
+        //             }
+        //         ]
+        //     }
+        // );
+
+        template[3].submenu = [
+            {
+                role: 'close'
+            },
+            {
+                role: 'minimize'
+            },
+            {
+                type: 'separator'
+            },
+            {
+                role: 'front'
+            }
+        ]
+    } else {
+        template.unshift({
+            label: 'File',
+            submenu: [{
+                role: 'quit'
+            }]
+        })
+    }
+
+    const menu = Menu.buildFromTemplate(template)
+    Menu.setApplicationMenu(menu)
+};
+
 ipcMain.on('tray-close-app', () => {
     app.quit();
 });
@@ -173,6 +344,7 @@ ipcMain.on('tray-rename-activity', (event, message) => {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', () => {
+    setupApplicationMenu();
     const expressApp = express();
     expressApp.use('/', express.static(path.join(__dirname, '/../app/')));
     expressApp.listen(5000, () => {
