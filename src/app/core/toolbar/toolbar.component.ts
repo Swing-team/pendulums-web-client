@@ -194,7 +194,7 @@ export class ToolbarComponent implements OnInit, OnDestroy  {
   }
 
   startActivity() {
-    if (this.selectedProject.id) {
+    if (this.selectedProject && this.selectedProject.id) {
       if (!this.taskName) {
         this.taskName = 'Untitled Activity';
       }
