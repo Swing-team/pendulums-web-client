@@ -194,7 +194,6 @@ export class StopStartActivityService {
     // store all divided activities
     dividedActivitiesResult.map((item) => {
       this.manageProjectRecentActivitiesInState(item, project);
-      this.store.dispatch(this.projectsActions.updateProjectActivities(item.project, item));
     });
   }
 
