@@ -35,7 +35,7 @@ if (process.platform === 'win32') {
 const createWindow = () => {
     // Create the browser window.
     win = new BrowserWindow({
-        width: 770,
+        width: 920,
         height: 630,
         center: true,
         minWidth: 770,
