@@ -65,38 +65,66 @@ const createWindow = () => {
 
 const createTrayWindow = () => {
   this.tray = new Tray(trayIconPath);
-  this.trayWindow = new BrowserWindow({
-    width: 300,
-    height: 140,
-    show: false,
-    frame: false,
-    fullscreenable: false,
-    minimizable: false,
-    resizable: false,
-    movable: false,
-  });
+  if (process.platform !== 'linux') {
+    this.trayWindow = new BrowserWindow({
+        width: 300,
+        height: 140,
+        show: false,
+        frame: false,
+        fullscreenable: false,
+        minimizable: false,
+        resizable: false,
+        movable: false,
+      });
+    
+      const positioner = new Positioner(this.trayWindow);
+      const position = positioner.calculate('trayCenter', this.tray.getBounds());
+    
+      this.trayWindow.loadURL(url.format({
+        pathname: path.join(__dirname, '../tray/tray.html'),
+        protocol: 'file:',
+        slashes: true
+      }));
+    
+      // this.trayWindow.webContents.openDevTools();
+    
+    
+      this.trayWindow.on('blur', () => {
+        toggleTrayWindow();
+      });
+    
+      this.trayWindow.setPosition(position.x, position.y, true);
 
-  const positioner = new Positioner(this.trayWindow);
-  const position = positioner.calculate('trayCenter', this.tray.getBounds());
-
-  this.trayWindow.loadURL(url.format({
-    pathname: path.join(__dirname, '../tray/tray.html'),
-    protocol: 'file:',
-    slashes: true
-  }));
-
-  // this.trayWindow.webContents.openDevTools();
-
-
-  this.trayWindow.on('blur', () => {
-    toggleTrayWindow();
-  });
-
-  this.trayWindow.setPosition(position.x, position.y, true);
-
-  this.tray.on('click', () => {
-    toggleTrayWindow();
-  });
+      this.tray.on('click', () => {
+        toggleTrayWindow();
+      });
+    
+  } else {
+    const trayMenuTemplate = [
+        {
+            label: 'Open App',
+            click: function () {
+              openApp();
+            }
+          },
+        
+          {
+            label: 'Open web',
+            click: function () {
+              openWeb();
+            }
+          },
+        
+          {
+            label: 'Quit',
+            click: function () {
+              quitApp();
+            }
+          }
+    ];
+    const menu = Menu.buildFromTemplate(trayMenuTemplate);
+    this.tray.setContextMenu(menu);
+  }
 };
 
 const toggleTrayWindow = () => {
@@ -279,51 +307,69 @@ const setupApplicationMenu = () => {
     Menu.setApplicationMenu(menu)
 };
 
-ipcMain.on('tray-close-app', () => {
-    app.quit();
-});
-
-ipcMain.on('tray-open-website', () => {
+const openWeb = () => {
     shell.openExternal('https://app.pendulums.io');
-});
+};
 
-ipcMain.on('tray-open-app', () => {
+const openApp = () => {
     win.show();
-});
+};
 
-// ipcMain.on('current_activity_changed', (event, arg) => {
-//     communicateWithTray('current_activity_changed', arg);
-// });
-// ipcMain.on('user_logged_in', (event, arg) => {
-//     communicateWithTray('user_logged_in', arg);
-// });
+const quitApp = () => {
+    app.quit();
+};
 
-ipcMain.on('win-projects-ready', (event, arg) => {
-  this.trayWindow.webContents.send('tray-projects-ready', arg);
-});
+if (process.platform !== 'linux') {
+    ipcMain.on('tray-close-app', () => {
+        quitApp();
+    });
+    
+    ipcMain.on('tray-open-website', () => {
+        openWeb();
+    });
+    
+    ipcMain.on('tray-open-app', () => {
+        openApp();
+    });
+    
+    // ipcMain.on('current_activity_changed', (event, arg) => {
+    //     communicateWithTray('current_activity_changed', arg);
+    // });
+    // ipcMain.on('user_logged_in', (event, arg) => {
+    //     communicateWithTray('user_logged_in', arg);
+    // });
+    
+    ipcMain.on('win-projects-ready', (event, arg) => {
+      this.trayWindow.webContents.send('tray-projects-ready', arg);
+    });
+    
+    ipcMain.on('win-selected-project-ready', (event, arg) => {
+      this.trayWindow.webContents.send('tray-selected-project-ready', arg);
+    });
+    
+    ipcMain.on('tray-project-selected', (event, message) => {
+      win.webContents.send('win-project-selected', message);
+    });
+    
+    ipcMain.on('win-user-ready', (event, arg) => {
+      this.trayWindow.webContents.send('tray-user-ready', arg);
+    });
 
-ipcMain.on('win-selected-project-ready', (event, arg) => {
-  this.trayWindow.webContents.send('tray-selected-project-ready', arg);
-});
+    ipcMain.on('tray-start-or-stop', (event, message) => {
+        if (!message.activity) {
+            // User stopped current activity
+            this.tray.setImage(activeTrayIconPath);
+        } else {
+            // User started a new activity
+            this.tray.setImage(activeTrayIconPath);
+        }
+        win.webContents.send('win-start-or-stop', message);
+    });
 
-ipcMain.on('tray-project-selected', (event, message) => {
-  win.webContents.send('win-project-selected', message);
-});
-
-ipcMain.on('win-user-ready', (event, arg) => {
-  this.trayWindow.webContents.send('tray-user-ready', arg);
-});
-
-ipcMain.on('tray-start-or-stop', (event, message) => {
-    if (!message.activity) {
-        // User stopped current activity
-        this.tray.setImage(activeTrayIconPath);
-    } else {
-        // User started a new activity
-        this.tray.setImage(activeTrayIconPath);
-    }
-    win.webContents.send('win-start-or-stop', message);
-});
+    ipcMain.on('tray-rename-activity', (event, message) => {
+        win.webContents.send('win-rename-activity', message);
+      });
+}
 
 ipcMain.on('win-currentActivity-ready', (event, message) => {
     if (message.startedAt) {
@@ -333,11 +379,9 @@ ipcMain.on('win-currentActivity-ready', (event, message) => {
         // User doesn't have current activity
         this.tray.setImage(trayIconPath);
     }
-    this.trayWindow.webContents.send('tray-currentActivity-ready', message);
-});
-
-ipcMain.on('tray-rename-activity', (event, message) => {
-  win.webContents.send('win-rename-activity', message);
+    if (process.platform !== 'linux') {
+        this.trayWindow.webContents.send('tray-currentActivity-ready', message);
+    }
 });
 
 // This method will be called when Electron has finished

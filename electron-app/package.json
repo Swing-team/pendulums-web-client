@@ -2,12 +2,14 @@
   "name": "Pendulums",
   "main": "src/main.js",
   "version": "0.3.3",
-  "description": "Pendulums desktop application",
+  "description": "Manage and track your time more efficiently using a modern time tracking tool. Pendulums is a free time tracking tool which helps you to manage your time in a better manner with an easy to use interface and useful statistics.",
   "author": {
     "name": "Swing Team",
     "email": "app.pendulum@egmail.com"
   },
+  "license": "GPL-3.0-or-later",
   "homepage": "https://pendulums.io",
+  "repository": "https://github.com/Swing-team/pendulums-web-client",
   "build": {
     "appId": "client.pendulums.io",
     "productName": "Pendulums",
@@ -43,7 +45,9 @@
     },
     "linux": {
       "target": [
-        "deb"
+        "deb",
+        "snap",
+        "appImage"
       ],
       "category": "Utility, Productivity",
       "icon": "./build/icon.icns"
