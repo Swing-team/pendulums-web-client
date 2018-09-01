@@ -96,10 +96,10 @@
               <div>
                 <input type="checkbox" id="restTimeCheckBox" (click)="showTimeComboBox()">
                  Recive notification for rest after a while with current activity to rest<br>
-                  <select *ngIf="isTimeComboBoxEnabled">
-                    <option id="restTime1" value="50 minutes works - 15 minutes rest">50 minutes works - 15 minutes rest</option>
-                    <option id="restTime2" value="30 minutes works - 10 minutes rest">30 minutes works - 10 minutes rest</option>
-                    <option id="restTime3" value="25 minutes works - 7 minutes rest">25 minutes works - 7 minutes rest</option>
+                  <select id="restTimeSelector" *ngIf="isTimeComboBoxEnabled">
+                    <option id="restTime1" value="timeSet1">50 minutes works - 15 minutes rest</option>
+                    <option id="restTime2" value="timeSet2">30 minutes works - 10 minutes rest</option>
+                    <option id="restTime3" value="timeSet3">25 minutes works - 7 minutes rest</option>
                   </select>
               </div>
             </div>

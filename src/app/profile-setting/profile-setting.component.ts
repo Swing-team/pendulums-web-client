@@ -152,8 +152,39 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
 
   updateSettings() {
     const isReciveForgottenActivityEmailChecked = (<HTMLInputElement>document.getElementById('emailCheckBox')).checked;
+    const isRelaxtionTimeChecked = (<HTMLInputElement>document.getElementById('restTimeCheckBox')).checked;
 
-    const settings = { reciveForgottenActivityEmail: isReciveForgottenActivityEmailChecked };
+    let workTimeSeleced = 0;
+    let restTimeSelected = 0;
+    if (isRelaxtionTimeChecked) {
+      switch ((<HTMLInputElement>document.getElementById('restTimeSelector')).value) {
+        case 'timeSet1':
+          workTimeSeleced = (50 * 60 * 1000);
+          restTimeSelected = (15 * 60 * 1000);
+          break;
+        case 'timeSet2':
+          workTimeSeleced = (30 * 60 * 1000);
+          restTimeSelected = (10 * 60 * 1000);
+          break;
+        case 'timeSet3':
+          workTimeSeleced = (25 * 60 * 1000);
+          restTimeSelected = (7 * 60 * 1000);
+          break;
+        default:
+          workTimeSeleced = 0;
+          restTimeSelected = 0;
+          break;
+      }
+    }
+
+    const settings = {
+      reciveForgottenActivityEmail: isReciveForgottenActivityEmailChecked,
+      relaxtionTime: {
+        isEnabled: isRelaxtionTimeChecked,
+        workTime: workTimeSeleced,
+        restTime: restTimeSelected
+      }
+    };
     this.submitted = true;
     this.userService.updateSettings(settings).then(() => {
       this.submitted = false;
