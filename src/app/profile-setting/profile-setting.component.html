@@ -80,4 +80,27 @@
       </div>
     </div>
   </div>
+  <div class="columns is-multiline is-centered">
+    <div class="column is-8-widescreen is-12-desktop is-12-tablet">
+      <div class="box">
+        <div class="is-centered">
+          <div dir="auto">
+            <div class="field">
+              <h3 class="title is-4">
+                Profile Settings
+              </h3>
+            </div>
+            <div class="field has-text-left">
+              <input type="checkbox" id="emailCheckBox">
+               Recive email after 15 minutes while have current activity and tab close. <br>
+            </div>
+            <div class="field">
+                <button class="button is-fullwidth ps-profile-pass-button"
+                [disabled]="submitted || !netConnected" (click)="updateSettings($event)">Save Settings</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
