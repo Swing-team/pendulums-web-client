@@ -32,7 +32,6 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
   emailHash: any;
   userNameEdited: boolean;
   netConnected: boolean;
-  userSettings: any;
   editButtonDisabled = false;
   private status: Observable<any>;
   private subscriptions: Array<Subscription> = [];
@@ -46,7 +45,6 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
                private modalService: ModalService) {
     this.subscriptions.push(store.select('user').subscribe((user: User) => {
       this.user = user;
-      this.userSettings = this.user.settings;
       this.userEdit = _.cloneDeep(user);
       if (user.email) {
         this.emailHash = Md5.hashStr(user.email);
@@ -63,6 +61,15 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
       }
       if (state.netStatus) {
         this.netConnected = true;
+      }
+    }));
+
+    this.subscriptions.push(this.store.select('user').subscribe((user: User) => {
+      const userSettings = (user.settings as any);
+      if (userSettings.reciveForgottenActivityEmail) {
+        (<HTMLInputElement>document.getElementById('emailCheckBox')).checked = true;
+      } else {
+        (<HTMLInputElement>document.getElementById('emailCheckBox')).checked = false;
       }
     }));
   }
