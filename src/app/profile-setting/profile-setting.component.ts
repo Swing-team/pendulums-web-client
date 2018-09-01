@@ -31,6 +31,7 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
   userEdit: User;
   emailHash: any;
   userNameEdited: boolean;
+  isTimeComboBoxEnabled: boolean;
   netConnected: boolean;
   editButtonDisabled = false;
   private status: Observable<any>;
@@ -152,9 +153,9 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
   updateSettings() {
     const isReciveForgottenActivityEmailChecked = (<HTMLInputElement>document.getElementById('emailCheckBox')).checked;
 
-    const reciveForgottenActivityEmail = { reciveForgottenActivityEmail: isReciveForgottenActivityEmailChecked };
+    const settings = { reciveForgottenActivityEmail: isReciveForgottenActivityEmailChecked };
     this.submitted = true;
-    this.userService.updateSettings(reciveForgottenActivityEmail).then(() => {
+    this.userService.updateSettings(settings).then(() => {
       this.submitted = false;
       this.showError('Setting Updated!' );
     }).catch(error => {
@@ -162,6 +163,15 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
       console.log('error is: ', error);
       this.showError('Server communication error');
     });
+  }
+
+  showTimeComboBox() {
+    const isRelaxtionTimeChecked = (<HTMLInputElement>document.getElementById('restTimeCheckBox')).checked;
+    if (isRelaxtionTimeChecked) {
+      this.isTimeComboBoxEnabled = true;
+    } else {
+      this.isTimeComboBoxEnabled = false;
+    }
   }
 
   validationPassword(User): boolean {
