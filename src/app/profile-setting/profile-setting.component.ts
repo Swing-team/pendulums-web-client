@@ -32,6 +32,7 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
   emailHash: any;
   userNameEdited: boolean;
   netConnected: boolean;
+  userSettings: any;
   editButtonDisabled = false;
   private status: Observable<any>;
   private subscriptions: Array<Subscription> = [];
@@ -45,6 +46,7 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
                private modalService: ModalService) {
     this.subscriptions.push(store.select('user').subscribe((user: User) => {
       this.user = user;
+      this.userSettings = this.user.settings;
       this.userEdit = _.cloneDeep(user);
       if (user.email) {
         this.emailHash = Md5.hashStr(user.email);
@@ -139,6 +141,21 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
       this.showError('This feature is not available in offline mode');
     }
   };
+
+  updateSettings(e: any) {
+    const isChecked = (<HTMLInputElement>document.getElementById('emailCheckBox')).checked;
+
+    const reciveForgottenActivityEmail = { reciveForgottenActivityEmail: isChecked };
+    this.submitted = true;
+    this.userService.updateSettings(reciveForgottenActivityEmail).then(() => {
+      this.submitted = false;
+      this.showError('Setting Updated!' );
+    }).catch(error => {
+      this.submitted = false;
+      console.log('error is: ', error);
+      this.showError('Server communication error');
+    });
+  }
 
   validationPassword(User): boolean {
     if (!User.newPassword
