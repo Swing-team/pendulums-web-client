@@ -4,7 +4,6 @@ var ActivityNameLabel = '';
 var taskName = '';
 var timeDuration = 0;
 var currentActivityCopy = {};
-var currentProject = {};
 
 document.addEventListener('DOMContentLoaded', function() {
   init();
@@ -43,7 +42,7 @@ function nameActivity() {
   ipcRenderer.send('tray-rename-activity',
     {
       taskName: taskName,
-      project : projects[selectedProjectIndex],
+      project : currentActivityCopy.project,
     });
 }
 
@@ -53,6 +52,7 @@ function timer() {
     let now = Date.now();
     let duration = now - startedAt;
     timeDuration = getTime(duration);
+    ipcRenderer.send('timer-changed', timeDuration);
     u('#timeValue').html(timeDuration);
   } else {
     timeDuration = '0';

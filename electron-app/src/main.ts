@@ -47,11 +47,18 @@ const trayMenuTemplate: MenuItemConstructorOptions[] = [
     {
         label: 'Stop',
         click: () => {
-            trayMenu.items[0].visible = false;
-            this.tray.setContextMenu(trayMenu)
             stopActivity();
             
         },
+        id: 'stop',
+        visible: false
+    },
+    {
+        label: 'Rename activity',
+        click: () => {
+            renameActivity();
+        },
+        id: 'rename',
         visible: false
     },
     {
@@ -60,6 +67,7 @@ const trayMenuTemplate: MenuItemConstructorOptions[] = [
     {
         label: 'Start activity',
         submenu: [],
+        id: 'start',
         visible: true,
     },
     {
@@ -129,7 +137,7 @@ const createTrayWindow = () => {
     this.trayWindow = new BrowserWindow({
         width: 300,
         height: 140,
-        show: true,
+        show: false,
         frame: false,
         fullscreenable: false,
         minimizable: false,
@@ -145,10 +153,9 @@ const createTrayWindow = () => {
 
     this.trayWindow.webContents.openDevTools();
 
-
-    // this.trayWindow.on('blur', () => {
-    //     this.trayWindow.hide();
-    // });
+    this.trayWindow.on('blur', () => {
+        this.trayWindow.hide();
+    });
 
     this.trayWindow.setPosition(trayXPosition.x, trayXPosition.y, true);
 
@@ -350,6 +357,8 @@ const startActivity = (id) => {
 };
 
 const stopActivity = () => {
+    trayMenu.getMenuItemById('stop').visible = false;
+    this.tray.setContextMenu(trayMenu)
     const message = {
         activity: null,
         project: projects[currentActivity.project]
@@ -357,6 +366,9 @@ const stopActivity = () => {
     win.webContents.send('win-start-or-stop', message);
 };
 
+const renameActivity = () => {
+    this.trayWindow.show();
+};
 ipcMain.on('tray-close-app', () => {
     quitApp();
 });
@@ -370,15 +382,12 @@ ipcMain.on('tray-open-app', () => {
 });
 
 ipcMain.on('win-projects-ready', (event, arg) => {
-    trayMenu.items[2]['submenu'].clear();
+    trayMenu.getMenuItemById('start')['submenu'].clear();
     for (const project of arg) {
         projects[project.id] = project;
-        trayMenu.items[2]['submenu'].append(new MenuItem({
+        trayMenu.getMenuItemById('start')['submenu'].append(new MenuItem({
             label: project.name,
             click: (menuItem) => {
-                menuItem.enabled = false;
-                this.tray.setContextMenu(trayMenu);
-                this.trayWindow.show();
                 startActivity(menuItem['id']);
             },
             id: project.id,
@@ -403,20 +412,28 @@ ipcMain.on('tray-start-or-stop', (event, message) => {
         this.tray.setImage(trayIconPath);
     } else {
         // User started a new activity
-        trayMenu.items[0].visible = true;
+        trayMenu.getMenuItemById('stop').visible = true;
         this.tray.setImage(activeTrayIconPath);
     }
     win.webContents.send('win-start-or-stop', message);
 });
 
 ipcMain.on('tray-rename-activity', (event, message) => {
-    win.webContents.send('win-rename-activity', message);
+    win.webContents.send('win-rename-activity', {
+        taskName: message.taskName,
+        project: projects[message.project]
+    });
 });
 
 ipcMain.on('win-currentActivity-ready', (event, message) => {
     if (message.startedAt) {
         // User has current activity
-        trayMenu.items[0].visible = true;
+        trayMenu.getMenuItemById('stop').visible = true;
+        trayMenu.getMenuItemById('rename').visible = true;
+        console.log('user has current activity');
+        if (trayMenu.getMenuItemById('start')['submenu'].items.length !== 0) {
+            trayMenu.getMenuItemById('start')['submenu'].getMenuItemById(message.project).enabled = false;
+        }
         this.tray.setContextMenu(trayMenu)
         this.tray.setImage(activeTrayIconPath);
     } else {
@@ -424,26 +441,21 @@ ipcMain.on('win-currentActivity-ready', (event, message) => {
         if (!message.project && currentActivity.project) {
             trayMenu.getMenuItemById(currentActivity.project).enabled = true;
         }
-        trayMenu.items[0].visible = false;
+        trayMenu.getMenuItemById('stop').visible = false;
+        trayMenu.getMenuItemById('rename').visible = false;
+        if (message.project) {
+            trayMenu.getMenuItemById('start')['submenu'].getMenuItemById(message.project).enabled = true;
+        } else if (currentActivity.project) {
+            trayMenu.getMenuItemById('start')['submenu'].getMenuItemById(currentActivity.project).enabled = true;
+        }
         this.tray.setContextMenu(trayMenu)
         this.tray.setImage(trayIconPath);
     }
-    currentActivity = {
-        createdAt: null,
-        id: null,
-        name: null,
-        project: null,
-        startedAt: null,
-        stoppedAt: null,
-        updatedAt: null,
-        user: null
-    };
     currentActivity = message;
-    let data = {
+    this.trayWindow.webContents.send('tray-currentActivity-ready', {
         currentActivity,
         projectName : currentActivity.project ? projects[currentActivity.project] : ''
-    }
-    this.trayWindow.webContents.send('tray-currentActivity-ready', data);
+    });
 });
 
 // This method will be called when Electron has finished
