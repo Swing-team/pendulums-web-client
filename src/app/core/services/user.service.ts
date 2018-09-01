@@ -8,10 +8,13 @@ import {APP_CONFIG, AppConfig} from '../../app.config';
 
 @Injectable()
 export class UserService {
+  private options;
   constructor(
     private http: HttpClient,
     @Inject(APP_CONFIG) private config: AppConfig
-  ) { }
+  ) {
+    this.options = {...this.config.httpOptions, responseType: 'text'};
+  }
 
   getSummary(): Promise<any> {
     return this.http
@@ -26,6 +29,15 @@ export class UserService {
       .put(this.config.apiEndpoint + '/user' , user, this.config.httpOptions)
       .toPromise()
       .then(response => (response as any).user as User)
+      .catch(this.handleError);
+  }
+
+  updateSettings(settings): Promise<any> {
+    console.log('this is the settings: ', settings)
+    return this.http
+      .post(this.config.apiEndpoint + '/user/settings', JSON.stringify(settings), this.options)
+      .toPromise()
+      .then(() => {})
       .catch(this.handleError);
   }
 
