@@ -150,9 +150,9 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
   };
 
   updateSettings() {
-    const isChecked = (<HTMLInputElement>document.getElementById('emailCheckBox')).checked;
+    const isReciveForgottenActivityEmailChecked = (<HTMLInputElement>document.getElementById('emailCheckBox')).checked;
 
-    const reciveForgottenActivityEmail = { reciveForgottenActivityEmail: isChecked };
+    const reciveForgottenActivityEmail = { reciveForgottenActivityEmail: isReciveForgottenActivityEmailChecked };
     this.submitted = true;
     this.userService.updateSettings(reciveForgottenActivityEmail).then(() => {
       this.submitted = false;
