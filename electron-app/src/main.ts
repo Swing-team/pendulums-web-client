@@ -354,6 +354,7 @@ const startActivity = (id) => {
         project: projects[id]
     }
     win.webContents.send('win-start-or-stop', message);
+    this.trayWindow.show();
 };
 
 const stopActivity = () => {
