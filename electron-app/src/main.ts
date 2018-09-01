@@ -5,14 +5,13 @@ import {
     shell,
     Menu,
     ipcMain,
-    protocol,
-    MenuItemConstructorOptions
+    screen,
+    MenuItemConstructorOptions,
+    MenuItem
 }  from 'electron';
 import * as express from 'express';
 import * as path from 'path';
 import * as url from 'url';
-import * as fs from 'fs';
-import * as Positioner from 'electron-positioner';
 
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -24,6 +23,17 @@ let trayWindow;
 let trayVisibility = false;
 let trayIconPath;
 let activeTrayIconPath;
+let currentActivity = {
+    createdAt: null,
+    id: null,
+    name: null,
+    project: null,
+    startedAt: null,
+    stoppedAt: null,
+    updatedAt: null,
+    user: null
+};
+let projects = {};
 
 if (process.platform === 'win32') {
     trayIconPath = path.join(__dirname, '../build/tray.ico');
@@ -32,6 +42,51 @@ if (process.platform === 'win32') {
     trayIconPath = path.join(__dirname, '../build/tray.png');
     activeTrayIconPath = path.join(__dirname, '../build/tray-yello.png');
 }
+
+const trayMenuTemplate: MenuItemConstructorOptions[] = [
+    {
+        label: 'Stop',
+        click: () => {
+            trayMenu.items[0].visible = false;
+            this.tray.setContextMenu(trayMenu)
+            stopActivity();
+            
+        },
+        visible: false
+    },
+    {
+        type: 'separator'
+    },
+    {
+        label: 'Start activity',
+        submenu: [],
+        visible: true,
+    },
+    {
+        type: 'separator'
+    },
+    {
+        label: 'Open App',
+        click: function () {
+            openApp();
+        }
+    },
+    {
+        label: 'Open web',
+        click: function () {
+            openWeb();
+        }
+    },
+
+    {
+        label: 'Quit',
+        click: function () {
+            quitApp();
+        }
+    }
+];
+
+const trayMenu = Menu.buildFromTemplate(trayMenuTemplate);
 
 const createWindow = () => {
     // Create the browser window.
@@ -64,77 +119,40 @@ const createWindow = () => {
 };
 
 const createTrayWindow = () => {
-  this.tray = new Tray(trayIconPath);
-  if (process.platform !== 'linux') {
+    this.tray = new Tray(trayIconPath);
+    const screenBounds = screen.getPrimaryDisplay().bounds;
+    // set the x position to center of the screen, 150 = trayWindow.width / 2
+    const trayXPosition = {
+        x : screenBounds.width / 2 - 150,
+        y: 0
+    }
     this.trayWindow = new BrowserWindow({
         width: 300,
         height: 140,
-        show: false,
+        show: true,
         frame: false,
         fullscreenable: false,
         minimizable: false,
         resizable: false,
         movable: false,
-      });
-    
-      const positioner = new Positioner(this.trayWindow);
-      const position = positioner.calculate('trayCenter', this.tray.getBounds());
-    
-      this.trayWindow.loadURL(url.format({
+    });
+
+    this.trayWindow.loadURL(url.format({
         pathname: path.join(__dirname, '../tray/tray.html'),
         protocol: 'file:',
         slashes: true
-      }));
-    
-      // this.trayWindow.webContents.openDevTools();
-    
-    
-      this.trayWindow.on('blur', () => {
-        toggleTrayWindow();
-      });
-    
-      this.trayWindow.setPosition(position.x, position.y, true);
+    }));
 
-      this.tray.on('click', () => {
-        toggleTrayWindow();
-      });
-    
-  } else {
-    const trayMenuTemplate = [
-        {
-            label: 'Open App',
-            click: function () {
-              openApp();
-            }
-          },
-        
-          {
-            label: 'Open web',
-            click: function () {
-              openWeb();
-            }
-          },
-        
-          {
-            label: 'Quit',
-            click: function () {
-              quitApp();
-            }
-          }
-    ];
-    const menu = Menu.buildFromTemplate(trayMenuTemplate);
-    this.tray.setContextMenu(menu);
-  }
-};
+    this.trayWindow.webContents.openDevTools();
 
-const toggleTrayWindow = () => {
-  if (this.trayVisibility) {
-    this.trayWindow.hide();
-    this.trayVisibility = false;
-  } else {
-    this.trayWindow.show();
-    this.trayVisibility = true;
-  }
+
+    // this.trayWindow.on('blur', () => {
+    //     this.trayWindow.hide();
+    // });
+
+    this.trayWindow.setPosition(trayXPosition.x, trayXPosition.y, true);
+
+    this.tray.setContextMenu(trayMenu);
 };
 
 const setupApplicationMenu = () => {
@@ -319,69 +337,113 @@ const quitApp = () => {
     app.quit();
 };
 
-if (process.platform !== 'linux') {
-    ipcMain.on('tray-close-app', () => {
-        quitApp();
-    });
-    
-    ipcMain.on('tray-open-website', () => {
-        openWeb();
-    });
-    
-    ipcMain.on('tray-open-app', () => {
-        openApp();
-    });
-    
-    // ipcMain.on('current_activity_changed', (event, arg) => {
-    //     communicateWithTray('current_activity_changed', arg);
-    // });
-    // ipcMain.on('user_logged_in', (event, arg) => {
-    //     communicateWithTray('user_logged_in', arg);
-    // });
-    
-    ipcMain.on('win-projects-ready', (event, arg) => {
-      this.trayWindow.webContents.send('tray-projects-ready', arg);
-    });
-    
-    ipcMain.on('win-selected-project-ready', (event, arg) => {
-      this.trayWindow.webContents.send('tray-selected-project-ready', arg);
-    });
-    
-    ipcMain.on('tray-project-selected', (event, message) => {
-      win.webContents.send('win-project-selected', message);
-    });
-    
-    ipcMain.on('win-user-ready', (event, arg) => {
-      this.trayWindow.webContents.send('tray-user-ready', arg);
-    });
+const startActivity = (id) => {
+    const message = {
+        activity: {
+            name: projects[id].recentActivityName ? projects[id].recentActivityName : 'Untitled Activity',
+            project: id,
+            startedAt: new Date().getTime().toString()
+        },
+        project: projects[id]
+    }
+    win.webContents.send('win-start-or-stop', message);
+};
 
-    ipcMain.on('tray-start-or-stop', (event, message) => {
-        if (!message.activity) {
-            // User stopped current activity
-            this.tray.setImage(activeTrayIconPath);
-        } else {
-            // User started a new activity
-            this.tray.setImage(activeTrayIconPath);
-        }
-        win.webContents.send('win-start-or-stop', message);
-    });
+const stopActivity = () => {
+    const message = {
+        activity: null,
+        project: projects[currentActivity.project]
+    }
+    win.webContents.send('win-start-or-stop', message);
+};
 
-    ipcMain.on('tray-rename-activity', (event, message) => {
-        win.webContents.send('win-rename-activity', message);
-      });
-}
+ipcMain.on('tray-close-app', () => {
+    quitApp();
+});
+
+ipcMain.on('tray-open-website', () => {
+    openWeb();
+});
+
+ipcMain.on('tray-open-app', () => {
+    openApp();
+});
+
+ipcMain.on('win-projects-ready', (event, arg) => {
+    trayMenu.items[2]['submenu'].clear();
+    for (const project of arg) {
+        projects[project.id] = project;
+        trayMenu.items[2]['submenu'].append(new MenuItem({
+            label: project.name,
+            click: (menuItem) => {
+                menuItem.enabled = false;
+                this.tray.setContextMenu(trayMenu);
+                this.trayWindow.show();
+                startActivity(menuItem['id']);
+            },
+            id: project.id,
+            enabled: !(currentActivity.project && currentActivity.project === project.id)
+        }));
+    }
+    this.tray.setContextMenu(trayMenu);
+    this.trayWindow.webContents.send('tray-projects-ready', arg);
+});
+
+ipcMain.on('win-selected-project-ready', (event, arg) => {
+    this.trayWindow.webContents.send('tray-selected-project-ready', arg);
+});
+
+ipcMain.on('tray-project-selected', (event, message) => {
+    win.webContents.send('win-project-selected', message);
+});
+
+ipcMain.on('tray-start-or-stop', (event, message) => {
+    if (!message.activity) {
+        // User stopped current activity
+        this.tray.setImage(trayIconPath);
+    } else {
+        // User started a new activity
+        trayMenu.items[0].visible = true;
+        this.tray.setImage(activeTrayIconPath);
+    }
+    win.webContents.send('win-start-or-stop', message);
+});
+
+ipcMain.on('tray-rename-activity', (event, message) => {
+    win.webContents.send('win-rename-activity', message);
+});
 
 ipcMain.on('win-currentActivity-ready', (event, message) => {
     if (message.startedAt) {
         // User has current activity
+        trayMenu.items[0].visible = true;
+        this.tray.setContextMenu(trayMenu)
         this.tray.setImage(activeTrayIconPath);
     } else {
         // User doesn't have current activity
+        if (!message.project && currentActivity.project) {
+            trayMenu.getMenuItemById(currentActivity.project).enabled = true;
+        }
+        trayMenu.items[0].visible = false;
+        this.tray.setContextMenu(trayMenu)
         this.tray.setImage(trayIconPath);
     }
-    if (process.platform !== 'linux') {
-        this.trayWindow.webContents.send('tray-currentActivity-ready', message);
+    currentActivity = {
+        createdAt: null,
+        id: null,
+        name: null,
+        project: null,
+        startedAt: null,
+        stoppedAt: null,
+        updatedAt: null,
+        user: null
+    };
+    currentActivity = message;
+    let data = {
+        currentActivity,
+        projectName : currentActivity.project ? projects[currentActivity.project] : ''
     }
+    this.trayWindow.webContents.send('tray-currentActivity-ready', data);
 });
 
 // This method will be called when Electron has finished

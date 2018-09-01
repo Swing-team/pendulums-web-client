@@ -1,77 +1,23 @@
-const { remote } = require('electron');
-const { Menu } = remote;
 const ipcRenderer = require('electron').ipcRenderer;
 
-var projects = [];
-var user = {};
-var currentActivityCopy = {};
-var selectedProjectIndex = 0;
 var ActivityNameLabel = '';
 var taskName = '';
 var timeDuration = 0;
-var started = false;
-
-// top menu
-let menu = new Menu();
-const trayMenuTemplate = [
-  {
-    label: 'Open App',
-    click: function () {
-      openApp();
-    }
-  },
-
-  {
-    label: 'Open web',
-    click: function () {
-      ipcRenderer.send('tray-open-website');
-    }
-  },
-
-  {
-    label: 'Quit',
-    click: function () {
-      ipcRenderer.send('tray-close-app');
-    }
-  }
-];
-menu = Menu.buildFromTemplate(trayMenuTemplate);
+var currentActivityCopy = {};
+var currentProject = {};
 
 document.addEventListener('DOMContentLoaded', function() {
   init();
 }, false);
 
-ipcRenderer.on('tray-user-ready', (event, message) => {
-  user = message;
-  if (user.id) {
-    u('#tray').removeClass('ps-hide-item');
-    u('#logInNeeded').addClass('ps-hide-item');
-  } else {
-    u('#logInNeeded').removeClass('ps-hide-item');
-    u('#tray').addClass('ps-hide-item');
-  }
-});
-
-ipcRenderer.on('tray-projects-ready', (event, message) => {
-  projects = message;
-});
-
-ipcRenderer.on('tray-selected-project-ready', (event, message) => {
-  initialSelectedProjectIndex(message);
-});
-
 ipcRenderer.on('tray-currentActivity-ready', (event, message) => {
-  currentActivityCopy = message;
-  if(message.startedAt) {
-    // User has current activity
-    started = true;
-  } else {
-    // User doesn't have current activity
-    started = false;
+  console.log(message)
+  currentActivityCopy = message.currentActivity;
+  currentProject = {
+    name: message.projectName
   }
   initialActivityNameInput();
   initialActivityLabel();
-  toggleStopStartView();
 });
 
 function init() {
@@ -79,104 +25,16 @@ function init() {
 }
 
 function initialActivityLabel() {
-  if( projects[selectedProjectIndex]) {
-    ActivityNameLabel = (currentActivityCopy.name ? currentActivityCopy.name : 'Untitled Activity' )+ ' - ' + projects[selectedProjectIndex].name;
-    u('#activityNameLabel').html(ActivityNameLabel)
+  console.log(currentActivityCopy)
+  if(currentActivityCopy.project) {
+    activityNameLabel = currentActivityCopy.name ? currentActivityCopy.name : 'Untitled Activity';
+    u('#activityNameLabel').html(activityNameLabel)
   }
 }
 
 function initialActivityNameInput() {
   taskName = currentActivityCopy.name;
   document.getElementById('activityNameElm').value = taskName;
-}
-
-function initialSelectedProjectIndex(selectedProjectId) {
-  for (var i = 0; i < projects.length; i++) {
-    if(projects[i].id === selectedProjectId) {
-      selectedProjectIndex = i;
-    }
-  }
-  initialProjects();
-}
-
-function initialProjects() {
-  let tempItem = projects[selectedProjectIndex];
-  projects.splice(selectedProjectIndex, 1);
-  projects.unshift(tempItem);
-  initialSelect();
-}
-
-function initialSelect() {
-  u('#select').empty();
-  var index = -1;
-  var cb = function(project) {
-    if(project) {
-      index++;
-      return "<option value=" + index + ">" + project.name + "</option>"
-    }
-  };
-  u('#select').append(cb, projects);
-
-}
-
-function selectProject() {
-  selectedProjectIndex = document.getElementById("select").value;
-  ipcRenderer.send('tray-project-selected', projects[selectedProjectIndex].id);
-}
-
-function openTopMenu() {
-  menu.popup(remote.getCurrentWindow())
-}
-
-function toggleStopStartView() {
-  if (started) {
-    u('i#stopButton').removeClass("ps-hide-item");
-    u('i#playButton').addClass("ps-hide-item");
-
-    u('#selectContainer').addClass("ps-hide-item");
-    u('#timeSpan').addClass("ps-show-time");
-
-    u('#inputContainer').removeClass("ps-hide-item");
-
-  } else {
-    u('i#stopButton').addClass("ps-hide-item");
-    u('i#playButton').removeClass("ps-hide-item");
-
-    u('#selectContainer').removeClass("ps-hide-item");
-    u('#timeSpan').removeClass("ps-show-time");
-
-    u('#inputContainer').addClass("ps-hide-item");
-  }
-}
-
-function toggleStopStartFunction() {
-  // just for test
-  // u('#loading').addClass("is-loading");
-  // setTimeout(function () {
-  //   u('#loading').removeClass("is-loading");
-  // }, 1500);
-  // end of test
-
-  currentActivityCopy = {
-    name: projects[selectedProjectIndex].recentActivityName ? projects[selectedProjectIndex].recentActivityName: 'Untitled Activity',
-    project: projects[selectedProjectIndex].id,
-    startedAt: new Date().getTime().toString()
-  };
-  if (!started) {
-    // Start an activity
-    ipcRenderer.send('tray-start-or-stop',
-      {
-        activity: currentActivityCopy,
-        project : projects[selectedProjectIndex],
-      });
-  } else {
-    // Stop current activity
-    ipcRenderer.send('tray-start-or-stop',
-      {
-        activity: null,
-        project : projects[selectedProjectIndex],
-      });
-  }
 }
 
 function nameActivity() {
@@ -233,14 +91,8 @@ function  getTime(duration) {
 
   result = tempHours + ':' + tempMinutes + ':' + tempSeconds;
 
-
-
   if (minutes === 0 && hours === 0) {
     result = seconds + ' sec';
   }
   return result;
-}
-
-function  openApp() {
-  ipcRenderer.send('tray-open-app');
 }

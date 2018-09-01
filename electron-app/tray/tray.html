@@ -7,26 +7,9 @@
   </head>
   <body>
   <div class="ps-tray-container">
-    <div class="ps-tray-menu">
-      <div>
-        Pendulums
-      </div>
-      <div class="ps-tray-top-menu-select icon-dot-3" onclick="openTopMenu()">
-      </div>
-    </div>
-    <nav class="ps-nav ps-hide-item" id="tray">
-      <div class="ps-nav-level0">
-        <div class="ps-nav-select-container" id="selectContainer">
-          <select placeholder="Select Project"
-                  id="select"
-                  class="ps-toolbar-select"
-                  onchange="selectProject()">
-            <option>Select Project ...</option>
-          </select>
-        </div>
-      </div>
+    <nav class="ps-nav" id="tray">
       <div class="ps-nav-level1">
-        <div class="nav-item ps-hide-item" id="inputContainer">
+        <div class="nav-item" id="inputContainer">
           <input id="activityNameElm" class="ps-nav-input" placeholder="Task name" type="text"
                  onchange="nameActivity()"/>
           <label class="ps-nav-label" id="activityNameLabel" for="activityNameElm"></label>
@@ -37,27 +20,8 @@
           <span class="ps-time-indicator blink"></span>
           <span class="ps-display-span-time" id="timeValue"></span>
         </div>
-        <div class="ps-toolbar-play">
-          <div onclick="toggleStopStartFunction()">
-            <a class="button ps-toolbar-button" id="loading">
-                <span class="icon">
-                  <i id="stopButton" class="icon-stop ps-hide-item" title="Stop activity"></i>
-                  <i id="playButton" class="icon-play" title="Start activity"></i>
-                </span>
-            </a>
-          </div>
-        </div>
       </div>
     </nav>
-    <div id="logInNeeded" class="ps-log-in-needed">
-      <img class="ps-log-in-logo" src="../app/assets/images/logo-blue.png">
-      <div class="ps-log-in-text">
-        You need to sign in
-      </div>
-      <button class="ps-log-in-button" onclick="openApp()">
-        Open App
-      </button>
-    </div>
   </div>
   </body>
 </html>
