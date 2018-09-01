@@ -9,6 +9,7 @@ export class UserActions {
   static CLEAR_USER = 'CLEAR_USER';
   static UPDATE_USER_NAME = 'UPDATE_USER_NAME';
   static UPDATE_USER_IMAGE = 'UPDATE_USER_IMAGE';
+  static UPDATE_USER_SETTINGS = 'UPDATE_USER_SETTINGS';
 
   loadUser(user: User): ActionWithPayload<User> {
     return {
@@ -28,6 +29,13 @@ export class UserActions {
     return {
       type: UserActions.UPDATE_USER_IMAGE,
       payload: userImage
+    };
+  }
+
+  updateUserSettings(userSettings: object): ActionWithPayload<any> {
+    return {
+      type: UserActions.UPDATE_USER_SETTINGS,
+      payload: userSettings
     };
   }
 

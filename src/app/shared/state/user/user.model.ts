@@ -6,4 +6,5 @@ export interface User {
   name: string;
   profileImage: string;
   pendingInvitations: Array<Project>;
+  settings: object;
 }
