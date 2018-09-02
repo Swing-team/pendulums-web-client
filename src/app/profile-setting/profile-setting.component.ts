@@ -5,7 +5,7 @@ import {
 import { APP_CONFIG }                       from '../app.config';
 import { AuthenticationService }            from '../core/services/authentication.service';
 import { ErrorService }                     from '../core/error/error.service';
-import { User }                             from '../shared/state/user/user.model';
+import { User, Settings }                   from '../shared/state/user/user.model';
 import { Store }                            from '@ngrx/store';
 import { AppState }                         from '../shared/state/appState';
 import { UserActions }                      from '../shared/state/user/user.actions';
@@ -15,7 +15,7 @@ import { ImgCropperComponent }              from './image-cropper/image-cropper.
 import { Md5 }                              from 'ts-md5/dist/md5';
 import { Observable }                       from 'rxjs/Observable';
 import { Subscription }                     from 'rxjs/Subscription';
-
+import { NativeNotificationService }        from '../core/services/native-notification.service';
 
 @Component({
   selector: 'profile-setting',
@@ -31,8 +31,11 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
   userEdit: User;
   emailHash: any;
   userNameEdited: boolean;
-  isTimeComboBoxEnabled: boolean;
   netConnected: boolean;
+  settings: Settings;
+  relaxationTimeSelectorModel: any;
+  workTimeInputModel: string;
+  relaxTimeInputModel: string;
   editButtonDisabled = false;
   private status: Observable<any>;
   private subscriptions: Array<Subscription> = [];
@@ -43,14 +46,8 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
                private store: Store<AppState>,
                private userActions: UserActions,
                private userService: UserService,
-               private modalService: ModalService) {
-    this.subscriptions.push(store.select('user').subscribe((user: User) => {
-      this.user = user;
-      this.userEdit = _.cloneDeep(user);
-      if (user.email) {
-        this.emailHash = Md5.hashStr(user.email);
-      }
-    }));
+               private modalService: ModalService,
+               private nativeNotificationService: NativeNotificationService) {
     this.status = store.select('status');
   }
 
@@ -66,11 +63,25 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
     }));
 
     this.subscriptions.push(this.store.select('user').subscribe((user: User) => {
-      const userSettings = (user.settings as any);
-      if (userSettings.reciveForgottenActivityEmail) {
-        (<HTMLInputElement>document.getElementById('emailCheckBox')).checked = true;
-      } else {
-        (<HTMLInputElement>document.getElementById('emailCheckBox')).checked = false;
+      this.user = user;
+      this.userEdit = _.cloneDeep(user);
+      this.settings = _.cloneDeep(user.settings);
+      if (user.email) {
+        this.emailHash = Md5.hashStr(user.email);
+      }
+
+      if (this.settings.relaxationTime.isEnabled) {
+        const workTime = this.settings.relaxationTime.workTime;
+        const restTime = this.settings.relaxationTime.restTime;
+        if (workTime === 3000000 && restTime === 900000) {
+          this.relaxationTimeSelectorModel = 'pomodoro1';
+        } else if (workTime === 1800000 && restTime === 600000) {
+          this.relaxationTimeSelectorModel = 'pomodoro2';
+        } else if (workTime === 1500000 && restTime === 420000) {
+          this.relaxationTimeSelectorModel = 'pomodoro3';
+        } else {
+          this.relaxationTimeSelectorModel = 'pomodoroCustom';
+        }
       }
     }));
   }
@@ -151,57 +162,51 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
   };
 
   updateSettings() {
-    const isReciveForgottenActivityEmailChecked = (<HTMLInputElement>document.getElementById('emailCheckBox')).checked;
-    const isRelaxtionTimeChecked = (<HTMLInputElement>document.getElementById('restTimeCheckBox')).checked;
-
-    let workTimeSeleced = 0;
-    let restTimeSelected = 0;
-    if (isRelaxtionTimeChecked) {
-      switch ((<HTMLInputElement>document.getElementById('restTimeSelector')).value) {
-        case 'timeSet1':
-          workTimeSeleced = (50 * 60 * 1000);
-          restTimeSelected = (15 * 60 * 1000);
-          break;
-        case 'timeSet2':
-          workTimeSeleced = (30 * 60 * 1000);
-          restTimeSelected = (10 * 60 * 1000);
-          break;
-        case 'timeSet3':
-          workTimeSeleced = (25 * 60 * 1000);
-          restTimeSelected = (7 * 60 * 1000);
-          break;
-        default:
-          workTimeSeleced = 0;
-          restTimeSelected = 0;
-          break;
+    this.submitted = true;
+    if (this.settings.relaxationTime.isEnabled) {
+      this.nativeNotificationService.getPermission();
+    }
+    if (this.relaxationTimeSelectorModel === 'pomodoroCustom') {
+      if (!this.workTimeInputModel || !this.relaxTimeInputModel) {
+        this.settings.relaxationTime.workTime = 0;
+        this.settings.relaxationTime.restTime = 0;
+        this.showError('Please Fill the times in your profle settings');
+        this.submitted = false;
       }
     }
-
-    const settings = {
-      reciveForgottenActivityEmail: isReciveForgottenActivityEmailChecked,
-      relaxtionTime: {
-        isEnabled: isRelaxtionTimeChecked,
-        workTime: workTimeSeleced,
-        restTime: restTimeSelected
-      }
-    };
-    this.submitted = true;
-    this.userService.updateSettings(settings).then(() => {
-      this.submitted = false;
-      this.showError('Setting Updated!' );
-    }).catch(error => {
-      this.submitted = false;
-      console.log('error is: ', error);
-      this.showError('Server communication error');
-    });
+    if (this.submitted) {
+      this.userService.updateSettings(this.settings).then(() => {
+        this.submitted = false;
+        this.showError('Setting Updated!' );
+      }).catch(error => {
+        this.submitted = false;
+        console.log('error is: ', error);
+        this.showError('Server communication error');
+      });
+    }
   }
 
-  showTimeComboBox() {
-    const isRelaxtionTimeChecked = (<HTMLInputElement>document.getElementById('restTimeCheckBox')).checked;
-    if (isRelaxtionTimeChecked) {
-      this.isTimeComboBoxEnabled = true;
-    } else {
-      this.isTimeComboBoxEnabled = false;
+  timeSelectorChange() {
+    if (this.relaxationTimeSelectorModel === 'pomodoro1') {
+      this.workTimeInputModel = '3000000';
+      this.relaxTimeInputModel = '900000';
+      this.settings.relaxationTime.workTime = Number(this.workTimeInputModel);
+      this.settings.relaxationTime.restTime = Number(this.relaxTimeInputModel);
+    } else if (this.relaxationTimeSelectorModel === 'pomodoro2') {
+      this.workTimeInputModel = '1800000';
+      this.relaxTimeInputModel = '600000';
+      this.settings.relaxationTime.workTime = Number(this.workTimeInputModel);
+      this.settings.relaxationTime.restTime = Number(this.relaxTimeInputModel);
+    } else if (this.relaxationTimeSelectorModel === 'pomodoro3') {
+      this.workTimeInputModel = '1500000';
+      this.relaxTimeInputModel = '420000';
+      this.settings.relaxationTime.workTime = Number(this.workTimeInputModel);
+      this.settings.relaxationTime.restTime = Number(this.relaxTimeInputModel);
+    } else if (this.relaxationTimeSelectorModel === 'pomodoroCustom') {
+      this.workTimeInputModel = '';
+      this.relaxTimeInputModel = '';
+      this.settings.relaxationTime.workTime = 0;
+      this.settings.relaxationTime.restTime = 0;
     }
   }
 

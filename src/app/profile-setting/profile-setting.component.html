@@ -94,13 +94,18 @@
               <input id="receiveForgottenActivityEmailCheckBox" type="checkbox" [(ngModel)]="settings.receiveForgottenActivityEmail">
               <label for="receiveForgottenActivityEmailCheckBox">Receive email after 15 minutes while have current activity and tab close</label>
               <div>
-                <input type="checkbox" [(ngModel)]="settings.relaxationTime.isEnabled">
-                Receive notification for rest after a while with current activity to rest
-                <select [(ngModel)]="relaxationTimeSelector" *ngIf="settings.relaxationTime.isEnabled">
-                  <option value="timeSet1">50 minutes works - 15 minutes rest</option>
-                  <option value="timeSet2">30 minutes works - 10 minutes rest</option>
-                  <option value="timeSet3">25 minutes works - 7 minutes rest</option>
+                <input id="relaxationTimeCheckBox" type="checkbox" [(ngModel)]="settings.relaxationTime.isEnabled">
+                <label for="relaxationTimeCheckBox">Receive notification for rest after a while with current activity to rest</label>
+                <select [(ngModel)]="relaxationTimeSelectorModel" *ngIf="settings.relaxationTime.isEnabled" (change)="timeSelectorChange()">
+                  <option value="pomodoro1">Pomodoro time set 1</option>
+                  <option value="pomodoro2">Pomodoro time set 2</option>
+                  <option value="pomodoro3">Pomodoro time set 3</option>
+                  <option value="pomodoroCustom">custom time</option>
                 </select>
+                  <input [(ngModel)]="workTimeInputModel" type="text"
+                    class="input" placeholder="Work time(minutes)">
+                  <input [(ngModel)]="relaxTimeInputModel" type="text"
+                    class="input" placeholder="Relax time(minutes)">
               </div>
             </div>
             <div class="field">
