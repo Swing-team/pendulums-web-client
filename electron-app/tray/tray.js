@@ -39,13 +39,18 @@ function nameActivity() {
     });
 }
 
+function activityNameInputOnKeyUp(e) {
+  if (e.keyCode === 13) {
+    ipcRenderer.send('trray-hide-tray-window')
+  }
+}
+
 function timer() {
   if (currentActivityCopy.startedAt) {
     let startedAt = Number(currentActivityCopy.startedAt);
     let now = Date.now();
     let duration = now - startedAt;
     timeDuration = getTime(duration);
-    ipcRenderer.send('timer-changed', timeDuration);
     u('#timeValue').html(timeDuration);
   } else {
     timeDuration = '0';
