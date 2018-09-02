@@ -19,7 +19,6 @@ function init() {
 }
 
 function initialActivityLabel() {
-  console.log(currentActivityCopy)
   if(currentActivityCopy.project) {
     activityNameLabel = currentActivityCopy.name ? currentActivityCopy.name : 'Untitled Activity';
     u('#activityNameLabel').html(activityNameLabel)
@@ -33,7 +32,6 @@ function initialActivityNameInput() {
 
 function nameActivity() {
   taskName = document.getElementById("activityNameElm").value;
-  console.log('input value:', taskName);
   ipcRenderer.send('tray-rename-activity',
     {
       taskName: taskName,

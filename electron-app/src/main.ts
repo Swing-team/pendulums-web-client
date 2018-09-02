@@ -34,6 +34,7 @@ let currentActivity = {
     user: null
 };
 let projects = {};
+let userLoggedIn = false;
 
 if (process.platform === 'win32') {
     trayIconPath = path.join(__dirname, '../build/tray.ico');
@@ -43,7 +44,7 @@ if (process.platform === 'win32') {
     activeTrayIconPath = path.join(__dirname, '../build/tray-yello.png');
 }
 
-const trayMenuTemplate: MenuItemConstructorOptions[] = [
+const signedInTrayMenuTemplate: MenuItemConstructorOptions[] = [
     {
         label: 'Stop',
         click: () => {
@@ -94,7 +95,35 @@ const trayMenuTemplate: MenuItemConstructorOptions[] = [
     }
 ];
 
-const trayMenu = Menu.buildFromTemplate(trayMenuTemplate);
+const signedOutTrayMenuTemplate: MenuItemConstructorOptions[] = [
+
+    {
+        label: 'Sign In / Sign Up',
+        click: () => {
+            openApp();
+        },
+        id: 'signInOrUp'
+    },
+
+    {
+        type: 'separator'
+    },
+    {
+        label: 'Open web',
+        click: function () {
+            openWeb();
+        }
+    },
+
+    {
+        label: 'Quit',
+        click: function () {
+            quitApp();
+        }
+    }
+]
+
+let trayMenu = Menu.buildFromTemplate(signedInTrayMenuTemplate);
 
 const createWindow = () => {
     // Create the browser window.
@@ -371,53 +400,35 @@ const stopActivity = () => {
 const renameActivity = () => {
     this.trayWindow.show();
 };
-ipcMain.on('tray-close-app', () => {
-    quitApp();
-});
 
-ipcMain.on('tray-open-website', () => {
-    openWeb();
-});
-
-ipcMain.on('tray-open-app', () => {
-    openApp();
+ipcMain.on('win-user-ready', (event, user) => {
+    if (user.id) {
+        trayMenu = Menu.buildFromTemplate(signedInTrayMenuTemplate);
+        userLoggedIn = true;
+    } else {
+        trayMenu = Menu.buildFromTemplate(signedOutTrayMenuTemplate);
+        this.tray.setImage(trayIconPath);
+        userLoggedIn = false;
+    }
+    this.tray.setContextMenu(trayMenu);
 });
 
 ipcMain.on('win-projects-ready', (event, arg) => {
-    trayMenu.getMenuItemById('start')['submenu'].clear();
-    for (const project of arg) {
-        projects[project.id] = project;
-        trayMenu.getMenuItemById('start')['submenu'].append(new MenuItem({
-            label: project.name,
-            click: (menuItem) => {
-                startActivity(menuItem['id']);
-            },
-            id: project.id,
-            enabled: !(currentActivity.project && currentActivity.project === project.id)
-        }));
+    if (trayMenu.getMenuItemById('start') && userLoggedIn) {
+        trayMenu.getMenuItemById('start')['submenu'].clear();
+        for (const project of arg) {
+            projects[project.id] = project;
+            trayMenu.getMenuItemById('start')['submenu'].append(new MenuItem({
+                label: project.name,
+                click: (menuItem) => {
+                    startActivity(menuItem['id']);
+                },
+                id: project.id,
+                enabled: !(currentActivity.project && currentActivity.project === project.id)
+            }));
+        }
+        this.tray.setContextMenu(trayMenu);
     }
-    this.tray.setContextMenu(trayMenu);
-    this.trayWindow.webContents.send('tray-projects-ready', arg);
-});
-
-ipcMain.on('win-selected-project-ready', (event, arg) => {
-    this.trayWindow.webContents.send('tray-selected-project-ready', arg);
-});
-
-ipcMain.on('tray-project-selected', (event, message) => {
-    win.webContents.send('win-project-selected', message);
-});
-
-ipcMain.on('tray-start-or-stop', (event, message) => {
-    if (!message.activity) {
-        // User stopped current activity
-        this.tray.setImage(trayIconPath);
-    } else {
-        // User started a new activity
-        trayMenu.getMenuItemById('stop').visible = true;
-        this.tray.setImage(activeTrayIconPath);
-    }
-    win.webContents.send('win-start-or-stop', message);
 });
 
 ipcMain.on('tray-rename-activity', (event, message) => {
@@ -429,36 +440,35 @@ ipcMain.on('tray-rename-activity', (event, message) => {
 });
 
 ipcMain.on('win-currentActivity-ready', (event, message) => {
-    if (message.startedAt) {
-        // User has current activity
-        trayMenu.getMenuItemById('stop').visible = true;
-        trayMenu.getMenuItemById('rename').visible = true;
-        console.log('user has current activity');
-        if (trayMenu.getMenuItemById('start')['submenu'].items.length !== 0) {
-            trayMenu.getMenuItemById('start')['submenu'].getMenuItemById(message.project).enabled = false;
+    if (userLoggedIn) {
+        if (message.startedAt) {
+            // User has current activity
+            trayMenu.getMenuItemById('stop').visible = true;
+            trayMenu.getMenuItemById('rename').visible = true;
+            console.log('user has current activity');
+            if (trayMenu.getMenuItemById('start')['submenu'].items.length !== 0) {
+                trayMenu.getMenuItemById('start')['submenu'].getMenuItemById(message.project).enabled = false;
+            }
+            this.tray.setContextMenu(trayMenu)
+            this.tray.setImage(activeTrayIconPath);
+        } else {
+            // User doesn't have current activity
+            trayMenu.getMenuItemById('stop').visible = false;
+            trayMenu.getMenuItemById('rename').visible = false;
+            if (message.project) {
+                trayMenu.getMenuItemById('start')['submenu'].getMenuItemById(message.project).enabled = true;
+            } else if (currentActivity.project) {
+                trayMenu.getMenuItemById('start')['submenu'].getMenuItemById(currentActivity.project).enabled = true;
+            }
+            this.tray.setContextMenu(trayMenu)
+            this.tray.setImage(trayIconPath);
         }
-        this.tray.setContextMenu(trayMenu)
-        this.tray.setImage(activeTrayIconPath);
-    } else {
-        // User doesn't have current activity
-        if (!message.project && currentActivity.project) {
-            trayMenu.getMenuItemById(currentActivity.project).enabled = true;
-        }
-        trayMenu.getMenuItemById('stop').visible = false;
-        trayMenu.getMenuItemById('rename').visible = false;
-        if (message.project) {
-            trayMenu.getMenuItemById('start')['submenu'].getMenuItemById(message.project).enabled = true;
-        } else if (currentActivity.project) {
-            trayMenu.getMenuItemById('start')['submenu'].getMenuItemById(currentActivity.project).enabled = true;
-        }
-        this.tray.setContextMenu(trayMenu)
-        this.tray.setImage(trayIconPath);
+        currentActivity = message;
+        this.trayWindow.webContents.send('tray-currentActivity-ready', {
+            currentActivity,
+            projectName: currentActivity.project ? projects[currentActivity.project] : ''
+        });
     }
-    currentActivity = message;
-    this.trayWindow.webContents.send('tray-currentActivity-ready', {
-        currentActivity,
-        projectName : currentActivity.project ? projects[currentActivity.project] : ''
-    });
 });
 
 // This method will be called when Electron has finished
