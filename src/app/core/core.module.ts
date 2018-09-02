@@ -42,6 +42,7 @@ import { AppStateSelectors }            from '../shared/state/app-state.selector
 import { ProjectsSelectors }            from '../shared/state/project/projects.selectors';
 import { RouterChangeListenerService }  from './services/router-change-listener.service';
 import { InviteNotifComponent }         from './side-menu/notification/invite-notif/invite-notif.component';
+import { NativeNotificationService }    from './services/native-notification.service';
 
 @NgModule({
   imports:      [
@@ -90,6 +91,7 @@ import { InviteNotifComponent }         from './side-menu/notification/invite-no
     StopStartActivityService,
     AppService,
     RouterChangeListenerService,
+    NativeNotificationService,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],
   entryComponents: [
