@@ -91,16 +91,16 @@
               </h3>
             </div>
             <div class="field has-text-left">
-              <input type="checkbox" id="emailCheckBox">
-               Recive email after 15 minutes while have current activity and tab close. <br>
+              <input id="receiveForgottenActivityEmailCheckBox" type="checkbox" [(ngModel)]="settings.receiveForgottenActivityEmail">
+              <label for="receiveForgottenActivityEmailCheckBox">Receive email after 15 minutes while have current activity and tab close</label>
               <div>
-                <input type="checkbox" id="restTimeCheckBox" (click)="showTimeComboBox()">
-                 Recive notification for rest after a while with current activity to rest<br>
-                  <select id="restTimeSelector" *ngIf="isTimeComboBoxEnabled">
-                    <option id="restTime1" value="timeSet1">50 minutes works - 15 minutes rest</option>
-                    <option id="restTime2" value="timeSet2">30 minutes works - 10 minutes rest</option>
-                    <option id="restTime3" value="timeSet3">25 minutes works - 7 minutes rest</option>
-                  </select>
+                <input type="checkbox" [(ngModel)]="settings.relaxationTime.isEnabled">
+                Receive notification for rest after a while with current activity to rest
+                <select [(ngModel)]="relaxationTimeSelector" *ngIf="settings.relaxationTime.isEnabled">
+                  <option value="timeSet1">50 minutes works - 15 minutes rest</option>
+                  <option value="timeSet2">30 minutes works - 10 minutes rest</option>
+                  <option value="timeSet3">25 minutes works - 7 minutes rest</option>
+                </select>
               </div>
             </div>
             <div class="field">
