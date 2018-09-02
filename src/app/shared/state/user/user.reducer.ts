@@ -8,7 +8,14 @@ const initialState: User = {
   name: null,
   profileImage: null,
   pendingInvitations: [],
-  settings: {}
+  settings: {
+    receiveForgottenActivityEmail: null,
+    relaxationTime: {
+      isEnabled: null,
+      workTime: 0,
+      restTime: 0
+    }
+  }
 };
 
 export default function reducer(state = initialState, action: ActionWithPayload<any>) {
