@@ -154,6 +154,10 @@ const createWindow = () => {
             win.hide();
         }
     });
+
+    win.on('blur', () => {
+        win.webContents.executeJavaScript('document.getElementsByName("activityNameInput").forEach(element => {element.blur()})');
+    });
 };
 
 const createTrayWindow = () => {
