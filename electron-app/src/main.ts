@@ -5,13 +5,13 @@ import {
     shell,
     Menu,
     ipcMain,
-    protocol
+    screen,
+    MenuItemConstructorOptions,
+    MenuItem
 }  from 'electron';
 import * as express from 'express';
 import * as path from 'path';
 import * as url from 'url';
-import * as fs from 'fs';
-import * as Positioner from 'electron-positioner';
 
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -23,6 +23,19 @@ let trayWindow;
 let trayVisibility = false;
 let trayIconPath;
 let activeTrayIconPath;
+let currentActivity = {
+    createdAt: null,
+    id: null,
+    name: null,
+    project: null,
+    startedAt: null,
+    stoppedAt: null,
+    updatedAt: null,
+    user: null
+};
+let projects = {};
+let userLoggedIn = false;
+let appPort;
 
 if (process.platform === 'win32') {
     trayIconPath = path.join(__dirname, '../build/tray.ico');
@@ -32,19 +45,100 @@ if (process.platform === 'win32') {
     activeTrayIconPath = path.join(__dirname, '../build/tray-yello.png');
 }
 
+const signedInTrayMenuTemplate: MenuItemConstructorOptions[] = [
+    {
+        label: 'Stop',
+        click: () => {
+            stopActivity();
+            
+        },
+        id: 'stop',
+        visible: false
+    },
+    {
+        label: 'Rename Activity',
+        click: () => {
+            renameActivity();
+        },
+        id: 'rename',
+        visible: false
+    },
+    {
+        type: 'separator'
+    },
+    {
+        label: 'Start Activity',
+        submenu: [],
+        id: 'start',
+        visible: true,
+    },
+    {
+        type: 'separator'
+    },
+    {
+        label: 'Open App',
+        click: function () {
+            openApp();
+        }
+    },
+    {
+        label: 'Open web',
+        click: function () {
+            openWeb();
+        }
+    },
+
+    {
+        label: 'Quit',
+        click: function () {
+            quitApp();
+        }
+    }
+];
+
+const signedOutTrayMenuTemplate: MenuItemConstructorOptions[] = [
+
+    {
+        label: 'Sign In / Sign Up',
+        click: () => {
+            openApp();
+        },
+        id: 'signInOrUp'
+    },
+
+    {
+        type: 'separator'
+    },
+    {
+        label: 'Open web',
+        click: function () {
+            openWeb();
+        }
+    },
+
+    {
+        label: 'Quit',
+        click: function () {
+            quitApp();
+        }
+    }
+]
+
+let trayMenu = Menu.buildFromTemplate(signedInTrayMenuTemplate);
+
 const createWindow = () => {
     // Create the browser window.
     win = new BrowserWindow({
-        width: 770,
+        width: 920,
         height: 630,
         center: true,
         minWidth: 770,
         minHeight: 630
     });
 
-    win.loadURL('http://localhost:5000/');
+    win.loadURL(`http://localhost:${appPort}`);
 
-    win.webContents.openDevTools();
+    // win.webContents.openDevTools();
 
     // Emitted when the window is closed.
     win.on('closed', () => {
@@ -63,122 +157,336 @@ const createWindow = () => {
 };
 
 const createTrayWindow = () => {
-  this.tray = new Tray(trayIconPath);
-  this.trayWindow = new BrowserWindow({
-    width: 300,
-    height: 140,
-    show: false,
-    frame: false,
-    fullscreenable: false,
-    minimizable: false,
-    resizable: false,
-    movable: false,
-  });
+    this.tray = new Tray(trayIconPath);
+    const screenBounds = screen.getPrimaryDisplay().bounds;
+    const trayWindowWidth = 500;
+    // set the x position to center of the screen
+    const trayXPosition = {
+        x : screenBounds.width / 2 - (trayWindowWidth / 2),
+        y: 0
+    }
+    this.trayWindow = new BrowserWindow({
+        width: 500,
+        height: 90,
+        show: false,
+        frame: false,
+        fullscreenable: false,
+        minimizable: false,
+        resizable: false,
+        movable: false,
+    });
 
-  const positioner = new Positioner(this.trayWindow);
-  const position = positioner.calculate('trayCenter', this.tray.getBounds());
+    this.trayWindow.loadURL(url.format({
+        pathname: path.join(__dirname, '../tray/tray.html'),
+        protocol: 'file:',
+        slashes: true
+    }));
 
-  this.trayWindow.loadURL(url.format({
-    pathname: path.join(__dirname, '../tray/tray.html'),
-    protocol: 'file:',
-    slashes: true
-  }));
+    // this.trayWindow.webContents.openDevTools();
 
-  // this.trayWindow.webContents.openDevTools();
+    this.trayWindow.on('blur', () => {
+        this.trayWindow.hide();
+    });
 
+    this.trayWindow.setPosition(trayXPosition.x, trayXPosition.y, true);
 
-  this.trayWindow.on('blur', () => {
-    toggleTrayWindow();
-  });
-
-  this.trayWindow.setPosition(position.x, position.y, true);
-
-  this.tray.on('click', () => {
-    toggleTrayWindow();
-  });
+    this.tray.setContextMenu(trayMenu);
 };
 
-const toggleTrayWindow = () => {
-  if (this.trayVisibility) {
-    this.trayWindow.hide();
-    this.trayVisibility = false;
-  } else {
-    this.trayWindow.show();
-    this.trayVisibility = true;
-  }
-};
+const setupApplicationMenu = () => {
+    const template: MenuItemConstructorOptions[] = [
+        {
+          label: 'Edit',
+          submenu: [
+            {
+              role: 'undo'
+            },
+            {
+              role: 'redo'
+            },
+            {
+              type: 'separator'
+            },
+            {
+              role: 'cut'
+            },
+            {
+              role: 'copy'
+            },
+            {
+              role: 'paste'
+            },
+            {
+              role: 'pasteandmatchstyle'
+            },
+            {
+              role: 'delete'
+            },
+            {
+              role: 'selectall'
+            }
+          ]
+        },
+        {
+          label: 'View',
+          submenu: [
+            {
+              role: 'resetzoom'
+            },
+            {
+              role: 'zoomin'
+            },
+            {
+              role: 'zoomout'
+            },
+            {
+              type: 'separator'
+            },
+            {
+              role: 'togglefullscreen'
+            },
+            {
+              type: 'separator'
+            },
+            {
+                role: 'toggledevtools'
+              },
+          ]
+        },
+        {
+          role: 'window',
+          submenu: [
+            {
+              role: 'minimize'
+            },
+            {
+              role: 'close'
+            }
+          ]
+        },
+        {
+          role: 'help',
+          submenu: [
+            {
+                label: 'Donate us',
+                click () {
+                    shell.openExternal('https://www.coinpayments.net/index.php?cmd=_donate&reset=1&merchant=d88653d' + 
+                    'eee05911e2438e35ec41c865e&item_name=Give%20some%20love%20to%20Pendulums%20project&currency=USD&a' + 
+                    'mountf=10.00000000&allow_amount=1&want_shipping=0&allow_extra=1&cstyle=grid2');
+                }
+            },
+            {
+                type: 'separator'
+            },
+            {
+                label: 'Report an Issues',
+                click () {
+                  shell.openExternal('https://github.com/Swing-team/pendulums-web-client/issues')
+                }
+              },
+          ]
+        }
+      ]
+    
+    if (process.platform === 'darwin') {
+        template.unshift({
+            label: 'Pendulums',
+            submenu: [
+                {
+                    role: 'about'
+                },
+                {
+                    type: 'separator'
+                },
+                {
+                    type: 'separator'
+                },
+                {
+                    role: 'hide'
+                },
+                {
+                    role: 'hideothers'
+                },
+                {
+                    role: 'unhide'
+                },
+                {
+                    type: 'separator'
+                },
+                {
+                    role: 'quit'
+                }
+            ]
+        });
 
-ipcMain.on('tray-close-app', () => {
-    app.quit();
-});
+        // template[1].submenu.push(
+        //     {
+        //         type: 'separator'
+        //     },
+        //     {
+        //         label: 'Speech',
+        //         submenu: [
+        //             {
+        //                 role: 'startspeaking'
+        //             },
+        //             {
+        //                 role: 'stopspeaking'
+        //             }
+        //         ]
+        //     }
+        // );
 
-ipcMain.on('tray-open-website', () => {
-    shell.openExternal('https://app.pendulums.io');
-});
-
-ipcMain.on('tray-open-app', () => {
-    win.show();
-});
-
-// ipcMain.on('current_activity_changed', (event, arg) => {
-//     communicateWithTray('current_activity_changed', arg);
-// });
-// ipcMain.on('user_logged_in', (event, arg) => {
-//     communicateWithTray('user_logged_in', arg);
-// });
-
-ipcMain.on('win-projects-ready', (event, arg) => {
-  this.trayWindow.webContents.send('tray-projects-ready', arg);
-});
-
-ipcMain.on('win-selected-project-ready', (event, arg) => {
-  this.trayWindow.webContents.send('tray-selected-project-ready', arg);
-});
-
-ipcMain.on('tray-project-selected', (event, message) => {
-  win.webContents.send('win-project-selected', message);
-});
-
-ipcMain.on('win-user-ready', (event, arg) => {
-  this.trayWindow.webContents.send('tray-user-ready', arg);
-});
-
-ipcMain.on('tray-start-or-stop', (event, message) => {
-    if (!message.activity) {
-        // User stopped current activity
-        this.tray.setImage(activeTrayIconPath);
+        template[3].submenu = [
+            {
+                role: 'close'
+            },
+            {
+                role: 'minimize'
+            },
+            {
+                type: 'separator'
+            },
+            {
+                role: 'front'
+            }
+        ]
     } else {
-        // User started a new activity
-        this.tray.setImage(activeTrayIconPath);
+        template.unshift({
+            label: 'File',
+            submenu: [{
+                role: 'quit'
+            }]
+        })
+    }
+
+    const menu = Menu.buildFromTemplate(template)
+    Menu.setApplicationMenu(menu)
+};
+
+const openWeb = () => {
+    shell.openExternal('https://app.pendulums.io');
+};
+
+const openApp = () => {
+    win.show();
+};
+
+const quitApp = () => {
+    app.quit();
+};
+
+const startActivity = (id) => {
+    const message = {
+        activity: {
+            name: projects[id].recentActivityName ? projects[id].recentActivityName : 'Untitled Activity',
+            project: id,
+            startedAt: new Date().getTime().toString()
+        },
+        project: projects[id]
     }
     win.webContents.send('win-start-or-stop', message);
+    this.trayWindow.show();
+};
+
+const stopActivity = () => {
+    trayMenu.getMenuItemById('stop').visible = false;
+    this.tray.setContextMenu(trayMenu)
+    const message = {
+        activity: null,
+        project: projects[currentActivity.project]
+    }
+    win.webContents.send('win-start-or-stop', message);
+};
+
+const renameActivity = () => {
+    this.trayWindow.show();
+};
+
+ipcMain.on('win-user-ready', (event, user) => {
+    if (user.id) {
+        trayMenu = Menu.buildFromTemplate(signedInTrayMenuTemplate);
+        userLoggedIn = true;
+    } else {
+        trayMenu = Menu.buildFromTemplate(signedOutTrayMenuTemplate);
+        this.tray.setImage(trayIconPath);
+        userLoggedIn = false;
+    }
+    this.tray.setContextMenu(trayMenu);
 });
 
-ipcMain.on('win-currentActivity-ready', (event, message) => {
-    if (message.startedAt) {
-        // User has current activity
-        this.tray.setImage(activeTrayIconPath);
-    } else {
-        // User doesn't have current activity
-        this.tray.setImage(trayIconPath);
+ipcMain.on('win-projects-ready', (event, arg) => {
+    if (trayMenu.getMenuItemById('start') && userLoggedIn) {
+        trayMenu.getMenuItemById('start')['submenu'].clear();
+        for (const project of arg) {
+            projects[project.id] = project;
+            trayMenu.getMenuItemById('start')['submenu'].append(new MenuItem({
+                label: project.name,
+                click: (menuItem) => {
+                    startActivity(menuItem['id']);
+                },
+                id: project.id,
+                enabled: !(currentActivity.project && currentActivity.project === project.id)
+            }));
+        }
+        this.tray.setContextMenu(trayMenu);
     }
-    this.trayWindow.webContents.send('tray-currentActivity-ready', message);
 });
 
 ipcMain.on('tray-rename-activity', (event, message) => {
-  win.webContents.send('win-rename-activity', message);
+    this.trayWindow.hide();
+    win.webContents.send('win-rename-activity', {
+        taskName: message.taskName,
+        project: projects[message.project]
+    });
+});
+
+ipcMain.on('win-currentActivity-ready', (event, message) => {
+    if (userLoggedIn) {
+        if (message.startedAt) {
+            // User has current activity
+            trayMenu.getMenuItemById('stop').visible = true;
+            trayMenu.getMenuItemById('rename').visible = true;
+            if (trayMenu.getMenuItemById('start')['submenu'].items.length !== 0) {
+                trayMenu.getMenuItemById('start')['submenu'].getMenuItemById(message.project).enabled = false;
+            }
+            this.tray.setContextMenu(trayMenu)
+            this.tray.setImage(activeTrayIconPath);
+        } else {
+            // User doesn't have current activity
+            trayMenu.getMenuItemById('stop').visible = false;
+            trayMenu.getMenuItemById('rename').visible = false;
+            if (message.project) {
+                trayMenu.getMenuItemById('start')['submenu'].getMenuItemById(message.project).enabled = true;
+            } else if (currentActivity.project) {
+                trayMenu.getMenuItemById('start')['submenu'].getMenuItemById(currentActivity.project).enabled = true;
+            }
+            this.tray.setContextMenu(trayMenu)
+            this.tray.setImage(trayIconPath);
+        }
+        currentActivity = message;
+        this.trayWindow.webContents.send('tray-currentActivity-ready', {
+            currentActivity,
+            projectName: currentActivity.project ? projects[currentActivity.project] : ''
+        });
+    }
+});
+
+ipcMain.on('trray-hide-tray-window', () => {
+    this.trayWindow.hide();
 });
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', () => {
+    setupApplicationMenu();
     const expressApp = express();
     expressApp.use('/', express.static(path.join(__dirname, '/../app/')));
-    expressApp.listen(5000, () => {
+    const listener = expressApp.listen(5000, () => {
+        appPort = listener.address().port;
+        createWindow();
+        createTrayWindow();
     });
-    createWindow();
-    createTrayWindow();
 });
 
 // Quit when all windows are closed.
