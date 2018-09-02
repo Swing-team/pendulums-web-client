@@ -1,6 +1,6 @@
 import { Injectable }           from '@angular/core';
 import { Action }               from '@ngrx/store';
-import { User }                 from './user.model';
+import { User, Settings }                 from './user.model';
 import { ActionWithPayload }    from '../action-with-payload';
 
 @Injectable()
@@ -32,7 +32,7 @@ export class UserActions {
     };
   }
 
-  updateUserSettings(userSettings: object): ActionWithPayload<any> {
+  updateUserSettings(userSettings: Settings): ActionWithPayload<any> {
     return {
       type: UserActions.UPDATE_USER_SETTINGS,
       payload: userSettings

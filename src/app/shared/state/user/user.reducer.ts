@@ -32,6 +32,10 @@ export default function reducer(state = initialState, action: ActionWithPayload<
       return Object.assign({}, state , { profileImage: action.payload});
     }
 
+    case UserActions.UPDATE_USER_SETTINGS: {
+      return Object.assign({}, state, {settings: action.payload});
+    }
+
     case UserActions.CLEAR_USER: {
       return initialState;
     }
