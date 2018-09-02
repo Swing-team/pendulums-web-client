@@ -35,6 +35,7 @@ let currentActivity = {
 };
 let projects = {};
 let userLoggedIn = false;
+let appPort;
 
 if (process.platform === 'win32') {
     trayIconPath = path.join(__dirname, '../build/tray.ico');
@@ -135,9 +136,9 @@ const createWindow = () => {
         minHeight: 630
     });
 
-    win.loadURL('http://localhost:5000/');
+    win.loadURL(`http://localhost:${appPort}`);
 
-    win.webContents.openDevTools();
+    // win.webContents.openDevTools();
 
     // Emitted when the window is closed.
     win.on('closed', () => {
@@ -181,7 +182,7 @@ const createTrayWindow = () => {
         slashes: true
     }));
 
-    this.trayWindow.webContents.openDevTools();
+    // this.trayWindow.webContents.openDevTools();
 
     this.trayWindow.on('blur', () => {
         this.trayWindow.hide();
@@ -445,7 +446,6 @@ ipcMain.on('win-currentActivity-ready', (event, message) => {
             // User has current activity
             trayMenu.getMenuItemById('stop').visible = true;
             trayMenu.getMenuItemById('rename').visible = true;
-            console.log('user has current activity');
             if (trayMenu.getMenuItemById('start')['submenu'].items.length !== 0) {
                 trayMenu.getMenuItemById('start')['submenu'].getMenuItemById(message.project).enabled = false;
             }
@@ -482,10 +482,11 @@ app.on('ready', () => {
     setupApplicationMenu();
     const expressApp = express();
     expressApp.use('/', express.static(path.join(__dirname, '/../app/')));
-    expressApp.listen(5000, () => {
+    const listener = expressApp.listen(5000, () => {
+        appPort = listener.address().port;
+        createWindow();
+        createTrayWindow();
     });
-    createWindow();
-    createTrayWindow();
 });
 
 // Quit when all windows are closed.
