@@ -1,6 +1,5 @@
 const ipcRenderer = require('electron').ipcRenderer;
 
-var ActivityNameLabel = '';
 var taskName = '';
 var timeDuration = 0;
 var currentActivityCopy = {};
@@ -10,11 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
 }, false);
 
 ipcRenderer.on('tray-currentActivity-ready', (event, message) => {
-  console.log(message)
   currentActivityCopy = message.currentActivity;
-  currentProject = {
-    name: message.projectName
-  }
   initialActivityNameInput();
   initialActivityLabel();
 });

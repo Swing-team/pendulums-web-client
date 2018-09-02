@@ -54,7 +54,7 @@ const trayMenuTemplate: MenuItemConstructorOptions[] = [
         visible: false
     },
     {
-        label: 'Rename activity',
+        label: 'Rename Activity',
         click: () => {
             renameActivity();
         },
@@ -65,7 +65,7 @@ const trayMenuTemplate: MenuItemConstructorOptions[] = [
         type: 'separator'
     },
     {
-        label: 'Start activity',
+        label: 'Start Activity',
         submenu: [],
         id: 'start',
         visible: true,
@@ -129,14 +129,15 @@ const createWindow = () => {
 const createTrayWindow = () => {
     this.tray = new Tray(trayIconPath);
     const screenBounds = screen.getPrimaryDisplay().bounds;
-    // set the x position to center of the screen, 150 = trayWindow.width / 2
+    const trayWindowWidth = 500;
+    // set the x position to center of the screen
     const trayXPosition = {
-        x : screenBounds.width / 2 - 150,
+        x : screenBounds.width / 2 - (trayWindowWidth / 2),
         y: 0
     }
     this.trayWindow = new BrowserWindow({
-        width: 300,
-        height: 140,
+        width: 500,
+        height: 90,
         show: false,
         frame: false,
         fullscreenable: false,
@@ -420,6 +421,7 @@ ipcMain.on('tray-start-or-stop', (event, message) => {
 });
 
 ipcMain.on('tray-rename-activity', (event, message) => {
+    this.trayWindow.hide();
     win.webContents.send('win-rename-activity', {
         taskName: message.taskName,
         project: projects[message.project]

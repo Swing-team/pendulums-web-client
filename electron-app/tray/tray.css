@@ -51,8 +51,8 @@ body {
   cursor: pointer;
   display: flex;
   justify-content: center;
-  margin: auto;
-  align-items: stretch;
+  align-items: baseline;
+  margin: 10px;
 }
 
 .ps-nav .ps-nav-level1 .nav-item {
@@ -84,7 +84,7 @@ body {
   line-height: 2rem;
   transition: all ease-in-out 200ms;
 }
-.ps-nav .ps-nav-level1 .nav-item .ps-nav-input:not(:focus) + label {
+.ps-nav .ps-nav-level1 .nav-item .ps-nav-input:not(:focus) {
   background-color: #ffffff;
   padding: 4px;
   z-index: 2;
@@ -94,23 +94,13 @@ body {
   line-height: 2.5rem;
   text-align: center;
 }
-.ps-nav .ps-nav-level1 .nav-item .ps-nav-input:not(:focus) + label:hover {
+.ps-nav .ps-nav-level1 .nav-item .ps-nav-input:not(:focus) {
   background-color: #f2f8f8;
 }
 .ps-nav .ps-nav-level1 .nav-item .ps-nav-input:focus {
   background-color: #f2f8f8;
 }
-.ps-nav .ps-nav-level1 .nav-item .ps-nav-label {
-  height: 2.5em;
-  position: absolute;
-  left: 15px;
-  right: 15px;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  cursor: pointer;
-  transition: all ease-in-out 200ms;
-}
+
 .ps-nav .ps-nav-level1 .nav-item:after, .ps-nav .ps-nav-level1 .nav-item:before {
   content: "";
   min-width: 3px;
@@ -128,6 +118,7 @@ body {
   display: flex;
   align-content: center;
   align-items: center;
+  justify-content: center;
   transition: width 500ms;
 }
 .ps-show-time {
