@@ -16,6 +16,6 @@ export interface Settings {
 
 export interface RelaxationTime {
   isEnabled: boolean,
-  workTime: number,
+  workingTime: number,
   restTime: number
 }

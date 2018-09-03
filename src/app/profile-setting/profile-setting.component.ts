@@ -34,7 +34,7 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
   netConnected: boolean;
   settings: Settings;
   relaxationTimeSelectorModel: any;
-  workTimeInputModel: string;
+  workingTimeInputModel: string;
   relaxTimeInputModel: string;
   editButtonDisabled = false;
   private status: Observable<any>;
@@ -71,13 +71,13 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
       }
 
       if (this.settings.relaxationTime.isEnabled) {
-        const workTime = this.settings.relaxationTime.workTime;
+        const workingTime = this.settings.relaxationTime.workingTime;
         const restTime = this.settings.relaxationTime.restTime;
-        if (workTime === 3000000 && restTime === 900000) {
+        if (workingTime === 3000000 && restTime === 900000) {
           this.relaxationTimeSelectorModel = 'pomodoro1';
-        } else if (workTime === 1800000 && restTime === 600000) {
+        } else if (workingTime === 1800000 && restTime === 600000) {
           this.relaxationTimeSelectorModel = 'pomodoro2';
-        } else if (workTime === 1500000 && restTime === 420000) {
+        } else if (workingTime === 1500000 && restTime === 420000) {
           this.relaxationTimeSelectorModel = 'pomodoro3';
         } else {
           this.relaxationTimeSelectorModel = 'pomodoroCustom';
@@ -167,8 +167,8 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
       this.nativeNotificationService.getPermission();
     }
     if (this.relaxationTimeSelectorModel === 'pomodoroCustom') {
-      if (!this.workTimeInputModel || !this.relaxTimeInputModel) {
-        this.settings.relaxationTime.workTime = 0;
+      if (!this.workingTimeInputModel || !this.relaxTimeInputModel) {
+        this.settings.relaxationTime.workingTime = 0;
         this.settings.relaxationTime.restTime = 0;
         this.showError('Please Fill the times in your profle settings');
         this.submitted = false;
@@ -189,24 +189,24 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
 
   timeSelectorChange() {
     if (this.relaxationTimeSelectorModel === 'pomodoro1') {
-      this.workTimeInputModel = '3000000';
+      this.workingTimeInputModel = '3000000';
       this.relaxTimeInputModel = '900000';
-      this.settings.relaxationTime.workTime = Number(this.workTimeInputModel);
+      this.settings.relaxationTime.workingTime = Number(this.workingTimeInputModel);
       this.settings.relaxationTime.restTime = Number(this.relaxTimeInputModel);
     } else if (this.relaxationTimeSelectorModel === 'pomodoro2') {
-      this.workTimeInputModel = '1800000';
+      this.workingTimeInputModel = '1800000';
       this.relaxTimeInputModel = '600000';
-      this.settings.relaxationTime.workTime = Number(this.workTimeInputModel);
+      this.settings.relaxationTime.workingTime = Number(this.workingTimeInputModel);
       this.settings.relaxationTime.restTime = Number(this.relaxTimeInputModel);
     } else if (this.relaxationTimeSelectorModel === 'pomodoro3') {
-      this.workTimeInputModel = '1500000';
+      this.workingTimeInputModel = '1500000';
       this.relaxTimeInputModel = '420000';
-      this.settings.relaxationTime.workTime = Number(this.workTimeInputModel);
+      this.settings.relaxationTime.workingTime = Number(this.workingTimeInputModel);
       this.settings.relaxationTime.restTime = Number(this.relaxTimeInputModel);
     } else if (this.relaxationTimeSelectorModel === 'pomodoroCustom') {
-      this.workTimeInputModel = '';
+      this.workingTimeInputModel = '';
       this.relaxTimeInputModel = '';
-      this.settings.relaxationTime.workTime = 0;
+      this.settings.relaxationTime.workingTime = 0;
       this.settings.relaxationTime.restTime = 0;
     }
   }

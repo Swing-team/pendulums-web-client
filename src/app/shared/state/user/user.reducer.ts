@@ -12,7 +12,7 @@ const initialState: User = {
     receiveForgottenActivityEmail: null,
     relaxationTime: {
       isEnabled: null,
-      workTime: 0,
+      workingTime: 0,
       restTime: 0
     }
   }

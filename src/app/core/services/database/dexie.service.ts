@@ -16,7 +16,7 @@ export class DexieService extends Dexie {
           receiveForgottenActivityEmail: true,
           relaxationTime: {
             isEnabled: false,
-            workTime: 3000000,
+            workingTime: 3000000,
             restTime: 900000
           }
         } as Settings
