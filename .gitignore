@@ -7,10 +7,14 @@
 /electron-app/dist
 /electron-app/app
 /electron-app/src/main.js
+/mobile-app/platforms
+/mobile-app/plugins
+/mobile-app/www
 
 # dependencies
 /node_modules
 /electron-app/node_modules
+/mobile-app/node_modules
 
 # IDEs and editors
 /.idea

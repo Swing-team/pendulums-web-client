@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget android-versionCode="1" id="io.pendulums" version="0.3.3" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>Pendulums</name>
+    <description>
+        Optimize your life with an easy to use time tracking.
+    </description>
+    <author email="app@pendulums.io" href="https://pendulums.io">
+        Swing Team
+    </author>
+    <preference name="DisallowOverscroll" value="true" />
+    <preference name="SplashScreenDelay" value="3000" />
+    <preference name="ShowSplashScreenSpinner" value="false" />
+    <preference name="loadUrlTimeoutValue" value="60000" />
+    <preference name="android-minSdkVersion" value="20" />
+    <content src="index.html" />
+    <access origin="*" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+    <platform name="android">
+    </platform>
+    <plugin name="cordova-plugin-device" spec="^2.0.2" />
+    <plugin name="cordova-plugin-inappbrowser" spec="^3.0.0" />
+    <plugin name="cordova-plugin-splashscreen" spec="^5.0.2" />
+    <plugin name="cordova-plugin-statusbar" spec="^2.4.2" />
+    <plugin name="cordova-plugin-whitelist" spec="^1.3.3" />
+    <engine name="android" spec="^7.0.0" />
+</widget>
