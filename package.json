@@ -11,7 +11,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "postInstall": "cd electron-app && npm install",
+    "postInstall": "cd electron-app && npm install && cd .. && cd mobile-app && npm install",
     "electron:ng:serve": "ng serve --app 1",
     "electron:ng:build": "ng build --app 1 --base-href ./ --output-path='./electron-app/app' --prod",
     "electron:tsc": "tsc ./electron-app/src/main.ts",
@@ -19,7 +19,10 @@
     "electron:build": "npm run electron:ng:build && npm run electron:tsc && cd electron-app && electron-builder",
     "electron:build:mac": "npm run electron:ng:build && npm run electron:tsc && cd electron-app && electron-builder --mac",
     "electron:build:linux": "npm run electron:ng:build && npm run electron:tsc && cd electron-app && electron-builder --linux",
-    "electron:build:win": "npm run electron:ng:build && npm run electron:tsc && cd electron-app && electron-builder --win"
+    "electron:build:win": "npm run electron:ng:build && npm run electron:tsc && cd electron-app && electron-builder --win",
+    "cordova:prepare": "cd mobile-app && cordova prepare",
+    "cordova:ng:build": "ng build --base-href ./ --output-path='./mobile-app/www' --prod",
+    "cordova:build:android": "npn run cordova:ng:build && cd mobile-app && cordova build android --release --buildConfig=build.json"
   },
   "private": true,
   "dependencies": {

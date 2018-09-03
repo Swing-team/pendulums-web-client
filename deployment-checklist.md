@@ -5,11 +5,13 @@
 * Build and test the app locally with ng build -prod
 * Commit and push version tag
 * Pull app on server and do `npm install` if needed and then `ng build -prod`
+
 ## Desktop app
 * For desktop app uncomment `httpOptions: { withCredentials: true, responseType: 'json' }` in `src/app/app.config.json`, then do every steps from the web app building instruction, instead of the last part (`ng build -prod`)
-* Build desktop app for your platform using `npm run electron:build` or build for other platform using thier correspond script:
+* Update the version in electon-app/package.json
+* Build desktop app for your platform using `npm run electron:build` or build for other platforms using their corresponding script:
 
-    
+
     | Platform | Script |
     | ------------- |:-------------:|
     | Linux | `npm run electron:build:linux` |
@@ -17,3 +19,8 @@
     | Windows | `npm run electron:build:win` |
 
 * The built desktop app will be placed in `electron-app/dist/` directory
+
+## Mobile app
+* For mobile app uncomment `httpOptions: { withCredentials: true, responseType: 'json' }` in `src/app/app.config.json`, then do every steps from the web app building instruction, instead of the last part (`ng build -prod`)
+* Update the version and android-versionCode in mobile-app/package.json and mobile-app/config.xml
+* Build android app using `npm run cordova:build:android`
