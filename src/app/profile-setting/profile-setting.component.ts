@@ -75,12 +75,20 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
         const restTime = this.settings.relaxationTime.restTime;
         if (workingTime === 3000000 && restTime === 900000) {
           this.relaxationTimeSelectorModel = 'pomodoro1';
+          this.workingTimeInputModel = (workingTime / 60000).toString();
+          this.relaxTimeInputModel = (restTime / 60000).toString();
         } else if (workingTime === 1800000 && restTime === 600000) {
           this.relaxationTimeSelectorModel = 'pomodoro2';
+          this.workingTimeInputModel = (workingTime / 60000).toString();
+          this.relaxTimeInputModel = (restTime / 60000).toString();
         } else if (workingTime === 1500000 && restTime === 420000) {
           this.relaxationTimeSelectorModel = 'pomodoro3';
+          this.workingTimeInputModel = (workingTime / 60000).toString();
+          this.relaxTimeInputModel = (restTime / 60000).toString();
         } else {
           this.relaxationTimeSelectorModel = 'pomodoroCustom';
+          this.workingTimeInputModel = (this.settings.relaxationTime.workingTime / 60000).toString();
+          this.relaxTimeInputModel = (this.settings.relaxationTime.restTime / 60000).toString();
         }
       }
     }));
@@ -172,12 +180,15 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
         this.settings.relaxationTime.restTime = 0;
         this.showError('Please Fill the times in your profle settings');
         this.submitted = false;
+      } else {
+        this.settings.relaxationTime.workingTime = (Number(this.workingTimeInputModel) * 60 * 1000);
+        this.settings.relaxationTime.restTime = (Number(this.relaxTimeInputModel) * 60 * 1000);
       }
     }
     if (this.submitted) {
-      this.userService.updateSettings(this.settings).then((user) => {
-        this.submitted = false;
+      this.userService.updateSettings(this.settings).then(() => {
         this.store.dispatch(this.userActions.updateUserSettings(this.settings));
+        this.submitted = false;
         this.showError('Setting Updated!' );
       }).catch(error => {
         this.submitted = false;
@@ -189,20 +200,20 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
 
   timeSelectorChange() {
     if (this.relaxationTimeSelectorModel === 'pomodoro1') {
-      this.workingTimeInputModel = '3000000';
-      this.relaxTimeInputModel = '900000';
-      this.settings.relaxationTime.workingTime = Number(this.workingTimeInputModel);
-      this.settings.relaxationTime.restTime = Number(this.relaxTimeInputModel);
+      this.workingTimeInputModel = '50';
+      this.relaxTimeInputModel = '15';
+      this.settings.relaxationTime.workingTime = (Number(this.workingTimeInputModel) * 60000);
+      this.settings.relaxationTime.restTime = (Number(this.relaxTimeInputModel) * 60000);
     } else if (this.relaxationTimeSelectorModel === 'pomodoro2') {
-      this.workingTimeInputModel = '1800000';
-      this.relaxTimeInputModel = '600000';
-      this.settings.relaxationTime.workingTime = Number(this.workingTimeInputModel);
-      this.settings.relaxationTime.restTime = Number(this.relaxTimeInputModel);
+      this.workingTimeInputModel = '30';
+      this.relaxTimeInputModel = '10';
+      this.settings.relaxationTime.workingTime = (Number(this.workingTimeInputModel) * 60000);
+      this.settings.relaxationTime.restTime = (Number(this.relaxTimeInputModel) * 60000);
     } else if (this.relaxationTimeSelectorModel === 'pomodoro3') {
-      this.workingTimeInputModel = '1500000';
-      this.relaxTimeInputModel = '420000';
-      this.settings.relaxationTime.workingTime = Number(this.workingTimeInputModel);
-      this.settings.relaxationTime.restTime = Number(this.relaxTimeInputModel);
+      this.workingTimeInputModel = '25';
+      this.relaxTimeInputModel = '7';
+      this.settings.relaxationTime.workingTime = (Number(this.workingTimeInputModel) * 60000);
+      this.settings.relaxationTime.restTime = (Number(this.relaxTimeInputModel) * 60000);
     } else if (this.relaxationTimeSelectorModel === 'pomodoroCustom') {
       this.workingTimeInputModel = '';
       this.relaxTimeInputModel = '';

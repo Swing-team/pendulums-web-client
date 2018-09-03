@@ -5,7 +5,6 @@ import 'rxjs/add/operator/toPromise';
 
 import { User } from '../../shared/state/user/user.model';
 import {APP_CONFIG, AppConfig} from '../../app.config';
-import { UserActions } from '../../shared/state/user/user.actions';
 
 @Injectable()
 export class UserService {
@@ -13,7 +12,6 @@ export class UserService {
   constructor(
     private http: HttpClient,
     @Inject(APP_CONFIG) private config: AppConfig,
-    private userAction: UserActions
   ) {
     this.options = {...this.config.httpOptions, responseType: 'text'};
   }
@@ -35,11 +33,10 @@ export class UserService {
   }
 
   updateSettings(settings): Promise<any> {
-    console.log('this is the settings: ', settings)
     return this.http
       .post(this.config.apiEndpoint + '/user/settings', JSON.stringify(settings), this.options)
       .toPromise()
-      .then(response => (response as any).user as User)
+      .then()
       .catch(this.handleError);
   }
 
