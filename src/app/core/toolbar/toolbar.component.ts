@@ -36,8 +36,8 @@ export class ToolbarComponent implements OnInit, OnDestroy  {
   stopStartButtonDisabled = false;
   selectedProjectIndex: any;
   hasNotification = false;
-  hasShowNativeNotificaion: boolean;
   settings: Settings;
+  hasShowRestNotificaion: boolean;
   workingTime: number;
   restTime: number;
   private selectedProject: Project;
@@ -95,9 +95,10 @@ export class ToolbarComponent implements OnInit, OnDestroy  {
 
         if (this.currentActivityCopy.startedAt) {
           this.settings = this.user.settings;
-          this.hasShowNativeNotificaion = false
-          this.workingTime = this.settings.relaxationTime.workingTime;
-          this.restTime = this.settings.relaxationTime.restTime / 60000;
+          this.hasShowRestNotificaion = false;
+          this.workingTime = Math.floor(this.settings.relaxationTime.workingTime / 1000);
+          let workingTimeCopy = this.workingTime;
+          this.restTime = Math.floor(this.settings.relaxationTime.restTime / 1000);
           this.activityStarted = true;
           let startedAt;
           let now;
@@ -108,9 +109,12 @@ export class ToolbarComponent implements OnInit, OnDestroy  {
               now = Date.now();
               duration = now - startedAt;
               this.timeDuration = this.getTime(duration);
-              if (duration > this.workingTime && !this.hasShowNativeNotificaion) {
-                this.nativeNotificationService.showNotification(`You need to rest for ${this.restTime} minutes.`);
-                this.hasShowNativeNotificaion = true;
+              if (Math.floor(duration / 1000) === workingTimeCopy) {
+                this.nativeNotificationService.showNotification(`You need to rest for ${this.restTime / 60} minutes.`);
+              }
+              if (Math.floor(duration / 1000) === (workingTimeCopy + this.restTime)) {
+                this.nativeNotificationService.showNotification(`You need to do work for ${this.workingTime / 60} minutes`);
+                workingTimeCopy += (this.workingTime + this.restTime);
               }
             } else {
               this.timeDuration = '0';
