@@ -11,9 +11,9 @@
   "homepage": "https://pendulums.io",
   "repository": "https://github.com/Swing-team/pendulums-web-client",
   "build": {
-    "appId": "client.pendulums.io",
+    "appId": "team.swing.pendulums",
     "productName": "Pendulums",
-    "copyright": "Copyright © year ${author}",
+    "copyright": "Copyright © year Swing Team",
     "asar": true,
     "electronVersion": "2.0.8",
     "files": [

@@ -17,9 +17,9 @@
     "electron:tsc": "tsc ./electron-app/src/main.ts",
     "electron:start": "npm run electron:tsc && electron ./electron-app/src/main.js",
     "electron:build": "npm run electron:ng:build && npm run electron:tsc && cd electron-app && electron-builder",
-    "electron:build:mac": "npm run electron:tsc && cd electron-app && electron-builder --mac",
-    "electron:build:linux": "npm run electron:tsc && cd electron-app && electron-builder --linux",
-    "electron:build:win": "npm run electron:tsc && cd electron-app && electron-builder --win"
+    "electron:build:mac": "npm run electron:ng:build && npm run electron:tsc && cd electron-app && electron-builder --mac",
+    "electron:build:linux": "npm run electron:ng:build && npm run electron:tsc && cd electron-app && electron-builder --linux",
+    "electron:build:win": "npm run electron:ng:build && npm run electron:tsc && cd electron-app && electron-builder --win"
   },
   "private": true,
   "dependencies": {
