@@ -101,7 +101,7 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
 
     this.stopStartActivityService.startActivity(this.activity, this.project).then(() => {
       this.activityButtonDisabled = false;
-      this.showError('The activity started');
+      this.showError('The activity was started');
     });
 
     // This timeout use to handle focus on input
@@ -116,7 +116,7 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
   stopActivity() {
     this.stopStartActivityService.stopActivity(this.project).then(() => {
       this.activityButtonDisabled = false;
-      this.showError('The activity stopped');
+      this.showError('The activity was stopped');
     });
   }
 

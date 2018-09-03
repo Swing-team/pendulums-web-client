@@ -205,7 +205,7 @@ export class ToolbarComponent implements OnInit, OnDestroy  {
 
       this.stopStartActivityService.startActivity(activity, this.selectedProject).then(() => {
         this.stopStartButtonDisabled = false;
-        this.showError('The activity started');
+        this.showError('The activity was started');
 
         // This timeout use to handle focus on input
         setTimeout(() => {
@@ -226,7 +226,7 @@ export class ToolbarComponent implements OnInit, OnDestroy  {
   stopActivity() {
     this.stopStartActivityService.stopActivity(this.selectedProject).then(() => {
       this.stopStartButtonDisabled = false;
-      this.showError('The activity stopped');
+      this.showError('The activity was stopped');
     });
   }
 
