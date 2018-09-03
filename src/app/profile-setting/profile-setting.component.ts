@@ -222,6 +222,20 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
     }
   }
 
+  changeDropDown() {
+    const workingTime = Number(this.workingTimeInputModel) * 60000;
+    const restTime = Number(this.relaxTimeInputModel) * 60000;
+    if (workingTime === 3000000 && restTime === 900000) {
+      this.relaxationTimeSelectorModel = 'pomodoro1';
+    } else if (workingTime === 1800000 && restTime === 600000) {
+      this.relaxationTimeSelectorModel = 'pomodoro2';
+    } else if (workingTime === 1500000 && restTime === 420000) {
+      this.relaxationTimeSelectorModel = 'pomodoro3';
+    } else {
+      this.relaxationTimeSelectorModel = 'pomodoroCustom';
+    }
+  }
+
   validationPassword(User): boolean {
     if (!User.newPassword
       || User.newPassword.length < 6

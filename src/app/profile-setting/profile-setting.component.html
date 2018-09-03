@@ -103,9 +103,9 @@
                   <option value="pomodoroCustom">custom time</option>
                 </select>
                   <input [(ngModel)]="workingTimeInputModel" type="text"
-                    class="input" placeholder="Work time(minutes)">
+                    class="input" placeholder="Work time(minutes)" (input)="changeDropDown()">
                   <input [(ngModel)]="relaxTimeInputModel" type="text"
-                    class="input" placeholder="Relax time(minutes)">
+                    class="input" placeholder="Relax time(minutes)" (input)="changeDropDown()">
               </div>
             </div>
             <div class="field">
