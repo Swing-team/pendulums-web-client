@@ -35,7 +35,6 @@ let currentActivity = {
 };
 let projects = {};
 let userLoggedIn = false;
-let appPort;
 
 if (process.platform === 'win32') {
     trayIconPath = path.join(__dirname, '../build/tray.ico');
@@ -64,7 +63,8 @@ const signedInTrayMenuTemplate: MenuItemConstructorOptions[] = [
         visible: false
     },
     {
-        type: 'separator'
+        type: 'separator',
+        id: 'top-sepatator'
     },
     {
         label: 'Start Activity',
@@ -136,7 +136,7 @@ const createWindow = () => {
         minHeight: 630
     });
 
-    win.loadURL(`http://localhost:${appPort}`);
+    win.loadURL('http://localhost:51327');
 
     // win.webContents.openDevTools();
 
@@ -190,6 +190,14 @@ const createTrayWindow = () => {
 
     this.trayWindow.on('blur', () => {
         this.trayWindow.hide();
+    });
+
+    this.tray.on('click', () => {
+        this.tray.popUpContextMenu();
+    });
+
+    this.tray.on('double-click', () => {
+        openApp();
     });
 
     this.trayWindow.setPosition(trayXPosition.x, trayXPosition.y, true);
@@ -450,6 +458,7 @@ ipcMain.on('win-currentActivity-ready', (event, message) => {
             // User has current activity
             trayMenu.getMenuItemById('stop').visible = true;
             trayMenu.getMenuItemById('rename').visible = true;
+            trayMenu.getMenuItemById('top-sepatator').visible = true;
             if (trayMenu.getMenuItemById('start')['submenu'].items.length !== 0) {
                 trayMenu.getMenuItemById('start')['submenu'].getMenuItemById(message.project).enabled = false;
             }
@@ -459,6 +468,7 @@ ipcMain.on('win-currentActivity-ready', (event, message) => {
             // User doesn't have current activity
             trayMenu.getMenuItemById('stop').visible = false;
             trayMenu.getMenuItemById('rename').visible = false;
+            trayMenu.getMenuItemById('top-sepatator').visible = false;
             if (message.project) {
                 trayMenu.getMenuItemById('start')['submenu'].getMenuItemById(message.project).enabled = true;
             } else if (currentActivity.project) {
@@ -486,8 +496,7 @@ app.on('ready', () => {
     setupApplicationMenu();
     const expressApp = express();
     expressApp.use('/', express.static(path.join(__dirname, '/../app/')));
-    const listener = expressApp.listen(5000, () => {
-        appPort = listener.address().port;
+    expressApp.listen(51327, () => {
         createWindow();
         createTrayWindow();
     });
