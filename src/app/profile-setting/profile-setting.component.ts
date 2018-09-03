@@ -175,8 +175,9 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
       }
     }
     if (this.submitted) {
-      this.userService.updateSettings(this.settings).then(() => {
+      this.userService.updateSettings(this.settings).then((user) => {
         this.submitted = false;
+        this.store.dispatch(this.userActions.updateUserSettings(this.settings));
         this.showError('Setting Updated!' );
       }).catch(error => {
         this.submitted = false;
