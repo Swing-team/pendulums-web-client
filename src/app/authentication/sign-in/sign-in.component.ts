@@ -53,6 +53,8 @@ export class SignInComponent {
               } else if (JSON.parse(error.error).type === 0) {
                 this.errorMessage = 'Email or password mismatch';
               }
+            } else if (error.status === 503) {
+              this.errorMessage = 'You have reached the authentication limits, please try in a few minutes!';
             } else {
               this.errorMessage = 'Server communication error';
             }

@@ -52,6 +52,7 @@ export class AppComponent implements OnInit {
     private appService: AppService,
     private unSyncedActivityActions: UnSyncedActivityActions,
     private appStateSelectors: AppStateSelectors,
+    private errorMessage: string,
     // needed for dynamically loaded components
     public viewContainerRef: ViewContainerRef
   ) {
@@ -105,7 +106,13 @@ export class AppComponent implements OnInit {
 
   signOut() {
     this.authService.signOut()
-      .then(() => {});
+      .then(() => {})
+      .catch((error) => {
+        if (error.status === 503) {
+          // Not sure about this code below. please check!
+          this.errorMessage = 'You have reached the authentication limits, please try in a few minutes!'
+        }
+      });
   }
 
   clickedOutSideOfMenu(event) {

@@ -130,7 +130,11 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
           .catch(error => {
             this.submitted = false;
             console.log('error is: ', error);
-            this.showError('Server communication error');
+            if (error.status === 503) {
+              this.showError('You have reached the authentication limits, please try in a few minutes!');
+            } else {
+              this.showError('Server communication error');
+            }
           });
       } else {
         this.submitted = false;

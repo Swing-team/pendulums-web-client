@@ -50,6 +50,8 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
               this.errorMessage = 'Your information not found';
             } else if (error.status === 400) {
               this.errorMessage = 'Bad request.';
+            } else if (error.status === 503) {
+              this.errorMessage = 'You have reached the authentication limits, please try in a few minutes!';
             } else {
               this.errorMessage = 'Server communication error';
             }
