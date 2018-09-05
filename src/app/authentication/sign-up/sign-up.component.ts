@@ -1,5 +1,6 @@
 import { Component }                from '@angular/core';
 import { AuthenticationService }    from '../../core/services/authentication.service';
+import { Router }                   from '@angular/router';
 
 const EMAIL_REGEX = /^(?=.{8,64}$)[\w!#$%&'*+/=?`{|}~^-]+(?:\.[\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,6}$/;
 
@@ -20,6 +21,7 @@ export class SignUpComponent {
 
   constructor(
     private authService: AuthenticationService,
+    private router: Router
   ) {}
 
   signUp() {
@@ -71,5 +73,9 @@ export class SignUpComponent {
       return false;
     }
     return true;
+  }
+
+  redirectToSignIn() {
+    this.router.navigate(['signIn']);
   }
 }

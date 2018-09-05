@@ -1,6 +1,7 @@
 import { Component }                  from '@angular/core';
 import { AuthenticationService }      from '../../core/services/authentication.service';
 import { Location }                   from '@angular/common';
+import { Router }                     from '@angular/router';
 
 const EMAIL_REGEX = /^(?=.{8,64}$)[\w!#$%&'*+/=?`{|}~^-]+(?:\.[\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,6}$/;
 
@@ -18,7 +19,8 @@ export class ForgotPasswordComponent {
 
   constructor(
     private authService: AuthenticationService,
-    private location: Location
+    private location: Location,
+    private router: Router
   ) {}
 
   resetRequest() {
@@ -58,5 +60,9 @@ export class ForgotPasswordComponent {
       return false;
     }
     return true;
+  }
+
+  redirectToSignIn() {
+    this.router.navigate(['signIn']);
   }
 }
