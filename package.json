@@ -46,7 +46,6 @@
     "jdenticon": "^1.8.0",
     "lodash": "^4.17.10",
     "moment": "^2.22.1",
-    "ng-recaptcha": "^3.0.5",
     "ng2-img-cropper": "^0.9.0",
     "ng2-nvd3": "^2.0.0",
     "nvd3": "^1.8.6",

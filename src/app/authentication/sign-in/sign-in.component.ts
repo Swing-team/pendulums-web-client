@@ -30,41 +30,39 @@ export class SignInComponent {
     private syncService: SyncService
   ) {}
 
-  signIn(captchaResponse: string) {
-    if (captchaResponse) {
-      this.comingSoon = false;
-      if (!this.submitted) {
-        this.submitted = true;
-        this.errorMessage = null;
-        if (this.validation(this.authUser)) {
-          this.authUser.email = this.authUser.email.toLowerCase();
-          this.authService.signIn(captchaResponse, this.authUser)
-            .then(() => {
-              this.store.dispatch(this.statusActions.updateIsLogin(true));
-              this.syncService.init();
-              this.router.navigate(['dashboard']);
-              this.submitted = false;
-            })
-            .catch(error => {
-              this.submitted = false;
-              window['grecaptcha'].reset();
-              console.log('error is: ', error);
-              if (error.status === 400) {
-                if (JSON.parse(error.error).type === 1) {
-                  this.errorMessage = 'Please verify your email (the sent email may be in your spam folder).';
-                } else if (JSON.parse(error.error).type === 0) {
-                  this.errorMessage = 'Email or password mismatch';
-                } else if (JSON.parse(error.error).type === 3) {
-                  this.errorMessage = 'reCaptcha Error please try again';
-                }
-              } else {
-                this.errorMessage = 'Server communication error';
+  signIn() {
+    this.comingSoon = false;
+    if (!this.submitted) {
+      this.submitted = true;
+      this.errorMessage = null;
+      if (this.validation(this.authUser)) {
+        this.authUser.email = this.authUser.email.toLowerCase();
+        this.authService.signIn(this.authUser)
+          .then(() => {
+            this.store.dispatch(this.statusActions.updateIsLogin(true));
+            this.syncService.init();
+            this.router.navigate(['dashboard']);
+            this.submitted = false;
+          })
+          .catch(error => {
+            this.submitted = false;
+            window['grecaptcha'].reset();
+            console.log('error is: ', error);
+            if (error.status === 400) {
+              if (JSON.parse(error.error).type === 1) {
+                this.errorMessage = 'Please verify your email (the sent email may be in your spam folder).';
+              } else if (JSON.parse(error.error).type === 0) {
+                this.errorMessage = 'Email or password mismatch';
+              } else if (JSON.parse(error.error).type === 3) {
+                this.errorMessage = 'reCaptcha Error please try again';
               }
-            });
-        } else {
-          this.submitted = false;
-          window['grecaptcha'].reset();
-        }
+            } else {
+              this.errorMessage = 'Server communication error';
+            }
+          });
+      } else {
+        this.submitted = false;
+        window['grecaptcha'].reset();
       }
     }
   }
