@@ -161,7 +161,7 @@ const createWindow = () => {
 };
 
 const createTrayWindow = () => {
-    this.tray = new Tray(trayIconPath);
+    tray = new Tray(trayIconPath);
     const screenBounds = screen.getPrimaryDisplay().bounds;
     const trayWindowWidth = 500;
     // set the x position to center of the screen
@@ -169,7 +169,7 @@ const createTrayWindow = () => {
         x : screenBounds.width / 2 - (trayWindowWidth / 2),
         y: 0
     }
-    this.trayWindow = new BrowserWindow({
+    trayWindow = new BrowserWindow({
         width: 500,
         height: 90,
         show: false,
@@ -180,29 +180,29 @@ const createTrayWindow = () => {
         movable: false,
     });
 
-    this.trayWindow.loadURL(url.format({
+    trayWindow.loadURL(url.format({
         pathname: path.join(__dirname, '../tray/tray.html'),
         protocol: 'file:',
         slashes: true
     }));
 
-    // this.trayWindow.webContents.openDevTools();
+    // trayWindow.webContents.openDevTools();
 
-    this.trayWindow.on('blur', () => {
-        this.trayWindow.hide();
+    trayWindow.on('blur', () => {
+        trayWindow.hide();
     });
 
-    this.tray.on('click', () => {
-        this.tray.popUpContextMenu();
+    tray.on('click', () => {
+        tray.popUpContextMenu();
     });
 
-    this.tray.on('double-click', () => {
+    tray.on('double-click', () => {
         openApp();
     });
 
-    this.trayWindow.setPosition(trayXPosition.x, trayXPosition.y, true);
+    trayWindow.setPosition(trayXPosition.x, trayXPosition.y, true);
 
-    this.tray.setContextMenu(trayMenu);
+    tray.setContextMenu(trayMenu);
 };
 
 const setupApplicationMenu = () => {
@@ -397,12 +397,12 @@ const startActivity = (id) => {
         project: projects[id]
     }
     win.webContents.send('win-start-or-stop', message);
-    this.trayWindow.show();
+    trayWindow.show();
 };
 
 const stopActivity = () => {
     trayMenu.getMenuItemById('stop').visible = false;
-    this.tray.setContextMenu(trayMenu)
+    tray.setContextMenu(trayMenu)
     const message = {
         activity: null,
         project: projects[currentActivity.project]
@@ -411,7 +411,7 @@ const stopActivity = () => {
 };
 
 const renameActivity = () => {
-    this.trayWindow.show();
+    trayWindow.show();
 };
 
 ipcMain.on('win-user-ready', (event, user) => {
@@ -420,10 +420,10 @@ ipcMain.on('win-user-ready', (event, user) => {
         userLoggedIn = true;
     } else {
         trayMenu = Menu.buildFromTemplate(signedOutTrayMenuTemplate);
-        this.tray.setImage(trayIconPath);
+        tray.setImage(trayIconPath);
         userLoggedIn = false;
     }
-    this.tray.setContextMenu(trayMenu);
+    tray.setContextMenu(trayMenu);
 });
 
 ipcMain.on('win-projects-ready', (event, arg) => {
@@ -440,12 +440,12 @@ ipcMain.on('win-projects-ready', (event, arg) => {
                 enabled: !(currentActivity.project && currentActivity.project === project.id)
             }));
         }
-        this.tray.setContextMenu(trayMenu);
+        tray.setContextMenu(trayMenu);
     }
 });
 
 ipcMain.on('tray-rename-activity', (event, message) => {
-    this.trayWindow.hide();
+    trayWindow.hide();
     win.webContents.send('win-rename-activity', {
         taskName: message.taskName,
         project: projects[message.project]
@@ -462,8 +462,8 @@ ipcMain.on('win-currentActivity-ready', (event, message) => {
             if (trayMenu.getMenuItemById('start')['submenu'].items.length !== 0) {
                 trayMenu.getMenuItemById('start')['submenu'].getMenuItemById(message.project).enabled = false;
             }
-            this.tray.setContextMenu(trayMenu)
-            this.tray.setImage(activeTrayIconPath);
+            tray.setContextMenu(trayMenu)
+            tray.setImage(activeTrayIconPath);
         } else {
             // User doesn't have current activity
             trayMenu.getMenuItemById('stop').visible = false;
@@ -474,11 +474,11 @@ ipcMain.on('win-currentActivity-ready', (event, message) => {
             } else if (currentActivity.project) {
                 trayMenu.getMenuItemById('start')['submenu'].getMenuItemById(currentActivity.project).enabled = true;
             }
-            this.tray.setContextMenu(trayMenu)
-            this.tray.setImage(trayIconPath);
+            tray.setContextMenu(trayMenu)
+            tray.setImage(trayIconPath);
         }
         currentActivity = message;
-        this.trayWindow.webContents.send('tray-currentActivity-ready', {
+        trayWindow.webContents.send('tray-currentActivity-ready', {
             currentActivity,
             projectName: currentActivity.project ? projects[currentActivity.project] : ''
         });
@@ -486,7 +486,7 @@ ipcMain.on('win-currentActivity-ready', (event, message) => {
 });
 
 ipcMain.on('trray-hide-tray-window', () => {
-    this.trayWindow.hide();
+    trayWindow.hide();
 });
 
 // This method will be called when Electron has finished
