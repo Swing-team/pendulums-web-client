@@ -338,14 +338,18 @@ export class SwingCalendarComponent implements OnInit {
         })
       } else if (this.startRange) {
         this.endRange = sDate;
-        const tempStartDate =  moment()
-          .year(this.startRange.year)
-          .month(this.startRange.month - 1 )
-          .date(this.startRange.date);
-        const tempEndDate = moment()
-          .year(this.endRange.year)
-          .month(this.endRange.month - 1 )
-          .date(this.endRange.date);
+        // const tempStartDate =  moment()
+        //   .year(this.startRange.year)
+        //   .month(this.startRange.month - 1 )
+        //   .date(this.startRange.date);
+        // const tempEndDate = moment()
+        //   .year(this.endRange.year)
+        //   .month(this.endRange.month - 1 )
+        //   .date(this.endRange.date);
+        const startMili = Date.parse(`${this.startRange.month} ${this.startRange.date}, ${this.startRange.year}`);
+        const tempStartDate = moment(startMili);
+        const endMili = Date.parse(`${this.endRange.month} ${this.endRange.date}, ${this.endRange.year}`);
+        const tempEndDate = moment(endMili);
         let result: any;
         if (tempStartDate.isBefore(tempEndDate)) {
           result = {
