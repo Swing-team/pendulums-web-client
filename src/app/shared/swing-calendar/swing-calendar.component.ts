@@ -134,7 +134,8 @@ export class SwingCalendarComponent implements OnInit {
     const temp = [];
     for (let i = 1; i <= tempLastDate; i++) {
       const tempRangeStatus = this.decideDateRangeStatus(i, this.months.indexOf(month), year);
-      const currentDate = moment().year(year).month(month).date(i);
+      const currentDateMili = Date.parse(`${month} ${i}, ${year}`);
+      const currentDate = moment(currentDateMili);
       let dbld = false;
       // To disable Days - Index based 0-6
       for (let dayIndex = 0; dayIndex < this.disableDays.length; dayIndex++) {
@@ -401,7 +402,9 @@ export class SwingCalendarComponent implements OnInit {
       if (sDate.date !== '') {
         const tempMonth = this.months.indexOf(this.currMonth);
          // Set the new date array with active date
-        const selectedDate = moment().year(this.currYear).month(tempMonth).date(sDate.date);
+        // const selectedDate = moment().year(this.currYear).month(tempMonth).date(sDate.date);
+        const selectedDateMili = Date.parse(`${tempMonth + 1} ${sDate.date}, ${this.currYear}`);
+        const selectedDate = moment(selectedDateMili);
         if (selectedDate.isSameOrBefore(moment())) {
           this.dateSelected.next(selectedDate);
         }
@@ -436,8 +439,10 @@ export class SwingCalendarComponent implements OnInit {
         break;
       }
       case 'last3months': {
+        const today = new Date();
+        const leftMonths = today.setMonth(today.getMonth() - 3);
         result = {
-          'start' : moment().subtract(3, 'months'),
+          'start' : moment(leftMonths),
           'end' : moment()
         };
         break;
