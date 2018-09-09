@@ -119,6 +119,8 @@ export default function reducer(state = initialState, action: ActionWithPayload<
         }
       });
       newState.entities[action.payload.projectId].teamMembers.splice(removedMemberIndex, 1);
+      newState.entities[action.payload.projectId].activities = newState.entities[action.payload.projectId].activities
+        .filter(activity => activity.user !== action.payload.memberId)
       return newState;
     }
 
