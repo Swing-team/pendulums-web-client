@@ -20,7 +20,7 @@
     <li title="Give us a gift"><a [ngClass]="{'is-active': activeItemNumber === 4}"
       (click)="showModal('DonationComponent')"><span class="icon-gift"></span></a></li>
     <li title="Sync">
-      <a (click)="syncSummary()" [ngClass]="{'is-disabled': !netConnected, 'ps-sync-animation': syncing, 'ps-sync-disable': syncing}">
+      <a (click)="syncSummary()" [ngClass]="{'is-disabled': !netConnected, 'ps-sync-animation': syncing, 'ps-sync-disable': syncing}" style="transform: rotate(0deg);">
         <span class="icon-refresh"></span>
       </a>
     </li>
