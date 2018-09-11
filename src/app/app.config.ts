@@ -11,21 +11,21 @@ export class AppConfig {
 }
 
 export const APP_DI_CONFIG: AppConfig = {
-  // socketEndpoint: 'http://localhost:1337',
+  socketEndpoint: 'http://192.168.1.104:1337',
   // production
-  socketEndpoint: 'https://app.pendulums.io',
-  // socketPath: '/socket.io',
+  // socketEndpoint: 'https://app.pendulums.io',
+  socketPath: '/socket.io',
   // production
-  socketPath: '/api/socket.io',
-  // apiEndpoint: 'http://localhost:1337',
+  // socketPath: '/api/socket.io',
+  apiEndpoint: 'http://192.168.1.104:1337',
   // production
-  apiEndpoint: 'https://app.pendulums.io/api',
-  // httpOptions: { withCredentials: true, responseType: 'json' },
+  // apiEndpoint: 'https://app.pendulums.io/api',
+  httpOptions: { withCredentials: true, responseType: 'json' },
   // production
-  httpOptions: { responseType: 'json' },
-  // imagesEndpoint: 'http://localhost:1337/images',
+  // httpOptions: { responseType: 'json' },
+  imagesEndpoint: 'http://192.168.1.104:1337/images',
   // production
-  imagesEndpoint: 'https://app.pendulums.io/api/images',
+  // imagesEndpoint: 'https://app.pendulums.io/api/images',
 };
 
 @NgModule({
