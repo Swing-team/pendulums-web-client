@@ -19,7 +19,7 @@
     </li>
     <li title="Give us a gift"><a [ngClass]="{'is-active': activeItemNumber === 4 , 'is-disabled': !netConnected}" target="_blank" href="https://www.coinpayments.net/index.php?cmd=_donate&reset=1&merchant=d88653deee05911e2438e35ec41c865e&item_name=Give%20some%20love%20to%20Pendulums%20project&currency=USD&amountf=10.00000000&allow_amount=1&want_shipping=0&allow_extra=1&cstyle=grid2"><span class="icon-gift"></span></a></li>
     <li title="Sync">
-      <a (click)="syncSummary()">
+      <a (click)="syncSummary()" [ngClass]="{'is-disabled': !netConnected}">
         <span class="icon-refresh"></span>
       </a>
     </li>
