@@ -10,6 +10,7 @@ import { ErrorService }                  from '../error/error.service';
 import { ModalService }                  from '../modal/modal.service';
 import { AppService }                    from '../services/app.service';
 import { AppInfoComponent }              from './app-info/app-info.component';
+import { SyncService }                   from '../services/sync.service';
 
 @Component({
   selector: 'side-menu',
@@ -34,7 +35,8 @@ export class SideMenuComponent implements OnInit {
                private router: Router,
                private errorService: ErrorService,
                private eRef: ElementRef,
-               private modalService: ModalService) {
+               private modalService: ModalService,
+               private syncService: SyncService) {
                }
 
   ngOnInit() {
@@ -125,6 +127,10 @@ export class SideMenuComponent implements OnInit {
         }
       }
     }
+  }
+
+  syncSummary() {
+    this.syncService.autoSync();
   }
 
   showInfoModal() {
