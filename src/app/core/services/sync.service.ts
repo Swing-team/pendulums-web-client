@@ -25,7 +25,7 @@ export class SyncService {
   private currentActivity: Observable<any>;
   private currentActivityProjectId: string;
   private isLogin: boolean;
-  private responseResults = [];
+  private responseResults: Promise<any>[] = [];
 
   constructor(@Inject(APP_CONFIG) private config,
               private http: HttpClient,
@@ -99,7 +99,7 @@ export class SyncService {
     });
   }
 
-  autoSync(): void {
+  autoSync(): Promise<any>[] {
     if (this.tempState) {
       const syncData = {
         currentActivity: null,
@@ -135,6 +135,7 @@ export class SyncService {
     } else {
       this.getSummaryOnline();
     }
+    return this.responseResults;
   }
 
   connectSocket() {
