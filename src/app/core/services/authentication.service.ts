@@ -20,10 +20,9 @@ export class AuthenticationService {
     this.options = {...this.config.httpOptions, responseType: 'text'};
   }
 
-  signIn(captchaResponse, authUser): Promise<any> {
+  signIn(authUser): Promise<any> {
     return this.http
-      .post(this.config.apiEndpoint + '/auth/signin?g-recaptcha-response=' + captchaResponse,
-      JSON.stringify(authUser), this.options)
+      .post(this.config.apiEndpoint + '/auth/signin', JSON.stringify(authUser), this.options)
       .toPromise()
       .then(() => {})
       .catch(this.handleError);

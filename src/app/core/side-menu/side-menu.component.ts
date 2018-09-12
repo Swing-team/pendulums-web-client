@@ -10,6 +10,8 @@ import { ErrorService }                  from '../error/error.service';
 import { ModalService }                  from '../modal/modal.service';
 import { AppService }                    from '../services/app.service';
 import { AppInfoComponent }              from './app-info/app-info.component';
+import { DonationComponent }             from './donation/donation.component'
+import { SyncService }                   from '../services/sync.service';
 
 @Component({
   selector: 'side-menu',
@@ -29,12 +31,14 @@ export class SideMenuComponent implements OnInit {
   pendulumNotification: boolean;
   notificationIsActive = false;
   activeItemNumber = 0;
+  syncing = false;
 
   constructor (@Inject(APP_CONFIG) private config,
                private router: Router,
                private errorService: ErrorService,
                private eRef: ElementRef,
-               private modalService: ModalService) {
+               private modalService: ModalService,
+               private syncService: SyncService) {
                }
 
   ngOnInit() {
@@ -127,11 +131,29 @@ export class SideMenuComponent implements OnInit {
     }
   }
 
-  showInfoModal() {
-    this.modalService.show({
-      component: AppInfoComponent,
-      inputs: {}
-    });
+  syncSummary() {
+    if (!this.netConnected) {
+      this.showError('This feature is not available in offline mode' );
+    } else {
+      this.syncing = true;
+      Promise.all(this.syncService.autoSync())
+        .then(() => this.syncing = false)
+        .catch(() => this.syncing = false);
+    }
+  }
+
+  showModal(componentName: string) {
+    if (componentName === 'AppInfoComponent') {
+      this.modalService.show({
+        component: AppInfoComponent,
+        inputs: {}
+      });
+    } else if (componentName === 'DonationComponent') {
+      this.modalService.show({
+        component: DonationComponent,
+        inputs: {}
+      });
+    }
   }
 
   showError(error) {

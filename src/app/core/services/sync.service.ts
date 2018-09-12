@@ -25,7 +25,7 @@ export class SyncService {
   private currentActivity: Observable<any>;
   private currentActivityProjectId: string;
   private isLogin: boolean;
-  private responseResults = [];
+  private responseResults: Promise<any>[] = [];
 
   constructor(@Inject(APP_CONFIG) private config,
               private http: HttpClient,
@@ -99,16 +99,16 @@ export class SyncService {
     });
   }
 
-  autoSync(): void {
+  autoSync(): Promise<any>[] {
     if (this.tempState) {
       const syncData = {
         currentActivity: null,
         activities: null
       };
-      if (this.tempState.unSyncedActivity.entities.length > 0) {
+      if (this.tempState.unSyncedActivity && this.tempState.unSyncedActivity.entities.length > 0) {
         syncData.activities = this.tempState.unSyncedActivity.entities;
       }
-      if (this.tempState.currentActivity.startedAt) {
+      if (this.tempState.currentActivity && this.tempState.currentActivity.startedAt) {
         syncData.currentActivity = this.tempState.currentActivity;
         delete syncData.currentActivity.stoppedAt;
       }
@@ -135,6 +135,7 @@ export class SyncService {
     } else {
       this.getSummaryOnline();
     }
+    return this.responseResults;
   }
 
   connectSocket() {
@@ -163,6 +164,10 @@ export class SyncService {
         if (this.currentActivityProjectId && (this.currentActivityProjectId.toString() === data.data.toString())) {
           this.store.dispatch(this.currentActivityActions.clearCurrentActivity());
         }
+      }
+
+      if (data.type === 'syncNeeded') {
+        this.autoSync();
       }
     });
 

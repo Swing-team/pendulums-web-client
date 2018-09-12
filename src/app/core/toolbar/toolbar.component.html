@@ -1,7 +1,7 @@
 <nav class="nav ps-nav">
   <div class="ps-nav-left nav-left ps-is-visible" (click)="showSideMenu($event)">
     <div class="nav-item ps-nav-item-menu">
-      <span class="ps-notification-count"></span>
+      <span [ngClass]="{'ps-notification-count': hasNotification}"></span>
       <span  #menuIcon class="icon-menu ps-nav-menu-icon"></span>
     </div>
   </div>
