@@ -65,7 +65,7 @@ export class SyncService {
 
   syncData(data): Promise<any> {
     return this.http
-      .put(this.config.apiEndpoint + '/sync/activities' + '/activities?socketId=' + this.getSocketId()
+      .put(this.config.apiEndpoint + '/sync/activities' + '?socketId=' + this.getSocketId()
       , JSON.stringify(data), {...this.config.httpOptions, responseType: 'text'})
       .toPromise()
       .then(() => {
