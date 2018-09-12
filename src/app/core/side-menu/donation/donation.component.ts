@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import {
+  Component, Output, EventEmitter,
+  ElementRef, HostListener } from '@angular/core';
 
 @Component({
   selector: 'app-donation',
@@ -6,7 +8,15 @@ import { Component } from '@angular/core';
   styleUrls: ['./donation.component.sass']
 })
 export class DonationComponent {
+  @Output() clickedOutSideOfDonation = new EventEmitter();
 
-  constructor() { }
+  constructor(private ref: ElementRef) { }
+
+  @HostListener('document:click', ['$event'])
+  clickOutOfDonation(event) {
+    if (!this.ref.nativeElement.contains(event.target)) {
+      this.clickedOutSideOfDonation.emit(event);
+    }
+  }
 
 }

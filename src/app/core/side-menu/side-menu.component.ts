@@ -10,7 +10,6 @@ import { ErrorService }                  from '../error/error.service';
 import { ModalService }                  from '../modal/modal.service';
 import { AppService }                    from '../services/app.service';
 import { AppInfoComponent }              from './app-info/app-info.component';
-import { DonationComponent }             from './donation/donation.component'
 import { SyncService }                   from '../services/sync.service';
 
 @Component({
@@ -27,9 +26,12 @@ export class SideMenuComponent implements OnInit {
   @Input() netConnected: boolean;
   @Input() notifNum: number;
   @ViewChild('notifications') notifications;
+  @ViewChild('donation') donation;
+
   emailHash: any;
   pendulumNotification: boolean;
   notificationIsActive = false;
+  donationIsActive = false;
   activeItemNumber = 0;
   syncing = false;
 
@@ -83,6 +85,20 @@ export class SideMenuComponent implements OnInit {
     }
   }
 
+  toggleDonation() {
+    this.activeItemNumber = 4;
+    this.pendulumNotification = false;
+    this.donationIsActive = !this.donationIsActive;
+    if (!this.donationIsActive) {
+      if (this.router.url === '/dashboard') {
+        this.activeItemNumber = 3;
+      }
+      if (this.router.url === '/profile') {
+        this.activeItemNumber = 1;
+      }
+    }
+  }
+
   togglePendulumNotifications() {
     this.activeItemNumber = 5;
     this.pendulumNotification = !this.pendulumNotification;
@@ -100,6 +116,19 @@ export class SideMenuComponent implements OnInit {
     if (this.notifications.nativeElement.contains(event.target)) {
     } else {
       this.notificationIsActive = false;
+      if (this.router.url === '/dashboard') {
+        this.activeItemNumber = 3;
+      }
+      if (this.router.url === '/profile') {
+        this.activeItemNumber = 1;
+      }
+    }
+  }
+
+  clickedOutSideOfDonation(event) {
+    if (this.donation.nativeElement.contains(event.target)) {
+    } else {
+      this.donationIsActive = false;
       if (this.router.url === '/dashboard') {
         this.activeItemNumber = 3;
       }
@@ -146,11 +175,6 @@ export class SideMenuComponent implements OnInit {
     if (componentName === 'AppInfoComponent') {
       this.modalService.show({
         component: AppInfoComponent,
-        inputs: {}
-      });
-    } else if (componentName === 'DonationComponent') {
-      this.modalService.show({
-        component: DonationComponent,
         inputs: {}
       });
     }
