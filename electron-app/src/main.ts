@@ -20,7 +20,6 @@ let win;
 let willExitApp = false;
 let tray;
 let trayWindow;
-let trayVisibility = false;
 let trayIconPath;
 let activeTrayIconPath;
 let currentActivity = {
@@ -136,8 +135,15 @@ const createWindow = () => {
         minHeight: 630
     });
 
-    win.loadURL('http://localhost:51327');
+    
+    win.loadURL(url.format({
+        pathname: path.join(__dirname, '../app/index.html'),
+        protocol: 'file:',
+        slashes: true
+    }));
 
+
+    // win.loadURL('http://localhost:4200');
     // win.webContents.openDevTools();
 
     // Emitted when the window is closed.
@@ -505,12 +511,8 @@ if (shouldQuit) {
 // Some APIs can only be used after this event occurs.
 app.on('ready', () => {
     setupApplicationMenu();
-    const expressApp = express();
-    expressApp.use('/', express.static(path.join(__dirname, '/../app/')));
-    expressApp.listen(51327, () => {
-        createWindow();
-        createTrayWindow();
-    });
+    createWindow();
+    createTrayWindow();
 });
 
 // Quit when all windows are closed.
