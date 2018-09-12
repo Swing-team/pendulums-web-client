@@ -4,7 +4,7 @@ import {
 } from '@angular/core';
 import { APP_CONFIG }                       from '../../../../app.config';
 import { cloneDeep }                        from 'lodash';
-import { ActivityService }                  from '../../../shared/activity.service';
+import { ActivityService }                  from '../../../../core/services/activity.service';
 import { Project }                          from 'app/shared/state/project/project.model';
 import * as moment                          from 'moment';
 

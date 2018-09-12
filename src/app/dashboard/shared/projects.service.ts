@@ -5,11 +5,13 @@ import 'rxjs/add/operator/toPromise';
 
 import {APP_CONFIG, AppConfig} from '../../app.config';
 import {Project} from '../../shared/state/project/project.model';
+import { SyncService } from '../../core/services/sync.service';
 
 @Injectable()
 export class ProjectService {
   private options;
   constructor(private http: HttpClient,
+              private syncService: SyncService,
               @Inject(APP_CONFIG) private config: AppConfig) {
     this.options = {...this.config.httpOptions, responseType: 'text'};
   }
@@ -40,7 +42,8 @@ export class ProjectService {
 
   removeMember(projectId, userId): Promise<any> {
     return this.http
-      .delete(this.config.apiEndpoint + '/projects/' + projectId + '/team-members/' + userId, this.options)
+      .delete(this.config.apiEndpoint + '/projects/' + projectId + '/team-members/' + userId +
+      '?socketId=' + this.syncService.getSocketId(), this.options)
       .toPromise()
       .then(response => {
       })
@@ -49,8 +52,8 @@ export class ProjectService {
 
   inviteMember(projectId, invitedUser): Promise<any> {
     return this.http
-      .post(this.config.apiEndpoint + '/projects/' + projectId + '/invitation',
-        JSON.stringify(invitedUser), this.options)
+      .post(this.config.apiEndpoint + '/projects/' + projectId + '/invitation' +
+      '?socketId=' + this.syncService.getSocketId(), JSON.stringify(invitedUser), this.options)
       .toPromise()
       .then(response => {
 
@@ -63,7 +66,8 @@ export class ProjectService {
       body: JSON.stringify(invitedUser)
     };
     return this.http
-      .delete(this.config.apiEndpoint + '/projects/' + projectId + '/invitation', options)
+      .delete(this.config.apiEndpoint + '/projects/' + projectId + '/invitation' +
+      '?socketId=' + this.syncService.getSocketId(), options)
       .toPromise()
       .then(response => {
 
@@ -81,7 +85,8 @@ export class ProjectService {
 
   changeTeamMemberRole(projectId, memberId, role) {
     return this.http
-      .put(this.config.apiEndpoint + '/projects/' + projectId + '/roles',
+      .put(this.config.apiEndpoint + '/projects/' + projectId + '/roles' +
+      '?socketId=' + this.syncService.getSocketId(),
         JSON.stringify({
           userWithRole: {
             id: memberId,

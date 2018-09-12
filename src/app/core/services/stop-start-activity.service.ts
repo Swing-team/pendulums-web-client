@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Activity } from '../../shared/state/current-activity/current-activity.model';
 import { UnSyncedActivityActions } from '../../shared/state/unsynced-activities/unsynced-activities.actions';
 import { CurrentActivityActions } from '../../shared/state/current-activity/current-activity.actions';
-import { ActivityService } from '../../dashboard/shared/activity.service';
+import { ActivityService } from './activity.service';
 import { Store } from '@ngrx/store';
 import { ProjectsActions } from '../../shared/state/project/projects.actions';
 import { AppState } from '../../shared/state/appState';

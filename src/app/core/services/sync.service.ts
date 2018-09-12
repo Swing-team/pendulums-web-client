@@ -167,6 +167,7 @@ export class SyncService {
       }
 
       if (data.type === 'syncNeeded') {
+        console.log('hereeee')
         this.autoSync();
       }
     });
@@ -222,6 +223,10 @@ export class SyncService {
     } else {
       this.router.navigate(['signIn']);
     }
+  }
+
+  getSocketId(): string {
+    return this.socket.id;
   }
 
   closeConnection(): void {

@@ -6,7 +6,6 @@ import { HttpClientModule }       from '@angular/common/http';
 import { SwingSelectComponent }    from './swing-select/swing-select.component';
 import { SwingSwitchComponent }    from './swing-switch/swing-switch.component';
 import { IdenticonHashDirective }  from './identicon-hash.directive';
-import { ActivityService }         from '../dashboard/shared/activity.service';
 import { SwingCalendarComponent }  from './swing-calendar/swing-calendar.component';
 import { SwingTagInputComponent }  from './swing-tag-input/swing-tag-input.component';
 
@@ -29,8 +28,6 @@ import { SwingTagInputComponent }  from './swing-tag-input/swing-tag-input.compo
     SwingSwitchComponent,
     SwingTagInputComponent
   ],
-  providers:    [
-    ActivityService
-  ],
+  providers:    [  ],
 })
 export class SharedModule { }
