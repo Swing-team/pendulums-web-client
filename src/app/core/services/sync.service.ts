@@ -122,7 +122,7 @@ export class SyncService {
           })
           .catch(error => {
             console.log('error is: ', error);
-            if (error.status === 403) {
+            if (error.status === 403 || error.status === 504) {
               // do nothing
             } else {
               // todo: handle sync errors based on corrupted data
@@ -167,7 +167,11 @@ export class SyncService {
       }
 
       if (data.type === 'syncNeeded') {
-        this.autoSync();
+        Promise.all(this.responseResults).then(() => {
+          this.autoSync();
+        }).catch(() => {
+          console.log('Sync Needed')
+        });
       }
     });
 
