@@ -464,7 +464,6 @@ ipcMain.on('win-currentActivity-ready', (event, message) => {
             // User has current activity
             trayMenu.getMenuItemById('stop').visible = true;
             trayMenu.getMenuItemById('rename').visible = true;
-            trayMenu.getMenuItemById('top-sepatator').visible = true;
             if (trayMenu.getMenuItemById('start')['submenu'].items.length !== 0) {
                 trayMenu.getMenuItemById('start')['submenu'].getMenuItemById(message.project).enabled = false;
             }
@@ -474,7 +473,6 @@ ipcMain.on('win-currentActivity-ready', (event, message) => {
             // User doesn't have current activity
             trayMenu.getMenuItemById('stop').visible = false;
             trayMenu.getMenuItemById('rename').visible = false;
-            trayMenu.getMenuItemById('top-sepatator').visible = false;
             if (message.project) {
                 trayMenu.getMenuItemById('start')['submenu'].getMenuItemById(message.project).enabled = true;
             } else if (currentActivity.project) {
@@ -495,14 +493,14 @@ ipcMain.on('trray-hide-tray-window', () => {
     trayWindow.hide();
 });
 
-const shouldQuit = app.makeSingleInstance(function (commandLine, workingDirectory) {
+const gotTheLock = app.requestSingleInstanceLock();
+
+if (!gotTheLock) {
+    app.quit();
+} else {
     if (win) {
         win.show();
     }
-});
-
-if (shouldQuit) {
-    app.quit();
 }
   
 
