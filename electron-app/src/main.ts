@@ -128,8 +128,8 @@ let trayMenu = Menu.buildFromTemplate(signedInTrayMenuTemplate);
 const createWindow = () => {
     // Create the browser window.
     win = new BrowserWindow({
-        width: 920,
-        height: 630,
+        width: 1024,
+        height: 650,
         center: true,
         minWidth: 770,
         minHeight: 630
@@ -144,7 +144,7 @@ const createWindow = () => {
 
 
     // win.loadURL('http://localhost:4200');
-    // win.webContents.openDevTools();
+    win.webContents.openDevTools();
 
     // Emitted when the window is closed.
     win.on('closed', () => {
