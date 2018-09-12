@@ -38,7 +38,6 @@ export class SyncService {
               private projectsActions: ProjectsActions,
               private currentActivityActions: CurrentActivityActions,
               private unSyncedActivityActions: UnSyncedActivityActions,
-              private syncService: SyncService,
               private appService: AppService) {
     this.status = store.select('status');
     this.currentActivity = store.select('currentActivity');
@@ -66,7 +65,7 @@ export class SyncService {
 
   syncData(data): Promise<any> {
     return this.http
-      .put(this.config.apiEndpoint + '/sync/activities' + '/activities?socketId=' + this.syncService.getSocketId()
+      .put(this.config.apiEndpoint + '/sync/activities' + '/activities?socketId=' + this.getSocketId()
       , JSON.stringify(data), {...this.config.httpOptions, responseType: 'text'})
       .toPromise()
       .then(() => {
