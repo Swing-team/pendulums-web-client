@@ -167,16 +167,11 @@ export class SyncService {
       }
 
       if (data.type === 'syncNeeded') {
-<<<<<<< HEAD
-        console.log('hereeee')
-        this.autoSync();
-=======
         Promise.all(this.responseResults).then(() => {
           this.autoSync();
         }).catch(() => {
           console.log('Sync Needed')
         });
->>>>>>> 4dd37f2850065392b53ae8c750a8bbfeb11b43d2
       }
     });
 
