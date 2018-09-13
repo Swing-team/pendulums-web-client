@@ -5,12 +5,14 @@ import 'rxjs/add/operator/toPromise';
 
 import {APP_CONFIG, AppConfig} from '../../../app.config';
 import {Project} from '../../../shared/state/project/project.model';
+import { SyncService } from '../../services/sync.service';
 
 @Injectable()
 export class NotificationService {
   private options;
   constructor(
     private http: HttpClient,
+    private syncService: SyncService,
     @Inject(APP_CONFIG) private config: AppConfig
   ) {
     this.options = {...this.config.httpOptions, responseType: 'text'};
@@ -18,7 +20,8 @@ export class NotificationService {
 
   accept(projectId): Promise<Project> {
     return this.http
-      .get(this.config.apiEndpoint + '/projects/' + projectId + '/accept-invitation', this.config.httpOptions)
+      .get(this.config.apiEndpoint + '/projects/' + projectId + '/accept-invitation' +
+      '?socketId=' + this.syncService.getSocketId(), this.config.httpOptions)
       .toPromise()
       .then(response => response as Project)
       .catch(this.handleError);
@@ -26,7 +29,8 @@ export class NotificationService {
 
   deny(projectId): Promise<Project> {
     return this.http
-      .get(this.config.apiEndpoint + '/projects/' + projectId + '/deny-invitation', this.options)
+      .get(this.config.apiEndpoint + '/projects/' + projectId + '/deny-invitation' +
+      '?socketId=' + this.syncService.getSocketId(), this.options)
       .toPromise()
       .then(response => projectId)
       .catch(this.handleError);

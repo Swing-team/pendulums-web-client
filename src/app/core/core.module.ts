@@ -43,6 +43,7 @@ import { ProjectsSelectors }            from '../shared/state/project/projects.s
 import { RouterChangeListenerService }  from './services/router-change-listener.service';
 import { InviteNotifComponent }         from './side-menu/notification/invite-notif/invite-notif.component';
 import { DonationComponent }            from './side-menu/donation/donation.component';
+import { ActivityService } from './services/activity.service';
 
 @NgModule({
   imports:      [
@@ -92,6 +93,7 @@ import { DonationComponent }            from './side-menu/donation/donation.comp
     StopStartActivityService,
     AppService,
     RouterChangeListenerService,
+    ActivityService,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],
   entryComponents: [

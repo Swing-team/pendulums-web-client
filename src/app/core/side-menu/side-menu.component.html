@@ -18,7 +18,7 @@
       </a>
     </li>
     <li title="Give us a gift"><a [ngClass]="{'is-active': activeItemNumber === 4}"
-      (click)="showModal('DonationComponent')"><span class="icon-gift"></span></a></li>
+      #donation (click)="toggleDonation()"><span class="icon-gift"></span></a></li>
     <li title="Sync">
       <a (click)="syncSummary()" [ngClass]="{'is-disabled': !netConnected, 'ps-sync-animation': syncing, 'ps-sync-disable': syncing}" style="transform: rotate(0deg);">
         <span class="icon-refresh"></span>
@@ -55,3 +55,5 @@
   </div>
 </article>
 
+<app-donation #donation *ngIf="donationIsActive" class="ps-notifications-container ps-notifications-container-top"
+              (clickedOutSideOfDonation)="clickedOutSideOfDonation($event)"> </app-donation>

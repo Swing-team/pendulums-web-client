@@ -65,7 +65,8 @@ export class SyncService {
 
   syncData(data): Promise<any> {
     return this.http
-      .put(this.config.apiEndpoint + '/sync/activities', JSON.stringify(data), {...this.config.httpOptions, responseType: 'text'})
+      .put(this.config.apiEndpoint + '/sync/activities' + '?socketId=' + this.getSocketId()
+      , JSON.stringify(data), {...this.config.httpOptions, responseType: 'text'})
       .toPromise()
       .then(() => {
     })
@@ -122,7 +123,7 @@ export class SyncService {
           })
           .catch(error => {
             console.log('error is: ', error);
-            if (error.status === 403) {
+            if (error.status === 403 || error.status === 504) {
               // do nothing
             } else {
               // todo: handle sync errors based on corrupted data
@@ -167,7 +168,11 @@ export class SyncService {
       }
 
       if (data.type === 'syncNeeded') {
-        this.autoSync();
+        Promise.all(this.responseResults).then(() => {
+          this.autoSync();
+        }).catch(() => {
+          console.log('Sync Needed')
+        });
       }
     });
 
@@ -222,6 +227,10 @@ export class SyncService {
     } else {
       this.router.navigate(['signIn']);
     }
+  }
+
+  getSocketId(): string {
+    return this.socket.id;
   }
 
   closeConnection(): void {
