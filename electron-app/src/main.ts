@@ -7,7 +7,8 @@ import {
     ipcMain,
     screen,
     MenuItemConstructorOptions,
-    MenuItem
+    MenuItem,
+    Notification
 }  from 'electron';
 import * as express from 'express';
 import * as path from 'path';
@@ -511,6 +512,18 @@ app.on('ready', () => {
     setupApplicationMenu();
     createWindow();
     createTrayWindow();
+
+    ipcMain.on('update-available', () => {
+        console.log('update available')
+        let notification = new Notification({
+            title: 'Update available',
+            body: 'Click to download new version'
+        });
+        notification.on('click', () => {
+            shell.openExternal('https://pendulums.io')
+        })
+        notification.show();
+    });
 });
 
 // Quit when all windows are closed.

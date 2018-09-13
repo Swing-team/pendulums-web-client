@@ -15,7 +15,7 @@
     "productName": "Pendulums",
     "copyright": "Copyright © year Swing Team",
     "asar": true,
-    "electronVersion": "2.0.8",
+    "electronVersion": "3.0.0-beta.11",
     "files": [
       "src/main.js",
       "app",
@@ -56,8 +56,5 @@
       "target": "nsis",
       "icon": "./build/icon.ico"
     }
-  },
-  "dependencies": {
-    "express": "^4.16.3"
   }
 }

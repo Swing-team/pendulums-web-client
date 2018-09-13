@@ -51,5 +51,11 @@ export class ElectronService {
     store.select('user').subscribe((user) => {
       ipcRenderer.send('win-user-ready', user);
     });
+
+    store.select('status').subscribe((status) => {
+      if (status.updateNeeded) {
+        ipcRenderer.send('update-available');
+      }
+    });
   }
 }
