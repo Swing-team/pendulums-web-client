@@ -85,6 +85,13 @@ export class AppComponent implements OnInit {
         this.syncService.closeConnection();
         this.router.navigate(['signIn']);
       }
+
+      if ((status.isLogin === true) && status.isLogin !== this.previousLoginStatus) {
+        if (this.router.url === '/dashboard' || this.router.url === '/signIn') {
+          this.router.navigate(['dashboard']);
+        }
+      }
+
       this.previousLoginStatus = status.isLogin;
 
       // To handle connection indicator

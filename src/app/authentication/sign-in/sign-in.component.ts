@@ -41,7 +41,6 @@ export class SignInComponent {
           .then(() => {
             this.store.dispatch(this.statusActions.updateIsLogin(true));
             this.syncService.init();
-            this.router.navigate(['dashboard']);
             this.submitted = false;
           })
           .catch(error => {

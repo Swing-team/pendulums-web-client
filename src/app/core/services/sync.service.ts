@@ -11,9 +11,7 @@ import { UserActions }                  from '../../shared/state/user/user.actio
 import { ProjectsActions }              from '../../shared/state/project/projects.actions';
 import { CurrentActivityActions }       from '../../shared/state/current-activity/current-activity.actions';
 import { UnSyncedActivityActions }      from 'app/shared/state/unsynced-activities/unsynced-activities.actions';
-import { Router }                       from '@angular/router';
 import { UserService }                  from './user.service';
-import { AppService }                   from './app.service';
 import { Observable }                   from 'rxjs/Observable';
 import { Status }                       from '../../shared/state/status/status.model';
 
@@ -29,7 +27,6 @@ export class SyncService {
 
   constructor(@Inject(APP_CONFIG) private config,
               private http: HttpClient,
-              private router: Router,
               private userService: UserService,
               private store: Store<AppState>,
               private statusActions: StatusActions,
@@ -37,8 +34,7 @@ export class SyncService {
               private userActions: UserActions,
               private projectsActions: ProjectsActions,
               private currentActivityActions: CurrentActivityActions,
-              private unSyncedActivityActions: UnSyncedActivityActions,
-              private appService: AppService) {
+              private unSyncedActivityActions: UnSyncedActivityActions) {
     this.status = store.select('status');
     this.currentActivity = store.select('currentActivity');
     this.status.subscribe((status: Status) => {
@@ -200,16 +196,10 @@ export class SyncService {
               .createOrUpdate('activeUser', {data: user.id})
               .then(() => {});
           });
-        if (this.router.url === '/dashboard' || this.router.url === '/signIn') {
-          this.router.navigate(['dashboard']);
-        }
       })
       .catch(error => {
         if (error.status !== 403) {
           this.initialAppOffline();
-        } else {
-          console.log('error is: ', error);
-          this.router.navigate(['signIn']);
         }
       }));
   }
@@ -220,12 +210,9 @@ export class SyncService {
       this.store.dispatch(this.projectsActions.loadDbProjects(this.tempState.projects));
       this.store.dispatch(this.currentActivityActions.loadCurrentActivity(this.tempState.currentActivity));
       this.store.dispatch(this.unSyncedActivityActions.loadUnSyncedActivity(this.tempState.unSyncedActivity));
-      this.store.dispatch(this.statusActions.updateNetStatus(false));
-      if (this.router.url === '/dashboard' || this.router.url === '/signIn') {
-        this.router.navigate(['dashboard']);
-      }
+      this.store.dispatch(this.statusActions.updateStatus({netStatus: false, isLogin: true}));
     } else {
-      this.router.navigate(['signIn']);
+      this.store.dispatch(this.statusActions.updateStatus({isLogin: null}));
     }
   }
 
