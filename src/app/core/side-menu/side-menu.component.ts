@@ -1,14 +1,13 @@
 import {
-  Component, ElementRef, EventEmitter, HostListener, Inject,
+  Component, ElementRef, EventEmitter, HostListener,
   Input, OnInit, Output, ViewChild
 }                                        from '@angular/core';
 import { User }                          from '../../shared/state/user/user.model';
-import { APP_CONFIG }                    from '../../app.config';
+import { environment }                    from '../../../environments/environment';
 import { Md5 }                           from 'ts-md5/dist/md5';
 import { Router }                        from '@angular/router';
 import { ErrorService }                  from '../error/error.service';
 import { ModalService }                  from '../modal/modal.service';
-import { AppService }                    from '../services/app.service';
 import { AppInfoComponent }              from './app-info/app-info.component';
 import { SyncService }                   from '../services/sync.service';
 
@@ -34,9 +33,9 @@ export class SideMenuComponent implements OnInit {
   donationIsActive = false;
   activeItemNumber = 0;
   syncing = false;
+  environment = environment;
 
-  constructor (@Inject(APP_CONFIG) private config,
-               private router: Router,
+  constructor (private router: Router,
                private errorService: ErrorService,
                private eRef: ElementRef,
                private modalService: ModalService,

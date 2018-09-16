@@ -3,7 +3,7 @@
     <li title="Profile">
       <a [routerLink]="['/profile']" (click)="updateIndex(1)" [ngClass]="{'is-active': activeItemNumber === 1 }" >
         <img *ngIf="user.profileImage" class="ps-user-image"
-             src="{{user.profileImage? config.imagesEndpoint + '/profile/' + user.profileImage :
+             src="{{user.profileImage? environment.imagesEndpoint + '/profile/' + user.profileImage :
                       'assets/images/placeholder.png'}}" >
         <svg *ngIf="!user.profileImage" class="ps-user-image" width="36" height="36" [identiconHash]="emailHash">
           Fallback text for browsers not supporting inline svg

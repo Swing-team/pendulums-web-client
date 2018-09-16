@@ -1,8 +1,8 @@
 import * as _ from 'lodash';
 import {
-  Component, Inject, OnDestroy, OnInit
+  Component, OnDestroy, OnInit
 }                                           from '@angular/core';
-import { APP_CONFIG }                       from '../app.config';
+import { environment }                       from '../../environments/environment';
 import { AuthenticationService }            from '../core/services/authentication.service';
 import { ErrorService }                     from '../core/error/error.service';
 import { User }                             from '../shared/state/user/user.model';
@@ -24,6 +24,7 @@ import { Subscription }                     from 'rxjs/Subscription';
 })
 
 export class ProfileSettingComponent implements OnInit, OnDestroy {
+  environment = environment;
   rePassword: string;
   submitted = false;
   data = {newPassword: null, oldPassword: null};
@@ -36,8 +37,7 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
   private status: Observable<any>;
   private subscriptions: Array<Subscription> = [];
 
-  constructor (@Inject(APP_CONFIG) private config,
-               private authService: AuthenticationService,
+  constructor (private authService: AuthenticationService,
                private errorService: ErrorService,
                private store: Store<AppState>,
                private userActions: UserActions,
@@ -107,7 +107,7 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
       this.modalService.show({
         component: ImgCropperComponent,
         inputs: {
-          initialImage: this.userEdit.profileImage ? this.config.imagesEndpoint
+          initialImage: this.userEdit.profileImage ? environment.imagesEndpoint
           + '/profile/' + this.userEdit.profileImage :
           'assets/images/placeholder.png'
         },

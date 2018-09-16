@@ -4,7 +4,7 @@
       <div class="box">
         <div class="ps-profile-image-container">
           <img *ngIf="userEdit.profileImage" (click)="openImageModal()" class="ps-user-image"
-                src="{{userEdit.profileImage? config.imagesEndpoint + '/profile/' + userEdit.profileImage :
+                src="{{userEdit.profileImage? environment.imagesEndpoint + '/profile/' + userEdit.profileImage :
                         'assets/images/placeholder.png'}}">
           <svg *ngIf="!userEdit.profileImage" (click)="openImageModal()" class="ps-user-image"
                 width="36" height="36" [identiconHash]="emailHash">

@@ -4,8 +4,6 @@ import { HTTP_INTERCEPTORS }            from '@angular/common/http';
 
 import { StoreModule }                  from '@ngrx/store';
 
-import { AppConfigModule }              from '../app.config';
-
 import { reducerToken, reducers }       from '../shared/state/appState';
 import { UserActions }                  from '../shared/state/user/user.actions';
 import { ProjectsActions }              from '../shared/state/project/projects.actions';
@@ -50,7 +48,6 @@ import { ActivityService } from './services/activity.service';
     SharedModule,
     StoreModule.forRoot(reducerToken),
     RouterModule,
-    AppConfigModule,
     ImageCropperModule
   ],
   declarations: [

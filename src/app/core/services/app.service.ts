@@ -2,19 +2,17 @@ import { Inject, Injectable } from '@angular/core';
 import { HttpClient }         from '@angular/common/http';
 
 import 'rxjs/add/operator/toPromise';
-
-import {APP_CONFIG, AppConfig} from '../../app.config';
+import {environment} from '../../../environments/environment';
 
 @Injectable()
 export class AppService {
   constructor(
-    private http: HttpClient,
-    @Inject(APP_CONFIG) private config: AppConfig,
+    private http: HttpClient
   ) { }
 
   getAppVersion() {
     return this.http
-      .get(this.config.apiEndpoint + '/app/version', this.config.httpOptions)
+      .get(environment.apiEndpoint + '/app/version', environment.httpOptions)
       .toPromise()
       .then((response: any) => {
         return response.appVersion;

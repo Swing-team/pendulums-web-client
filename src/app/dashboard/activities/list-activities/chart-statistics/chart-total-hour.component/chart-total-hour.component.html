@@ -3,7 +3,7 @@
     <div *ngIf="!data.disabled" class="has-text-left ps-chart-total-hour-item-container">
       <span>
         <img class="ps-chart-total-hour-member-image" *ngIf="data.profileImage"
-             src="{{data.profileImage? config.imagesEndpoint + '/profile/' + data.profileImage :
+             src="{{data.profileImage? environment.imagesEndpoint + '/profile/' + data.profileImage :
                   'assets/images/placeholder.png'}}">
       <svg *ngIf="!data.profileImage" class="ps-chart-total-hour-member-image" width="20" height="20"
            [identiconHash]="getEmailHash(data.email)">

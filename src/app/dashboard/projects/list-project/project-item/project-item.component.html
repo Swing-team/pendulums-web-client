@@ -10,7 +10,7 @@
     <div class="card-content ps-project-item-card-content">
       <div class="media ps-project-item-card-content-media">
         <div class="media-left">
-          <figure [ngStyle]="{'background-image': project.image ? 'url(' + config.imagesEndpoint + '/projects/' + project.image + ')' :
+          <figure [ngStyle]="{'background-image': project.image ? 'url(' + environment.imagesEndpoint + '/projects/' + project.image + ')' :
                               'url(assets/images/placeholder.png)'}" class="image ps-project-image-container">
           </figure>
         </div>

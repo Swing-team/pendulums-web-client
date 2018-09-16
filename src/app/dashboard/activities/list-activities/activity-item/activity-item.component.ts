@@ -1,14 +1,14 @@
 import {
   Component, EventEmitter,
-  Inject, Input, OnInit, Output, ViewContainerRef
+  Input, OnInit, Output, ViewContainerRef
 } from '@angular/core';
 import { trigger, style, transition, animate }  from '@angular/animations';
-import { APP_CONFIG }                           from '../../../../app.config';
 import { Activity }                             from '../../../../shared/state/current-activity/current-activity.model';
 import { Project }                              from '../../../../shared/state/project/project.model';
 import { User }                                 from '../../../../shared/state/user/user.model';
 import { userInProject }                        from '../../../shared/utils';
 import { Md5 }                                  from 'ts-md5/dist/md5';
+import { environment }                          from '../../../../../environments/environment';
 
 @Component({
   selector: 'activity-item',
@@ -38,9 +38,9 @@ export class ActivityItemComponent implements OnInit {
   duration: string;
   deleteConfirmation = false;
   activityUser: User;
+  environment = environment;
 
-  constructor (@Inject(APP_CONFIG) private config,
-               private viewContainerRef: ViewContainerRef) {}
+  constructor (private viewContainerRef: ViewContainerRef) {}
 
   ngOnInit() {
     if (this.activity.stoppedAt) {

@@ -1,8 +1,7 @@
 import 'rxjs/add/operator/toPromise';
 import * as io                          from 'socket.io-client';
-import { Inject, Injectable }           from '@angular/core';
+import { Injectable }                   from '@angular/core';
 import { HttpClient }                   from '@angular/common/http';
-import { APP_CONFIG }                   from '../../app.config';
 import { Store }                        from '@ngrx/store';
 import { AppState }                     from '../../shared/state/appState';
 import { StatusActions }                from '../../shared/state/status/status.actions';
@@ -14,9 +13,11 @@ import { UnSyncedActivityActions }      from 'app/shared/state/unsynced-activiti
 import { UserService }                  from './user.service';
 import { Observable }                   from 'rxjs/Observable';
 import { Status }                       from '../../shared/state/status/status.model';
+import { environment }                  from '../../../environments/environment';
 
 @Injectable()
 export class SyncService {
+  private options: any;
   private socket = null;
   private tempState: any;
   private status: Observable<any>;
@@ -25,8 +26,7 @@ export class SyncService {
   private isLogin: boolean;
   private responseResults: Promise<any>[] = [];
 
-  constructor(@Inject(APP_CONFIG) private config,
-              private http: HttpClient,
+  constructor(private http: HttpClient,
               private userService: UserService,
               private store: Store<AppState>,
               private statusActions: StatusActions,
@@ -43,6 +43,7 @@ export class SyncService {
     this.currentActivity.subscribe((currentActivity) => {
       this.currentActivityProjectId = currentActivity.project;
     });
+    this.options = {...environment.httpOptions, responseType: 'text'}
   }
 
   init(): any {
@@ -61,8 +62,8 @@ export class SyncService {
 
   syncData(data): Promise<any> {
     return this.http
-      .put(this.config.apiEndpoint + '/sync/activities' + '?socketId=' + this.getSocketId()
-      , JSON.stringify(data), {...this.config.httpOptions, responseType: 'text'})
+      .put(environment.apiEndpoint + '/sync/activities' + '?socketId=' + this.getSocketId()
+      , JSON.stringify(data), this.options)
       .toPromise()
       .then(() => {
     })
@@ -136,7 +137,7 @@ export class SyncService {
   }
 
   connectSocket() {
-    this.socket = io(this.config.socketEndpoint, {path: this.config.socketPath, transports: ['websocket'], upgrade: true});
+    this.socket = io(environment.socketEndpoint, {path: environment.socketPath, transports: ['websocket'], upgrade: true});
     this.socket.on('connect', () => {
       console.log('websocket connected!');
       this.getStateFromDb().then(() => {

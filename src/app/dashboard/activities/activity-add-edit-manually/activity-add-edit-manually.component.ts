@@ -1,8 +1,7 @@
 import * as _ from 'lodash';
 import * as moment from 'moment';
-import { Component, Inject, Input, OnInit,
+import { Component, Input, OnInit,
   Output, EventEmitter }                    from '@angular/core';
-import { APP_CONFIG }                       from '../../../app.config';
 import { Activity }                         from '../../../shared/state/current-activity/current-activity.model';
 import { ActivityService }                  from '../../../core/services/activity.service';
 import { ModalService }                     from '../../../core/modal/modal.service';
@@ -39,8 +38,7 @@ export class AddManuallyActivityComponent implements OnInit {
   fromDateValue: string;
   fromTime: string;
 
-  constructor (@Inject(APP_CONFIG) private config,
-               private activityService: ActivityService,
+  constructor (private activityService: ActivityService,
                private modalService: ModalService,
                private errorService: ErrorService) {}
 
