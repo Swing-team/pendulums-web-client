@@ -1,7 +1,7 @@
 {
     "name": "io.pendulums",
     "displayName": "Pendulums",
-    "version": "1.0.0",
+    "version": "0.4.1",
     "description": "A sample Apache Cordova application that responds to the deviceready event.",
     "main": "index.js",
     "scripts": {
