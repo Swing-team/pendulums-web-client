@@ -24,7 +24,7 @@
     "electron:build:win": "npm run electron:ng:build && npm run electron:tsc && cd electron-app && electron-builder --win",
     "cordova:prepare": "cd mobile-app && cordova prepare",
     "cordova:ng:build": "ng build --base-href ./ --output-path='./mobile-app/www' --prod",
-    "cordova:build:android": "npm run cordova:ng:build && cd mobile-app && cordova build android --release --buildConfig=build.json"
+    "cordova:build:android": "npm run cordova:ng:build && cd mobile-app && node_modules/.bin/cordova build android --release --buildConfig=build.json"
   },
   "private": true,
   "dependencies": {

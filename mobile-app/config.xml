@@ -20,12 +20,12 @@
         <edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application">
             <application android:icon="@mipmap/ic_launcher" android:roundIcon="@mipmap/ic_launcher_round" />
         </edit-config>
-        <splash density="land-hdpi" src="res/screen/android/screen-hdpi-landscape.jpg" />
-        <splash density="land-xhdpi" src="res/screen/android/screen-xhdpi-landscape.jpg" />
-        <splash density="land-xxhdpi" src="res/screen/android/screen-xxhdpi-landscape.jpg" />
-        <splash density="port-hdpi" src="res/screen/android/screen-hdpi-portrait.jpg" />
-        <splash density="port-xhdpi" src="res/screen/android/screen-xhdpi-portrait.jpg" />
-        <splash density="port-xxhdpi" src="res/screen/android/screen-xxhdpi-portrait.jpg" />
+        <splash density="land-hdpi" src="res/screen/android/screen-hdpi-landscape.png" />
+        <splash density="land-xhdpi" src="res/screen/android/screen-xhdpi-landscape.png" />
+        <splash density="land-xxhdpi" src="res/screen/android/screen-xxhdpi-landscape.png" />
+        <splash density="port-hdpi" src="res/screen/android/screen-hdpi-portrait.png" />
+        <splash density="port-xhdpi" src="res/screen/android/screen-xhdpi-portrait.png" />
+        <splash density="port-xxhdpi" src="res/screen/android/screen-xxhdpi-portrait.png" />
         <resource-file src="res/icon/android/mipmap-anydpi-v26/ic_launcher.xml" target="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" />
         <resource-file src="res/icon/android/mipmap-anydpi-v26/ic_launcher_round.xml" target="app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" />
         <resource-file src="res/icon/android/mipmap-hdpi/ic_launcher.png" target="app/src/main/res/mipmap-hdpi/ic_launcher.png" />
