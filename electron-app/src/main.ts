@@ -49,7 +49,7 @@ const signedInTrayMenuTemplate: MenuItemConstructorOptions[] = [
         label: 'Stop',
         click: () => {
             stopActivity();
-            
+
         },
         id: 'stop',
         visible: false
@@ -136,7 +136,7 @@ const createWindow = () => {
         minHeight: 630
     });
 
-    
+
     win.loadURL(url.format({
         pathname: path.join(__dirname, '../app/index.html'),
         protocol: 'file:',
@@ -165,6 +165,11 @@ const createWindow = () => {
     win.on('blur', () => {
         win.webContents.executeJavaScript('document.getElementsByName("activityNameInput").forEach(element => {element.blur()})');
     });
+
+    win.webContents.on('new-window', (e, URL) => {
+      e.preventDefault();
+      shell.openExternal(URL);
+  })
 };
 
 const createTrayWindow = () => {
@@ -289,8 +294,8 @@ const setupApplicationMenu = () => {
             {
                 label: 'Donate us',
                 click () {
-                    shell.openExternal('https://www.coinpayments.net/index.php?cmd=_donate&reset=1&merchant=d88653d' + 
-                    'eee05911e2438e35ec41c865e&item_name=Give%20some%20love%20to%20Pendulums%20project&currency=USD&a' + 
+                    shell.openExternal('https://www.coinpayments.net/index.php?cmd=_donate&reset=1&merchant=d88653d' +
+                    'eee05911e2438e35ec41c865e&item_name=Give%20some%20love%20to%20Pendulums%20project&currency=USD&a' +
                     'mountf=10.00000000&allow_amount=1&want_shipping=0&allow_extra=1&cstyle=grid2');
                 }
             },
@@ -306,7 +311,7 @@ const setupApplicationMenu = () => {
           ]
         }
       ]
-    
+
     if (process.platform === 'darwin') {
         template.unshift({
             label: 'Pendulums',
@@ -503,7 +508,7 @@ if (!gotTheLock) {
         win.show();
     }
 }
-  
+
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
