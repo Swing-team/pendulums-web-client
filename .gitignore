@@ -51,3 +51,5 @@ testem.log
 Thumbs.db
 
 settings.json
+/src/environments/local.config.ts
+/src/environments/version.ts
