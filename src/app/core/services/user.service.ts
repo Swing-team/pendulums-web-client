@@ -9,7 +9,9 @@ export class UserService {
   private options;
   constructor(
     private http: HttpClient
-  ) { }
+  ) {
+    this.options = {...environment.httpOptions, responseType: 'text'};
+  }
 
   getSummary(): Promise<any> {
     return this.http
