@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { UrlHandlingStrategy } from '@angular/router';
 
 @Injectable()
 export class NativeNotificationService {
@@ -13,7 +14,11 @@ export class NativeNotificationService {
     } else {
       const _Notification = window['Notification'];
       if (_Notification.permission === 'granted') {
-        const notification = new _Notification(message);
+        const options = {
+          icon: '../../../assets/images/icon.ico',
+          silent: false
+        }
+        const notification = new _Notification(message, options);
 
       } else if (_Notification.permission !== 'denied' || _Notification.permission === 'default') {
         _Notification.requestPermission((permission) => {
