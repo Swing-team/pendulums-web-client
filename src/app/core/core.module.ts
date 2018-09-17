@@ -4,8 +4,6 @@ import { HTTP_INTERCEPTORS }            from '@angular/common/http';
 
 import { StoreModule }                  from '@ngrx/store';
 
-import { AppConfigModule }              from '../app.config';
-
 import { reducerToken, reducers }       from '../shared/state/appState';
 import { UserActions }                  from '../shared/state/user/user.actions';
 import { ProjectsActions }              from '../shared/state/project/projects.actions';
@@ -43,13 +41,14 @@ import { ProjectsSelectors }            from '../shared/state/project/projects.s
 import { RouterChangeListenerService }  from './services/router-change-listener.service';
 import { InviteNotifComponent }         from './side-menu/notification/invite-notif/invite-notif.component';
 import { NativeNotificationService }    from './services/native-notification.service';
+import { DonationComponent }            from './side-menu/donation/donation.component';
+import { ActivityService } from './services/activity.service';
 
 @NgModule({
   imports:      [
     SharedModule,
     StoreModule.forRoot(reducerToken),
     RouterModule,
-    AppConfigModule,
     ImageCropperModule
   ],
   declarations: [
@@ -60,7 +59,8 @@ import { NativeNotificationService }    from './services/native-notification.ser
     NotificationComponent,
     ImgCropperComponent,
     AppInfoComponent,
-    InviteNotifComponent
+    InviteNotifComponent,
+    DonationComponent
   ],
   exports:      [
     ToolbarComponent,
@@ -92,13 +92,15 @@ import { NativeNotificationService }    from './services/native-notification.ser
     AppService,
     RouterChangeListenerService,
     NativeNotificationService,
+    ActivityService,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],
   entryComponents: [
     ModalComponent,
     ErrorComponent,
     ImgCropperComponent,
-    AppInfoComponent
+    AppInfoComponent,
+    DonationComponent
   ]
 })
 export class CoreModule {

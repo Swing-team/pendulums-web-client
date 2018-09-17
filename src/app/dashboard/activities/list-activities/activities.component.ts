@@ -2,11 +2,10 @@ import 'rxjs/add/operator/switchMap';
 import * as _ from 'lodash';
 import {
   Component, HostListener,
-  Inject, OnDestroy, OnInit, ViewChild,
+  OnDestroy, OnInit, ViewChild,
 }                                           from '@angular/core';
 import { Observable }                       from 'rxjs/Observable';
-import { APP_CONFIG }                       from '../../../app.config';
-import { ActivityService }                  from '../../shared/activity.service';
+import { ActivityService }                  from '../../../core/services/activity.service';
 import { Activity }                         from '../../../shared/state/current-activity/current-activity.model';
 import { ActivatedRoute, Params }           from '@angular/router';
 import { Location }                         from '@angular/common';
@@ -60,8 +59,7 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
   @ViewChild(ChartComponent)
   private ChartComponent: ChartComponent;
 
-  constructor (@Inject(APP_CONFIG) private config,
-               private store: Store<AppState>,
+  constructor (private store: Store<AppState>,
                private route: ActivatedRoute,
                private activityService: ActivityService,
                private location: Location,

@@ -3,7 +3,7 @@
   <div class="is-pulled-left ps-activity-item-inner-text">
     <div *ngIf="activityUser" class="has-text-left ps-activity-item-done-by-container">
       <img class="ps-activity-member-image" *ngIf="activityUser.profileImage"
-           src="{{activityUser.profileImage? config.imagesEndpoint + '/profile/' + activityUser.profileImage :
+           src="{{activityUser.profileImage? environment.imagesEndpoint + '/profile/' + activityUser.profileImage :
                   'assets/images/placeholder.png'}}">
       <svg *ngIf="!activityUser.profileImage" class="ps-activity-member-image" width="20" height="20" [identiconHash]="getEmailHash(activityUser.email)">
         Fallback text for browsers not supporting inline svg

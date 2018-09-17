@@ -1,7 +1,7 @@
 <nav class="nav ps-nav">
   <div class="ps-nav-left nav-left ps-is-visible" (click)="showSideMenu($event)">
     <div class="nav-item ps-nav-item-menu">
-      <span class="ps-notification-count"></span>
+      <span [ngClass]="{'ps-notification-count': hasNotification}"></span>
       <span  #menuIcon class="icon-menu ps-nav-menu-icon"></span>
     </div>
   </div>
@@ -13,7 +13,7 @@
   </div>
   <div class="nav-center ps-nav-center">
     <div class="nav-item" *ngIf="currentActivityCopy.startedAt">
-      <input id="activityNameElm" #activityNameElm class="input is-small ps-nav-input" [(ngModel)]="taskName" placeholder="Activity name" type="text"
+      <input id="activityNameElm" name="activityNameInput" #activityNameElm class="input is-small ps-nav-input" [(ngModel)]="taskName" placeholder="Activity name" type="text"
              (change)="nameActivity($event)"/>
       <label class="ps-nav-label" for="activityNameElm" title="{{currentActivityCopy.name}}">{{currentActivityCopy.name}}&nbsp;-&nbsp;{{selectedProject.name ? selectedProject.name : ''}}</label>
     </div>

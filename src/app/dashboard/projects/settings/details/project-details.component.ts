@@ -1,16 +1,16 @@
 import {
-  Component, HostListener, Inject, Input,
+  Component, HostListener, Input,
   OnInit, ViewChild
 } from '@angular/core';
 import { Project }                        from '../../../../shared/state/project/project.model';
 import { ProjectService }                 from '../../../shared/projects.service';
 import { cloneDeep }                      from 'lodash';
-import { APP_CONFIG }                     from '../../../../app.config';
 import { AppState }                       from '../../../../shared/state/appState';
 import { Store }                          from '@ngrx/store';
 import { ProjectsActions }                from '../../../../shared/state/project/projects.actions';
 import { ErrorService }                   from '../../../../core/error/error.service';
 import { ModalService }                   from '../../../../core/modal/modal.service';
+import { environment }                    from '../../../../../environments/environment';
 
 @Component({
   selector: 'project-details',
@@ -32,7 +32,6 @@ export class ProjectDetailsComponent implements OnInit {
   showPaletteBoollean: boolean;
 
   constructor(private projectServices: ProjectService,
-              @Inject(APP_CONFIG) private config,
               private store: Store<AppState>,
               private projectsAction: ProjectsActions,
               private errorService: ErrorService,
@@ -42,7 +41,7 @@ export class ProjectDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.clonedProject = cloneDeep(this.project);
     if (this.clonedProject.image) {
-      this.previewImage = this.config.imagesEndpoint + '/projects/' + this.clonedProject.image;
+      this.previewImage = environment.imagesEndpoint + '/projects/' + this.clonedProject.image;
     }
   }
 

@@ -1,8 +1,7 @@
 import {
   Component, ElementRef, HostListener,
-  Inject, Input, OnInit, Output, EventEmitter
+  Input, OnInit, Output, EventEmitter
 }                                        from '@angular/core';
-import { APP_CONFIG }                    from '../../../app.config';
 import { User }                          from '../../../shared/state/user/user.model';
 import { AppService }                    from '../../services/app.service';
 import { VERSION }                       from 'environments/version';
@@ -18,8 +17,7 @@ export class NotificationComponent implements OnInit {
   @Output() clickedOutSideOfNotification = new EventEmitter();
   isUpdateAvalable: boolean;
 
-  constructor (@Inject(APP_CONFIG) private config,
-               private ref: ElementRef,
+  constructor (private ref: ElementRef,
                private appService: AppService) {}
   ngOnInit() {
     this.pendingInvitations = this.user.pendingInvitations;

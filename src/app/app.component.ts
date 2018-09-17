@@ -85,6 +85,13 @@ export class AppComponent implements OnInit {
         this.syncService.closeConnection();
         this.router.navigate(['signIn']);
       }
+
+      if ((status.isLogin === true) && status.isLogin !== this.previousLoginStatus) {
+        if (this.router.url === '/dashboard' || this.router.url === '/signIn') {
+          this.router.navigate(['dashboard']);
+        }
+      }
+
       this.previousLoginStatus = status.isLogin;
 
       // To handle connection indicator
@@ -105,7 +112,13 @@ export class AppComponent implements OnInit {
 
   signOut() {
     this.authService.signOut()
-      .then(() => {});
+      .then(() => {})
+      .catch((error) => {
+        if (error.status === 503) {
+          // Not sure about this code below. please check!
+          console.log('You have reached the authentication limits, please try in a few minutes!');
+        }
+      });
   }
 
   clickedOutSideOfMenu(event) {

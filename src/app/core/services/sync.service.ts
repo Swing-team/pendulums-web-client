@@ -1,8 +1,7 @@
 import 'rxjs/add/operator/toPromise';
 import * as io                          from 'socket.io-client';
-import { Inject, Injectable }           from '@angular/core';
+import { Injectable }                   from '@angular/core';
 import { HttpClient }                   from '@angular/common/http';
-import { APP_CONFIG }                   from '../../app.config';
 import { Store }                        from '@ngrx/store';
 import { AppState }                     from '../../shared/state/appState';
 import { StatusActions }                from '../../shared/state/status/status.actions';
@@ -11,25 +10,23 @@ import { UserActions }                  from '../../shared/state/user/user.actio
 import { ProjectsActions }              from '../../shared/state/project/projects.actions';
 import { CurrentActivityActions }       from '../../shared/state/current-activity/current-activity.actions';
 import { UnSyncedActivityActions }      from 'app/shared/state/unsynced-activities/unsynced-activities.actions';
-import { Router }                       from '@angular/router';
 import { UserService }                  from './user.service';
-import { AppService }                   from './app.service';
 import { Observable }                   from 'rxjs/Observable';
 import { Status }                       from '../../shared/state/status/status.model';
+import { environment }                  from '../../../environments/environment';
 
 @Injectable()
 export class SyncService {
+  private options: any;
   private socket = null;
   private tempState: any;
   private status: Observable<any>;
   private currentActivity: Observable<any>;
   private currentActivityProjectId: string;
   private isLogin: boolean;
-  private responseResults = [];
+  private responseResults: Promise<any>[] = [];
 
-  constructor(@Inject(APP_CONFIG) private config,
-              private http: HttpClient,
-              private router: Router,
+  constructor(private http: HttpClient,
               private userService: UserService,
               private store: Store<AppState>,
               private statusActions: StatusActions,
@@ -37,8 +34,7 @@ export class SyncService {
               private userActions: UserActions,
               private projectsActions: ProjectsActions,
               private currentActivityActions: CurrentActivityActions,
-              private unSyncedActivityActions: UnSyncedActivityActions,
-              private appService: AppService) {
+              private unSyncedActivityActions: UnSyncedActivityActions) {
     this.status = store.select('status');
     this.currentActivity = store.select('currentActivity');
     this.status.subscribe((status: Status) => {
@@ -47,6 +43,7 @@ export class SyncService {
     this.currentActivity.subscribe((currentActivity) => {
       this.currentActivityProjectId = currentActivity.project;
     });
+    this.options = {...environment.httpOptions, responseType: 'text'}
   }
 
   init(): any {
@@ -65,7 +62,8 @@ export class SyncService {
 
   syncData(data): Promise<any> {
     return this.http
-      .put(this.config.apiEndpoint + '/sync/activities', JSON.stringify(data), {...this.config.httpOptions, responseType: 'text'})
+      .put(environment.apiEndpoint + '/sync/activities' + '?socketId=' + this.getSocketId()
+      , JSON.stringify(data), this.options)
       .toPromise()
       .then(() => {
     })
@@ -99,16 +97,16 @@ export class SyncService {
     });
   }
 
-  autoSync(): void {
+  autoSync(): Promise<any>[] {
     if (this.tempState) {
       const syncData = {
         currentActivity: null,
         activities: null
       };
-      if (this.tempState.unSyncedActivity.entities.length > 0) {
+      if (this.tempState.unSyncedActivity && this.tempState.unSyncedActivity.entities.length > 0) {
         syncData.activities = this.tempState.unSyncedActivity.entities;
       }
-      if (this.tempState.currentActivity.startedAt) {
+      if (this.tempState.currentActivity && this.tempState.currentActivity.startedAt) {
         syncData.currentActivity = this.tempState.currentActivity;
         delete syncData.currentActivity.stoppedAt;
       }
@@ -122,7 +120,7 @@ export class SyncService {
           })
           .catch(error => {
             console.log('error is: ', error);
-            if (error.status === 403) {
+            if (error.status === 403 || error.status === 504) {
               // do nothing
             } else {
               // todo: handle sync errors based on corrupted data
@@ -135,10 +133,11 @@ export class SyncService {
     } else {
       this.getSummaryOnline();
     }
+    return this.responseResults;
   }
 
   connectSocket() {
-    this.socket = io(this.config.socketEndpoint, {path: this.config.socketPath, transports: ['websocket'], upgrade: true});
+    this.socket = io(environment.socketEndpoint, {path: environment.socketPath, transports: ['websocket'], upgrade: true});
     this.socket.on('connect', () => {
       console.log('websocket connected!');
       this.getStateFromDb().then(() => {
@@ -163,6 +162,14 @@ export class SyncService {
         if (this.currentActivityProjectId && (this.currentActivityProjectId.toString() === data.data.toString())) {
           this.store.dispatch(this.currentActivityActions.clearCurrentActivity());
         }
+      }
+
+      if (data.type === 'syncNeeded') {
+        Promise.all(this.responseResults).then(() => {
+          this.autoSync();
+        }).catch(() => {
+          console.log('Sync Needed')
+        });
       }
     });
 
@@ -190,16 +197,10 @@ export class SyncService {
               .createOrUpdate('activeUser', {data: user.id})
               .then(() => {});
           });
-        if (this.router.url === '/dashboard' || this.router.url === '/signIn') {
-          this.router.navigate(['dashboard']);
-        }
       })
       .catch(error => {
         if (error.status !== 403) {
           this.initialAppOffline();
-        } else {
-          console.log('error is: ', error);
-          this.router.navigate(['signIn']);
         }
       }));
   }
@@ -210,13 +211,14 @@ export class SyncService {
       this.store.dispatch(this.projectsActions.loadDbProjects(this.tempState.projects));
       this.store.dispatch(this.currentActivityActions.loadCurrentActivity(this.tempState.currentActivity));
       this.store.dispatch(this.unSyncedActivityActions.loadUnSyncedActivity(this.tempState.unSyncedActivity));
-      this.store.dispatch(this.statusActions.updateNetStatus(false));
-      if (this.router.url === '/dashboard' || this.router.url === '/signIn') {
-        this.router.navigate(['dashboard']);
-      }
+      this.store.dispatch(this.statusActions.updateStatus({netStatus: false, isLogin: true}));
     } else {
-      this.router.navigate(['signIn']);
+      this.store.dispatch(this.statusActions.updateStatus({isLogin: null}));
     }
+  }
+
+  getSocketId(): string {
+    return this.socket.id;
   }
 
   closeConnection(): void {

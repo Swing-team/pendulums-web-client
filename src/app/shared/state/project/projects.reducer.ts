@@ -1,6 +1,8 @@
 import { ProjectsActions }    from './projects.actions';
 import { Projects }           from './projects.model';
 import { ActionWithPayload }  from '../action-with-payload';
+import { values }             from 'lodash';
+import { Project } from './project.model';
 
 const initialState: Projects = {
   entities: {},
@@ -52,6 +54,12 @@ export default function reducer(state = initialState, action: ActionWithPayload<
 
       const newState = JSON.parse(JSON.stringify(state));
       newState.entities[action.payload.id] = action.payload;
+      newState.entities = values<Project>(newState.entities)
+        .sort((p1, p2) => p1.id > p2.id ? 1 : -1)
+        .reduce((entities, project) => {
+          entities[project.id] = project;
+          return entities;
+        }, {});
       if (!newState.selectedProject) {
         newState.selectedProject = Object.keys(newState.entities)[0];
       }
@@ -111,6 +119,8 @@ export default function reducer(state = initialState, action: ActionWithPayload<
         }
       });
       newState.entities[action.payload.projectId].teamMembers.splice(removedMemberIndex, 1);
+      newState.entities[action.payload.projectId].activities = newState.entities[action.payload.projectId].activities
+        .filter(activity => activity.user !== action.payload.memberId)
       return newState;
     }
 

@@ -2,7 +2,7 @@
   <div class="box columns is-mobile ps-section-you-container">
     <div class="column is-2">
       <img class="ps-project-member-image" *ngIf="user.profileImage"
-           src="{{user.profileImage? config.imagesEndpoint + '/profile/' + user.profileImage :
+           src="{{user.profileImage? environment.imagesEndpoint + '/profile/' + user.profileImage :
                   'assets/images/placeholder.png'}}">
       <svg *ngIf="!user.profileImage" class="ps-project-member-image" width="36" height="36" [identiconHash]="userEmailHash(user.email)">
         Fallback text for browsers not supporting inline svg
@@ -23,7 +23,7 @@
          class="columns is-gapless is-mobile ps-margin-bottom ps-team-members-item-container">
       <div class="column is-2">
         <img class="ps-project-member-image" *ngIf="member.profileImage"
-             src="{{member.profileImage? config.imagesEndpoint + '/profile/' + member.profileImage :
+             src="{{member.profileImage? environment.imagesEndpoint + '/profile/' + member.profileImage :
                   'assets/images/placeholder.png'}}">
         <svg *ngIf="!member.profileImage" class="ps-project-member-image" width="36" height="36" [identiconHash]="userEmailHash(member.email)">
           Fallback text for browsers not supporting inline svg
@@ -81,7 +81,7 @@
     <div *ngFor='let member of members;trackBy:let i = index' class="columns is-gapless  is-mobile ps-margin-bottom ps-team-members-item-container">
       <div class="column is-2">
         <img class="ps-project-member-image" *ngIf="member.profileImage"
-             src="{{member.profileImage? config.imagesEndpoint + '/profile/' + member.profileImage :
+             src="{{member.profileImage? environment.imagesEndpoint + '/profile/' + member.profileImage :
                   'assets/images/placeholder.png'}}">
         <svg *ngIf="!member.profileImage" class="ps-project-member-image" width="36" height="36" [identiconHash]="userEmailHash(member.email)">
           Fallback text for browsers not supporting inline svg

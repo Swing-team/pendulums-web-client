@@ -10,14 +10,14 @@
     <div class="card-content ps-project-item-card-content">
       <div class="media ps-project-item-card-content-media">
         <div class="media-left">
-          <figure [ngStyle]="{'background-image': project.image ? 'url(' + config.imagesEndpoint + '/projects/' + project.image + ')' :
+          <figure [ngStyle]="{'background-image': project.image ? 'url(' + environment.imagesEndpoint + '/projects/' + project.image + ')' :
                               'url(assets/images/placeholder.png)'}" class="image ps-project-image-container">
           </figure>
         </div>
         <div class="ps-media-content">
           <p class="ps-project-item-card-title" *ngIf="!activityStarted" title="{{project.name}}">{{project.name}}</p>
           <p *ngIf="activityStarted">
-            <input #activityNameElm [(ngModel)]="taskName" class="input ps-task-input" (change)="nameActivity($event)"
+            <input #activityNameElm name="projectItemActivityNameInput" [(ngModel)]="taskName" class="input ps-task-input" (change)="nameActivity($event)"
                     placeholder="Activity Name" type="text">
           </p>
           <p class="ps-owner-container" title="{{project.owner.name ? project.owner.name : project.owner.email}}">

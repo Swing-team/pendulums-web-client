@@ -1,8 +1,8 @@
 import 'rxjs/add/operator/switchMap';
-import { Component, Inject, Input,
+import { Component, Input,
          OnChanges, SimpleChange }          from '@angular/core';
 import { Md5 }                              from 'ts-md5';
-import { APP_CONFIG }                       from '../../../../../app.config';
+import { environment }                      from '../../../../../../environments/environment';
 
 @Component({
   selector: 'chart-total-hour',
@@ -22,9 +22,9 @@ export class ChartTotalHourComponent implements OnChanges {
   }> = [];
   totalHours = 0;
   result = '';
+  environment = environment;
 
-  constructor(@Inject(APP_CONFIG) private config) {
-  }
+  constructor() {}
 
   ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
     if (changes.inputArray.currentValue || changes.inputArray.firstChange) {

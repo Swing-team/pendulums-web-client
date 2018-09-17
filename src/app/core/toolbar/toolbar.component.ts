@@ -3,7 +3,6 @@ import {
   Input, Output, OnInit, OnDestroy, ViewChild,
 } from '@angular/core';
 import { Observable }                       from 'rxjs/Observable';
-import { APP_CONFIG }                       from '../../app.config';
 import { Activity }                         from '../../shared/state/current-activity/current-activity.model';
 import { Project }                          from '../../shared/state/project/project.model';
 import { Store }                            from '@ngrx/store';
@@ -46,8 +45,7 @@ export class ToolbarComponent implements OnInit, OnDestroy  {
   private activityStarted = false;
   private subscriptions: Array<Subscription> = [];
 
-  constructor (@Inject(APP_CONFIG) private config,
-               private store: Store<AppState>,
+  constructor (private store: Store<AppState>,
                private projectsActions: ProjectsActions,
                private errorService: ErrorService,
                private stopStartActivityService: StopStartActivityService,
@@ -223,7 +221,7 @@ export class ToolbarComponent implements OnInit, OnDestroy  {
 
       this.stopStartActivityService.startActivity(activity, this.selectedProject).then(() => {
         this.stopStartButtonDisabled = false;
-        this.showError('The activity started');
+        this.showError('The activity was started');
 
         // This timeout use to handle focus on input
         setTimeout(() => {
@@ -244,7 +242,7 @@ export class ToolbarComponent implements OnInit, OnDestroy  {
   stopActivity() {
     this.stopStartActivityService.stopActivity(this.selectedProject).then(() => {
       this.stopStartButtonDisabled = false;
-      this.showError('The activity stopped');
+      this.showError('The activity was stopped');
     });
   }
 

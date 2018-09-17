@@ -2,7 +2,6 @@ import {
   Component, Inject, Input,
   OnDestroy, OnInit, ViewChild
 } from '@angular/core';
-import { APP_CONFIG }                         from '../../../../app.config';
 import { Project }                            from '../../../../shared/state/project/project.model';
 import { Store }                              from '@ngrx/store';
 import { AppState }                           from '../../../../shared/state/appState';
@@ -18,6 +17,7 @@ import { Md5 }                                from 'ts-md5/dist/md5';
 import { Subscription }                       from 'rxjs/Subscription';
 import { StopStartActivityService }           from '../../../../core/services/stop-start-activity.service';
 import { userInProject }                      from '../../../shared/utils';
+import { environment }                        from '../../../../../environments/environment';
 
 @Component({
   selector: 'project-item',
@@ -35,14 +35,14 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
   showMore = false;
   showMoreStart: number;
   showMoreEnd: number;
+  environment = environment;
 
   private currentActivityCopy: Activity;
   private taskName: string;
   private activity: Activity;
   private subscriptions: Array<Subscription> = [];
 
-  constructor (@Inject(APP_CONFIG) public config,
-               private store: Store<AppState>,
+  constructor (private store: Store<AppState>,
                private router: Router,
                private modalService: ModalService,
                private errorService: ErrorService,
@@ -101,7 +101,7 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
 
     this.stopStartActivityService.startActivity(this.activity, this.project).then(() => {
       this.activityButtonDisabled = false;
-      this.showError('The activity started');
+      this.showError('The activity was started');
     });
 
     // This timeout use to handle focus on input
@@ -116,7 +116,7 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
   stopActivity() {
     this.stopStartActivityService.stopActivity(this.project).then(() => {
       this.activityButtonDisabled = false;
-      this.showError('The activity stopped');
+      this.showError('The activity was stopped');
     });
   }
 
@@ -170,7 +170,7 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
 
   findUserImage(userId) {
     const user = this.findUserInProject(userId);
-    const imgUrl = user.profileImage ? this.config.imagesEndpoint + '/profile/' + user.profileImage : '';
+    const imgUrl = user.profileImage ? environment.imagesEndpoint + '/profile/' + user.profileImage : '';
     return imgUrl;
   }
 

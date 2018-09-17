@@ -11,7 +11,7 @@ import { AppState }                             from '../../../../shared/state/a
 import { Store }                                from '@ngrx/store';
 import { ProjectsActions }                      from '../../../../shared/state/project/projects.actions';
 import { ErrorService }                         from '../../../../core/error/error.service';
-import { APP_CONFIG }                           from '../../../../app.config';
+import { environment }                          from '../../../../../environments/environment';
 
 @Component({
   selector: 'project-members',
@@ -39,9 +39,9 @@ export class ProjectMembersComponent implements OnInit {
   removeMemberConfirmationViewIndex: Number = -1;
   removeButtonDisabled = false;
   teamMemberRoleChanged = false;
+  environment = environment;
 
-  constructor(@Inject(APP_CONFIG) private config,
-              private projectServices: ProjectService,
+  constructor(private projectServices: ProjectService,
               private store: Store<AppState>,
               private projectsAction: ProjectsActions,
               private errorService: ErrorService) {
