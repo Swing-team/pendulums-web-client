@@ -29,7 +29,7 @@ export class UserService {
 
   updateSettings(settings): Promise<any> {
     return this.http
-      .post(this.config.apiEndpoint + '/user/settings', JSON.stringify(settings), this.options)
+      .post(environment.apiEndpoint + '/user/settings', JSON.stringify(settings), this.options)
       .toPromise()
       .then()
       .catch(this.handleError);
