@@ -195,13 +195,18 @@ export class ToolbarComponent implements OnInit, OnDestroy, DoCheck  {
   }
 
   toggleStopStart() {
-    if (!this.stopStartButtonDisabled) {
-      this.stopStartButtonDisabled = true;
-      if (this.activityStarted) {
-        this.stopActivity();
-      } else {
-        this.startActivity();
+    if (this.projects.length > 0) {
+      if (!this.stopStartButtonDisabled) {
+        this.stopStartButtonDisabled = true;
+        if (this.activityStarted) {
+          this.stopActivity();
+        } else {
+          this.startActivity();
+        }
       }
+    } else {
+      document.getElementsByTagName('swing-select')[0].setAttribute('label', 'Select Project');
+      this.showError('Please create a project first!');
     }
   }
 
