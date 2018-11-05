@@ -52,6 +52,7 @@
     "ng2-img-cropper": "^0.9.0",
     "ng2-nvd3": "^2.0.0",
     "nvd3": "^1.8.6",
+    "pendulums-editor": "git+https://github.com/Swing-team/pendulums-editor.git",
     "rxjs": "^5.5.10",
     "socket.io-client": "^2.1.1",
     "ts-md5": "^1.2.4",

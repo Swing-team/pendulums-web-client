@@ -367,6 +367,12 @@
       "css": "refresh",
       "code": 59412,
       "src": "fontawesome"
+    },
+    {
+      "uid": "b9ca73befd583b2197a56a68045c9c0c",
+      "css": "sticky-note-o",
+      "code": 62026,
+      "src": "fontawesome"
     }
   ]
 }

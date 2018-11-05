@@ -1,0 +1,36 @@
+@import "../../sass/variables"
+
+.ps-note-padding
+  padding-top: 20px
+  padding-bottom: 20px
+  @media (max-width: $ps-small-screen-size)
+    padding-left: 0
+    padding-right: 0
+  @media (max-width: 770px) and (min-width: 420px)
+    padding-left: 15px
+    padding-right: 15px
+  @media (min-width: 770px)
+    padding-left: 20px
+    padding-right: 20px
+
+.note
+  color: #fff
+
+
+.ps-note-create
+  background: $yellow
+  border: unset
+  color: $ps-primary
+  cursor: pointer
+  height: $item-size
+  font-size: 1.8rem
+  font-weight: 500
+  line-height: $item-size
+  border-radius:  $radius
+
+.ps-list-note-no-padding
+  @media (max-width: $ps-mobile)
+    padding-top: unset
+
+.ps-add-note-disabled
+  cursor: not-allowed !important

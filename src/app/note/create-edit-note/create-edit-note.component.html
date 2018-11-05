@@ -1,0 +1,61 @@
+<form class="ps-button-gap" (ngSubmit)="createEditNote()" #createEditNoteForm="ngForm" novalidate>
+  <div class="is-centered">
+    <div dir="auto">
+      <input [(ngModel)]="note.title" name="title" class="input ps-header-input"
+        placeholder="untitled title..." type="text">
+        <textarea id="tiny"></textarea>
+        <div class="ps-project-create-color-picker-container">
+            <p class="ps-project-create-color-picker-title"> Note color : </p>
+            <div class="ps-project-create-palette-container">
+              <p class="ps-project-create-color" title="pick a color">
+                <a id="id2" class="button is-fullwidth" (click)="togglePalette()"
+                   [ngClass]="{'ps-project-create-palette-item-back-white1': note.colorPalette == 0,
+                               'ps-project-create-palette-item-back-salmon': note.colorPalette == 1,
+                               'ps-project-create-palette-item-back-blue': note.colorPalette == 2,
+                               'ps-project-create-palette-item-back-black': note.colorPalette == 3,
+                               'ps-project-create-palette-item-back-yellow': note.colorPalette == 4,
+                               'ps-project-create-palette-item-back-pink': note.colorPalette == 5,
+                               'ps-project-create-palette-item-back-red': note.colorPalette == 6,
+                               'ps-project-create-palette-item-back-green': note.colorPalette == 7}">
+                </a>
+              </p>
+              <div #projectCreatePalette [ngStyle]="{'display': showPaletteBoolean ? 'block' : 'none'}" class="ps-project-create-palette">
+                <div class="ps-project-create-palette-colors-section">
+                  <div *ngFor='let index of [0,1,2,3,4,5,6,7]' class="ps-project-create-palette-item">
+                    <a id="id1" class="button is-fullwidth" (click)="selectColor(index)"
+                       [ngClass]="{'ps-project-create-palette-item-back-white1': index == 0,
+                                   'ps-project-create-palette-item-back-salmon': index == 1,
+                                   'ps-project-create-palette-item-back-blue': index == 2,
+                                   'ps-project-create-palette-item-back-black': index == 3,
+                                   'ps-project-create-palette-item-back-yellow': index == 4,
+                                   'ps-project-create-palette-item-back-pink': index == 5,
+                                   'ps-project-create-palette-item-back-red': index == 6,
+                                   'ps-project-create-palette-item-back-green': index == 7}">
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        <div class="field">
+          <div class="control">
+            <div class="select">
+              <select [(ngModel)]="note.project" name="project">
+                <option [ngValue]='project.id' *ngFor='let project of projectsCopy; trackBy: projectsTrackBy'>{{project.name}}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      <div class="ps-submit-button">
+        <p class="control">
+          <button class="button is-primary is-fullwidth is-loading"
+                  type="submit" [disabled]="formSubmitted" [ngClass]="{'is-loading': formSubmitted}">
+            Create
+          </button>
+        </p>
+      </div>
+    </div>
+  </div>
+</form>
+<div><i class="icon-trash" (click)="deleteNote()" title="Delete Note"></i></div>
+<div><i class="icon-user-edit" (click)="archiveNote()" title="Archive"></i></div>
