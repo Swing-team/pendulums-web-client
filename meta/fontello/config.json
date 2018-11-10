@@ -373,6 +373,12 @@
       "css": "sticky-note-o",
       "code": 62026,
       "src": "fontawesome"
+    },
+    {
+      "uid": "96ea1be71f597a5bdfc8f791ada4f651",
+      "css": "archive",
+      "code": 59413,
+      "src": "entypo"
     }
   ]
 }

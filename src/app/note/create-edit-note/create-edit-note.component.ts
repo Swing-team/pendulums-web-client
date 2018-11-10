@@ -10,7 +10,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { User }         from '../../shared/state/user/user.model';
 import { Note } from 'app/shared/state/note/note.model';
 import { ErrorService }                 from '../../core/error/error.service';
-
+import { ModalService }                               from '../../core/modal/modal.service';
 import tinymce from 'pendulums-editor/tinymce';
 import 'pendulums-editor/themes/modern/theme';
 // Any plugins you want to use has to be imported
@@ -34,8 +34,10 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy {
   showPaletteBoolean = false;
   note: Note = new Note();
   formSubmitted;
+  showIsArchive: boolean;
 
-  constructor(private store: Store<AppState>,
+  constructor(private modalService: ModalService,
+    private store: Store<AppState>,
     private noteService: NoteService,
     private errorService: ErrorService,
     appStateSelectors: AppStateSelectors) {
@@ -70,12 +72,11 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy {
   }
 
   createEditNote() {
-    console.log('this.note.project', this.note.project);
-
     this.noteService.create({
       note: {
         title: this.note.title,
         content: tinymce.activeEditor.getContent(),
+        isArchive: this.showIsArchive
       },
       projectId: this.note.project,
       colorPalette: this.note.colorPalette
@@ -100,6 +101,10 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy {
   }
   deleteNote() {
     console.log('delete');
+
+    // this.modalService.close({
+    //   component: CreateEditNoteComponent,
+    // });
     this.noteService.delete(this.note.id).then(() => {
 
       this.showError('Note was deleted successfully');
@@ -111,6 +116,8 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy {
   }
   archiveNote() {
     console.log('archive');
+    console.log('this.showIsArchive', this.showIsArchive);
+    this.showIsArchive = !this.showIsArchive
 
   }
   showError(error) {

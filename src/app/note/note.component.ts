@@ -29,12 +29,9 @@ export class NoteComponent implements OnInit {
 
   ngOnInit(): void {
     this.noteService.getNotes()
-    console.log('vthis.noteService.getNotes', this.notes);
   }
 
   openCreateNotetModal() {
-    console.log('openCreateNotetModal');
-
     this.modalService.show({
       component: CreateEditNoteComponent,
       inputs: {

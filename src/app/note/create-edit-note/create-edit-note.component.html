@@ -1,8 +1,12 @@
 <form class="ps-button-gap" (ngSubmit)="createEditNote()" #createEditNoteForm="ngForm" novalidate>
   <div class="is-centered">
     <div dir="auto">
-      <input [(ngModel)]="note.title" name="title" class="input ps-header-input"
-        placeholder="untitled title..." type="text">
+        <div class="columns is-mobile is-centered">
+            <div class="column is-half">
+              <input [(ngModel)]="note.title" name="title" class="input ps-header-input"
+              placeholder="untitled title..." type="text">
+            </div>
+          </div>
         <textarea id="tiny"></textarea>
         <div class="ps-project-create-color-picker-container">
             <p class="ps-project-create-color-picker-title"> Note color : </p>
@@ -58,4 +62,4 @@
   </div>
 </form>
 <div><i class="icon-trash" (click)="deleteNote()" title="Delete Note"></i></div>
-<div><i class="icon-user-edit" (click)="archiveNote()" title="Archive"></i></div>
+<div><i class="icon-archive" [ngStyle]="{'color': showIsArchive ? '#4a4a4a' : '#d2d2d2'}" (click)="archiveNote()" title="Archive"></i></div>
