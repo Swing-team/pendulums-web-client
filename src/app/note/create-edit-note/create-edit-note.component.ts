@@ -11,6 +11,7 @@ import { User }         from '../../shared/state/user/user.model';
 import { Note } from 'app/shared/state/note/note.model';
 import { ErrorService }                 from '../../core/error/error.service';
 import { ModalService }                               from '../../core/modal/modal.service';
+import { NotesActions }              from '../../shared/state/note/notes.actions';
 import tinymce from 'pendulums-editor/tinymce';
 import 'pendulums-editor/themes/modern/theme';
 // Any plugins you want to use has to be imported
@@ -38,6 +39,7 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy {
 
   constructor(private modalService: ModalService,
     private store: Store<AppState>,
+    private notesActions: NotesActions,
     private noteService: NoteService,
     private errorService: ErrorService,
     appStateSelectors: AppStateSelectors) {
@@ -45,7 +47,6 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy {
   }
   ngOnInit(): void {
     this.subscription = this.projects.subscribe((projects) => {this.projectsCopy = projects})
-    console.log('vthis.noteService.getNotes', this.noteService.getNotes());
 
     tinymce.init({
       selector: '#tiny',
@@ -81,17 +82,17 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy {
       projectId: this.note.project,
       colorPalette: this.note.colorPalette
     }).then((note) => {
-      console.log('note', note);
-
+      this.store.dispatch(this.notesActions.addNote(note));
+      this.showError('The note was created successfully');
+      this.note = new Note();
+      this.formSubmitted = false;
+      this.modalService.close();
     })
       .catch(error => {
         this.showError('Server communication error');
       });
   }
 
-  projectsTrackBy(index, project) {
-    return project.id;
-  }
   togglePalette() {
     this.showPaletteBoolean = !this.showPaletteBoolean;
   }
@@ -100,25 +101,16 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy {
     this.togglePalette();
   }
   deleteNote() {
-    console.log('delete');
-
-    // this.modalService.close({
-    //   component: CreateEditNoteComponent,
-    // });
+    this.modalService.close();
     this.noteService.delete(this.note.id).then(() => {
-
       this.showError('Note was deleted successfully');
     })
       .catch(error => {
         this.showError('Server communication error');
       });
-
   }
   archiveNote() {
-    console.log('archive');
-    console.log('this.showIsArchive', this.showIsArchive);
     this.showIsArchive = !this.showIsArchive
-
   }
   showError(error) {
     this.errorService.show({

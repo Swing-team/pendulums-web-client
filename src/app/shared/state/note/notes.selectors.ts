@@ -16,6 +16,5 @@ import { Notes }                   from './notes.model';
 @Injectable()
 export class NotesSelectors {
   getEntities = (state: Notes) => state.entities;
-  getSelectedNote = (state: Notes) => state.selectedNote;
   getAllArray = createSelector(this.getEntities, entities => { return values<Note>(entities); });
 }

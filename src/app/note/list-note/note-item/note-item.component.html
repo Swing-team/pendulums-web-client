@@ -1,0 +1,23 @@
+<div [ngClass]="{'ps-back-white1': !note.colorPalette  || note.colorPalette == 0,
+                  'ps-back-salmon': note.colorPalette == 1,
+                  'ps-back-blue': note.colorPalette == 2,
+                  'ps-back-black': note.colorPalette == 3,
+                  'ps-back-yellow': note.colorPalette == 4,
+                  'ps-back-pink': note.colorPalette == 5,
+                  'ps-back-red': note.colorPalette == 6,
+                  'ps-back-green': note.colorPalette == 7}" class="ps-note-item-container">
+  <div class="card ps-note-item-card">
+    <div class="card-content ps-note-item-card-content">
+      <div class="media ps-note-item-card-content-media">
+        <div class="ps-note-item-card-title">{{note.title}}</div>
+      </div>
+      <div class="ps-note-item-card-body">{{note.content}}</div>
+      <div class="column has-text-right ps-note-item-card-icons">
+          <span><i class="icon-archive" [ngStyle]="{'color': note.isArchive ? '#4a4a4a' : '#d2d2d2'}" (click)="archiveNote()" title="Archive"></i></span>
+          <span><i class="icon-trash" (click)="deleteNote()" title="Delete Note"></i></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+

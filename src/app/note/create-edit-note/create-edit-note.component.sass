@@ -1,8 +1,5 @@
 @import "../../../sass/variables"
 
-.ps-button-gap
-  padding: 40px
-
 .ps-header-input
   border-left: 3px solid $ps-primary
   border-right: 3px solid $ps-primary
@@ -27,22 +24,6 @@
     background-color: $powderBlue
   @media (max-width: 480px)
     font-size: 20px
-
-.ps-header-vertical-align
-  flex-direction: column
-  display: flex
-  justify-content: space-between
-
-.ps-body-input
-  box-shadow: none
-  border-radius: unset
-  border: none
-
-.ps-email-input
-  text-transform: lowercase !important
-
-.ps-left-border
-  border-left: 1px solid $yellow
 
 .ps-project-create-color-picker-container
   display: inline-flex
@@ -147,43 +128,6 @@
       @media(min-width: 414px) and (max-width: 630px)
         left: -150px
 
-.ps-body-button
-  font-size: 25px
-  border-radius: 100%
-  color: $primary
-  cursor: pointer
-  transition: all ease-in-out $ps-transitions
-  &.is-danger
-    color: $red
-  &:hover
-    color: lighten($primary, 40)
-    &.is-danger
-      color: lighten($red, 30)
-
-.ps-inviting-user
-  border-bottom: 1px solid $yellow
-
-.ps-invited-user-item
-  border-bottom: 1px solid #dedfcb
-  span
-    line-height: 36px
-  .ps-invited-user-email
-    word-break: break-all
-    padding-left: 10px
-  .ps-invited-user-role
-    padding-left: 10px
-
-.ps-empty-list
-  min-height: 40px !important
-  padding-top: 20px
-  margin-bottom: 25px !important
-
-.ps-line-height
-  line-height: 36px
-
-.ps-none-radius
-  border-radius: unset !important
-
 .ps-submit-button
   position: absolute
   bottom: 0
@@ -191,29 +135,3 @@
   left: 0
   .button
     border-radius: 0 0 $radius $radius
-
-.ps-padding-left
-  padding-left: 10px !important
-  padding-right: 10px !important
-
-.ps-pencil-image-change
-  background-color: rgba(0, 0, 0, 0.6)
-  position: absolute
-  color: $paper
-  line-height: 28px
-  text-align: center
-  font-size: 16px
-  width: 28px
-  height: 28px
-  bottom: 0
-  right: 0
-  border-radius: 8px
-  cursor: pointer
-
-.ps-image-resize
-  border-radius: 4px !important
-  height: 100px
-  width: 100px
-  background: no-repeat center center
-  background-size: cover
-  cursor: pointer

@@ -7,6 +7,8 @@ import { AppStateSelectors }                          from '../shared/state/app-
 import { CreateEditNoteComponent }                    from './create-edit-note/create-edit-note.component';
 import { ModalService }                               from '../core/modal/modal.service';
 import { NoteService }                                from './shared/notes.service';
+import { NotesActions }                               from '../shared/state/note/notes.actions';
+
 
 
 
@@ -23,12 +25,15 @@ export class NoteComponent implements OnInit {
   constructor (private modalService: ModalService,
     appStateSelectors: AppStateSelectors,
     private noteService: NoteService,
-    private store: Store<AppState>) {
-    this.notes = store.select(appStateSelectors.getProjectsArray);
+    private store: Store<AppState>,
+    private notesActions: NotesActions) {
+    this.notes = store.select(appStateSelectors.getNotesArray);
   }
 
   ngOnInit(): void {
-    this.noteService.getNotes()
+    this.noteService.getNotes().then((notes) => {
+      this.store.dispatch(this.notesActions.loadNotes(notes));
+    })
   }
 
   openCreateNotetModal() {

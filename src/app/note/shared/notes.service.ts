@@ -14,11 +14,11 @@ export class NoteService {
     this.options = {...environment.httpOptions, responseType: 'text'};
   }
 
-  getNotes(): Promise<Note> {
+  getNotes(): Promise<Note[]> {
     return this.http
       .get(environment.apiEndpoint + '/notes/getAll')
       .toPromise()
-      .then(response => response as Note)
+      .then(response => response as Note[])
       .catch(this.handleError);
   }
 
