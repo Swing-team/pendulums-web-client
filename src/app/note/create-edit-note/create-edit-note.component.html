@@ -4,7 +4,7 @@
         <div class="columns is-mobile is-centered">
             <div class="column is-half">
               <input [(ngModel)]="note.title" name="title" class="input ps-header-input"
-              placeholder="untitled title..." type="text">
+              placeholder="Untitled Note..." type="text">
             </div>
           </div>
       <div class="columns">
@@ -29,6 +29,7 @@
         <div class="control">
           <div class="select">
             <select class="ps-body-input" [(ngModel)]="note.project" name="project">
+              <option>project list</option>
               <option [ngValue]='project.id' *ngFor='let project of projectsCopy; trackBy: projectsTrackBy'>{{project.name}}</option>
             </select>
           </div>

@@ -73,15 +73,8 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy {
   }
 
   createEditNote() {
-    this.noteService.create({
-      note: {
-        title: this.note.title,
-        content: tinymce.activeEditor.getContent(),
-        isArchive: this.showIsArchive
-      },
-      projectId: this.note.project,
-      colorPalette: this.note.colorPalette
-    }).then((note) => {
+    this.note.content = tinymce.activeEditor.getContent();
+    this.noteService.create({note: this.note}).then((note) => {
       this.store.dispatch(this.notesActions.addNote(note));
       this.showError('The note was created successfully');
       this.note = new Note();
@@ -111,6 +104,7 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy {
   }
   archiveNote() {
     this.showIsArchive = !this.showIsArchive
+    this.note.isArchive = this.showIsArchive
   }
   showError(error) {
     this.errorService.show({
