@@ -8,6 +8,7 @@ import { CreateEditNoteComponent }                    from './create-edit-note/c
 import { ModalService }                               from '../core/modal/modal.service';
 import { NoteService }                                from './shared/notes.service';
 import { NotesActions }                               from '../shared/state/note/notes.actions';
+import { Location }                                   from '@angular/common';
 
 
 
@@ -25,6 +26,7 @@ export class NoteComponent implements OnInit {
   constructor (private modalService: ModalService,
     appStateSelectors: AppStateSelectors,
     private noteService: NoteService,
+    private location: Location,
     private store: Store<AppState>,
     private notesActions: NotesActions) {
     this.notes = store.select(appStateSelectors.getNotesArray);
@@ -35,7 +37,9 @@ export class NoteComponent implements OnInit {
       this.store.dispatch(this.notesActions.loadNotes(notes));
     })
   }
-
+  goBack() {
+    this.location.back();
+  }
   openCreateNotetModal() {
     this.modalService.show({
       component: CreateEditNoteComponent,
@@ -43,6 +47,9 @@ export class NoteComponent implements OnInit {
         currentUser: this.user
       }
     });
+  }
+
+  getSelectedTab(event) {
   }
 
 }

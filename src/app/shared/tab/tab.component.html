@@ -1,0 +1,9 @@
+<div class="tabs is-toggle is-toggle-rounded">
+  <ul>
+    <li *ngFor="let tab of tabs" [ngClass]="(selectedTab == tab.name) ? 'is-active' : '' ">
+      <a (click)="toggle(tab)">
+        <span>{{tab.name}}</span>
+      </a>
+    </li>
+  </ul>
+</div>

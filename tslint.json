@@ -110,6 +110,7 @@
     "component-selector": [
       true,
       "element",
+      "",
       "kebab-case"
     ],
     "use-input-property-decorator": true,
