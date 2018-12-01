@@ -1,4 +1,17 @@
-<form class="create-edit-note" (ngSubmit)="createEditNote()" #createEditNoteForm="ngForm" novalidate>
+<form
+  class="create-edit-note"
+  (ngSubmit)="createEditNote()"
+  #createEditNoteForm="ngForm"
+  novalidate
+  [ngClass]="{'ps-project-create-palette-item-back-white1': note.colorPalette == 0,
+                             'ps-project-create-palette-item-back-salmon': note.colorPalette == 1,
+                             'ps-project-create-palette-item-back-blue': note.colorPalette == 2,
+                             'ps-project-create-palette-item-back-black': note.colorPalette == 3,
+                             'ps-project-create-palette-item-back-yellow': note.colorPalette == 4,
+                             'ps-project-create-palette-item-back-pink': note.colorPalette == 5,
+                             'ps-project-create-palette-item-back-red': note.colorPalette == 6,
+                             'ps-project-create-palette-item-back-green': note.colorPalette == 7}"
+  >
   <div class="is-centered">
     <div dir="auto">
         <div class="columns is-mobile is-centered">
@@ -29,7 +42,7 @@
         <div class="control">
           <div class="select">
             <select class="ps-body-input" [(ngModel)]="note.project" name="project">
-              <option>project list</option>
+              <option [ngValue]='none'>projects list</option>
               <option [ngValue]='project.id' *ngFor='let project of projectsCopy; trackBy: projectsTrackBy'>{{project.name}}</option>
             </select>
           </div>

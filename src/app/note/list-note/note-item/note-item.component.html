@@ -13,7 +13,6 @@
       </div>
       <div class="ps-note-item-card-body">{{note.content}}</div>
       <div class="column has-text-right ps-note-item-card-icons">
-          <span><i class="icon-archive" [ngStyle]="{'color': note.isArchive ? '#4a4a4a' : '#d2d2d2'}" (click)="archiveNote()" title="Archive"></i></span>
           <span><i class="icon-trash" (click)="deleteNote()" title="Delete Note"></i></span>
       </div>
     </div>

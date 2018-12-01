@@ -1,15 +1,21 @@
 <div class="container ps-note-padding">
   <div class="ps-project-name-container">
-      <div class="ps-activity-top-button icon-back" (click)="goBack()" title="Back"></div>
-      <app-tab
+    <div class="ps-activity-top-button icon-back" (click)="goBack()" title="Back"></div>
+    <app-tab
         [tabs]="[{name: 'Notes'}, {name: 'Archived'}]"
         (onTabClicked)="getSelectedTab($event)"
-      ></app-tab>
-      <div class="ps-activity-top-button icon-plus" (click)="openCreateNotetModal()" title="Add new activity"></div>
+    >
+    </app-tab>
+    <div class="ps-activity-top-button icon-plus" (click)="openCreateNotetModal()" title="Add new activity"></div>
   </div>
-  <div class="columns is-multiline">
+  <div *ngIf="!selectedTab" class="columns is-multiline">
     <div *ngFor='let note of notes | async' class="column is-3-widescreen is-6-desktop is-6-tablet">
       <note-item [note]="note"></note-item>
+    </div>
+  </div>
+  <div class="columns is-multiline" *ngIf="selectedTab">
+    <div *ngFor='let archive of archives' class="column is-3-widescreen is-6-desktop is-6-tablet">
+      <note-item [note]="archive"></note-item>
     </div>
   </div>
 </div>

@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, OnDestroy} from '@angular/core';
+import {Component, OnInit, Input, OnDestroy, Host} from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Project } from '../../shared/state/project/project.model';
 import { NoteService } from '../shared/notes.service';
@@ -37,7 +37,8 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy {
   formSubmitted;
   showIsArchive: boolean;
 
-  constructor(private modalService: ModalService,
+  constructor(@Host() parent: ModalService,
+    private modalService: ModalService,
     private store: Store<AppState>,
     private notesActions: NotesActions,
     private noteService: NoteService,

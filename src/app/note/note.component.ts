@@ -1,4 +1,4 @@
-import { Component, Input, OnInit }                   from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, Output }                   from '@angular/core';
 import { Store }                                      from '@ngrx/store';
 import { AppState }                                   from '../shared/state/appState';
 import { Observable }                                 from 'rxjs/Observable';
@@ -9,18 +9,20 @@ import { ModalService }                               from '../core/modal/modal.
 import { NoteService }                                from './shared/notes.service';
 import { NotesActions }                               from '../shared/state/note/notes.actions';
 import { Location }                                   from '@angular/common';
-
-
-
+import { Subscription }                               from 'rxjs/Subscription';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'note',
   templateUrl: './note.component.html',
   styleUrls: ['./note.component.sass']
 })
-export class NoteComponent implements OnInit {
+export class NoteComponent implements OnInit, OnDestroy {
   @Input() user: Observable<User>;
+  @Output() selectedTab: Boolean = false;
   notes: Observable<any>;
+  archives: Array<any>;
+  private subscriptions: Array<Subscription> = [];
 
 
   constructor (private modalService: ModalService,
@@ -28,7 +30,8 @@ export class NoteComponent implements OnInit {
     private noteService: NoteService,
     private location: Location,
     private store: Store<AppState>,
-    private notesActions: NotesActions) {
+    private notesActions: NotesActions,
+  ) {
     this.notes = store.select(appStateSelectors.getNotesArray);
   }
 
@@ -50,6 +53,20 @@ export class NoteComponent implements OnInit {
   }
 
   getSelectedTab(event) {
+    if (event.name === 'Archived') {
+      this.subscriptions.push(this.notes.subscribe((params: any) => {
+        this.archives = _.filter(params, ['isArchive', true])
+      }));
+      this.selectedTab = true
+    } else {
+      this.selectedTab = false
+    }
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.map((subscribe) => {
+      subscribe.unsubscribe()
+    });
   }
 
 }
