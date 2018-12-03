@@ -48,8 +48,12 @@ export class NoteComponent implements OnInit, OnDestroy {
       component: CreateEditNoteComponent,
       inputs: {
         currentUser: this.user
-      }
+      },
     });
+    this.modalService.applyStyleDynamically({
+      component: CreateEditNoteComponent,
+      customBodyStyles: {'background': '#e5e5e5'}
+    })
   }
 
   getSelectedTab(event) {

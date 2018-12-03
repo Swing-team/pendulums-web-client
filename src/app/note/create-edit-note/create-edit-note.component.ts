@@ -93,6 +93,48 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy {
   selectColor(colorIndex) {
     this.note.colorPalette = colorIndex;
     this.togglePalette();
+    let color;
+    switch (colorIndex) {
+      case 0: {
+        color = '#e5e5e5';
+      }
+      break
+      case 1: {
+        color = '#ff9166';
+      }
+        break;
+      case 2: {
+        color = '#0a9bb3';
+      }
+        break;
+      case 3: {
+        color = '#333333';
+      }
+        break;
+      case 4: {
+        color = '#ffd470';
+      }
+        break;
+      case 5: {
+        color = '#ff99cc';
+      }
+        break;
+      case 6: {
+        color = '#d54552';
+      }
+        break;
+      case 7: {
+        color = '#3ccc7c';
+      }
+        break;
+      default : break;
+    }
+    this.modalService.applyStyleDynamically({
+      component: CreateEditNoteComponent,
+      customBodyStyles: {'background': color}
+    });
+    tinymce.activeEditor.getBody().style.backgroundColor = color
+    tinymce.activeEditor.getToolbar().style.backgroundColor = color
   }
   deleteNote() {
     this.modalService.close();
