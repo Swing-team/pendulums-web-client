@@ -8,12 +8,12 @@
                   'ps-back-green': note.colorPalette == 7}" class="ps-note-item-container">
   <div class="card ps-note-item-card">
     <div class="card-content ps-note-item-card-content">
-      <div class="media ps-note-item-card-content-media">
+      <div (click)="editModal()" class="media ps-note-item-card-content-media">
         <div class="ps-note-item-card-title">{{note.title}}</div>
       </div>
-      <div class="ps-note-item-card-body">{{note.content}}</div>
-      <div class="column has-text-right ps-note-item-card-icons">
-          <span><i class="icon-trash" (click)="deleteNote()" title="Delete Note"></i></span>
+      <div (click)="editModal()" class="ps-note-item-card-body" [innerHTML]=note.content>{{note.content}}</div>
+      <div class="column has-text-right ps-note-item-card-icons ps-note-item-delete">
+        <span><i class="icon-trash" (click)="deleteNote()" title="Delete Note"></i></span>
       </div>
     </div>
   </div>

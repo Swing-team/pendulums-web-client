@@ -9,6 +9,7 @@ export class NotesActions {
   static LOAD_DB_NOTES = 'LOAD_DB_NOTES';
   static ADD_NOTE = 'ADD_NOTE';
   static REMOVE_NOTE = 'REMOVE_NOTE';
+  static UPDATE_NOTE = 'UPDATE_NOTE'
 
   loadNotes(notes: Note[]):  ActionWithPayload<Note[]> {
     return {
@@ -27,6 +28,13 @@ export class NotesActions {
   addNote(note: Note): ActionWithPayload<Note> {
     return {
       type: NotesActions.ADD_NOTE,
+      payload: note
+    };
+  }
+
+  updateNote(note: Note): ActionWithPayload<Note> {
+    return {
+      type: NotesActions.UPDATE_NOTE,
       payload: note
     };
   }

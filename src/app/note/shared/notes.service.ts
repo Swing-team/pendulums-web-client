@@ -29,6 +29,13 @@ export class NoteService {
       .then(response => response as Note)
       .catch(this.handleError);
   }
+  update(note): Promise<Note> {
+    return this.http
+      .put(environment.apiEndpoint + '/notes/' + note.note.id, note, {withCredentials: true})
+      .toPromise()
+      .then(response => response as Note)
+      .catch(this.handleError);
+  }
 
   delete(noteId): Promise<any> {
     return this.http

@@ -5,6 +5,8 @@ import { NoteService }                                from '../../shared/notes.s
 import { ErrorService }                               from '../../../core/error/error.service';
 import { AppState }                                   from '../../../shared/state/appState';
 import { NotesActions }                               from '../../../shared/state/note/notes.actions';
+import { ModalService }                               from '../../../core/modal/modal.service';
+import { CreateEditNoteComponent }                    from '../../create-edit-note/create-edit-note.component';
 
 
 
@@ -17,6 +19,7 @@ import { NotesActions }                               from '../../../shared/stat
 export class NoteItemComponent implements OnInit {
   @Input() note: Note;
   constructor(
+    private modalService: ModalService,
     private noteService: NoteService,
     private errorService: ErrorService,
     private store: Store<AppState>,
@@ -25,6 +28,57 @@ export class NoteItemComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  }
+
+  editModal() {
+    console.log('clicked', this.note);
+    let color;
+    switch (this.note.colorPalette) {
+      case 0: {
+        color = '#e5e5e5';
+      }
+      break
+      case 1: {
+        color = '#ff9166';
+      }
+        break;
+      case 2: {
+        color = '#0a9bb3';
+      }
+        break;
+      case 3: {
+        color = '#333333';
+      }
+        break;
+      case 4: {
+        color = '#ffd470';
+      }
+        break;
+      case 5: {
+        color = '#ff99cc';
+      }
+        break;
+      case 6: {
+        color = '#d54552';
+      }
+        break;
+      case 7: {
+        color = '#3ccc7c';
+      }
+        break;
+      default : break;
+    }
+    this.modalService.show({
+      component: CreateEditNoteComponent,
+      inputs: {
+        note: this.note,
+        color: color
+      }
+    });
+    this.modalService.applyStyleDynamically({
+      component: CreateEditNoteComponent,
+      customBodyStyles: {'background': color}
+    });
   }
 
   deleteNote() {

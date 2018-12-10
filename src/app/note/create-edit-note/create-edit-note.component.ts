@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, OnDestroy, Host} from '@angular/core';
+import {Component, OnInit, Input, OnDestroy, Host, } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Project } from '../../shared/state/project/project.model';
 import { NoteService } from '../shared/notes.service';
@@ -20,6 +20,8 @@ import 'pendulums-editor/plugins/link/plugin.min';
 import 'pendulums-editor/plugins/listwithcheckbox/plugin.min';
 import 'pendulums-editor/plugins/image/plugin.min';
 import 'pendulums-editor/plugins/codesample/plugin.min';
+import showdown from 'showdown';
+import TurndownService from 'turndown';
 
 @Component({
   selector: 'create-edit-note',
@@ -28,6 +30,7 @@ import 'pendulums-editor/plugins/codesample/plugin.min';
 })
 
 export class CreateEditNoteComponent implements OnInit, OnDestroy {
+  @Input() color;
   currentUser: Observable<User>;
   projects: Observable<Project[]>;
   projectsCopy: Project[];
@@ -48,7 +51,6 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy {
   }
   ngOnInit(): void {
     this.subscription = this.projects.subscribe((projects) => {this.projectsCopy = projects})
-
     tinymce.init({
       selector: '#tiny',
       branding: false,
@@ -67,6 +69,11 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy {
           {title: 'Header 6', format: 'h6'}
       ]
     });
+
+    tinymce.activeEditor.setContent(this.note.content);
+    tinymce.activeEditor.getBody().style.backgroundColor = this.color
+
+
   }
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
@@ -74,17 +81,30 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy {
   }
 
   createEditNote() {
-    this.note.content = tinymce.activeEditor.getContent();
-    this.noteService.create({note: this.note}).then((note) => {
-      this.store.dispatch(this.notesActions.addNote(note));
-      this.showError('The note was created successfully');
-      this.note = new Note();
-      this.formSubmitted = false;
-      this.modalService.close();
-    })
-      .catch(error => {
-        this.showError('Server communication error');
-      });
+    if (this.note.id) {
+      this.note.content = tinymce.activeEditor.getContent();
+      this.noteService.update({note: this.note}).then((note) => {
+        this.showError('The note was edited successfully');
+        this.note = new Note();
+        this.formSubmitted = false;
+        this.modalService.close();
+      })
+        .catch(error => {
+          this.showError('Server communication error');
+        });
+    } else {
+      this.note.content = tinymce.activeEditor.getContent();
+      this.noteService.create({note: this.note}).then((note) => {
+        this.store.dispatch(this.notesActions.addNote(note));
+        this.showError('The note was created successfully');
+        this.note = new Note();
+        this.formSubmitted = false;
+        this.modalService.close();
+      })
+        .catch(error => {
+          this.showError('Server communication error');
+        });
+    }
   }
 
   togglePalette() {
@@ -134,7 +154,6 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy {
       customBodyStyles: {'background': color}
     });
     tinymce.activeEditor.getBody().style.backgroundColor = color
-    tinymce.activeEditor.getToolbar().style.backgroundColor = color
   }
   deleteNote() {
     this.modalService.close();

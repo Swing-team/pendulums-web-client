@@ -45,7 +45,11 @@ export default function reducer(state = initialState, action: ActionWithPayload<
       }
       return newState;
     }
-
+    case NotesActions.UPDATE_NOTE: {
+      const newState = JSON.parse(JSON.stringify(state));
+      newState.entities[action.payload.id] = action.payload;
+      return newState;
+    }
     case NotesActions.REMOVE_NOTE: {
       const newState = JSON.parse(JSON.stringify(state));
       delete newState.entities[action.payload];
