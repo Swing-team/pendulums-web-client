@@ -69,11 +69,10 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy {
           {title: 'Header 6', format: 'h6'}
       ]
     });
-
-    tinymce.activeEditor.setContent(this.note.content);
-    tinymce.activeEditor.getBody().style.backgroundColor = this.color
-
-
+    if (this.note.content) {
+      tinymce.activeEditor.setContent(this.note.content);
+    }
+    tinymce.activeEditor.getBody().style.backgroundColor = this.color ? this.color : '#e5e5e5'
   }
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
@@ -81,6 +80,8 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy {
   }
 
   createEditNote() {
+    console.log('ss', this.note);
+
     if (this.note.id) {
       this.note.content = tinymce.activeEditor.getContent();
       this.noteService.update({note: this.note}).then((note) => {
@@ -113,47 +114,57 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy {
   selectColor(colorIndex) {
     this.note.colorPalette = colorIndex;
     this.togglePalette();
-    let color;
+    let bgColor,
+        fontColor
     switch (colorIndex) {
       case 0: {
-        color = '#e5e5e5';
+        bgColor = '#e5e5e5';
+        fontColor = '#4a4a4a';
       }
       break
       case 1: {
-        color = '#ff9166';
+        bgColor = '#ff9166';
+        fontColor = '#4a4a4a';
       }
         break;
       case 2: {
-        color = '#0a9bb3';
+        bgColor = '#0a9bb3';
+        fontColor = '#fff';
       }
         break;
       case 3: {
-        color = '#333333';
+        bgColor = '#333333';
+        fontColor = '#fff';
       }
         break;
       case 4: {
-        color = '#ffd470';
+        bgColor = '#ffd470';
+        fontColor = '#4a4a4a';
       }
         break;
       case 5: {
-        color = '#ff99cc';
+        bgColor = '#ff99cc';
+        fontColor = '#4a4a4a';
       }
         break;
       case 6: {
-        color = '#d54552';
+        bgColor = '#d54552';
+        fontColor = '#fff';
       }
         break;
       case 7: {
-        color = '#3ccc7c';
+        bgColor = '#3ccc7c';
+        fontColor = '#4a4a4a';
       }
         break;
       default : break;
     }
     this.modalService.applyStyleDynamically({
       component: CreateEditNoteComponent,
-      customBodyStyles: {'background': color}
+      customBodyStyles: {'background': bgColor}
     });
-    tinymce.activeEditor.getBody().style.backgroundColor = color
+    tinymce.activeEditor.getBody().style.backgroundColor = bgColor
+    tinymce.activeEditor.getBody().style.color = fontColor
   }
   deleteNote() {
     this.modalService.close();

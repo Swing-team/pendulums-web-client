@@ -12,7 +12,7 @@
         <div class="ps-note-item-card-title">{{note.title}}</div>
       </div>
       <div (click)="editModal()" class="ps-note-item-card-body" [innerHTML]=note.content>{{note.content}}</div>
-      <div class="column has-text-right ps-note-item-card-icons ps-note-item-delete">
+      <div class="has-text-right ps-note-item-card-icons ps-note-item-delete">
         <span><i class="icon-trash" (click)="deleteNote()" title="Delete Note"></i></span>
       </div>
     </div>

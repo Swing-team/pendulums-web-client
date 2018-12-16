@@ -31,7 +31,6 @@ export class NoteItemComponent implements OnInit {
   }
 
   editModal() {
-    console.log('clicked', this.note);
     let color;
     switch (this.note.colorPalette) {
       case 0: {

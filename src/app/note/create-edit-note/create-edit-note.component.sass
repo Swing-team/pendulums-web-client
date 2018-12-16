@@ -19,9 +19,10 @@
     font-weight: 500
     line-height: 2rem
   &:hover
-    background-color: $powderBlue
+    opacity: 0.7
   &:focus
-    background-color: $powderBlue
+    opacity: 0.7
+
   @media (max-width: 480px)
     font-size: 20px
 
@@ -51,10 +52,12 @@
             background-color: darken($white1, 5) !important
         &.ps-project-create-palette-item-back-blue
           background: $ps-card-blue
+          border: 1px solid $paper !important
           &:hover
             background-color: $ps-card-blue-light !important
         &.ps-project-create-palette-item-back-black
           background: $black
+          border: 1px solid $paper !important
           &:hover
             background-color: $black-light !important
         &.ps-project-create-palette-item-back-yellow
@@ -67,6 +70,7 @@
             background-color: $ps-card-pink-light !important
         &.ps-project-create-palette-item-back-red
           background: $ps-card-red
+          border: 1px solid $paper !important
           &:hover
             background-color: $ps-card-red-light !important
         &.ps-project-create-palette-item-back-green
@@ -138,20 +142,43 @@
 
 .ps-project-create-palette-item-back-salmon
   background: $salmon
+  color: '#4a4a4a' !important
+
 .ps-project-create-palette-item-back-white1
   background: $white1
+  color: '#4a4a4a' !important
 .ps-project-create-palette-item-back-blue
   background: $ps-card-blue
+  color: $paper !important
+  .ps-bg-input
+    border: 1px solid $paper !important
+    color: $paper !important
 .ps-project-create-palette-item-back-black
   background: $black
+  color: $paper !important
+  .ps-bg-input
+    border: 1px solid $paper !important
+    color: $paper !important
 .ps-project-create-palette-item-back-yellow
   background: $yellow
+  color: '#4a4a4a' !important
+
 .ps-project-create-palette-item-back-pink
   background: $ps-card-pink
+  color: '#4a4a4a' !important
+
 .ps-project-create-palette-item-back-red
   background: $ps-card-red
+  color: $paper !important
+  .ps-bg-input
+    border: 1px solid $paper !important
+    color: $paper !important
+
+
 .ps-project-create-palette-item-back-green
   background: $ps-card-green
+  color: '#4a4a4a' !important
+
 .ps-bg-input
   background: transparent !important
   border: 1px solid #333
