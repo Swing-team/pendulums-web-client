@@ -73,3 +73,28 @@
   .ps-note-item-card
     border-radius: $radius
     background: $ps-card-green
+
+.ps-activity-item-button
+  overflow: hidden
+  position: absolute
+  right: 0
+  bottom: 10px
+  i
+    cursor: pointer
+    transition: all ease-in-out $ps-transitions
+  .icon-trash
+    color: $pink
+    &:hover
+      color: lighten($pink, 20)
+  .icon-cancel
+    &:hover
+      color: lighten($red, 20)
+  .icon-check
+    &:hover
+      color: lighten($success, 20)
+
+.ps-activity-item-button-confirmation
+  border: none
+  font-size: 1.4rem
+  background-color: transparent
+  padding: 1rem 0.5rem 0 0.5rem !important

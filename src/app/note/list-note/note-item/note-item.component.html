@@ -13,7 +13,21 @@
       </div>
       <div (click)="editModal()" class="ps-note-item-card-body" [innerHTML]=note.content>{{note.content}}</div>
       <div class="has-text-right ps-note-item-card-icons ps-note-item-delete">
-        <span><i class="icon-trash" (click)="deleteNote()" title="Delete Note"></i></span>
+        <span *ngIf="!deleteConfirmation">
+          <i class="icon-trash" (click)="deleteNote()" title="Delete Note"></i>
+        </span>
+        <div class="ps-activity-item-button is-pulled-right" *ngIf="deleteConfirmation">
+          <a  *ngIf="!deleteButtonDisabled" class="button ps-activity-item-button-confirmation" (click)="cancelDelete()" title="Cancel Delete">
+            <span class="icon">
+              <i class="icon-cancel" [ngClass]="{'has-text-danger': !deleteButtonDisabled}"></i>
+            </span>
+          </a>
+          <a  class="button ps-activity-item-button-confirmation" [ngClass]="{'is-loading': deleteButtonDisabled}" (click)="confirmDelete()" title="Confirm Delete">
+            <span class="icon">
+              <i class="icon-check" [ngClass]="{'has-text-success': !deleteButtonDisabled}"></i>
+            </span>
+          </a>
+        </div>
       </div>
     </div>
   </div>

@@ -9,8 +9,6 @@ import { ModalService }                               from '../../../core/modal/
 import { CreateEditNoteComponent }                    from '../../create-edit-note/create-edit-note.component';
 
 
-
-
 @Component({
   selector: 'note-item',
   templateUrl: './note-item.component.html',
@@ -18,6 +16,8 @@ import { CreateEditNoteComponent }                    from '../../create-edit-no
 })
 export class NoteItemComponent implements OnInit {
   @Input() note: Note;
+  @Input() deleteButtonDisabled: boolean;
+  deleteConfirmation = false;
   constructor(
     private modalService: ModalService,
     private noteService: NoteService,
@@ -81,6 +81,10 @@ export class NoteItemComponent implements OnInit {
   }
 
   deleteNote() {
+    this.deleteConfirmation = true;
+  }
+
+  confirmDelete() {
     this.noteService.delete(this.note.id).then(() => {
       this.store.dispatch(this.notesActions.removeNote(this.note.id));
       this.noteService.getNotes().then((notes) => {
@@ -92,6 +96,13 @@ export class NoteItemComponent implements OnInit {
         this.showError('Server communication error');
       });
   }
+
+  cancelDelete() {
+    if (!this.deleteButtonDisabled) {
+      this.deleteConfirmation = false;
+    }
+  }
+
   showError(error) {
     this.errorService.show({
       input: error
