@@ -8,6 +8,7 @@ import { BrowserModule }                      from '@angular/platform-browser';
 import { BrowserAnimationsModule }            from '@angular/platform-browser/animations';
 import { CreateEditNoteComponent }             from './create-edit-note/create-edit-note.component';
 import { NvD3Module } from 'ng2-nvd3';
+import { EditorModule } from '@tinymce/tinymce-angular';
 import 'd3';
 import 'nvd3';
 
@@ -17,7 +18,8 @@ import 'nvd3';
     SharedModule,
     BrowserModule,
     BrowserAnimationsModule,
-    NvD3Module
+    NvD3Module,
+    EditorModule
   ],
   declarations: [
     NoteComponent,

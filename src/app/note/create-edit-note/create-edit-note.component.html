@@ -29,7 +29,25 @@
           </div>
       <div class="columns">
         <div class="column column has-text-centered">
-            <textarea id="tiny"></textarea>
+            <!-- <textarea name="content" [(ngModel)]="note.content" id="tiny"></textarea> -->
+            <editor id="tiny" [(ngModel)]="note.content" name="content" [init]="{
+      branding: false,
+      menubar: false,
+      resize: false,
+      statusbar: false,
+      fontsize_formats: '8pt 10pt 12pt 14pt 18pt 24pt 36pt',
+      toolbar: 'bold italic underline | numlist bullist checkbox | undo redo image link hr | codesample blockquote | styleselect',
+      plugins: ['hr', 'link', 'listwithcheckbox', 'image', 'codesample'],
+      style_formats: [
+        {title: 'Header 1', format: 'h1'},
+          {title: 'Header 2', format: 'h2'},
+          {title: 'Header 3', format: 'h3'},
+          {title: 'Header 4', format: 'h4'},
+          {title: 'Header 5', format: 'h5'},
+          {title: 'Header 6', format: 'h6'}
+      ]
+    }"></editor>
+
         </div>
       </div>
       <div class="ps-submit-button">
@@ -42,7 +60,6 @@
       </div>
     </div>
   </div>
-</form>
 <div class="columns" [ngClass]="{'ps-project-create-palette-item-back-white1': note.colorPalette == 0,
 'ps-project-create-palette-item-back-salmon': note.colorPalette == 1,
 'ps-project-create-palette-item-back-blue': note.colorPalette == 2,
@@ -67,7 +84,7 @@
       <div class="ps-project-create-color-picker-container">
           <div class="ps-project-create-palette-container">
             <p class="ps-project-create-color" title="pick a color">
-              <a id="id2" class="button is-fullwidth" (click)="togglePalette()"
+              <a id="id2" class="button is-fullwidth" [(ngModel)]="note.colorPalette" name="colorPalette" ngDefaultControl (click)="togglePalette()"
                  [ngClass]="{'ps-project-create-palette-item-back-white1': note.colorPalette == 0,
                              'ps-project-create-palette-item-back-salmon': note.colorPalette == 1,
                              'ps-project-create-palette-item-back-blue': note.colorPalette == 2,
@@ -98,7 +115,8 @@
         </div>
   </div>
   <div class="column has-text-right">
-    <span><i class="icon-archive" ngDefaultControl [(ngModel)]="note.isArchive" [ngStyle]="{'color': showIsArchive || note.isArchive ? '#4a4a4a' : '#d2d2d2'}" (click)="archiveNote()" title="Archive"></i></span>
+    <span><i class="icon-archive" ngDefaultControl [(ngModel)]="note.isArchive" name="isArchive" [ngStyle]="{'color': showIsArchive || note.isArchive ? '#4a4a4a' : '#d2d2d2'}" (click)="archiveNote()" title="Archive"></i></span>
     <span><i class="icon-trash" (click)="deleteNote()" title="Delete Note"></i></span>
   </div>
 </div>
+</form>

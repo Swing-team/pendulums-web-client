@@ -31,42 +31,10 @@ export class NoteItemComponent implements OnInit {
   }
 
   editModal() {
-    let color;
-    switch (this.note.colorPalette) {
-      case 0: {
-        color = '#e5e5e5';
-      }
-      break
-      case 1: {
-        color = '#ff9166';
-      }
-        break;
-      case 2: {
-        color = '#0a9bb3';
-      }
-        break;
-      case 3: {
-        color = '#333333';
-      }
-        break;
-      case 4: {
-        color = '#ffd470';
-      }
-        break;
-      case 5: {
-        color = '#ff99cc';
-      }
-        break;
-      case 6: {
-        color = '#d54552';
-      }
-        break;
-      case 7: {
-        color = '#3ccc7c';
-      }
-        break;
-      default : break;
-    }
+    const color = [
+      '#e5e5e5', '#ff9166', '#0a9bb3', '#333333', '#ffd470', '#ff99cc', '#d54552', '#3ccc7c'
+    ][this.note.colorPalette]
+
     this.modalService.show({
       component: CreateEditNoteComponent,
       inputs: {
