@@ -16,11 +16,37 @@
   background-color: transparent !important
 .mce-btn
   background: transparent !important
+.mce-btn.mce-active i
+  color: $black !important
+.mce-btn-group .mce-btn.mce-active
+  color: $black !important
+  border: 1px solid $black
+.mce-btn:hover
+  border: 1px solid $black !important
+.mce-caret
+    border-top: 4px solid #595959 !important
 .ps-project-create-palette-item-back-black, .ps-project-create-palette-item-back-red, .ps-project-create-palette-item-back-blue
   .mce-ico, .mce-txt
     color: $paper !important
+  .mce-caret
+    border-top: 4px solid $paper
   .mce-btn, .mce-txt
     button
     color: $paper !important
     &.mce-active i
       color: $white1 !important
+  .mce-btn:hover
+    border: 1px solid $paper !important
+
+  .mce-container-body.mce-flow-layout
+    border-bottom: 1px solid $paper
+  .mce-btn-group .mce-btn.mce-active
+    color: $black !important
+    border: 1px solid $paper
+.mce-menu-item
+  margin-bottom: 0 !important
+  background: $paper !important
+  .mce-text
+    background-color: $paper !important
+.mce-window
+  background: #fff !important

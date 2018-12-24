@@ -38,7 +38,6 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy, AfterViewInit
   private subscriptions: Subscription[] = [];
   showPaletteBoolean = false;
   note: Note = new Note();
-  formSubmitted;
   showIsArchive: boolean;
 
   constructor(@Host() parent: ModalService,
@@ -71,7 +70,9 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy, AfterViewInit
       this.noteService.update({note: this.note}).then((note) => {
         this.showError('The note was edited successfully');
         this.note = note as Note;
-        this.formSubmitted = false;
+        this.noteService.getNotes().then((notes) => {
+          this.store.dispatch(this.notesActions.loadNotes(notes));
+        })
       })
         .catch(error => {
           this.showError('Server communication error');
@@ -81,7 +82,9 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy, AfterViewInit
         this.store.dispatch(this.notesActions.addNote(note));
         this.showError('The note was created successfully');
         this.note = note as Note;
-        this.formSubmitted = false;
+        this.noteService.getNotes().then((notes) => {
+          this.store.dispatch(this.notesActions.loadNotes(notes));
+        })
       })
         .catch(error => {
           this.showError('Server communication error');
@@ -119,6 +122,9 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy, AfterViewInit
     this.modalService.close();
     this.noteService.delete(this.note.id).then(() => {
       this.showError('Note was deleted successfully');
+      this.noteService.getNotes().then((notes) => {
+        this.store.dispatch(this.notesActions.loadNotes(notes));
+      })
     })
       .catch(error => {
         this.showError('Server communication error');

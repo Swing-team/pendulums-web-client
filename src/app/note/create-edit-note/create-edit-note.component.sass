@@ -1,8 +1,8 @@
 @import "../../../sass/variables"
 
 .ps-header-input
-  border-left: 3px solid $ps-primary
-  border-right: 3px solid $ps-primary
+  border-left: 3px solid $black
+  border-right: 3px solid $black
   border-top: none
   border-bottom: none
   border-radius: 0
@@ -150,12 +150,22 @@
 .ps-project-create-palette-item-back-blue
   background: $ps-card-blue
   color: $paper !important
+  .ps-header-input
+    border-left: 3px solid $paper
+    border-right: 3px solid $paper
+  ::placeholder
+    color: $paper !important
   .ps-bg-input
     border: 1px solid $paper !important
     color: $paper !important
 .ps-project-create-palette-item-back-black
   background: $black
   color: $paper !important
+  .ps-header-input
+    border-left: 3px solid $paper
+    border-right: 3px solid $paper
+  ::placeholder
+    color: $paper !important
   .ps-bg-input
     border: 1px solid $paper !important
     color: $paper !important
@@ -170,6 +180,11 @@
 .ps-project-create-palette-item-back-red
   background: $ps-card-red
   color: $paper !important
+  .ps-header-input
+    border-left: 3px solid $paper
+    border-right: 3px solid $paper
+  ::placeholder
+    color: $paper !important
   .ps-bg-input
     border: 1px solid $paper !important
     color: $paper !important
