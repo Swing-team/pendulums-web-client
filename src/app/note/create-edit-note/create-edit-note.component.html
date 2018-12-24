@@ -50,14 +50,6 @@
 
         </div>
       </div>
-      <div class="ps-submit-button">
-        <p class="control">
-          <button class="button is-primary is-fullwidth is-loading"
-                  type="submit" [disabled]="formSubmitted" [ngClass]="{'is-loading': formSubmitted}">
-            {{note.id ? 'Edit' : 'Create'}}
-          </button>
-        </p>
-      </div>
     </div>
   </div>
 <div class="columns" [ngClass]="{'ps-project-create-palette-item-back-white1': note.colorPalette == 0,

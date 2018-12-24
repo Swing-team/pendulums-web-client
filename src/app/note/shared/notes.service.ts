@@ -33,7 +33,7 @@ export class NoteService {
     return this.http
       .put(environment.apiEndpoint + '/notes/' + note.note.id, note, {withCredentials: true})
       .toPromise()
-      .then(response => response as Note)
+      .then(response => response[0] as Note)
       .catch(this.handleError);
   }
 

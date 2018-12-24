@@ -52,8 +52,9 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy, AfterViewInit
   }
   ngOnInit(): void {
     this.subscriptions.push(this.projects.subscribe((projects) => {this.projectsCopy = projects}))
-    this.subscriptions.push(this.createEditNoteForm.valueChanges.subscribe(data =>
-      console.log('Form changes', data)))
+    this.subscriptions.push(this.createEditNoteForm.valueChanges.debounceTime(1000).subscribe(data => {
+      this.createEditNote()
+    }))
   }
 
   ngAfterViewInit() {
@@ -66,27 +67,21 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   createEditNote() {
-    console.log('ss', this.note);
-
     if (this.note.id) {
-      this.note.content = tinymce.activeEditor.getContent();
       this.noteService.update({note: this.note}).then((note) => {
         this.showError('The note was edited successfully');
-        this.note = new Note();
+        this.note = note as Note;
         this.formSubmitted = false;
-        this.modalService.close();
       })
         .catch(error => {
           this.showError('Server communication error');
         });
     } else {
-      this.note.content = tinymce.activeEditor.getContent();
-      this.noteService.create({note: this.note}).then((note) => {
+        this.noteService.create({note: this.note}).then((note) => {
         this.store.dispatch(this.notesActions.addNote(note));
         this.showError('The note was created successfully');
-        this.note = new Note();
+        this.note = note as Note;
         this.formSubmitted = false;
-        this.modalService.close();
       })
         .catch(error => {
           this.showError('Server communication error');
