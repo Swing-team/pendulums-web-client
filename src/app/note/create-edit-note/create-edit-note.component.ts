@@ -32,6 +32,7 @@ import TurndownService from 'turndown';
 export class CreateEditNoteComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input() color;
   @ViewChild('createEditNoteForm') createEditNoteForm;
+  @Input() deleteButtonDisabled: boolean;
   currentUser: Observable<User>;
   projects: Observable<Project[]>;
   projectsCopy: Project[];
@@ -39,6 +40,7 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy, AfterViewInit
   showPaletteBoolean = false;
   note: Note = new Note();
   showIsArchive: boolean;
+  deleteConfirmation = false;
 
   constructor(@Host() parent: ModalService,
     private modalService: ModalService,
@@ -119,6 +121,10 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   deleteNote() {
+    this.deleteConfirmation = true;
+  }
+
+  confirmDelete() {
     this.modalService.close();
     this.noteService.delete(this.note.id).then(() => {
       this.showError('Note was deleted successfully');
@@ -130,6 +136,13 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy, AfterViewInit
         this.showError('Server communication error');
       });
   }
+
+  cancelDelete() {
+    if (!this.deleteButtonDisabled) {
+      this.deleteConfirmation = false;
+    }
+  }
+
   archiveNote() {
     this.showIsArchive = !this.showIsArchive
     this.note.isArchive = this.showIsArchive

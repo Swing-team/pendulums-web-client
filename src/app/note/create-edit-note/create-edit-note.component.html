@@ -107,8 +107,20 @@
         </div>
   </div>
   <div class="column has-text-right">
-    <span><i class="icon-archive" ngDefaultControl [(ngModel)]="note.isArchive" name="isArchive" [ngStyle]="{'color': showIsArchive || note.isArchive ? '#4a4a4a' : '#d2d2d2'}" (click)="archiveNote()" title="Archive"></i></span>
-    <span><i class="icon-trash" (click)="deleteNote()" title="Delete Note"></i></span>
+    <span *ngIf="!deleteConfirmation"><i class="icon-archive" ngDefaultControl [(ngModel)]="note.isArchive" name="isArchive" [ngStyle]="{'color': showIsArchive || note.isArchive ? '#4a4a4a' : '#d2d2d2'}" (click)="archiveNote()" title="Archive"></i></span>
+    <span *ngIf="!deleteConfirmation"><i class="icon-trash" (click)="deleteNote()" title="Delete Note"></i></span>
+    <div class="ps-activity-item-button is-pulled-right" *ngIf="deleteConfirmation">
+      <a  *ngIf="!deleteButtonDisabled" class="ps-activity-item-button-confirmation" (click)="cancelDelete()" title="Cancel Delete">
+        <span class="icon">
+          <i class="icon-cancel" [ngClass]="{'has-text-danger': !deleteButtonDisabled}"></i>
+        </span>
+      </a>
+      <a  class="ps-activity-item-button-confirmation" [ngClass]="{'is-loading': deleteButtonDisabled}" (click)="confirmDelete()" title="Confirm Delete">
+        <span class="icon">
+          <i class="icon-check" [ngClass]="{'has-text-success': !deleteButtonDisabled}"></i>
+        </span>
+      </a>
+    </div>
   </div>
 </div>
 </form>

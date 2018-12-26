@@ -197,3 +197,24 @@
 .ps-bg-input
   background: transparent !important
   border: 1px solid #333
+
+.ps-activity-item-button
+  overflow: hidden
+  i
+    cursor: pointer
+    transition: all ease-in-out $ps-transitions
+  .icon-trash
+    color: $pink
+    &:hover
+      color: lighten($pink, 20)
+  .icon-cancel
+    &:hover
+      color: lighten($red, 20)
+  .icon-check
+    &:hover
+      color: lighten($success, 20)
+
+.ps-activity-item-button-confirmation
+  border: none
+  font-size: 1.4rem
+  background-color: transparent

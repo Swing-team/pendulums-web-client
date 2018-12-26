@@ -8,7 +8,7 @@
                   'ps-back-green': note.colorPalette == 7}" class="ps-note-item-container">
   <div class="card ps-note-item-card">
     <div class="card-content ps-note-item-card-content">
-      <div (click)="editModal()" class="media ps-note-item-card-content-media">
+      <div (click)="editModal()" class="ps-note-item-card-content-media">
         <div class="ps-note-item-card-title">{{note.title}}</div>
       </div>
       <div (click)="editModal()" class="ps-note-item-card-body" [innerHTML]=note.content>{{note.content}}</div>
