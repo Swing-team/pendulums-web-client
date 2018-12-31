@@ -7,7 +7,6 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../../shared/state/appState';
 import { AppStateSelectors } from '../../shared/state/app-state.selectors';
 import { Subscription } from 'rxjs/Subscription';
-import { User }         from '../../shared/state/user/user.model';
 import { Note } from 'app/shared/state/note/note.model';
 import { ErrorService }                 from '../../core/error/error.service';
 import { ModalService }                               from '../../core/modal/modal.service';
@@ -20,8 +19,6 @@ import 'pendulums-editor/plugins/link/plugin.min';
 import 'pendulums-editor/plugins/listwithcheckbox/plugin.min';
 import 'pendulums-editor/plugins/image/plugin.min';
 import 'pendulums-editor/plugins/codesample/plugin.min';
-import showdown from 'showdown';
-import TurndownService from 'turndown';
 
 @Component({
   selector: 'create-edit-note',
@@ -30,15 +27,14 @@ import TurndownService from 'turndown';
 })
 
 export class CreateEditNoteComponent implements OnInit, OnDestroy, AfterViewInit {
-  @Input() color;
   @ViewChild('createEditNoteForm') createEditNoteForm;
   @Input() deleteButtonDisabled: boolean;
-  currentUser: Observable<User>;
+  @Input() note: Note;
   projects: Observable<Project[]>;
   projectsCopy: Project[];
   private subscriptions: Subscription[] = [];
+  content = '';
   showPaletteBoolean = false;
-  note: Note = new Note();
   showIsArchive: boolean;
   deleteConfirmation = false;
 
@@ -52,6 +48,14 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy, AfterViewInit
     this.projects = store.select(appStateSelectors.getProjectsArray)
   }
   ngOnInit(): void {
+    const color = [
+      '#e5e5e5', '#ff9166', '#0a9bb3', '#333333', '#ffd470', '#ff99cc', '#d54552', '#3ccc7c'
+    ][this.note.colorPalette]
+
+    this.modalService.applyStyleDynamically({
+      component: CreateEditNoteComponent,
+      customBodyStyles: {'background': color}
+    });
     this.subscriptions.push(this.projects.subscribe((projects) => {this.projectsCopy = projects}))
     this.subscriptions.push(this.createEditNoteForm.valueChanges.debounceTime(1000).subscribe(data => {
       this.createEditNote()
@@ -70,23 +74,15 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy, AfterViewInit
   createEditNote() {
     if (this.note.id) {
       this.noteService.update({note: this.note}).then((note) => {
-        this.showError('The note was edited successfully');
-        this.note = note as Note;
-        this.noteService.getNotes().then((notes) => {
-          this.store.dispatch(this.notesActions.loadNotes(notes));
-        })
+        this.store.dispatch(this.notesActions.updateNote(note));
       })
         .catch(error => {
           this.showError('Server communication error');
         });
     } else {
         this.noteService.create({note: this.note}).then((note) => {
-        this.store.dispatch(this.notesActions.addNote(note));
-        this.showError('The note was created successfully');
-        this.note = note as Note;
-        this.noteService.getNotes().then((notes) => {
-          this.store.dispatch(this.notesActions.loadNotes(notes));
-        })
+          this.store.dispatch(this.notesActions.addNote(note));
+          this.note = note as Note
       })
         .catch(error => {
           this.showError('Server communication error');
@@ -128,9 +124,7 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy, AfterViewInit
     this.modalService.close();
     this.noteService.delete(this.note.id).then(() => {
       this.showError('Note was deleted successfully');
-      this.noteService.getNotes().then((notes) => {
-        this.store.dispatch(this.notesActions.loadNotes(notes));
-      })
+      this.store.dispatch(this.notesActions.removeNote(this.note.id));
     })
       .catch(error => {
         this.showError('Server communication error');

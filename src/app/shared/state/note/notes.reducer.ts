@@ -3,6 +3,8 @@ import { Notes }           from './notes.model';
 import { ActionWithPayload }  from '../action-with-payload';
 import { values }             from 'lodash';
 import { Note } from './Note.model';
+import { findIndex }             from 'lodash';
+
 
 const initialState: Notes = {
   entities: {},
@@ -31,35 +33,21 @@ export default function reducer(state = initialState, action: ActionWithPayload<
     }
 
     case NotesActions.ADD_NOTE: {
-
       const newState = JSON.parse(JSON.stringify(state));
-      newState.entities[action.payload.id] = action.payload;
+      newState.entities[newState.entities.length] = action.payload;
       newState.entities = values<Note>(newState.entities)
-        .sort((p1, p2) => p1.id > p2.id ? 1 : -1)
-        .reduce((entities, note) => {
-          entities[note.id] = note;
-          return entities;
-        }, {});
-      if (!newState.selectedNote) {
-        newState.selectedNote = Object.keys(newState.entities)[0];
-      }
       return newState;
     }
     case NotesActions.UPDATE_NOTE: {
       const newState = JSON.parse(JSON.stringify(state));
-      newState.entities[action.payload.id] = action.payload;
+      const index = findIndex(newState.entities, {id: action.payload.id});
+      newState.entities.splice(index, 1, action.payload);
       return newState;
     }
     case NotesActions.REMOVE_NOTE: {
       const newState = JSON.parse(JSON.stringify(state));
-      delete newState.entities[action.payload];
-      if (newState.selectedNote === action.payload) {
-        if (Object.keys(newState.entities).length > 0) {
-          newState.selectedNote = Object.keys(newState.entities)[0];
-        } else {
-          newState.selectedNote = null;
-        }
-      }
+      const index = findIndex(newState.entities, {id: action.payload});
+      newState.entities.splice(index, 1);
       return newState;
     }
 

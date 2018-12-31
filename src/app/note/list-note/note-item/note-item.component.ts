@@ -7,6 +7,8 @@ import { AppState }                                   from '../../../shared/stat
 import { NotesActions }                               from '../../../shared/state/note/notes.actions';
 import { ModalService }                               from '../../../core/modal/modal.service';
 import { CreateEditNoteComponent }                    from '../../create-edit-note/create-edit-note.component';
+import { cloneDeep }                                  from 'lodash';
+
 
 
 @Component({
@@ -38,8 +40,7 @@ export class NoteItemComponent implements OnInit {
     this.modalService.show({
       component: CreateEditNoteComponent,
       inputs: {
-        note: this.note,
-        color: color
+        note: cloneDeep(this.note),
       }
     });
     this.modalService.applyStyleDynamically({
@@ -55,9 +56,6 @@ export class NoteItemComponent implements OnInit {
   confirmDelete() {
     this.noteService.delete(this.note.id).then(() => {
       this.store.dispatch(this.notesActions.removeNote(this.note.id));
-      this.noteService.getNotes().then((notes) => {
-        this.store.dispatch(this.notesActions.loadNotes(notes));
-      })
       this.showError('Note was deleted successfully');
     })
       .catch(error => {

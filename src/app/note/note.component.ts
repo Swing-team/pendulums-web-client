@@ -8,6 +8,7 @@ import { CreateEditNoteComponent }                    from './create-edit-note/c
 import { ModalService }                               from '../core/modal/modal.service';
 import { NoteService }                                from './shared/notes.service';
 import { NotesActions }                               from '../shared/state/note/notes.actions';
+import { Note }                                       from 'app/shared/state/note/note.model';
 import { Location }                                   from '@angular/common';
 import { Subscription }                               from 'rxjs/Subscription';
 import * as _ from 'lodash';
@@ -43,11 +44,11 @@ export class NoteComponent implements OnInit, OnDestroy {
   goBack() {
     this.location.back();
   }
-  openCreateNotetModal() {
+  openCreateNoteModal() {
     this.modalService.show({
       component: CreateEditNoteComponent,
       inputs: {
-        currentUser: this.user
+        note: new Note()
       },
     });
   }

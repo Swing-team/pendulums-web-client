@@ -3,12 +3,14 @@ import { HttpClient }           from '@angular/common/http';
 import { Note }              from '../../shared/state/note/note.model';
 import { SyncService }          from '../../core/services/sync.service';
 import { environment }          from '../../../environments/environment';
+import TurndownService from 'turndown';
 import 'rxjs/add/operator/toPromise';
 
 
 @Injectable()
 export class NoteService {
   private options;
+  private turndownService: TurndownService = new TurndownService();
   constructor(private http: HttpClient,
               private syncService: SyncService) {
     this.options = {...environment.httpOptions, responseType: 'text'};
@@ -23,15 +25,21 @@ export class NoteService {
   }
 
   create(note): Promise<Note> {
+    let content;
+    if (note.note.content) {
+      content = this.turndownService.turndown(note.note.content);
+
+    }
     return this.http
-      .post(environment.apiEndpoint + '/notes', note, {withCredentials: true})
+      .post(environment.apiEndpoint + '/notes', {note: {...note.note, content: content}}, {withCredentials: true})
       .toPromise()
       .then(response => response as Note)
       .catch(this.handleError);
   }
   update(note): Promise<Note> {
+    const content = this.turndownService.turndown(note.note.content);
     return this.http
-      .put(environment.apiEndpoint + '/notes/' + note.note.id, note, {withCredentials: true})
+      .put(environment.apiEndpoint + '/notes/' + note.note.id, {note: {...note.note, content: content}}, {withCredentials: true})
       .toPromise()
       .then(response => response[0] as Note)
       .catch(this.handleError);
