@@ -3,8 +3,8 @@ import { Notes }           from './notes.model';
 import { ActionWithPayload }  from '../action-with-payload';
 import { values }             from 'lodash';
 import { Note } from './Note.model';
-import { findIndex }             from 'lodash';
-
+import { findIndex, reduce }             from 'lodash';
+import  showdown from 'showdown';
 
 const initialState: Notes = {
   entities: {},
@@ -13,34 +13,29 @@ const initialState: Notes = {
 export default function reducer(state = initialState, action: ActionWithPayload<any>) {
   switch (action.type) {
     case NotesActions.LOAD_NOTES: {
+      const converter = new showdown.Converter()
+      reduce(action.payload, function (result, note) {
+        note.content = converter.makeHtml(note.content)
+        return action.payload;
+    }, {});
       return {
         entities: action.payload
       };
     }
 
-    case NotesActions.LOAD_DB_NOTES: {
-      let selectedNote = null;
-      if (action.payload.selectedNote) {
-        selectedNote = action.payload.selectedNote;
-      } else if (Object.keys(action.payload.entities).length > 0) {
-        selectedNote = Object.keys(action.payload.entities)[0];
-
-      }
-      return {
-        entities: action.payload.entities,
-        selectedNote: selectedNote,
-      };
-    }
-
     case NotesActions.ADD_NOTE: {
+      const converter = new showdown.Converter()
       const newState = JSON.parse(JSON.stringify(state));
+      action.payload.content = converter.makeHtml(action.payload.content)
       newState.entities[newState.entities.length] = action.payload;
       newState.entities = values<Note>(newState.entities)
       return newState;
     }
     case NotesActions.UPDATE_NOTE: {
+      const converter = new showdown.Converter()
       const newState = JSON.parse(JSON.stringify(state));
       const index = findIndex(newState.entities, {id: action.payload.id});
+      action.payload.content = converter.makeHtml(action.payload.content)
       newState.entities.splice(index, 1, action.payload);
       return newState;
     }

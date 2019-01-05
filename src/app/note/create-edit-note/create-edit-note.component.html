@@ -59,7 +59,7 @@
 'ps-project-create-palette-item-back-pink': note.colorPalette == 5,
 'ps-project-create-palette-item-back-red': note.colorPalette == 6,
 'ps-project-create-palette-item-back-green': note.colorPalette == 7}">
-  <div class="column">
+  <div class="column ps-p-b-0">
     <div class="field">
         <div class="control">
           <div class="select">
@@ -71,7 +71,7 @@
         </div>
     </div>
   </div>
-  <div class="column has-text-centered">
+  <div class="column has-text-centered ps-p-b-0">
       <div class="ps-project-create-color-picker-container">
           <div class="ps-project-create-palette-container">
             <p class="ps-project-create-color" title="pick a color">
@@ -105,7 +105,7 @@
           </div>
         </div>
   </div>
-  <div class="column has-text-right">
+  <div class="column has-text-right ps-p-b-0 ps-icons">
     <span *ngIf="!deleteConfirmation"><i class="icon-archive" ngDefaultControl [(ngModel)]="note.isArchive" name="isArchive" [ngStyle]="{'color': showIsArchive || note.isArchive ? '#4a4a4a' : '#d2d2d2'}" (click)="archiveNote()" title="Archive"></i></span>
     <span *ngIf="!deleteConfirmation"><i class="icon-trash" (click)="deleteNote()" title="Delete Note"></i></span>
     <div class="ps-activity-item-button is-pulled-right" *ngIf="deleteConfirmation">

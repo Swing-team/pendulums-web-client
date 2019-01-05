@@ -18,13 +18,6 @@ export class NotesActions {
     };
   }
 
-  loadDbNotes(notes: Notes): ActionWithPayload<Notes> {
-    return {
-      type: NotesActions.LOAD_DB_NOTES,
-      payload: notes
-    };
-  }
-
   addNote(note: Note): ActionWithPayload<Note> {
     return {
       type: NotesActions.ADD_NOTE,

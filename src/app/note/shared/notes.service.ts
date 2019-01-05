@@ -4,6 +4,7 @@ import { Note }              from '../../shared/state/note/note.model';
 import { SyncService }          from '../../core/services/sync.service';
 import { environment }          from '../../../environments/environment';
 import TurndownService from 'turndown';
+import * as turndownPluginGfm from 'turndown-plugin-gfm';
 import 'rxjs/add/operator/toPromise';
 
 
@@ -27,6 +28,8 @@ export class NoteService {
   create(note): Promise<Note> {
     let content;
     if (note.note.content) {
+      const taskListItems = turndownPluginGfm.taskListItems
+      this.turndownService.use(taskListItems)
       content = this.turndownService.turndown(note.note.content);
 
     }
@@ -37,6 +40,8 @@ export class NoteService {
       .catch(this.handleError);
   }
   update(note): Promise<Note> {
+    const taskListItems = turndownPluginGfm.taskListItems
+    this.turndownService.use(taskListItems)
     const content = this.turndownService.turndown(note.note.content);
     return this.http
       .put(environment.apiEndpoint + '/notes/' + note.note.id, {note: {...note.note, content: content}}, {withCredentials: true})
