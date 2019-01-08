@@ -67,6 +67,17 @@ export class ActivityService {
       .catch(this.handleError);
   }
 
+  getActivitiesForExport(projectId , users): Promise<Activity[]> {
+    const httpParams = new HttpParams()
+      .set('users', JSON.stringify(users));
+    const optionsWithParams = {...environment.httpOptions, params: httpParams};
+    return this.http
+      .get(environment.apiEndpoint + '/activitiesExport/' + projectId, optionsWithParams)
+      .toPromise()
+      .then(response => response as Activity[])
+      .catch(this.handleError);
+  }
+
   getCurrentActivities(projectId): Promise<Activity[]> {
     return this.http
       .get(environment.apiEndpoint + '/projects/' + projectId + '/activities/currentActivities', environment.httpOptions)

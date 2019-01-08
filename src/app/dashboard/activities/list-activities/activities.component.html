@@ -4,6 +4,7 @@
     <div class="ps-project-name" *ngIf="project">
       {{project.name}}
     </div>
+    <!-- <div class="ps-activity-top-button icon-export" (click)="exportActivities()" title="Export Activities"></div> -->
     <div class="ps-activity-top-button icon-plus" (click)="openAddManuallyModal()" title="Add new activity"></div>
   </div>
   <div class="pa-stuff-container" *ngIf="userAccess">
@@ -20,6 +21,23 @@
     <div class="column is-offset-1 is-10 ps-chart-column" style="background-color: white">
       <chart *ngIf="project" [project]="project" [selectedUsers]="selectedUsers" (chartLoaded)="UpdatePageLoader(true)"
              [parentHasActivity]="projectActivities.length > 0 ? true: false"></chart>
+      <div *ngIf="selectedUsers.length > 0" class="ps-export-container has-text-right">
+        <div class="dropdown ps-export is-right" [ngClass]="{'is-hoverable': !isExporting}">
+          <div class="dropdown-trigger">
+            <button class="button" [ngClass]="{'is-loading': isExporting, 'is-light': isExporting}" aria-haspopup="true" attr.aria-controls="dropdownMenu">
+              <span class="icon-export ps-export-icon"></span>
+              <span>Export</span>
+            </button>
+          </div>
+          <div class="dropdown-menu ps-export-drop-down has-text-centered" #dropdownMenu role="menu">
+            <div class="dropdown-content">
+              <a class="dropdown-item ps-export-item" (click)="exportActivitiesAsJson()">
+                Json
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
   <div class="columns">

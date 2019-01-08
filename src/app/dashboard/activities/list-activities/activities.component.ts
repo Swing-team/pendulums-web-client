@@ -56,6 +56,7 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
   }[] = [];
   deleteButtonDisabled = false;
   pageLoaded = false;
+  isExporting = false;
   @ViewChild(ChartComponent)
   private ChartComponent: ChartComponent;
 
@@ -386,6 +387,29 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
     // Now re-render chart component
     this.ChartComponent.selectedUsers = this.selectedUsers;
     this.ChartComponent.getStatAndPrepareData();
+  }
+
+  exportActivitiesAsJson() {
+    if (this.selectedUsers.length > 0) {
+      this.isExporting = true;
+      this.activityService.getActivitiesForExport(this.projectId, this.selectedUsers).then((activities) => {
+        activities.map((activity) => {
+          if (activity.stoppedAt) {
+            this.tempArray.push(activity);
+            this.tempArray = uniqBy(this.tempArray, 'id');
+          }
+        });
+        const sJson = JSON.stringify(activities);
+        const element = document.createElement('a');
+        element.setAttribute('href', 'data:text/json;charset=UTF-8,' + encodeURIComponent(sJson));
+        element.setAttribute('download', `${this.project.name}-export.json`);
+        element.style.display = 'none';
+        document.body.appendChild(element);
+        element.click();
+        document.body.removeChild(element);
+        this.isExporting = false;
+      });
+    }
   }
 }
 
