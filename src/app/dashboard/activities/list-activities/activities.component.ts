@@ -394,12 +394,6 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
     if (this.selectedUsers.length > 0) {
       this.isExporting = true;
       this.activityService.getActivitiesForExport(this.projectId, this.selectedUsers).then((activities) => {
-        activities.map((activity) => {
-          if (activity.stoppedAt) {
-            this.tempArray.push(activity);
-            this.tempArray = uniqBy(this.tempArray, 'id');
-          }
-        });
         const sJson = JSON.stringify(activities);
         const element = document.createElement('a');
         element.setAttribute('href', 'data:text/json;charset=UTF-8,' + encodeURIComponent(sJson));
