@@ -1,5 +1,6 @@
 import 'rxjs/add/operator/switchMap';
 import * as _ from 'lodash';
+import * as json2csv  from 'json2csv';
 import {
   Component, HostListener,
   OnDestroy, OnInit, ViewChild,
@@ -403,6 +404,23 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
         const element = document.createElement('a');
         element.setAttribute('href', 'data:text/json;charset=UTF-8,' + encodeURIComponent(sJson));
         element.setAttribute('download', `${this.project.name}-export.json`);
+        element.style.display = 'none';
+        document.body.appendChild(element);
+        element.click();
+        document.body.removeChild(element);
+        this.isExporting = false;
+      });
+    }
+  }
+
+  exportActivitiesAsCSV() {
+    if (this.selectedUsers.length > 0) {
+      this.isExporting = true;
+      this.activityService.getActivitiesForExport(this.projectId, this.selectedUsers).then((activities) => {
+        const result = json2csv.parse(activities);
+        const element = document.createElement('a');
+        element.setAttribute('href', 'data:text/csv;charset=UTF-8,' + encodeURIComponent(result));
+        element.setAttribute('download', `${this.project.name}-export.csv`);
         element.style.display = 'none';
         document.body.appendChild(element);
         element.click();
