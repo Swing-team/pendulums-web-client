@@ -11,7 +11,7 @@
       <div (click)="editModal()" class="ps-note-item-card-content-media">
         <div class="ps-note-item-card-title">{{note.title}}</div>
       </div>
-      <div (click)="editModal()" class="ps-note-item-card-body" [innerHTML]=note.content>{{note.content}}</div>
+      <div (click)="editModal()" class="ps-note-item-card-body" [innerHTML]="note.content | safeHtml">{{note.content}}</div>
       <div class="has-text-right ps-note-item-card-icons ps-note-item-delete">
         <span *ngIf="!deleteConfirmation">
           <i class="icon-trash" (click)="deleteNote()" title="Delete Note"></i>

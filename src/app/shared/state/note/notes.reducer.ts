@@ -11,9 +11,19 @@ const initialState: Notes = {
 };
 
 export default function reducer(state = initialState, action: ActionWithPayload<any>) {
+  const taskListEnablerExtension = function() {
+    return [{
+        type: 'output',
+        regex: /<input type="checkbox" disabled(="")?/g,
+        replace: '<input type="checkbox"'
+    }];
+};
   switch (action.type) {
     case NotesActions.LOAD_NOTES: {
-      const converter = new showdown.Converter()
+      const converter = new showdown.Converter({
+        tasklists: true,
+        extensions: [taskListEnablerExtension]
+    })
       reduce(action.payload, function (result, note) {
         note.content = converter.makeHtml(note.content)
         return action.payload;
@@ -24,7 +34,10 @@ export default function reducer(state = initialState, action: ActionWithPayload<
     }
 
     case NotesActions.ADD_NOTE: {
-      const converter = new showdown.Converter()
+      const converter = new showdown.Converter({
+        tasklists: true,
+        extensions: [taskListEnablerExtension]
+    })
       const newState = JSON.parse(JSON.stringify(state));
       action.payload.content = converter.makeHtml(action.payload.content)
       newState.entities[newState.entities.length] = action.payload;
@@ -32,7 +45,10 @@ export default function reducer(state = initialState, action: ActionWithPayload<
       return newState;
     }
     case NotesActions.UPDATE_NOTE: {
-      const converter = new showdown.Converter()
+      const converter = new showdown.Converter({
+        tasklists: true,
+        extensions: [taskListEnablerExtension]
+    })
       const newState = JSON.parse(JSON.stringify(state));
       const index = findIndex(newState.entities, {id: action.payload.id});
       action.payload.content = converter.makeHtml(action.payload.content)

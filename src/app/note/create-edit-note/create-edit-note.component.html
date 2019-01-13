@@ -14,7 +14,7 @@
   <div class="is-centered">
     <div dir="auto">
         <div class="columns is-mobile is-centered">
-            <div class="column is-half">
+            <div class="is-half">
               <input [(ngModel)]="note.title" name="title" class="input ps-header-input"
               placeholder="Untitled Note..." type="text" [ngClass]="{'ps-project-create-palette-item-back-white1': note.colorPalette == 0,
               'ps-project-create-palette-item-back-salmon': note.colorPalette == 1,
@@ -51,7 +51,7 @@
       </div>
     </div>
   </div>
-<div class="columns" [ngClass]="{'ps-project-create-palette-item-back-white1': note.colorPalette == 0,
+<div class="columns is-mobile" [ngClass]="{'ps-project-create-palette-item-back-white1': note.colorPalette == 0,
 'ps-project-create-palette-item-back-salmon': note.colorPalette == 1,
 'ps-project-create-palette-item-back-blue': note.colorPalette == 2,
 'ps-project-create-palette-item-back-black': note.colorPalette == 3,
