@@ -37,6 +37,7 @@
       fontsize_formats: '8pt 10pt 12pt 14pt 18pt 24pt 36pt',
       toolbar: 'bold italic underline | numlist bullist checkbox | undo redo image link hr | codesample blockquote | styleselect',
       plugins: ['hr', 'link', 'listwithcheckbox', 'image', 'codesample'],
+      height: 160,
       style_formats: [
         {title: 'Header 1', format: 'h1'},
           {title: 'Header 2', format: 'h2'},
@@ -64,7 +65,7 @@
         <div class="control">
           <div class="select">
             <select class="ps-body-input ps-bg-input" [(ngModel)]="note.project" name="project">
-              <option [ngValue]='none'>projects list</option>
+              <option [ngValue]='none'>Select a project</option>
               <option [ngValue]='project.id' *ngFor='let project of projectsCopy; trackBy: projectsTrackBy'>{{project.name}}</option>
             </select>
           </div>
@@ -86,7 +87,7 @@
                              'ps-project-create-palette-item-back-green': note.colorPalette == 7}">
               </a>
             </p>
-            <div #projectCreatePalette [ngStyle]="{'display': showPaletteBoolean ? 'block' : 'none'}" class="ps-project-create-palette">
+            <div #noteCreatePalette [ngStyle]="{'display': showPaletteBoolean ? 'block' : 'none'}" class="ps-project-create-palette">
               <div class="ps-project-create-palette-colors-section">
                 <div *ngFor='let index of [0,1,2,3,4,5,6,7]' class="ps-project-create-palette-item">
                   <a id="id1" class="button is-fullwidth" (click)="selectColor(index)"
@@ -106,8 +107,8 @@
         </div>
   </div>
   <div class="column has-text-right ps-p-b-0 ps-icons">
-    <span *ngIf="!deleteConfirmation"><i class="icon-archive" ngDefaultControl [(ngModel)]="note.isArchive" name="isArchive" [ngStyle]="{'color': showIsArchive || note.isArchive ? '#4a4a4a' : '#d2d2d2'}" (click)="archiveNote()" title="Archive"></i></span>
-    <span *ngIf="!deleteConfirmation"><i class="icon-trash" (click)="deleteNote()" title="Delete Note"></i></span>
+    <span class="pointer" *ngIf="!deleteConfirmation"><i class="icon-archive" ngDefaultControl [(ngModel)]="note.isArchive" name="isArchive" [ngStyle]="{'color': showIsArchive || note.isArchive ? '#4a4a4a' : '#d2d2d2'}" (click)="archiveNote()" title="Archive"></i></span>
+    <span *ngIf="!deleteConfirmation" class="pointer"><i class="icon-trash" (click)="deleteNote()" title="Delete Note"></i></span>
     <div class="ps-activity-item-button is-pulled-right" *ngIf="deleteConfirmation">
       <a  *ngIf="!deleteButtonDisabled" class="ps-activity-item-button-confirmation" (click)="cancelDelete()" title="Cancel Delete">
         <span class="icon">
