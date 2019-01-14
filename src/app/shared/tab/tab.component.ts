@@ -9,16 +9,18 @@ export class TabComponent implements OnInit {
   @Input() tabs = [];
   @Output() onTabClicked = new EventEmitter();
 
-  selectedTab = 'Notes';
+  selectedTab = '';
   constructor() { }
 
   ngOnInit() {
+    if (this.selectedTab === '') {
+    this.selectedTab = this.tabs[0].name;
+    }
   }
 
   toggle(tab) {
     this.selectedTab = tab.name;
     this.onTabClicked.emit(tab);
-
   }
 
 }
