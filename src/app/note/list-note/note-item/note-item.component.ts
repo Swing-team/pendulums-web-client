@@ -18,6 +18,7 @@ import { cloneDeep }                                  from 'lodash';
 })
 export class NoteItemComponent implements OnInit {
   @Input() note: Note;
+  @Input() projectsId;
   @Input() deleteButtonDisabled: boolean;
   deleteConfirmation = false;
   constructor(

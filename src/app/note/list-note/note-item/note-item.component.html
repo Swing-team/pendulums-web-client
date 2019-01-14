@@ -12,22 +12,28 @@
         <div class="ps-note-item-card-title">{{note.title}}</div>
       </div>
       <div (click)="editModal()" class="ps-note-item-card-body" [innerHTML]="note.content | safeHtml">{{note.content}}</div>
-      <div class="has-text-right ps-note-item-card-icons ps-note-item-delete">
-        <span *ngIf="!deleteConfirmation">
-          <i class="icon-trash" (click)="deleteNote()" title="Delete Note"></i>
+      <div class="has-text-right columns ps-note-item-card-icons ps-note-item-delete">
+
+        <span *ngIf="projectsId[note.project]" class="column is-8 has-text-left">
+          <span class="tag is-white">{{projectsId[note.project]}}</span>
         </span>
-        <div class="ps-activity-item-button is-pulled-right" *ngIf="deleteConfirmation">
-          <a  *ngIf="!deleteButtonDisabled" class="button ps-activity-item-button-confirmation" (click)="cancelDelete()" title="Cancel Delete">
-            <span class="icon">
-              <i class="icon-cancel" [ngClass]="{'has-text-danger': !deleteButtonDisabled}"></i>
-            </span>
-          </a>
-          <a  class="button ps-activity-item-button-confirmation" [ngClass]="{'is-loading': deleteButtonDisabled}" (click)="confirmDelete()" title="Confirm Delete">
-            <span class="icon">
-              <i class="icon-check" [ngClass]="{'has-text-success': !deleteButtonDisabled}"></i>
-            </span>
-          </a>
-        </div>
+        <span class="column">
+          <span *ngIf="!deleteConfirmation">
+            <i class="icon-trash" (click)="deleteNote()" title="Delete Note"></i>
+          </span>
+          <div class="ps-activity-item-button is-pulled-right" *ngIf="deleteConfirmation">
+            <a  *ngIf="!deleteButtonDisabled" class="button ps-activity-item-button-confirmation" (click)="cancelDelete()" title="Cancel Delete">
+              <span class="icon">
+                <i class="icon-cancel" [ngClass]="{'has-text-danger': !deleteButtonDisabled}"></i>
+              </span>
+            </a>
+            <a  class="button ps-activity-item-button-confirmation" [ngClass]="{'is-loading': deleteButtonDisabled}" (click)="confirmDelete()" title="Confirm Delete">
+              <span class="icon">
+                <i class="icon-check" [ngClass]="{'has-text-success': !deleteButtonDisabled}"></i>
+              </span>
+            </a>
+          </div>
+        </span>
       </div>
     </div>
   </div>

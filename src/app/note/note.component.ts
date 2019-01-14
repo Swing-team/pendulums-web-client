@@ -21,10 +21,11 @@ import * as _ from 'lodash';
 export class NoteComponent implements OnInit, OnDestroy {
   @Input() user: Observable<User>;
   @Output() selectedTab: Boolean = false;
+  @Output() projectsId: Object = {};
   notes: Observable<any>;
+  projects: Observable<any>;
   archives: Array<any>;
   private subscriptions: Array<Subscription> = [];
-
 
   constructor (private modalService: ModalService,
     appStateSelectors: AppStateSelectors,
@@ -34,12 +35,17 @@ export class NoteComponent implements OnInit, OnDestroy {
     private notesActions: NotesActions,
   ) {
     this.notes = store.select(appStateSelectors.getNotesArray);
+    this.projects = store.select(appStateSelectors.getProjectsArray);
   }
 
   ngOnInit(): void {
     this.noteService.getNotes().then((notes) => {
       this.store.dispatch(this.notesActions.loadNotes(notes));
     })
+
+    this.subscriptions.push(this.projects.subscribe((params: any) => {
+      this.projectsId = params.reduce((obj, project) => ({...obj, [project.id]: project.name}), {})
+    }));
   }
   goBack() {
     this.location.back();

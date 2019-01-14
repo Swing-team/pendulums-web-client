@@ -13,7 +13,12 @@
       flex-direction: column
       cursor: pointer
       .ps-note-item-card-icons
+        position: relative
         margin-top: auto
+        background: rgba(0, 0,0 , 0.5)
+        margin: -10px
+        .icon-trash
+          color: $white !important
       .ps-note-item-card-body
         padding-top: 10px
         margin-bottom: auto
@@ -73,14 +78,12 @@
 
 .ps-activity-item-button
   overflow: hidden
-  position: absolute
+  // position: absolute
   right: 0
   bottom: 10px
   i
     cursor: pointer
     transition: all ease-in-out $ps-transitions
-  .icon-trash
-    color: $pink
     &:hover
       color: lighten($pink, 20)
   .icon-cancel
@@ -89,9 +92,11 @@
   .icon-check
     &:hover
       color: lighten($success, 20)
-
+  .button
+    height: 20px
+    line-height: 20px
 .ps-activity-item-button-confirmation
   border: none
-  font-size: 1.4rem
+  font-size: 1.35rem
   background-color: transparent
   padding: 1rem 0.5rem 0 0.5rem !important
