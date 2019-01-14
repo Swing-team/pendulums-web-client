@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, OnDestroy, AfterViewInit, Host, ViewChild } from '@angular/core';
+import {Component, OnInit, Input, OnDestroy, AfterViewInit, Host, ViewChild, HostListener } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Project } from '../../shared/state/project/project.model';
 import { NoteService } from '../shared/notes.service';
@@ -28,6 +28,7 @@ import 'pendulums-editor/plugins/codesample/plugin.min';
 
 export class CreateEditNoteComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('createEditNoteForm') createEditNoteForm;
+  @ViewChild('noteCreatePalette') noteCreatePalette;
   @Input() deleteButtonDisabled: boolean;
   @Input() note: Note;
   projects: Observable<Project[]>;
@@ -64,6 +65,9 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy, AfterViewInit
 
   ngAfterViewInit() {
     this.selectColor(this.note.colorPalette);
+    tinymce.get('tiny').on('click', () =>  {
+      this.showPaletteBoolean = false
+    });
   }
 
   ngOnDestroy(): void {
@@ -92,6 +96,14 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy, AfterViewInit
 
   togglePalette() {
     this.showPaletteBoolean = !this.showPaletteBoolean;
+  }
+
+  @HostListener('document:click', ['$event'])
+  onClick(event) {
+    if (this.showPaletteBoolean && !this.noteCreatePalette.nativeElement.contains(event.target)
+      && event.target.id !== 'id2') {
+      this.togglePalette();
+    }
   }
 
   selectColor(colorIndex) {
