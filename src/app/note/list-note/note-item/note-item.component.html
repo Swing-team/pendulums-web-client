@@ -14,7 +14,7 @@
       <div (click)="editModal()" class="ps-note-item-card-body" [innerHTML]="note.content | safeHtml">{{note.content}}</div>
       <div class="has-text-right columns ps-note-item-card-icons ps-note-item-delete">
 
-        <span *ngIf="projectsId[note.project]" class="column is-8 has-text-left inline-block">
+        <span *ngIf="projectsId && projectsId[note.project]" class="column is-8 has-text-left inline-block">
           <span class="tag tag-border is-white">{{projectsId[note.project]}}</span>
         </span>
         <span class="column inline-block">

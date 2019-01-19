@@ -25,6 +25,7 @@ export class NoteComponent implements OnInit, OnDestroy {
   notes: Observable<any>;
   projects: Observable<any>;
   archives: Array<any>;
+  actives: Array<any>;
   private subscriptions: Array<Subscription> = [];
 
   constructor (private modalService: ModalService,
@@ -45,6 +46,9 @@ export class NoteComponent implements OnInit, OnDestroy {
 
     this.subscriptions.push(this.projects.subscribe((params: any) => {
       this.projectsId = params.reduce((obj, project) => ({...obj, [project.id]: project.name}), {})
+    }));
+    this.subscriptions.push(this.notes.subscribe((params: any) => {
+      this.actives = _.filter(params, ['isArchive', false])
     }));
   }
   goBack() {
