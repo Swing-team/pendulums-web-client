@@ -6,7 +6,7 @@
   border-top: none
   border-bottom: none
   border-radius: 0
-  margin-left: 10px
+  margin-left: 0
   font-size: 19px
   box-shadow: none
   text-align: center
@@ -36,11 +36,13 @@
     position: relative
     .ps-project-create-color
       margin: 5px
+      margin-top: 16px
       .button
         border-radius: 100%
         border-color: $black !important
-        height: 30px !important
-        width: 30px !important
+        height: 22px !important
+        width: 22px !important
+        padding: 0 !important
         transition: all ease-in-out $ps-transitions
         &.ps-project-create-palette-item-back-salmon
           background: $salmon
@@ -79,7 +81,8 @@
             background-color: $ps-card-green-light !important
     .ps-project-create-palette
       position: absolute
-      top: 35px
+      top: 40px
+      right: 7px
       padding: 7px
       background: rgba(0,0,0,0.8)
       z-index: 99
@@ -127,11 +130,6 @@
               background: $ps-card-green
               &:hover
                 background-color: $ps-card-green-light !important
-      @media(max-width: 414px)
-        left: -200px
-      @media(min-width: 414px) and (max-width: 630px)
-        left: -150px
-
 .ps-submit-button
   position: absolute
   bottom: 0
@@ -156,7 +154,7 @@
   ::placeholder
     color: $paper !important
   .ps-bg-input
-    border: 1px solid $paper !important
+    border: none
     color: $paper !important
 .ps-project-create-palette-item-back-black
   background: $black
@@ -167,7 +165,7 @@
   ::placeholder
     color: $paper !important
   .ps-bg-input
-    border: 1px solid $paper !important
+    border: none
     color: $paper !important
 .ps-project-create-palette-item-back-yellow
   background: $yellow
@@ -186,17 +184,21 @@
   ::placeholder
     color: $paper !important
   .ps-bg-input
-    border: 1px solid $paper !important
+    border: none
     color: $paper !important
 
 
 .ps-project-create-palette-item-back-green
   background: $ps-card-green
   color: '#4a4a4a' !important
+  .ps-note-date
+    color: #4a4a4a !important
+  .icon-check
+    color: #4a4a4a !important
 
 .ps-bg-input
   background: transparent !important
-  border: 1px solid #333
+  border: none
 
 .ps-activity-item-button
   overflow: hidden
@@ -220,5 +222,22 @@
   background-color: transparent
 .ps-p-b-0
   padding-bottom: 0 !important
+.ps-archive
+  padding-top: 25px
+  i
+    font-size: 18px
 .ps-icons
   padding-top: 20px
+.select
+  max-width: 160px
+.ps-note-date
+  color: #797979
+  font-size: 13px
+.is-loading
+  font-size: 13px
+.icon-check
+  font-size: 13px
+  padding-right: 0
+.button
+  &.is-loading
+    height: 1.55em

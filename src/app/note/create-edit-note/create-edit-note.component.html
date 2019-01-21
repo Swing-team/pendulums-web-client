@@ -2,6 +2,7 @@
   class="create-edit-note"
   #createEditNoteForm="ngForm"
   novalidate
+  (keyup.control.s)="createEditNote()"
   [ngClass]="{'ps-project-create-palette-item-back-white1': note.colorPalette == 0,
                              'ps-project-create-palette-item-back-salmon': note.colorPalette == 1,
                              'ps-project-create-palette-item-back-blue': note.colorPalette == 2,
@@ -25,7 +26,19 @@
               'ps-project-create-palette-item-back-red': note.colorPalette == 6,
               'ps-project-create-palette-item-back-green': note.colorPalette == 7}">
             </div>
-          </div>
+        </div>
+        <div class="columns is-mobile is-centered">
+            <div class="is-half">
+              <div class="ps-note-date">
+                <span>
+                  Saved {{noteModel.updatedAt}}
+                </span>
+                <span class="icon">
+                    <i [ngClass]="loadingBtn ? 'is-loading' : 'icon-check' " class="button ps-activity-item-button-confirmation" [ngClass]="{'has-text-success': !deleteButtonDisabled}"></i>
+                </span>
+              </div>
+            </div>
+        </div>
       <div class="columns">
         <div class="column column has-text-centered">
             <!-- <textarea name="content" [(ngModel)]="note.content" id="tiny"></textarea> -->
@@ -72,55 +85,42 @@
         </div>
     </div>
   </div>
-  <div class="column has-text-centered ps-p-b-0">
-      <div class="ps-project-create-color-picker-container">
-          <div class="ps-project-create-palette-container">
-            <p class="ps-project-create-color" title="pick a color">
-              <a id="id2" class="button is-fullwidth" [(ngModel)]="note.colorPalette" name="colorPalette" ngDefaultControl (click)="togglePalette()"
-                 [ngClass]="{'ps-project-create-palette-item-back-white1': note.colorPalette == 0,
-                             'ps-project-create-palette-item-back-salmon': note.colorPalette == 1,
-                             'ps-project-create-palette-item-back-blue': note.colorPalette == 2,
-                             'ps-project-create-palette-item-back-black': note.colorPalette == 3,
-                             'ps-project-create-palette-item-back-yellow': note.colorPalette == 4,
-                             'ps-project-create-palette-item-back-pink': note.colorPalette == 5,
-                             'ps-project-create-palette-item-back-red': note.colorPalette == 6,
-                             'ps-project-create-palette-item-back-green': note.colorPalette == 7}">
-              </a>
-            </p>
-            <div #noteCreatePalette [ngStyle]="{'display': showPaletteBoolean ? 'block' : 'none'}" class="ps-project-create-palette">
-              <div class="ps-project-create-palette-colors-section">
-                <div *ngFor='let index of [0,1,2,3,4,5,6,7]' class="ps-project-create-palette-item">
-                  <a id="id1" class="button is-fullwidth" (click)="selectColor(index)"
-                     [ngClass]="{'ps-project-create-palette-item-back-white1': index == 0,
-                                 'ps-project-create-palette-item-back-salmon': index == 1,
-                                 'ps-project-create-palette-item-back-blue': index == 2,
-                                 'ps-project-create-palette-item-back-black': index == 3,
-                                 'ps-project-create-palette-item-back-yellow': index == 4,
-                                 'ps-project-create-palette-item-back-pink': index == 5,
-                                 'ps-project-create-palette-item-back-red': index == 6,
-                                 'ps-project-create-palette-item-back-green': index == 7}">
-                  </a>
-                </div>
+  <div class="column is-1 has-text-right ps-p-b-0">
+    <div class="ps-project-create-color-picker-container">
+        <div class="ps-project-create-palette-container">
+          <p class="ps-project-create-color" title="pick a color">
+            <a id="id2" class="button is-fullwidth" [(ngModel)]="note.colorPalette" name="colorPalette" ngDefaultControl (click)="togglePalette()"
+                [ngClass]="{'ps-project-create-palette-item-back-white1': note.colorPalette == 0,
+                            'ps-project-create-palette-item-back-salmon': note.colorPalette == 1,
+                            'ps-project-create-palette-item-back-blue': note.colorPalette == 2,
+                            'ps-project-create-palette-item-back-black': note.colorPalette == 3,
+                            'ps-project-create-palette-item-back-yellow': note.colorPalette == 4,
+                            'ps-project-create-palette-item-back-pink': note.colorPalette == 5,
+                            'ps-project-create-palette-item-back-red': note.colorPalette == 6,
+                            'ps-project-create-palette-item-back-green': note.colorPalette == 7}">
+            </a>
+          </p>
+          <div #noteCreatePalette [ngStyle]="{'display': showPaletteBoolean ? 'block' : 'none'}" class="ps-project-create-palette">
+            <div class="ps-project-create-palette-colors-section">
+              <div *ngFor='let index of [0,1,2,3,4,5,6,7]' class="ps-project-create-palette-item">
+                <a id="id1" class="button is-fullwidth" (click)="selectColor(index)"
+                    [ngClass]="{'ps-project-create-palette-item-back-white1': index == 0,
+                                'ps-project-create-palette-item-back-salmon': index == 1,
+                                'ps-project-create-palette-item-back-blue': index == 2,
+                                'ps-project-create-palette-item-back-black': index == 3,
+                                'ps-project-create-palette-item-back-yellow': index == 4,
+                                'ps-project-create-palette-item-back-pink': index == 5,
+                                'ps-project-create-palette-item-back-red': index == 6,
+                                'ps-project-create-palette-item-back-green': index == 7}">
+                </a>
               </div>
             </div>
           </div>
         </div>
+      </div>
   </div>
-  <div class="column has-text-right ps-p-b-0 ps-icons">
-    <span class="pointer" *ngIf="!deleteConfirmation"><i class="icon-archive" ngDefaultControl [(ngModel)]="note.isArchive" name="isArchive" [ngStyle]="{'color': showIsArchive || note.isArchive ? '#4a4a4a' : '#d2d2d2'}" (click)="archiveNote()" title="Archive"></i></span>
-    <span *ngIf="!deleteConfirmation" class="pointer"><i class="icon-trash" (click)="deleteNote()" title="Delete Note"></i></span>
-    <div class="ps-activity-item-button is-pulled-right" *ngIf="deleteConfirmation">
-      <a  *ngIf="!deleteButtonDisabled" class="ps-activity-item-button-confirmation" (click)="cancelDelete()" title="Cancel Delete">
-        <span class="icon">
-          <i class="icon-cancel" [ngClass]="{'has-text-danger': !deleteButtonDisabled}"></i>
-        </span>
-      </a>
-      <a  class="ps-activity-item-button-confirmation" [ngClass]="{'is-loading': deleteButtonDisabled}" (click)="confirmDelete()" title="Confirm Delete">
-        <span class="icon">
-          <i class="icon-check" [ngClass]="{'has-text-success': !deleteButtonDisabled}"></i>
-        </span>
-      </a>
-    </div>
+  <div class="column is-1 ps-archive">
+      <span class="pointer"><i [ngClass]="note.isArchive ? 'icon-unarchive-icon' : 'icon-archive-icon' " ngDefaultControl [(ngModel)]="note.isArchive" name="isArchive" (click)="archiveNote()" title="note.isArchive ? 'Un Archive' : 'Archive'"></i></span>
   </div>
 </div>
 </form>

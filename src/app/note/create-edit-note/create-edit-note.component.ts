@@ -19,6 +19,9 @@ import 'pendulums-editor/plugins/link/plugin.min';
 import 'pendulums-editor/plugins/listwithcheckbox/plugin.min';
 import 'pendulums-editor/plugins/image/plugin.min';
 import 'pendulums-editor/plugins/codesample/plugin.min';
+import * as moment from 'moment'
+import { cloneDeep }                from 'lodash';
+
 
 @Component({
   selector: 'create-edit-note',
@@ -29,7 +32,7 @@ import 'pendulums-editor/plugins/codesample/plugin.min';
 export class CreateEditNoteComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('createEditNoteForm') createEditNoteForm;
   @ViewChild('noteCreatePalette') noteCreatePalette;
-  @Input() deleteButtonDisabled: boolean;
+  @Input() loadingBtn = false;
   @Input() note: Note;
   projects: Observable<Project[]>;
   projectsCopy: Project[];
@@ -37,7 +40,7 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy, AfterViewInit
   content = '';
   showPaletteBoolean = false;
   showIsArchive: boolean;
-  deleteConfirmation = false;
+  noteModel: Note
 
   constructor(@Host() parent: ModalService,
     private modalService: ModalService,
@@ -58,9 +61,11 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy, AfterViewInit
       customBodyStyles: {'background': color}
     });
     this.subscriptions.push(this.projects.subscribe((projects) => {this.projectsCopy = projects}))
-    this.subscriptions.push(this.createEditNoteForm.valueChanges.debounceTime(1000).subscribe(data => {
+    this.subscriptions.push(this.createEditNoteForm.valueChanges.debounceTime(2000).subscribe(data => {
       this.createEditNote()
     }))
+    this.noteModel = cloneDeep(this.note)
+    this.noteModel.updatedAt = moment(this.note.updatedAt).format('DD/MM/YYYY HH:mm a')
   }
 
   ngAfterViewInit() {
@@ -76,20 +81,25 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   createEditNote() {
+    this.loadingBtn = true;
     if (this.note.id) {
       this.noteService.update({note: this.note}).then((note) => {
         this.store.dispatch(this.notesActions.updateNote(note));
+        this.loadingBtn = false;
       })
         .catch(error => {
           this.showError('Server communication error');
+          this.loadingBtn = false;
         });
     } else {
         this.noteService.create({note: this.note}).then((note) => {
           this.store.dispatch(this.notesActions.addNote(note));
           this.note = note as Note
+          this.loadingBtn = false;
       })
         .catch(error => {
           this.showError('Server communication error');
+          this.loadingBtn = false;
         });
     }
   }
@@ -126,27 +136,6 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy, AfterViewInit
     });
     tinymce.get('tiny').getBody().style.backgroundColor = bgColor
     tinymce.get('tiny').getBody().style.color = fontColor
-  }
-
-  deleteNote() {
-    this.deleteConfirmation = true;
-  }
-
-  confirmDelete() {
-    this.modalService.close();
-    this.noteService.delete(this.note.id).then(() => {
-      this.showError('Note was deleted successfully');
-      this.store.dispatch(this.notesActions.removeNote(this.note.id));
-    })
-      .catch(error => {
-        this.showError('Server communication error');
-      });
-  }
-
-  cancelDelete() {
-    if (!this.deleteButtonDisabled) {
-      this.deleteConfirmation = false;
-    }
   }
 
   archiveNote() {
