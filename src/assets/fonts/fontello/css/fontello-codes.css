@@ -21,6 +21,8 @@
 .icon-walking:before { content: '\e813'; } /* '' */
 .icon-refresh:before { content: '\e814'; } /* '' */
 .icon-archive:before { content: '\e815'; } /* '' */
+.icon-unarchive-icon:before { content: '\e819'; } /* '' */
+.icon-archive-icon:before { content: '\e81a'; } /* '' */
 .icon-bug:before { content: '\e827'; } /* '' */
 .icon-bell:before { content: '\e828'; } /* '' */
 .icon-dashboard:before { content: '\e829'; } /* '' */
