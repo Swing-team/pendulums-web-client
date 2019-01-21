@@ -6,7 +6,7 @@
         (onTabClicked)="getSelectedTab($event)"
     >
     </app-tab>
-    <div class="ps-activity-top-button icon-plus" (click)="openCreateNoteModal()" title="Add new activity"></div>
+    <div [ngClass]="!selectedTab ? 'ps-activity-top-button icon-plus' : '' " class="ps-tab" (click)="openCreateNoteModal()" title="Add new activity"></div>
   </div>
   <div *ngIf="!selectedTab" class="columns is-multiline">
     <div *ngFor='let active of actives'  class="column is-3-widescreen is-4-desktop is-4-tablet is-6-mobile">
