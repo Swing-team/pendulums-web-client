@@ -76,6 +76,7 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   ngOnDestroy(): void {
+    this.createEditNote();
     this.subscriptions.forEach(sub => sub.unsubscribe());
     tinymce.remove();
   }
