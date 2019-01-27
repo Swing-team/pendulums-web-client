@@ -78,7 +78,7 @@
         <div class="control">
           <div class="select">
             <select class="ps-body-input ps-bg-input" [(ngModel)]="note.project" name="project">
-              <option [ngValue]='none'>Select a project</option>
+              <option [ngValue]='null'>Select a project</option>
               <option [ngValue]='project.id' *ngFor='let project of projectsCopy; trackBy: projectsTrackBy'>{{project.name}}</option>
             </select>
           </div>
