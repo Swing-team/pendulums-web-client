@@ -58,6 +58,7 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
   deleteButtonDisabled = false;
   pageLoaded = false;
   isExporting = false;
+  isImporting = false;
   @ViewChild(ChartComponent)
   private ChartComponent: ChartComponent;
 
@@ -422,6 +423,10 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
         this.isExporting = false;
       });
     }
+  }
+
+  importActivities() {
+
   }
 }
 

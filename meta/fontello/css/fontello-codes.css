@@ -22,6 +22,7 @@
 .icon-refresh:before { content: '\e814'; } /* '' */
 .icon-walking:before { content: '\e815'; } /* '' */
 .icon-export:before { content: '\e81c'; } /* '' */
+.icon-import:before { content: '\e81e'; } /* '' */
 .icon-bug:before { content: '\e827'; } /* '' */
 .icon-bell:before { content: '\e828'; } /* '' */
 .icon-dashboard:before { content: '\e829'; } /* '' */
