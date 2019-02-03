@@ -22,6 +22,8 @@ export default function reducer(state = initialState, action: ActionWithPayload<
     case NotesActions.LOAD_NOTES: {
       const converter = new showdown.Converter({
         tasklists: true,
+        parseImgDimensions: true,
+        openLinksInNewWindow: true,
         extensions: [taskListEnablerExtension]
     })
       reduce(action.payload, function (result, note) {
@@ -36,6 +38,8 @@ export default function reducer(state = initialState, action: ActionWithPayload<
     case NotesActions.ADD_NOTE: {
       const converter = new showdown.Converter({
         tasklists: true,
+        parseImgDimensions: true,
+        openLinksInNewWindow: true,
         extensions: [taskListEnablerExtension]
     })
       const newState = JSON.parse(JSON.stringify(state));
@@ -47,6 +51,8 @@ export default function reducer(state = initialState, action: ActionWithPayload<
     case NotesActions.UPDATE_NOTE: {
       const converter = new showdown.Converter({
         tasklists: true,
+        parseImgDimensions: true,
+        openLinksInNewWindow: true,
         extensions: [taskListEnablerExtension]
     })
       const newState = JSON.parse(JSON.stringify(state));

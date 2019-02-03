@@ -43,6 +43,7 @@
         <div class="column column has-text-centered">
             <!-- <textarea name="content" [(ngModel)]="note.content" id="tiny"></textarea> -->
             <editor id="tiny" [(ngModel)]="note.content" name="content" [init]="{
+      content_css: '../../../assets/tiny.css',
       branding: false,
       menubar: false,
       resize: false,
@@ -51,6 +52,7 @@
       toolbar: 'bold italic underline | numlist bullist checkbox | undo redo image link hr | codesample blockquote | styleselect',
       plugins: ['hr', 'link', 'listwithcheckbox', 'image', 'codesample'],
       height: 160,
+      link_context_toolbar: true,
       style_formats: [
         {title: 'Header 1', format: 'h1'},
           {title: 'Header 2', format: 'h2'},
