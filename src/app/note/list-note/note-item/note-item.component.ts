@@ -1,4 +1,4 @@
-import { Component, OnInit, Input }                   from '@angular/core';
+import { Component, OnInit, Input, ViewEncapsulation }                   from '@angular/core';
 import { Store }                                      from '@ngrx/store';
 import { Note }                                       from '../../../shared/state/note/note.model';
 import { NoteService }                                from '../../shared/notes.service';
@@ -14,7 +14,10 @@ import { cloneDeep }                                  from 'lodash';
 @Component({
   selector: 'note-item',
   templateUrl: './note-item.component.html',
-  styleUrls: ['./note-item.component.sass']
+  styleUrls: ['./note-item.component.sass'],
+  // prevent encapsulation to apply styles to dynamically
+  // inserted htmls via innerHtml binding.
+  encapsulation: ViewEncapsulation.None
 })
 export class NoteItemComponent implements OnInit {
   @Input() note: Note;
