@@ -78,6 +78,14 @@ export class ActivityService {
       .catch(this.handleError);
   }
 
+  importActivities(projectId, activities): Promise<any> {
+    return this.http
+      .post(environment.apiEndpoint + '/activitiesImport/' + projectId, activities , environment.httpOptions)
+      .toPromise()
+      .then(response => response as Activity[])
+      .catch(this.handleError);
+  }
+
   getCurrentActivities(projectId): Promise<Activity[]> {
     return this.http
       .get(environment.apiEndpoint + '/projects/' + projectId + '/activities/currentActivities', environment.httpOptions)

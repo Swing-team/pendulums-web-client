@@ -21,12 +21,13 @@
     <div class="column is-offset-1 is-10 ps-chart-column" style="background-color: white">
       <chart *ngIf="project" [project]="project" [selectedUsers]="selectedUsers" (chartLoaded)="UpdatePageLoader(true)"
              [parentHasActivity]="projectActivities.length > 0 ? true: false"></chart>
-      <div *ngIf="selectedUsers.length > 0" class="ps-import-export-container has-text-right">
+      <div class="ps-import-export-container has-text-right">
         <button class="button ps-import" [ngClass]="{'is-loading': isImporting, 'is-light': isImporting}" (click)="importActivities()">
+          <input class="ps-import-upload" id="uploadInput" type="file" accept="application/json" (change)="fileUpload($event)"/>
           <span class="icon-import ps-import-icon"></span>
           <span>Import (Json)</span>
         </button>
-        <div class="dropdown ps-export is-right" [ngClass]="{'is-hoverable': !isExporting}">
+        <div *ngIf="projectActivities.length > 0" class="dropdown ps-export is-right" [ngClass]="{'is-hoverable': !isExporting}">
           <div class="dropdown-trigger">
             <button class="button" [ngClass]="{'is-loading': isExporting, 'is-light': isExporting}" aria-haspopup="true" attr.aria-controls="dropdownMenu">
               <span class="icon-export ps-export-icon"></span>

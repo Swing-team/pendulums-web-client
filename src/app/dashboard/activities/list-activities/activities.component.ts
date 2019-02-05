@@ -59,6 +59,7 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
   pageLoaded = false;
   isExporting = false;
   isImporting = false;
+  dataFile: any;
   @ViewChild(ChartComponent)
   private ChartComponent: ChartComponent;
 
@@ -426,7 +427,29 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
   }
 
   importActivities() {
+    const input = document.getElementById('uploadInput');
+    input.click();
 
+  }
+
+  fileUpload($event) {
+    this.isImporting = true;
+
+    const file: File = $event.target.files[0];
+
+    const formData = new FormData();
+    formData.append('data', file);
+    this.activityService.importActivities(this.projectId, formData).then((activities) => {
+
+      this.showError(`Imported ${activities.length} activities`);
+      this.getActivitiesFromServer();
+      this.isImporting = false;
+    })
+    .catch(error => {
+      this.showError('Something went wrong in Importing your activities');
+      console.log('error is: ', error);
+      this.isImporting = false;
+    });
   }
 }
 
