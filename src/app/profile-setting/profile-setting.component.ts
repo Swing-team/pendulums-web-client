@@ -15,6 +15,7 @@ import { ImgCropperComponent }              from './image-cropper/image-cropper.
 import { Md5 }                              from 'ts-md5/dist/md5';
 import { Observable }                       from 'rxjs/Observable';
 import { Subscription }                     from 'rxjs/Subscription';
+import { Location }                         from '@angular/common';
 
 
 @Component({
@@ -42,6 +43,7 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
                private store: Store<AppState>,
                private userActions: UserActions,
                private userService: UserService,
+               private location: Location,
                private modalService: ModalService) {
     this.subscriptions.push(store.select('user').subscribe((user: User) => {
       this.user = user;
@@ -80,6 +82,10 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
     } else {
       this.showError('This feature is not available in offline mode');
     }
+  }
+
+  goBack() {
+    this.location.back();
   }
 
   saveProfile() {
