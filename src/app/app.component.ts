@@ -83,7 +83,9 @@ export class AppComponent implements OnInit {
         // we think we don't need to keep unSynced data any more after user sign out or get 403
         this.store.dispatch(this.unSyncedActivityActions.clearUnSyncedActivity());
         this.syncService.closeConnection();
-        this.router.navigate(['signIn']);
+        if (!this.router.url.includes('resetPassword')) {
+          this.router.navigate(['signIn']);
+        }
       }
 
       if ((status.isLogin === true) && status.isLogin !== this.previousLoginStatus) {
