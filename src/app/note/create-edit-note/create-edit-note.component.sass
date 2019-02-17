@@ -217,7 +217,7 @@
     &:hover
       color: lighten($success, 20)
 
-.ps-activity-item-button-confirmation
+.ps-act-item-button-confirmation
   border: none
   font-size: 1.4rem
   background-color: transparent
@@ -236,13 +236,17 @@
   font-size: 13px
 .is-loading
   font-size: 13px
+
 .icon-check
   font-size: 13px
   padding-right: 0
   color: rgba(0, 0, 0, 0.5)
 .button
   &.is-loading
-    height: 1.55em
+    height: 0
+    &:after
+      border-left-color: rgba(0, 0, 0, 0.5)
+      border-bottom-color: rgba(0, 0, 0, 0.5)
 .ps-note-bottom
   position: relative
   display: flex
@@ -254,3 +258,5 @@
 .form-content
   @media (max-width: 481px)
     min-height: calc(100vh - 70px)
+.saved-txt
+  padding-top: 3px

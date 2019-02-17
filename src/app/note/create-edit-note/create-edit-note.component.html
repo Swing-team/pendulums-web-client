@@ -30,12 +30,12 @@
         <div class="columns is-mobile is-centered">
             <div class="is-half">
               <div class="ps-note-date">
-                <span>
+                <div class="is-pulled-left saved-txt">
                   Saved {{noteModel.updatedAt}}
-                </span>
-                <span class="icon">
-                    <i [ngClass]="loadingBtn ? 'is-loading' : 'icon-check' " class="button ps-activity-item-button-confirmation" [ngClass]="{'has-text-success': !deleteButtonDisabled}"></i>
-                </span>
+                </div>
+                <div class="icon is-pulled-left">
+                    <i [ngClass]="loadingBtn ? 'is-loading' : 'icon-check' " class="button ps-act-item-button-confirmation" [ngClass]="{'has-text-success': !deleteButtonDisabled}"></i>
+                </div>
               </div>
             </div>
         </div>
