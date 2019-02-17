@@ -20,7 +20,7 @@ import 'pendulums-editor/plugins/listwithcheckbox/plugin.min';
 import 'pendulums-editor/plugins/image/plugin.min';
 import 'pendulums-editor/plugins/codesample/plugin.min';
 import * as moment from 'moment'
-import { cloneDeep }                from 'lodash';
+import { cloneDeep, includes }                from 'lodash';
 
 
 @Component({
@@ -40,7 +40,8 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy, AfterViewInit
   content = '';
   showPaletteBoolean = false;
   showIsArchive: boolean;
-  noteModel: Note
+  noteModel: Note;
+  projectIds: Array<any> = [];
 
   constructor(@Host() parent: ModalService,
     private modalService: ModalService,
@@ -60,12 +61,20 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy, AfterViewInit
       component: CreateEditNoteComponent,
       customBodyStyles: {'background': color}
     });
-    this.subscriptions.push(this.projects.subscribe((projects) => {this.projectsCopy = projects}))
+    this.subscriptions.push(this.projects.subscribe((projects) => {
+      this.projectsCopy = projects
+      this.projectsCopy.map(project => {
+        this.projectIds.push(project.id)
+      })
+    }))
     this.subscriptions.push(this.createEditNoteForm.valueChanges.debounceTime(2000).subscribe(data => {
       this.createEditNote()
     }))
     this.noteModel = cloneDeep(this.note)
     this.noteModel.updatedAt = moment(this.note.updatedAt).format('DD/MM/YYYY HH:mm a')
+    if (!includes(this.projectIds, this.note.project)) {
+      this.note.project = null
+    }
   }
 
   ngAfterViewInit() {
