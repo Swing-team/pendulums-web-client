@@ -66,14 +66,18 @@ $side-menu-item-size: $side-menu-size - 8px
     width: 250px
 
 .ps-notifications-container-top
-  top: $side-menu-size * 2 + 16px
+  top: $side-menu-size * 3 + 16px
 
 .ps-alert-bottom
-  background-color: rgba(246, 249, 254, 0.75)
+  background-color: $white
   top: unset
-  bottom: $side-menu-size + 16px
+  bottom: $side-menu-size * 2 + 16px
+  border-radius: 5px
+  -webkit-box-shadow: 0 2px 3px rgba(51, 51, 51, 0.1), 0 0 0 1px rgba(51, 51, 51, 0.1)
+  box-shadow: 0 2px 3px rgba(51, 51, 51, 0.1), 0 0 0 1px rgba(51, 51, 51, 0.1)
+  border-radius: unset
   .ps-bug-report-text
-    color: $cornflowerBlue
+    color: #4a4a4a
 
 .ps-notification-count
   background-color: $light-red

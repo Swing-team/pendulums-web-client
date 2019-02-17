@@ -36,12 +36,12 @@
     position: relative
     .ps-project-create-color
       margin: 5px
-      margin-top: 16px
+      margin-top: 6px
       .button
         border-radius: 100%
         border-color: $black !important
-        height: 22px !important
-        width: 22px !important
+        height: 24px !important
+        width: 24px !important
         padding: 0 !important
         transition: all ease-in-out $ps-transitions
         &.ps-project-create-palette-item-back-salmon
@@ -141,25 +141,15 @@
 .ps-project-create-palette-item-back-salmon
   background: $salmon
   color: '#4a4a4a' !important
-  .ps-note-date
-    color: #4a4a4a !important
-  .icon-check
-    color: #4a4a4a !important
 
 .ps-project-create-palette-item-back-white1
   background: $white1
   color: '#4a4a4a' !important
-  .ps-note-date
-    color: #4a4a4a !important
-  .icon-check
-    color: #4a4a4a !important
+
 .ps-project-create-palette-item-back-blue
   background: $ps-card-blue
   color: $paper !important
-  .ps-note-date
-    color: $paper !important
-  .icon-check
-    color: $paper !important
+
   .ps-header-input
     border-left: 3px solid $paper
     border-right: 3px solid $paper
@@ -171,10 +161,7 @@
 .ps-project-create-palette-item-back-black
   background: $black
   color: $paper !important
-  .ps-note-date
-    color: $paper !important
-  .icon-check
-    color: $paper !important
+
   .ps-header-input
     border-left: 3px solid $paper
     border-right: 3px solid $paper
@@ -186,26 +173,14 @@
 .ps-project-create-palette-item-back-yellow
   background: $yellow
   color: '#4a4a4a' !important
-  .ps-note-date
-    color: #4a4a4a !important
-  .icon-check
-    color: #4a4a4a !important
 
 .ps-project-create-palette-item-back-pink
   background: $ps-card-pink
   color: '#4a4a4a' !important
-  .ps-note-date
-    color: #4a4a4a !important
-  .icon-check
-    color: #4a4a4a !important
 
 .ps-project-create-palette-item-back-red
   background: $ps-card-red
   color: $paper !important
-  .ps-note-date
-    color: $paper !important
-  .icon-check
-    color: $paper !important
   .ps-header-input
     border-left: 3px solid $paper
     border-right: 3px solid $paper
@@ -219,10 +194,6 @@
 .ps-project-create-palette-item-back-green
   background: $ps-card-green
   color: '#4a4a4a' !important
-  .ps-note-date
-    color: #4a4a4a !important
-  .icon-check
-    color: #4a4a4a !important
   .is-loading
     color: #4a4a4a !important
 
@@ -253,7 +224,7 @@
 .ps-p-b-0
   padding-bottom: 0 !important
 .ps-archive
-  padding-top: 25px
+  padding-top: 5px
   i
     font-size: 18px
 .ps-icons
@@ -261,13 +232,25 @@
 .select
   max-width: 160px
 .ps-note-date
-  color: #797979
+  color: rgba(0,0,0,0.5)
   font-size: 13px
 .is-loading
   font-size: 13px
 .icon-check
   font-size: 13px
   padding-right: 0
+  color: rgba(0, 0, 0, 0.5)
 .button
   &.is-loading
     height: 1.55em
+.ps-note-bottom
+  position: relative
+  display: flex
+  justify-content: space-around
+  .ps-fill-space
+    flex-grow: 15
+  .ps-color
+    flex-grow: 1
+.form-content
+  @media (max-width: 481px)
+    min-height: calc(100vh - 70px)

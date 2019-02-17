@@ -12,7 +12,7 @@
                              'ps-project-create-palette-item-back-red': note.colorPalette == 6,
                              'ps-project-create-palette-item-back-green': note.colorPalette == 7}"
   >
-  <div class="is-centered">
+  <div class="is-centered form-content">
     <div dir="auto">
         <div class="columns is-mobile is-centered">
             <div class="is-half">
@@ -67,7 +67,7 @@
       </div>
     </div>
   </div>
-<div class="columns is-mobile" [ngClass]="{'ps-project-create-palette-item-back-white1': note.colorPalette == 0,
+<div class="ps-note-bottom" [ngClass]="{'ps-project-create-palette-item-back-white1': note.colorPalette == 0,
 'ps-project-create-palette-item-back-salmon': note.colorPalette == 1,
 'ps-project-create-palette-item-back-blue': note.colorPalette == 2,
 'ps-project-create-palette-item-back-black': note.colorPalette == 3,
@@ -75,7 +75,7 @@
 'ps-project-create-palette-item-back-pink': note.colorPalette == 5,
 'ps-project-create-palette-item-back-red': note.colorPalette == 6,
 'ps-project-create-palette-item-back-green': note.colorPalette == 7}">
-  <div class="column ps-p-b-0">
+  <div class="ps-fill-space ps-p-b-0">
     <div class="field">
         <div class="control">
           <div class="select">
@@ -87,7 +87,7 @@
         </div>
     </div>
   </div>
-  <div class="column is-1 has-text-right ps-p-b-0">
+  <div class="ps-color ps-p-b-0">
     <div class="ps-project-create-color-picker-container">
         <div class="ps-project-create-palette-container">
           <p class="ps-project-create-color" title="pick a color">
@@ -121,7 +121,7 @@
         </div>
       </div>
   </div>
-  <div class="column is-1 ps-archive">
+  <div  class="ps-archive">
       <span class="pointer"><i [ngClass]="note.isArchive ? 'icon-unarchive-icon' : 'icon-archive-icon' " ngDefaultControl [(ngModel)]="note.isArchive" name="isArchive" (click)="archiveNote()" title="note.isArchive ? 'Un Archive' : 'Archive'"></i></span>
   </div>
 </div>
