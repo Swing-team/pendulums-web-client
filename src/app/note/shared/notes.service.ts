@@ -19,7 +19,7 @@ export class NoteService {
 
   getNotes(): Promise<Note[]> {
     return this.http
-      .get(environment.apiEndpoint + '/notes/getAll')
+      .get(environment.apiEndpoint + '/notes/getAll', environment.httpOptions)
       .toPromise()
       .then(response => response as Note[])
       .catch(this.handleError);
