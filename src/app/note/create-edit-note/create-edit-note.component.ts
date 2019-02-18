@@ -129,23 +129,22 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy, AfterViewInit
   selectColor(colorIndex) {
     this.note.colorPalette = colorIndex;
     this.showPaletteBoolean = false;
-    const [bgColor, fontColor] = [
-      ['#e5e5e5', '#4a4a4a'],
-      ['#ff9166', '#4a4a4a'],
-      ['#0a9bb3', '#ffffff'],
-      ['#333333', '#ffffff'],
-      ['#ffd470', '#4a4a4a'],
-      ['#ff99cc', '#4a4a4a'],
-      ['#d54552', '#ffffff'],
-      ['#3ccc7c', '#4a4a4a'],
+    const [bgColor, className] = [
+      ['#e5e5e5', 'back-white1'],
+      ['#ff9166', 'back-salmon'],
+      ['#0a9bb3', 'back-blue'],
+      ['#333333', 'back-black'],
+      ['#ffd470', 'back-yellow'],
+      ['#ff99cc', 'back-pink'],
+      ['#d54552', 'back-red'],
+      ['#3ccc7c', 'back-green'],
     ][this.note.colorPalette];
 
     this.modalService.applyStyleDynamically({
       component: CreateEditNoteComponent,
       customBodyStyles: {'background': bgColor}
     });
-    tinymce.get('tiny').getBody().style.backgroundColor = bgColor
-    tinymce.get('tiny').getBody().style.color = fontColor
+    tinymce.get('tiny').getBody().className = className
   }
 
   archiveNote() {
