@@ -60,6 +60,7 @@ export class ProjectDetailsComponent implements OnInit {
     } else {
       if (!this.formSubmitted) {
         this.formSubmitted = true;
+        this.clonedProject.name = this.clonedProject.name.trim();
         const formData = new FormData();
         formData.append('project', JSON.stringify({name: this.clonedProject.name, colorPalette: this.clonedProject.colorPalette}));
         this.projectImageCanvasElem.nativeElement.toBlob(blob => {

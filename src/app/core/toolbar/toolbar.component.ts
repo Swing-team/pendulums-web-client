@@ -252,6 +252,7 @@ export class ToolbarComponent implements OnInit, OnDestroy, DoCheck  {
   }
 
   nameActivity($event) {
+    this.taskName = this.taskName.trim();
     this.stopStartActivityService.nameActivity(this.taskName, this.selectedProject);
     // just for blur out the input
     const target = $event.target;
