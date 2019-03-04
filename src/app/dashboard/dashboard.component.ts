@@ -1,7 +1,7 @@
 import 'rxjs/add/operator/pairwise';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/take';
-import { Component, OnInit,
+import { Component, OnInit, Output,
          OnDestroy }                    from '@angular/core';
 import { Subscription }                 from 'rxjs/Subscription';
 import { Observable }                   from 'rxjs/Observable';
@@ -14,6 +14,8 @@ import { AppStateSelectors }            from '../shared/state/app-state.selector
 import { AppInfoComponent }             from '../core/side-menu/app-info/app-info.component';
 import { RouterChangeListenerService }  from '../core/services/router-change-listener.service';
 import { VERSION }                      from 'environments/version';
+import { HttpClient }                   from '@angular/common/http';
+import { environment }                  from '../../environments/environment';
 
 @Component({
   selector: 'dashboard',
@@ -21,6 +23,8 @@ import { VERSION }                      from 'environments/version';
   styleUrls: ['./dashboard.component.sass']
 })
 export class DashboardComponent implements OnInit, OnDestroy {
+  @Output() serverMessage: any;
+
   projects: Observable<any>;
   user: Observable<any>;
   currentActivity: Observable<any>;
@@ -33,6 +37,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                appStateSelectors: AppStateSelectors,
                private db: DatabaseService,
                private modalService: ModalService,
+               private http: HttpClient,
                private appService: AppService,
                // this service needed to handle router changes so don't remove it
                private routerChangeListenerService: RouterChangeListenerService) {
@@ -45,6 +50,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.getServerMessage()
     if (!this.hasSeenInfoModal) {
       this.versionControl = this.user.pairwise().subscribe((userInfo) => {
         if (userInfo[0].id === null || userInfo[0].id === undefined || userInfo[0].id === '' || userInfo[1].id !== userInfo[0].id) {
@@ -91,6 +97,20 @@ export class DashboardComponent implements OnInit, OnDestroy {
         .catch((err) => console.log(err));
       });
     }
+  }
+  getServerMessage(): Promise<any> {
+    return this.http
+      .get(environment.apiEndpoint + '/serverMessage', environment.httpOptions)
+      .toPromise()
+      .then(response => {
+        this.serverMessage = (response as any).serverMessage
+      })
+      .catch(this.handleError);
+  }
+
+  private handleError(error: any): Promise<any> {
+    console.error('An error occurred', error);
+    return Promise.reject(error);
   }
 
   ngOnDestroy() {

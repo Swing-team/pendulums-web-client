@@ -1,10 +1,16 @@
+<div *ngIf="donation == 'active'" class="columns is-mobile is-centered">
+  <div class="column is-half ps-donation">
+    <div *ngIf="serverMessage" [innerHTML]="serverMessage.content">{{serverMessage.content}}</div>
+    <div class="ps-donation-dismiss" (click)="dismiss()">Dismiss</div>
+  </div>
+</div>
 <div class="ps-project-name-container">
   <div class="ps-activity-top-button icon-gift" (click)="donate()" title="Back">
   </div>
   <div class="ps-project-name">
     Projects
   </div>
-  <div class="ps-activity-top-button icon-plus" (click)="openCreateProjectModal()" title="Add new activity"></div>
+  <div class="ps-activity-top-button icon-plus" (click)="openCreateProjectModal()" title="Add new project"></div>
 </div>
 <div class="columns is-multiline">
   <div *ngIf="projects.length === 0" class="column is-4-widescreen is-6-desktop is-6-tablet" title="{{ status.netStatus ? '' : 'Offline mode!'}}">

@@ -1,4 +1,4 @@
-import { Component, Input }                           from '@angular/core';
+import { Component, Input, OnInit }                           from '@angular/core';
 import { Observable }                                 from 'rxjs/Observable';
 import { ModalService }                               from '../../../core/modal/modal.service';
 import { CreateProjectComponent }                     from '../create-project/create-project.component';
@@ -7,6 +7,7 @@ import { Activity }                                   from '../../../shared/stat
 import { Status }                                     from '../../../shared/state/status/status.model';
 import { User }                                       from '../../../shared/state/user/user.model';
 import { ErrorService }                               from '../../../core/error/error.service';
+import { CookieService }                              from 'ngx-cookie-service';
 
 @Component({
   selector: 'list-of-project',
@@ -14,18 +15,29 @@ import { ErrorService }                               from '../../../core/error/
   styleUrls: ['./list-of-project.component.sass'],
 })
 
-export class ListOfProjectComponent {
+export class ListOfProjectComponent implements OnInit {
   @Input() projects: Observable<Project>;
+  @Input() serverMessage: any;
+  @Input() donation: String = 'active';
   @Input() user: Observable<User>;
   @Input() status: Status;
   @Input() currentActivity: Observable<Activity>;
 
   constructor (
     private modalService: ModalService,
-    private errorService: ErrorService) {
+    private errorService: ErrorService,
+    private cookieService: CookieService) {
 
   }
-
+  ngOnInit() {
+    if (this.cookieService.get('donation') === 'deactive') {
+      this.donation = 'deactive'
+    }
+  }
+  dismiss() {
+    this.donation = 'deactive'
+    this.cookieService.set( 'donation', 'deactive' );
+  }
   openCreateProjectModal() {
     if (this.status.netStatus) {
       this.modalService.show({

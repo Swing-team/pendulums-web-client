@@ -11,6 +11,7 @@ import { NoteModule }             from './note/note.module';
 // components
 import { AppComponent }           from './app.component';
 import { NotFoundComponent }      from './not-found/not-found.component';
+import { CookieService } from 'ngx-cookie-service';
 
 export const AppModuleConfig = {
     declarations: [
@@ -25,6 +26,6 @@ export const AppModuleConfig = {
         DashboardModule,
         NoteModule
     ],
-    providers: [],
+    providers: [CookieService],
     bootstrap: [AppComponent]
 }
