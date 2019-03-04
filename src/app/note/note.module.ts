@@ -9,7 +9,6 @@ import { BrowserAnimationsModule }            from '@angular/platform-browser/an
 import { CreateEditNoteComponent }             from './create-edit-note/create-edit-note.component';
 import { NvD3Module } from 'ng2-nvd3';
 import { EditorModule } from '@tinymce/tinymce-angular';
-import { SafeHtmlPipe } from '../shared/pipes/sanitizeHtmlPipe.pipe';
 
 import 'd3';
 import 'nvd3';
@@ -27,12 +26,10 @@ import 'nvd3';
     NoteComponent,
     CreateEditNoteComponent,
     NoteItemComponent,
-    SafeHtmlPipe
   ],
   providers: [
     NoteService
   ],
-  exports: [SafeHtmlPipe],
   entryComponents: [
     CreateEditNoteComponent,
   ]
