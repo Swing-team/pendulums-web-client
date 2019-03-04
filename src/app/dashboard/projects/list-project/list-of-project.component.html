@@ -1,5 +1,5 @@
 <div class="ps-project-name-container">
-  <div class="ps-activity-top-button icon-gift" (click)="donate()" title="Back">
+  <div class="ps-activity-top-button donation icon-gift" (click)="donate()" title="Back">
   </div>
   <div class="ps-project-name">
     Projects
@@ -7,13 +7,15 @@
   <div class="ps-activity-top-button icon-plus" (click)="openCreateProjectModal()" title="Add new project"></div>
 </div>
 <div *ngIf="donation == 'active'" class="columns is-mobile is-centered">
-    <div class="column is-half ps-donation">
-        <button class="button is-pulled-right is-small is-danger ps-header-delete-button"
+    <div class="column is-half-desktop ps-donation">
+      <div class="donation-box">
+        <button class="button is-small is-danger ps-header-delete-button"
             (click)="dismiss()" title="Dismiss">
           <span class="icon is-small">
           <i class="icon-cancel ps-icon-cancel ps-no-background"></i>
           </span>
         </button>
+      </div>
       <div *ngIf="serverMessage" [innerHTML]="serverMessage.content | safeHtml">{{serverMessage.content}}</div>
     </div>
 </div>
