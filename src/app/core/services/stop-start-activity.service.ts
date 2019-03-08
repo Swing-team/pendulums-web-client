@@ -193,6 +193,7 @@ export class StopStartActivityService {
     this.manageProjectRecentActivitiesInState(this.currentActivityCopy, project);
     // store all divided activities
     dividedActivitiesResult.map((item) => {
+      this.store.dispatch(this.unSyncedActivityActions.addUnSyncedActivity(item));
       this.manageProjectRecentActivitiesInState(item, project);
     });
   }
