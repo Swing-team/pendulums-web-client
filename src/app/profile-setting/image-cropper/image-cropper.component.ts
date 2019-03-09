@@ -29,6 +29,8 @@ export class ImgCropperComponent {
     this.cropperSettings.noFileInput = true;
     this.cropperSettings.rounded = true;
     this.cropperSettings.keepAspect = true;
+    this.cropperSettings.croppedWidth = 120;
+    this.cropperSettings.croppedHeight = 120;
     this.profileData = {};
   }
 
