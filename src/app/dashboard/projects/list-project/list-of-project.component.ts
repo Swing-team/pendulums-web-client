@@ -8,11 +8,19 @@ import { Status }                                     from '../../../shared/stat
 import { User }                                       from '../../../shared/state/user/user.model';
 import { ErrorService }                               from '../../../core/error/error.service';
 import { CookieService }                              from 'ngx-cookie-service';
+import { trigger, style, transition, animate }  from '@angular/animations';
 
 @Component({
   selector: 'list-of-project',
   templateUrl: './list-of-project.component.html',
   styleUrls: ['./list-of-project.component.sass'],
+  animations: [
+    trigger('fadeOut', [
+      transition(':leave', [
+        animate('200ms ease-out', style({opacity: 0}))
+      ])
+    ])
+  ],
 })
 
 export class ListOfProjectComponent implements OnInit {
