@@ -38,6 +38,9 @@ export class ListOfProjectComponent implements OnInit {
     this.donation = 'deactive'
     this.cookieService.set( 'donation', 'deactive' );
   }
+  donate() {
+    window.open('https://pendulums.io/donation.html', '_blank');
+  }
   openCreateProjectModal() {
     if (this.status.netStatus) {
       this.modalService.show({
