@@ -128,12 +128,12 @@ let minimized = false; // see openApp() for more information
 
 const createWindow = () => {
     // Create the browser window.
-    const electron = require('electron');
-    const dimentions = electron.screen.getPrimaryDisplay().size; // make windows size based on user resolutions
+    const { width, height } = screen.getPrimaryDisplay().size; // make windows size based on user resolutions
+    
 
     win = new BrowserWindow({
-        width: Math.ceil(55 * dimentions.width / 100),
-        height: Math.ceil(60 * dimentions.height / 100),
+        width: Math.ceil(55 * width / 100),
+        height: Math.ceil(60 * height / 100),
         center: true,
         minWidth: 770,
         minHeight: 630
