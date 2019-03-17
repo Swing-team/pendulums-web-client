@@ -7,7 +7,7 @@
   <div class="ps-activity-top-button icon-plus" (click)="openCreateProjectModal()" title="Add new project"></div>
 </div>
 <div *ngIf="donation == 'active'" class="columns is-mobile is-centered" [@fadeOut]>
-    <div class="column is-half-desktop ps-donation">
+    <div class="column is-half-desktop ps-donation" *ngIf="serverMessage">
       <div class="donation-box">
         <button class="button is-small is-danger ps-header-delete-button"
             (click)="dismiss()" title="Dismiss">
