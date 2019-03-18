@@ -122,7 +122,7 @@
       </div>
   </div>
   <div  class="ps-archive">
-      <span class="pointer"><i [ngClass]="note.isArchive ? 'icon-unarchive-icon' : 'icon-archive-icon' " ngDefaultControl [(ngModel)]="note.isArchive" name="isArchive" (click)="archiveNote()" title="note.isArchive ? 'Un Archive' : 'Archive'"></i></span>
+      <span class="pointer"><i [ngClass]="note.isArchive ? 'icon-unarchive-icon' : 'icon-archive-icon' " ngDefaultControl [(ngModel)]="note.isArchive" name="isArchive" (click)="archiveNote()" [title]="note.isArchive ? 'Un Archive' : 'Archive'"></i></span>
   </div>
 </div>
 </form>

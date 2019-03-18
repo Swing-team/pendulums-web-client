@@ -67,7 +67,7 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy, AfterViewInit
         this.projectIds.push(project.id)
       })
     }))
-    this.subscriptions.push(this.createEditNoteForm.valueChanges.debounceTime(2000).subscribe(data => {
+    this.subscriptions.push(this.createEditNoteForm.valueChanges.debounceTime(500).subscribe(data => {
       this.createEditNote()
     }))
     this.noteModel = cloneDeep(this.note)
