@@ -9,6 +9,7 @@ import { IdenticonHashDirective }  from './identicon-hash.directive';
 import { SwingCalendarComponent }  from './swing-calendar/swing-calendar.component';
 import { SwingTagInputComponent }  from './swing-tag-input/swing-tag-input.component';
 import { TabComponent } from './tab/tab.component';
+import { SafeHtmlPipe } from '../shared/pipes/sanitizeHtmlPipe.pipe';
 
 @NgModule({
   imports:      [ CommonModule ],
@@ -18,7 +19,8 @@ import { TabComponent } from './tab/tab.component';
     SwingSelectComponent,
     SwingCalendarComponent,
     SwingTagInputComponent,
-    TabComponent
+    TabComponent,
+    SafeHtmlPipe
   ],
   exports:      [
     CommonModule,
@@ -29,7 +31,8 @@ import { TabComponent } from './tab/tab.component';
     SwingSelectComponent,
     SwingSwitchComponent,
     SwingTagInputComponent,
-    TabComponent
+    TabComponent,
+    SafeHtmlPipe
   ],
   providers:    [  ],
 })

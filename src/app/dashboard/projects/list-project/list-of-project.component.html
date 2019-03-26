@@ -1,9 +1,23 @@
 <div class="ps-project-name-container">
-  <div></div>
+  <div class="ps-activity-top-button donation icon-gift" (click)="donate()" title="Donate us">
+  </div>
   <div class="ps-project-name">
     Projects
   </div>
-  <div class="ps-activity-top-button icon-plus" (click)="openCreateProjectModal()" title="Add new activity"></div>
+  <div class="ps-activity-top-button icon-plus" (click)="openCreateProjectModal()" title="Add new project"></div>
+</div>
+<div *ngIf="donation == 'active'" class="columns is-mobile is-centered" [@fadeOut]>
+    <div class="column is-half-desktop ps-donation" *ngIf="serverMessage">
+      <div class="donation-box">
+        <button class="button is-small is-danger ps-header-delete-button"
+            (click)="dismiss()" title="Dismiss">
+          <span class="icon is-small">
+          <i class="icon-cancel ps-icon-cancel ps-no-background"></i>
+          </span>
+        </button>
+      </div>
+      <div *ngIf="serverMessage" [innerHTML]="serverMessage.content | safeHtml">{{serverMessage.content}}</div>
+    </div>
 </div>
 <div class="columns is-multiline">
   <div *ngIf="projects.length === 0" class="column is-4-widescreen is-6-desktop is-6-tablet" title="{{ status.netStatus ? '' : 'Offline mode!'}}">
