@@ -7,6 +7,7 @@ import { StoreModule }                  from '@ngrx/store';
 import { reducerToken, reducers }       from '../shared/state/appState';
 import { UserActions }                  from '../shared/state/user/user.actions';
 import { ProjectsActions }              from '../shared/state/project/projects.actions';
+import { NotesActions }                 from '../shared/state/note/notes.actions';
 import { CurrentActivityActions }       from '../shared/state/current-activity/current-activity.actions';
 import { UnSyncedActivityActions }      from '../shared/state/unsynced-activities/unsynced-activities.actions';
 
@@ -38,6 +39,7 @@ import { PageLoaderService }            from './services/page-loader.service';
 import { AppService }                   from './services/app.service';
 import { AppStateSelectors }            from '../shared/state/app-state.selectors';
 import { ProjectsSelectors }            from '../shared/state/project/projects.selectors';
+import { NotesSelectors }               from '../shared/state/note/notes.selectors';
 import { RouterChangeListenerService }  from './services/router-change-listener.service';
 import { InviteNotifComponent }         from './side-menu/notification/invite-notif/invite-notif.component';
 import { NativeNotificationService }    from './services/native-notification.service';
@@ -81,10 +83,12 @@ import { ActivityService } from './services/activity.service';
     UserActions,
     StatusActions,
     ProjectsActions,
+    NotesActions,
     CurrentActivityActions,
     UnSyncedActivityActions,
     AppStateSelectors,
     ProjectsSelectors,
+    NotesSelectors,
     DexieService,
     DatabaseService,
     SyncService,

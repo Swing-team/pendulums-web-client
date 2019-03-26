@@ -77,7 +77,6 @@ body {
   box-shadow: none;
   text-align: center;
   color: #46476f;
-  text-transform: uppercase;
   font-weight: 500;
   font-size: 1rem;
   padding: 4px;
@@ -89,7 +88,6 @@ body {
   padding: 4px;
   z-index: 2;
   color: #46476f;
-  text-transform: uppercase;
   font-weight: 500;
   line-height: 2.5rem;
   text-align: center;

@@ -16,6 +16,7 @@ import { Md5 }                              from 'ts-md5/dist/md5';
 import { Observable }                       from 'rxjs/Observable';
 import { Subscription }                     from 'rxjs/Subscription';
 import { NativeNotificationService }        from '../core/services/native-notification.service';
+import { Location }                         from '@angular/common';
 
 @Component({
   selector: 'profile-setting',
@@ -46,8 +47,16 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
                private store: Store<AppState>,
                private userActions: UserActions,
                private userService: UserService,
+               private location: Location,
                private modalService: ModalService,
                private nativeNotificationService: NativeNotificationService) {
+    this.subscriptions.push(store.select('user').subscribe((user: User) => {
+      this.user = user;
+      this.userEdit = _.cloneDeep(user);
+      if (user.email) {
+        this.emailHash = Md5.hashStr(user.email);
+      }
+    }));
     this.status = store.select('status');
   }
 
@@ -109,6 +118,10 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
     } else {
       this.showError('This feature is not available in offline mode');
     }
+  }
+
+  goBack() {
+    this.location.back();
   }
 
   saveProfile() {

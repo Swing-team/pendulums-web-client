@@ -50,6 +50,9 @@ export class SideMenuComponent implements OnInit {
     if (this.router.url === '/dashboard') {
       this.activeItemNumber = 3;
     }
+    if (this.router.url === '/note') {
+      this.activeItemNumber = 8;
+    }
     if (this.router.url === '/profile') {
       this.activeItemNumber = 1;
     }

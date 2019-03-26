@@ -1,7 +1,7 @@
 <div class="modal is-active">
   <div class="modal-background" (click)="closeModal()"></div>
   <div class="modal-card ps-modal-card" data-backdrop="static" [ngStyle]="customStyles">
-    <section class="modal-card-body ps-modal-body">
+    <section class="modal-card-body ps-modal-body" [ngStyle]="customBodyStyles">
       <button class="button is-pulled-right is-small is-danger ps-header-delete-button"
               (click)="closeModal()" title="Close">
         <span class="icon is-small">

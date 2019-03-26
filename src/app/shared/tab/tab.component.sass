@@ -1,0 +1,25 @@
+@import "../../../sass/variables"
+
+.tabs a
+  background-color: $white
+  color: $cornflowerBlue
+  border: none
+  transition: all ease-in-out $ps-transitions
+  &:hover
+    border: none
+    background-color: lighten($cornflowerBlue,45%) !important
+
+
+.tabs li
+  width: 116px
+
+.tabs.is-toggle
+  li.is-active a
+    background-color: $cornflowerBlue
+    color: $white
+    border: none
+    transition: all ease-in-out $ps-transitions
+    &:hover
+      border: none
+      background-color: lighten($cornflowerBlue,10%) !important
+

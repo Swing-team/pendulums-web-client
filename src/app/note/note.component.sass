@@ -1,0 +1,87 @@
+@import "../../sass/variables"
+
+.ps-note-padding
+  padding-top: 20px
+  padding-bottom: 20px
+  .column
+    display: inline-block
+  @media (max-width: $ps-small-screen-size)
+    padding-left: 0
+    padding-right: 0
+  @media (max-width: 770px) and (min-width: 420px)
+    padding-left: 15px
+    padding-right: 15px
+  @media (min-width: 770px)
+    padding-left: 20px
+    padding-right: 20px
+
+.note
+  color: #fff
+
+
+.ps-note-create
+  background: $yellow
+  border: unset
+  color: $ps-primary
+  cursor: pointer
+  height: $item-size
+  font-size: 1.8rem
+  font-weight: 500
+  line-height: $item-size
+  border-radius:  $radius
+
+.ps-list-note-no-padding
+  @media (max-width: $ps-mobile)
+    padding-top: unset
+
+.ps-add-note-disabled
+  cursor: not-allowed !important
+
+.ps-project-name-container
+  display: flex
+  align-items: center
+  width: 100%
+  margin-top: 20px
+  margin-bottom: 50px
+  padding-left: 8px
+  padding-right: 8px
+  justify-content: space-around
+  flex-direction: row
+  .ps-activity-top-button
+    cursor: pointer
+    font-size: 1.5rem
+    line-height: 3rem
+    color: $ps-primary
+    background-color: $paper
+    border-radius: 100%
+    border: none
+    height: 50px
+    width: 50px
+    min-height: 50px
+    min-width: 50px
+    z-index: 5
+    transition: all ease-in-out $ps-transitions
+    &:hover
+      background-color: darken($paper, 10)
+    @media (max-width: 700px)
+      height: 40px
+      width: 40px
+      min-height: 40px
+      min-width: 40px
+      font-size: 1.2rem
+      line-height: 2.5rem
+
+.ps-tab
+  width: 40px
+  height: 40px
+
+.ps-project-create
+  background: $yellow
+  border: unset
+  color: $ps-primary
+  cursor: pointer
+  height: $item-size
+  font-size: 1.8rem
+  font-weight: 500
+  line-height: $item-size
+  border-radius:  $radius

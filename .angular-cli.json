@@ -9,7 +9,12 @@
       "outDir": "dist",
       "assets": [
         "assets",
-        "favicon.ico"
+        "favicon.ico",
+        {
+          "glob": "**/*",
+          "input": "../node_modules/pendulums-editor/skins/",
+          "output": "./skins"
+        }
       ],
       "index": "index.html",
       "main": "main.ts",
@@ -33,7 +38,12 @@
       "outDir": "dist",
       "assets": [
         "assets",
-        "favicon.ico"
+        "favicon.ico",
+        {
+          "glob": "**/*",
+          "input": "../node_modules/pendulums-editor/skins/",
+          "output": "./skins"
+        }
       ],
       "index": "index.html",
       "main": "main.electron.ts",

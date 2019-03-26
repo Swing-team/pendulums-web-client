@@ -1,0 +1,138 @@
+@import "../../../../sass/variables"
+
+.ps-note-item-container
+  height: $item-size
+  .ps-note-item-card
+    height: $item-size
+    border: unset
+    overflow-y: hidden
+    .ps-note-item-card-content
+      padding: 10px !important
+      height: $item-size
+      display: flex
+      flex-direction: column
+      cursor: pointer
+      .ps-note-item-card-icons
+        position: relative
+        margin-top: auto
+        background: rgba(0, 0,0 , 0.6)
+        margin: -10px
+        .icon-trash
+          color: $white !important
+          &:hover
+            color: #e4e3e3 !important
+
+      .ps-note-item-card-body
+        padding-top: 10px
+        margin-bottom: auto
+        flex-grow: 3
+        text-align: left
+        overflow: hidden
+        font-size: 1.125rem
+      .ps-note-item-card-content-media
+        text-align: left
+        .ps-note-item-card-title
+          font-size: 1rem
+          font-weight: 700
+          overflow: hidden
+          white-space: nowrap
+          text-overflow: ellipsis
+.ps-back-blue
+  .ps-note-item-card-body
+    hr
+      background-color: $paper
+  .ps-note-item-card
+    border-radius: $radius
+    background: $ps-card-blue
+    color: $paper !important
+    .ps-note-item-card-content
+      .ps-note-item-card-content-media
+.ps-back-black
+  .ps-note-item-card-body
+    hr
+      background-color: $paper
+  .ps-note-item-card
+    border-radius: $radius
+    background: $black
+    color: $paper !important
+    .ps-note-item-card-content
+      .ps-note-item-card-content-media
+.ps-back-yellow
+  .ps-note-item-card-body
+    hr
+      background-color: $black
+  .ps-note-item-card
+    background: $yellow
+    border-radius: $radius
+.ps-back-salmon
+  .ps-note-item-card-body
+    hr
+      background-color: $black
+  .ps-note-item-card
+    background: $salmon
+    border-radius: $radius
+.ps-back-white1
+  .ps-note-item-card-body
+    hr
+      background-color: $black
+  .ps-note-item-card
+    background: $white1
+    border-radius: $radius
+.ps-back-pink
+  .ps-note-item-card-body
+    hr
+      background-color: $black
+  .ps-note-item-card
+    background: $ps-card-pink
+    border-radius: $radius
+.ps-back-red
+  .ps-note-item-card
+    border-radius: $radius
+    background: $ps-card-red
+    color: $paper !important
+    .ps-note-item-card-content
+      .ps-note-item-card-content-media
+.ps-back-green
+  .ps-note-item-card-body
+    hr
+      background-color: $black
+  .ps-note-item-card
+    border-radius: $radius
+    background: $ps-card-green
+
+.ps-activity-item-button
+  overflow: hidden
+  // position: absolute
+  right: 0
+  bottom: 10px
+  i
+    cursor: pointer
+    transition: all ease-in-out $ps-transitions
+    &:hover
+      color: lighten($pink, 20)
+  .icon-cancel
+    &:hover
+      color: lighten($red, 20)
+  .icon-check
+    &:hover
+      color: lighten($success, 20)
+  .button
+    height: 20px
+    line-height: 20px
+.ps-activity-item-button-confirmation
+  border: none
+  font-size: 1.35rem
+  background-color: transparent
+  padding: 1rem 0.5rem 0 0.5rem !important
+
+.tag-border
+  border-radius: $radius !important
+  max-width: 60%
+  white-space: nowrap
+  overflow: overlay
+  text-overflow: ellipsis
+  display: inline-block
+  padding-top: 3px
+::-webkit-scrollbar
+  display: none
+

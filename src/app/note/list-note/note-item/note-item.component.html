@@ -1,0 +1,42 @@
+<div [ngClass]="{'ps-back-white1': !note.colorPalette  || note.colorPalette == 0,
+                  'ps-back-salmon': note.colorPalette == 1,
+                  'ps-back-blue': note.colorPalette == 2,
+                  'ps-back-black': note.colorPalette == 3,
+                  'ps-back-yellow': note.colorPalette == 4,
+                  'ps-back-pink': note.colorPalette == 5,
+                  'ps-back-red': note.colorPalette == 6,
+                  'ps-back-green': note.colorPalette == 7}" class="ps-note-item-container">
+  <div class="card ps-note-item-card">
+    <div class="card-content ps-note-item-card-content">
+      <div (click)="editModal()" class="ps-note-item-card-content-media">
+        <div class="ps-note-item-card-title">{{note.title}}</div>
+      </div>
+      <div (click)="editModal()" class="ps-note-item-card-body" [innerHTML]="note.content | safeHtml">{{note.content}}</div>
+      <div class="has-text-right columns ps-note-item-card-icons ps-note-item-delete">
+
+        <span *ngIf="projectsId && projectsId[note.project]" class="column is-8 has-text-left inline-block">
+          <span class="tag tag-border is-white">{{projectsId[note.project]}}</span>
+        </span>
+        <span class="column inline-block">
+          <span *ngIf="!deleteConfirmation">
+            <i class="icon-trash" (click)="deleteNote()" title="Delete Note"></i>
+          </span>
+          <div class="ps-activity-item-button is-pulled-right" *ngIf="deleteConfirmation">
+            <a  *ngIf="!deleteButtonDisabled" class="button ps-activity-item-button-confirmation" (click)="cancelDelete()" title="Cancel Delete">
+              <span class="icon">
+                <i class="icon-cancel" [ngClass]="{'has-text-danger': !deleteButtonDisabled}"></i>
+              </span>
+            </a>
+            <a  class="button ps-activity-item-button-confirmation" [ngClass]="{'is-loading': deleteButtonDisabled}" (click)="confirmDelete()" title="Confirm Delete">
+              <span class="icon">
+                <i class="icon-check" [ngClass]="{'has-text-success': !deleteButtonDisabled}"></i>
+              </span>
+            </a>
+          </div>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+

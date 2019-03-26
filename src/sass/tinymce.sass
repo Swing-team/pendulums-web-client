@@ -1,0 +1,157 @@
+.mce-tinymce
+  border: 0 !important
+  box-shadow: none !important
+
+.mce-top-part::before
+  box-shadow: none !important
+
+.mce-edit-area, .mce-container, .mce-panel, .mce-stack-layout-item, .mce-last
+  border: 0 !important
+
+.mce-container-body.mce-flow-layout
+  border-bottom: 1px solid #595959
+  padding-bottom: 10px
+
+.mce-panel
+  background-color: transparent !important
+.mce-btn
+  background: transparent !important
+.mce-btn.mce-active i
+  color: $black !important
+.mce-btn-group .mce-btn.mce-active
+  color: $black !important
+  border: 1px solid $black
+.mce-btn:hover
+  border: 1px solid $black !important
+.mce-caret
+    border-top: 4px solid #595959 !important
+.mce-btn .mce-txt
+  color: #333 !important
+.ps-project-create-palette-item-back-black, .ps-project-create-palette-item-back-red, .ps-project-create-palette-item-back-blue
+  .mce-btn .mce-txt
+    color: $paper !important
+  .mce-ico, .mce-txt
+    color: $paper !important
+  .mce-caret
+    border-top: 4px solid $paper !important
+  .mce-btn, .mce-txt
+    button
+    color: $paper !important
+    &.mce-active i
+      color: $white1 !important
+  .mce-btn:hover
+    border: 1px solid $paper !important
+
+  .mce-container-body.mce-flow-layout
+    border-bottom: 1px solid $paper
+  .mce-btn-group .mce-btn.mce-active
+    color: $black !important
+    border: 1px solid $paper
+.mce-menu-item
+  margin-bottom: 0 !important
+  background: $paper !important
+  .mce-text
+    background-color: $paper !important
+    color: $black !important
+.mce-window
+  background: #fff !important
+.mce-edit-area
+  height: 160px !important
+.mce-ico
+  font-size: 18px !important
+
+.mce-textbox
+  border: 1px solid !important
+.mce-listbox
+  border: 1px solid !important
+.mce-abs-layout
+  .mce-flow-layout
+  background: #fff !important
+.mce-container-body.mce-flow-layout
+  padding-top: 8px
+  text-align: center !important
+.mce-btn
+  button
+    padding: 4px 9px !important
+
+@media screen and (max-width: 515px)
+  .mce-window
+      max-width: 320px !important
+      left: calc(50% - 160px) !important
+
+  .mce-window-body
+      max-width: 100% !important
+      min-height: 230px !important
+
+  .mce-container.mce-panel.mce-abs-layout-item,
+  .mce-container.mce-panel.mce-abs-layout-item .mce-container-body.mce-abs-layout
+      max-width: 100% !important
+      min-height: 190px !important
+
+  .mce-flow-layout
+      text-align: center !important
+
+  .mce-flow-layout-item.mce-btn-group
+      border-left: none !important
+
+  .mce-panel,
+  .mce-panel > .mce-container-body,
+  .mce-foot,
+  .mce-foot > .mce-abs-layout
+      max-width: 320px !important
+      text-align: center
+
+  .mce-formitem
+      width: 300px !important
+      left: 10px !important
+      display: block !important
+
+  .mce-formitem:nth-child(2)
+      top: 10px !important
+
+  .mce-formitem:nth-child(3)
+      top: 50px !important
+
+  .mce-formitem:nth-child(4)
+      top: 90px !important
+
+  .mce-formitem:nth-child(5)
+      top: 130px !important
+
+  .mce-formitem:nth-child(6)
+      top: 170px !important
+
+  .mce-container.mce-form.mce-abs-layout-item .mce-container-body.mce-abs-layout .mce-container.mce-form.mce-abs-layout-item
+      top: 40px !important
+      left: 0 !important
+      height: 160px !important
+
+  .mce-formitem label
+      width: 106px !important
+      font-size: 13px !important
+      left: 0px !important
+
+  .mce-multiline
+      max-width: 290px !important
+
+  .mce-checkbox
+      top: 40px !important
+      left: 0 !important
+
+  .mce-label
+      font-size: 13px !important
+
+  .mce-foot .mce-btn-has-text
+      position: relative !important
+      top: 0 !important
+      left: 0 !important
+      display: inline-block !important
+      margin: 10px 5px !important
+
+  .mce-abs-layout-item input
+      max-width: 150px !important
+
+  .mce-abs-layout-item.mce-has-open input
+      max-width: 118px !important
+
+
