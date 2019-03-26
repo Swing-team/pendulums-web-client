@@ -50,6 +50,7 @@ export class CreateProjectComponent {
     } else {
       if (!this.formSubmitted) {
         this.formSubmitted = true;
+        this.project.name = this.project.name.trim(); // trim the project name after creation.
         // todo: please create dto model in order to use in interactions with server
         delete this.project['id'];
         delete this.project['recentActivityName'];

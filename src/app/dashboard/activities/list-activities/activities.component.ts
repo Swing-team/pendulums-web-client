@@ -45,6 +45,7 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
   // we need copy of currentActivity to show it in list of activities if it is belong to current project
   currentActivityCopy: ActivityWithIsActive;
   currentActivities: Array<ActivityWithIsActive> = [];
+  currentActivitiesCopy: Array<ActivityWithIsActive> = [];
   userAccess = false;
   selectedUsers = [];
   selectedItemIndex = [];
@@ -297,6 +298,7 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
         userCurrentActivity.isActive = true;
         return userCurrentActivity;
       });
+      this.currentActivitiesCopy = _.cloneDeep(this.currentActivities);
     });
   }
 
@@ -373,11 +375,13 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
     event.map((user) => {
       this.selectedUsers.push(user.item.id);
     });
+
+    this.currentActivities = _.cloneDeep(this.currentActivitiesCopy);
     this.currentActivities.map((userCurrentActivity) => {
       if (this.selectedUsers.indexOf(userCurrentActivity.user) > -1) {
         userCurrentActivity.isActive = true;
       } else {
-        userCurrentActivity.isActive = false;
+        this.currentActivities.splice(this.currentActivities.indexOf(userCurrentActivity), 1);
       }
     });
     this.tempArray = [];

@@ -32,11 +32,11 @@
       "background": "./build/dmg-background.jpg",
       "contents": [
         {
-          "x": 400,
+          "x": 240,
           "y": 150
         },
         {
-          "x": 240,
+          "x": 400,
           "y": 150,
           "type": "link",
           "path": "/Applications"

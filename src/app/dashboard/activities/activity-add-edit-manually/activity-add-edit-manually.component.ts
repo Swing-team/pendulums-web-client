@@ -45,6 +45,7 @@ export class AddManuallyActivityComponent implements OnInit {
   ngOnInit() {
     if (this.activity) {
       this.activityModel = _.cloneDeep(this.activity);
+      this.activityModel.name = this.activityModel.name.trim();
       this.fromDate = moment(Number(this.activityModel.startedAt)).format('dddd, MMMM Do YYYY');
       this.fromDateValue = this.activityModel.startedAt;
       this.toDate = moment(Number(this.activityModel.stoppedAt)).format('dddd, MMMM Do YYYY');
@@ -191,7 +192,7 @@ export class AddManuallyActivityComponent implements OnInit {
               stoppedAt = Number(tempStoppedAt);
             }
             const tempResult = {
-              name: this.activityModel.name,
+              name: this.activityModel.name.trim(),
               user: this.activityModel.user,
               project: this.activityModel.project,
               startedAt: startedAt,
@@ -247,6 +248,7 @@ export class AddManuallyActivityComponent implements OnInit {
     if (this.IsNullOrWhiteSpace(this.activityModel.name)) {
       this.activityModel.name = 'Untitled Activity';
     }
+    this.activityModel.name = this.activityModel.name.trim();
     if (this.fromDate && this.toDate) {
       const tempCheck = this.checkDate();
       if (tempCheck) {

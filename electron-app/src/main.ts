@@ -124,12 +124,16 @@ const signedOutTrayMenuTemplate: MenuItemConstructorOptions[] = [
 ]
 
 let trayMenu = Menu.buildFromTemplate(signedInTrayMenuTemplate);
+let minimized = false; // see openApp() for more information
 
 const createWindow = () => {
     // Create the browser window.
+    const { width, height } = screen.getPrimaryDisplay().size; // make windows size based on user resolutions
+    
+
     win = new BrowserWindow({
-        width: 1024,
-        height: 650,
+        width: Math.ceil(55 * width / 100),
+        height: Math.ceil(60 * height / 100),
         center: true,
         minWidth: 770,
         minHeight: 630
@@ -163,6 +167,11 @@ const createWindow = () => {
 
     win.on('blur', () => {
         win.webContents.executeJavaScript('document.getElementsByName("activityNameInput").forEach(element => {element.blur()})');
+    });
+
+    // see openApp() for more information
+    win.on('minimize', () => {
+      minimized = true;
     });
 
     win.webContents.on('new-window', (e, URL) => {
@@ -391,6 +400,17 @@ const openWeb = () => {
 };
 
 const openApp = () => {
+    // this logic is related to the issue TG-493
+    // so minimize doesn't actuaaly hide the window and win.restore() doesn't work correctly
+    // so a created a boolean variable called minimized and when win.on('minimize') trigger
+    // the value of minized turns to true so when the user clicks on open App in tray
+    // face no bug. i even check the e.preventDefault and win.hide() whene win.on('minimize) triggers
+    // but this action also hides the icon in menu bar. so by now this is the best option i could think of.
+
+    if (minimized) {
+      win.hide();
+      minimized = false;
+    }
     win.show();
 };
 

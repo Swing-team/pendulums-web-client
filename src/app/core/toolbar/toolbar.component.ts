@@ -1,6 +1,6 @@
 import {
   Component, EventEmitter, Inject,
-  Input, Output, OnInit, OnDestroy, ViewChild,
+  Input, Output, OnInit, OnDestroy, ViewChild, DoCheck, KeyValueDiffers
 } from '@angular/core';
 import { Observable }                       from 'rxjs/Observable';
 import { Activity }                         from '../../shared/state/current-activity/current-activity.model';
@@ -21,7 +21,7 @@ import { NativeNotificationService }        from '../services/native-notificatio
   styleUrls: ['./toolbar.component.sass']
 })
 
-export class ToolbarComponent implements OnInit, OnDestroy  {
+export class ToolbarComponent implements OnInit, OnDestroy, DoCheck  {
   @Input() user: User;
   @Input() status: Status;
   projects: Array<Project>;
@@ -30,6 +30,7 @@ export class ToolbarComponent implements OnInit, OnDestroy  {
   @Input() currentActivity: Observable<Activity>;
   @Output() onMenuItemClicked = new EventEmitter();
   @ViewChild('activityNameElm') activityNameElm;
+  differ: any;
   currentActivityCopy: Activity;
   showTimeDuration = false;
   stopStartButtonDisabled = false;
@@ -49,9 +50,11 @@ export class ToolbarComponent implements OnInit, OnDestroy  {
                private projectsActions: ProjectsActions,
                private errorService: ErrorService,
                private stopStartActivityService: StopStartActivityService,
-               private nativeNotificationService: NativeNotificationService) {
+               private nativeNotificationService: NativeNotificationService,
+               private differs: KeyValueDiffers) {
     this.selectedProject = new Project();
     this.currentActivityCopy = new Activity();
+    this.differ = this.differs.find({}).create();
   }
 
   ngOnInit() {
@@ -128,6 +131,17 @@ export class ToolbarComponent implements OnInit, OnDestroy  {
     }));
   }
 
+  ngDoCheck() {
+    const change = this.differ.diff(this.user.pendingInvitations);
+    if (change) {
+      if (this.user.pendingInvitations.length > 0 || this.status.updateNeeded) {
+        this.hasNotification = true;
+      } else {
+        this.hasNotification = false;
+      }
+    }
+  }
+
   ngOnDestroy() {
     this.subscriptions.map((subscribe) => {
       subscribe.unsubscribe()
@@ -199,13 +213,18 @@ export class ToolbarComponent implements OnInit, OnDestroy  {
   }
 
   toggleStopStart() {
-    if (!this.stopStartButtonDisabled) {
-      this.stopStartButtonDisabled = true;
-      if (this.activityStarted) {
-        this.stopActivity();
-      } else {
-        this.startActivity();
+    if (this.projects.length > 0) {
+      if (!this.stopStartButtonDisabled) {
+        this.stopStartButtonDisabled = true;
+        if (this.activityStarted) {
+          this.stopActivity();
+        } else {
+          this.startActivity();
+        }
       }
+    } else {
+      document.getElementsByTagName('swing-select')[0].setAttribute('label', 'Select Project');
+      this.showError('Please create a project first!');
     }
   }
 
@@ -251,6 +270,7 @@ export class ToolbarComponent implements OnInit, OnDestroy  {
   }
 
   nameActivity($event) {
+    this.taskName = this.taskName.trim();
     this.stopStartActivityService.nameActivity(this.taskName, this.selectedProject);
     // just for blur out the input
     const target = $event.target;
