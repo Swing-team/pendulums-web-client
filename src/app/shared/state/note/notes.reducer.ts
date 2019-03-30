@@ -2,7 +2,7 @@ import { NotesActions }    from './notes.actions';
 import { Notes }           from './notes.model';
 import { ActionWithPayload }  from '../action-with-payload';
 import { values }             from 'lodash';
-import { Note } from './Note.model';
+import { Note } from './note.model';
 import { findIndex, reduce }             from 'lodash';
 import  showdown from 'showdown';
 
