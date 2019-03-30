@@ -75,6 +75,8 @@ export class ProjectPendingInvitationsComponent {
           });
         }
       }
+    } else {
+      this.showError('Please fill the email address');
     }
   }
 
