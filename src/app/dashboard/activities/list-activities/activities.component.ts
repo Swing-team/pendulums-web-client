@@ -441,19 +441,25 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
 
     const file: File = $event.target.files[0];
 
-    const formData = new FormData();
-    formData.append('data', file);
-    this.activityService.importActivities(this.projectId, formData).then((activities) => {
+    if (file.type === 'application/json') {
+      const formData = new FormData();
+      formData.append('data', file);
+      this.activityService.importActivities(this.projectId, formData).then((activities) => {
 
-      this.showError(`Imported ${activities.length} activities`);
-      this.getActivitiesFromServer();
-      this.isImporting = false;
-    })
-    .catch(error => {
+        this.showError(`Imported ${activities.length} activities`);
+        this.getActivitiesFromServer();
+        this.isImporting = false;
+      })
+      .catch(error => {
+        this.showError('Something went wrong in Importing your activities');
+        console.log('error is: ', error);
+        this.isImporting = false;
+      });
+    } else {
       this.showError('Something went wrong in Importing your activities');
-      console.log('error is: ', error);
+      this.showError('Bad file for import.');
       this.isImporting = false;
-    });
+    }
   }
 }
 
