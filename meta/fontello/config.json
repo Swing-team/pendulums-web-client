@@ -465,6 +465,18 @@
       "search": [
         "refresh"
       ]
+    },
+    {
+      "uid": "750058837a91edae64b03d60fc7e81a7",
+      "css": "ellipsis-vert",
+      "code": 61762,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "80451d627470ea7f977a263fdb771d7b",
+      "css": "palette",
+      "code": 59412,
+      "src": "entypo"
     }
   ]
 }

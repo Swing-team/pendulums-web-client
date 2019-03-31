@@ -53,6 +53,11 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy, AfterViewInit
     this.projects = store.select(appStateSelectors.getProjectsArray)
   }
   ngOnInit(): void {
+    const dropdown = document.querySelector('.dropdown');
+    dropdown.addEventListener('click', function(event) {
+      event.stopPropagation();
+      dropdown.classList.toggle('is-active');
+    });
     const color = [
       '#e5e5e5', '#ff9166', '#0a9bb3', '#333333', '#ffd470', '#ff99cc', '#d54552', '#3ccc7c'
     ][this.note.colorPalette]
