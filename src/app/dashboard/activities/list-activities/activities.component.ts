@@ -441,7 +441,19 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
 
     const file: File = $event.target.files[0];
 
-    if (file.type === 'application/json') {
+    if (file.type !== 'application/json') {
+      this.showError('Something went wrong in Importing your activities');
+      this.showError('Bad file for import.');
+      this.isImporting = false;
+    }
+
+    if (file.size >= 10000000) {
+      this.showError('Something went wrong in Importing your activities');
+      this.showError('File size is big to upload.');
+      this.isImporting = false;
+    }
+
+    if (this.isImporting) {
       const formData = new FormData();
       formData.append('data', file);
       this.activityService.importActivities(this.projectId, formData).then((activities) => {
@@ -455,10 +467,6 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
         console.log('error is: ', error);
         this.isImporting = false;
       });
-    } else {
-      this.showError('Something went wrong in Importing your activities');
-      this.showError('Bad file for import.');
-      this.isImporting = false;
     }
   }
 }
