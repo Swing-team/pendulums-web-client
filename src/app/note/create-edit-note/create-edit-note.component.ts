@@ -96,6 +96,9 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   createEditNote() {
+    if (this.note.title === '' && this.note.content === '') {
+      return
+    }
     this.loadingBtn = true;
     if (this.note.id) {
       this.noteService.update({note: this.note}).then((note) => {
