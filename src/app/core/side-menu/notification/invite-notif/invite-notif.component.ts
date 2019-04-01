@@ -75,7 +75,16 @@ export class InviteNotifComponent implements OnInit {
       })
         .catch(error => {
           console.log('error is: ', error);
-          this.denyDisabledIndex = false;
+          if (JSON.parse(error.error).type === 1) {
+            this.showError(JSON.parse(error.error).message);
+            this.user.pendingInvitations.map((obj, index) => {
+              if (obj.id === projectId) {
+                this.user.pendingInvitations.splice(index, 1);
+              }
+            });
+            this.store.dispatch(this.userActions.loadUser(this.user));
+            this.denyDisabledIndex = false;
+          }
         });
     }
   }
