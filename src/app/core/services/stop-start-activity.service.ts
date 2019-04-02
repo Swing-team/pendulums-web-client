@@ -12,17 +12,20 @@ import { User } from '../../shared/state/user/user.model';
 import { cloneDeep }                      from 'lodash';
 import { userRoleInProject } from '../../dashboard/shared/utils';
 import * as moment from 'moment';
+import { NativeNotificationService } from './native-notification.service';
 
 @Injectable()
 export class StopStartActivityService {
   private currentActivityCopy: Activity;
   private status: Status;
   private user: User;
+  showNotifIntervar: any;
 
   constructor( private activityService: ActivityService,
               private store: Store<AppState>,
               private currentActivityActions: CurrentActivityActions,
               private unSyncedActivityActions: UnSyncedActivityActions,
+              private nativeNotificationService: NativeNotificationService,
               private projectsActions: ProjectsActions) {
     store.select('currentActivity').subscribe((currentActivity: Activity) => {
       this.currentActivityCopy = cloneDeep(currentActivity);
@@ -72,6 +75,7 @@ export class StopStartActivityService {
 
           // if we get ok response from server so we have id for currentActivity and it has to been set
           this.store.dispatch(this.currentActivityActions.loadCurrentActivity(resActivity));
+          this.checkRestTimeSet(activity);
           resolve();
         })
           .catch(error => {
@@ -96,9 +100,31 @@ export class StopStartActivityService {
             console.log('server error happened', error);
           });
       } else {
+        this.checkRestTimeSet(activity);
         resolve();
       }
   })
+  }
+
+  checkRestTimeSet(activity: Activity) {
+    const settings = this.user.settings;
+    const workTime = Math.floor(settings.relaxationTime.workingTime / 1000);
+    const restTime = Math.floor(settings.relaxationTime.restTime / 1000);
+
+    let nextWorkTime = workTime;
+    let duration;
+
+    this.showNotifIntervar = setInterval(() => {
+      duration = Math.floor((Date.now() - Number(activity.startedAt)) / 1000);
+      if (duration === nextWorkTime) {
+        this.nativeNotificationService.showNotification(`You need to rest for ${restTime / 60} minutes.`);
+      }
+      if (duration === (nextWorkTime + restTime)) {
+        this.nativeNotificationService.showNotification(`You need to do work for ${workTime / 60} minutes`);
+        nextWorkTime += (workTime + restTime);
+      }
+    }, 1000)
+
   }
 
   manageProjectRecentActivitiesInState(activity: Activity, project: Project) {
@@ -161,27 +187,33 @@ export class StopStartActivityService {
           if (this.currentActivityCopy.id) {
             this.activityService.editCurrentActivity(this.currentActivityCopy.project, this.currentActivityCopy).then((activity) => {
               this.updateStateInSuccess(dividedActivitiesArray);
+              clearInterval(this.showNotifIntervar);
               resolve();
             })
               .catch(error => {
                 this.updateStateInCatch(error);
+                clearInterval(this.showNotifIntervar);
                 resolve();
               });
           } else {
             this.activityService.createManually(this.currentActivityCopy.project, this.currentActivityCopy).then((activity) => {
               this.updateStateInSuccess(dividedActivitiesArray);
+              clearInterval(this.showNotifIntervar);
               resolve();
             })
               .catch((error) => {
                 this.updateStateInCatch(error);
+                clearInterval(this.showNotifIntervar);
                 resolve();
               });
           }
         } else {
           this.store.dispatch(this.currentActivityActions.clearCurrentActivity());
+          clearInterval(this.showNotifIntervar);
           resolve();
         }
       } else {
+        clearInterval(this.showNotifIntervar);
         resolve();
       }
     });

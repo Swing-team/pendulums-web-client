@@ -9,11 +9,10 @@ import { Store }                            from '@ngrx/store';
 import { AppState }                         from 'app/shared/state/appState';
 import { ProjectsActions }                  from '../../shared/state/project/projects.actions';
 import { ErrorService }                     from '../error/error.service';
-import { User, Settings }                   from '../../shared/state/user/user.model';
+import { User }                   from '../../shared/state/user/user.model';
 import { Subscription }                     from 'rxjs/Subscription';
 import { StopStartActivityService }         from '../services/stop-start-activity.service';
 import { Status }                           from '../../shared/state/status/status.model';
-import { NativeNotificationService }        from '../services/native-notification.service';
 
 @Component({
   selector: 'toolbar',
@@ -36,10 +35,6 @@ export class ToolbarComponent implements OnInit, OnDestroy, DoCheck  {
   stopStartButtonDisabled = false;
   selectedProjectIndex: any;
   hasNotification = false;
-  settings: Settings;
-  hasShowRestNotificaion: boolean;
-  workingTime: number;
-  restTime: number;
   private selectedProject: Project;
   private taskName: string;
   private timeDuration: string;
@@ -50,7 +45,6 @@ export class ToolbarComponent implements OnInit, OnDestroy, DoCheck  {
                private projectsActions: ProjectsActions,
                private errorService: ErrorService,
                private stopStartActivityService: StopStartActivityService,
-               private nativeNotificationService: NativeNotificationService,
                private differs: KeyValueDiffers) {
     this.selectedProject = new Project();
     this.currentActivityCopy = new Activity();
@@ -95,11 +89,6 @@ export class ToolbarComponent implements OnInit, OnDestroy, DoCheck  {
         });
 
         if (this.currentActivityCopy.startedAt) {
-          this.settings = this.user.settings;
-          this.hasShowRestNotificaion = false;
-          this.workingTime = Math.floor(this.settings.relaxationTime.workingTime / 1000);
-          let workingTimeCopy = this.workingTime;
-          this.restTime = Math.floor(this.settings.relaxationTime.restTime / 1000);
           this.activityStarted = true;
           let startedAt;
           let now;
@@ -110,13 +99,6 @@ export class ToolbarComponent implements OnInit, OnDestroy, DoCheck  {
               now = Date.now();
               duration = now - startedAt;
               this.timeDuration = this.getTime(duration);
-              if (Math.floor(duration / 1000) === workingTimeCopy) {
-                this.nativeNotificationService.showNotification(`You need to rest for ${this.restTime / 60} minutes.`);
-              }
-              if (Math.floor(duration / 1000) === (workingTimeCopy + this.restTime)) {
-                this.nativeNotificationService.showNotification(`You need to do work for ${this.workingTime / 60} minutes`);
-                workingTimeCopy += (this.workingTime + this.restTime);
-              }
             } else {
               this.timeDuration = '0';
             }
