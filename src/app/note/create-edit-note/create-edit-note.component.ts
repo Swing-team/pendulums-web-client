@@ -152,7 +152,8 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy, AfterViewInit
       component: CreateEditNoteComponent,
       customBodyStyles: {'background': bgColor}
     });
-    tinymce.get('tiny').getBody().className = className
+    const defaultClass = 'mce-content-body'
+    tinymce.get('tiny').getBody().className = `${defaultClass} ${className}`
   }
 
   archiveNote() {
