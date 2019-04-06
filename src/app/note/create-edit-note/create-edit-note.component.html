@@ -93,7 +93,7 @@
     <div class="ps-project-create-color-picker-container">
         <div class="ps-project-create-palette-container">
           <p class="ps-project-create-color" title="pick a color">
-            <i class="icon-palette" id="id2" [(ngModel)]="note.colorPalette" name="colorPalette" ngDefaultControl (click)="togglePalette()"></i>
+            <i class="icon-palette pointer" id="id2" [(ngModel)]="note.colorPalette" name="colorPalette" ngDefaultControl (click)="togglePalette()"></i>
           </p>
           <div #noteCreatePalette [ngStyle]="{'display': showPaletteBoolean ? 'block' : 'none'}" class="ps-project-create-palette">
             <div class="ps-project-create-palette-colors-section">

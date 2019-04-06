@@ -143,15 +143,23 @@
 .ps-project-create-palette-item-back-salmon
   background: $salmon
   color: '#4a4a4a' !important
+  .icon-palette, .icon-ellipsis-vert
+    &:hover
+      color: lighten(#4a4a4a, 10)
 
 .ps-project-create-palette-item-back-white1
   background: $white1
   color: '#4a4a4a' !important
+  .icon-palette, .icon-ellipsis-vert
+    &:hover
+      color: lighten(#4a4a4a, 10)
 
 .ps-project-create-palette-item-back-blue
   background: $ps-card-blue
   color: $paper !important
-
+  .icon-palette, .icon-ellipsis-vert
+    &:hover
+      color: lighten($paper, 10)
   .ps-header-input
     border-left: 3px solid $paper
     border-right: 3px solid $paper
@@ -163,6 +171,9 @@
 .ps-project-create-palette-item-back-black
   background: $black
   color: $paper !important
+  .icon-palette, .icon-ellipsis-vert
+    &:hover
+      color: lighten($paper, 10)
 
   .ps-header-input
     border-left: 3px solid $paper
@@ -175,14 +186,22 @@
 .ps-project-create-palette-item-back-yellow
   background: $yellow
   color: '#4a4a4a' !important
-
+  .icon-palette, .icon-ellipsis-vert
+    &:hover
+      color: lighten(#4a4a4a, 10)
 .ps-project-create-palette-item-back-pink
   background: $ps-card-pink
   color: '#4a4a4a' !important
+  .icon-palette, .icon-ellipsis-vert
+    &:hover
+      color: lighten(#4a4a4a, 10)
 
 .ps-project-create-palette-item-back-red
   background: $ps-card-red
   color: $paper !important
+  .icon-palette, .icon-ellipsis-vert
+    &:hover
+      color: lighten($paper, 10)
   .ps-header-input
     border-left: 3px solid $paper
     border-right: 3px solid $paper
@@ -196,6 +215,9 @@
 .ps-project-create-palette-item-back-green
   background: $ps-card-green
   color: '#4a4a4a' !important
+  .icon-palette, .icon-ellipsis-vert
+    &:hover
+      color: lighten(#4a4a4a, 10)
   .is-loading
     color: #4a4a4a !important
 
@@ -272,3 +294,6 @@
 select
   option
     color: black
+.dropdown-item
+  &:hover
+    background-color: $gray
