@@ -87,7 +87,7 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy, AfterViewInit
     tinymce.get('tiny').on('click', () =>  {
       this.showPaletteBoolean = false
       const dropdown = document.querySelector('.dropdown');
-        dropdown.classList.toggle('is-active');
+        dropdown.classList.remove('is-active');
     });
   }
 
