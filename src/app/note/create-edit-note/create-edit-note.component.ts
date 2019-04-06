@@ -86,6 +86,8 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy, AfterViewInit
     this.selectColor(this.note.colorPalette);
     tinymce.get('tiny').on('click', () =>  {
       this.showPaletteBoolean = false
+      const dropdown = document.querySelector('.dropdown');
+        dropdown.classList.toggle('is-active');
     });
   }
 
@@ -132,6 +134,8 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy, AfterViewInit
       && event.target.id !== 'id2') {
       this.togglePalette();
     }
+    const dropdown = document.querySelector('.dropdown');
+    dropdown.classList.remove('is-active');
   }
 
   selectColor(colorIndex) {
