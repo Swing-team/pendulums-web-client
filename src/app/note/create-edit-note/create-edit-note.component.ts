@@ -39,7 +39,6 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy, AfterViewInit
   private subscriptions: Subscription[] = [];
   content = '';
   showPaletteBoolean = false;
-  showIsArchive: boolean;
   noteModel: Note;
   projectIds: Array<any> = [];
 
@@ -161,8 +160,7 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   archiveNote() {
-    this.showIsArchive = !this.showIsArchive
-    this.note.isArchive = this.showIsArchive
+    this.note.isArchive = !this.note.isArchive
   }
   showError(error) {
     this.errorService.show({
