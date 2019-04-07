@@ -91,6 +91,8 @@
       color: $white1
       font-size: 16px
       border-radius: $radius
+      @media (max-width: 480px)
+         right: -40px
       .ps-project-create-palette-colors-section
         display: inline-flex
         .ps-project-create-palette-item
@@ -275,7 +277,7 @@
       border-bottom-color: rgba(0, 0, 0, 0.5)
 .ps-note-bottom
   position: relative
-  display: flex
+  // display: flex
   justify-content: space-around
   .ps-fill-space
     flex-grow: 15
@@ -298,4 +300,10 @@ select
   &:hover
     background-color: $gray
 .ps-color
-  padding-right: 15px !important
+  // padding-right: 15px !important
+.icon-palette-1
+  font-size: 20px
+.icon-ellipsis-vert
+  font-size: 22px !important
+.ttt
+  padding-top: 13px

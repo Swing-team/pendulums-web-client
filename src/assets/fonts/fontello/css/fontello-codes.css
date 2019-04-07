@@ -19,7 +19,6 @@
 .icon-trash:before { content: '\e811'; } /* '' */
 .icon-user-edit:before { content: '\e812'; } /* '' */
 .icon-stopwatch:before { content: '\e813'; } /* '' */
-.icon-palette:before { content: '\e814'; } /* '' */
 .icon-archive:before { content: '\e815'; } /* '' */
 .icon-refresh:before { content: '\e816'; } /* '' */
 .icon-walking:before { content: '\e817'; } /* '' */
@@ -27,6 +26,7 @@
 .icon-archive-icon:before { content: '\e81a'; } /* '' */
 .icon-export:before { content: '\e81c'; } /* '' */
 .icon-import:before { content: '\e81e'; } /* '' */
+.icon-palette-1:before { content: '\e820'; } /* '' */
 .icon-bug:before { content: '\e827'; } /* '' */
 .icon-bell:before { content: '\e828'; } /* '' */
 .icon-dashboard:before { content: '\e829'; } /* '' */

@@ -77,60 +77,62 @@
 'ps-project-create-palette-item-back-pink': note.colorPalette == 5,
 'ps-project-create-palette-item-back-red': note.colorPalette == 6,
 'ps-project-create-palette-item-back-green': note.colorPalette == 7}">
-  <div class="ps-fill-space ps-p-b-0">
-    <div class="field">
-        <div class="control">
-          <div class="select">
-            <select class="ps-body-input ps-bg-input" [(ngModel)]="note.project" name="project">
-              <option [ngValue]='null'>Select a project</option>
-              <option [ngValue]='project.id' *ngFor='let project of projectsCopy; trackBy: projectsTrackBy'>{{project.name}}</option>
-            </select>
-          </div>
-        </div>
-    </div>
-  </div>
-  <div class="ps-color ps-p-b-0">
-    <div class="ps-project-create-color-picker-container">
-        <div class="ps-project-create-palette-container">
-          <p class="ps-project-create-color" title="pick a color">
-            <i class="icon-palette pointer" id="id2" [(ngModel)]="note.colorPalette" name="colorPalette" ngDefaultControl (click)="togglePalette()"></i>
-          </p>
-          <div #noteCreatePalette [ngStyle]="{'display': showPaletteBoolean ? 'block' : 'none'}" class="ps-project-create-palette">
-            <div class="ps-project-create-palette-colors-section">
-              <div *ngFor='let index of [0,1,2,3,4,5,6,7]' class="ps-project-create-palette-item">
-                <a id="id1" class="button is-fullwidth" (click)="selectColor(index)"
-                    [ngClass]="{'ps-project-create-palette-item-back-white1': index == 0,
-                                'ps-project-create-palette-item-back-salmon': index == 1,
-                                'ps-project-create-palette-item-back-blue': index == 2,
-                                'ps-project-create-palette-item-back-black': index == 3,
-                                'ps-project-create-palette-item-back-yellow': index == 4,
-                                'ps-project-create-palette-item-back-pink': index == 5,
-                                'ps-project-create-palette-item-back-red': index == 6,
-                                'ps-project-create-palette-item-back-green': index == 7}">
-                </a>
-              </div>
+  <div class="columns is-mobile">
+    <div class="column is-8 ps-fill-space ps-p-b-0">
+      <div class="field">
+          <div class="control">
+            <div class="select">
+              <select class="ps-body-input ps-bg-input" [(ngModel)]="note.project" name="project">
+                <option [ngValue]='null'>Select a project</option>
+                <option [ngValue]='project.id' *ngFor='let project of projectsCopy; trackBy: projectsTrackBy'>{{project.name}}</option>
+              </select>
             </div>
           </div>
-        </div>
       </div>
-  </div>
-  <div class="ps-archive">
-      <span class="pointer">
-        <div class="dropdown">
-            <div class="dropdown-trigger">
-              <div aria-haspopup="true" aria-controls="dropdown-menu">
-                <i class="icon-ellipsis-vert"></i>
-              </div>
+    </div>
+    <div class="column ps-color ps-p-b-0">
+      <div class="ps-project-create-color-picker-container">
+          <div class="ps-project-create-palette-container">
+            <div class="ps-project-create-color" title="pick a color">
+              <i class="icon-palette-1 pointer" id="id2" [(ngModel)]="note.colorPalette" name="colorPalette" ngDefaultControl (click)="togglePalette()"></i>
             </div>
-            <div class="dropdown-menu is-up" id="dropdown-menu" role="menu">
-              <div class="dropdown-content">
-                <div class="dropdown-item" (click)="archiveNote()" ngDefaultControl [(ngModel)]="note.isArchive" name="isArchive">
-                    {{note.isArchive ? 'Move to board' : 'Archive' }}
+            <div #noteCreatePalette [ngStyle]="{'display': showPaletteBoolean ? 'block' : 'none'}" class="ps-project-create-palette">
+              <div class="ps-project-create-palette-colors-section">
+                <div *ngFor='let index of [0,1,2,3,4,5,6,7]' class="ps-project-create-palette-item">
+                  <a id="id1" class="button is-fullwidth" (click)="selectColor(index)"
+                      [ngClass]="{'ps-project-create-palette-item-back-white1': index == 0,
+                                  'ps-project-create-palette-item-back-salmon': index == 1,
+                                  'ps-project-create-palette-item-back-blue': index == 2,
+                                  'ps-project-create-palette-item-back-black': index == 3,
+                                  'ps-project-create-palette-item-back-yellow': index == 4,
+                                  'ps-project-create-palette-item-back-pink': index == 5,
+                                  'ps-project-create-palette-item-back-red': index == 6,
+                                  'ps-project-create-palette-item-back-green': index == 7}">
+                  </a>
                 </div>
               </div>
             </div>
           </div>
-      </span>
+        </div>
+    </div>
+    <div class="column ps-archive">
+        <span class="pointer">
+          <div class="dropdown">
+              <div class="dropdown-trigger">
+                <div class="ttt" aria-haspopup="true" aria-controls="dropdown-menu">
+                  <i class="icon-ellipsis-vert"></i>
+                </div>
+              </div>
+              <div class="dropdown-menu is-up" id="dropdown-menu" role="menu">
+                <div class="dropdown-content">
+                  <div class="dropdown-item" (click)="archiveNote()" ngDefaultControl [(ngModel)]="note.isArchive" name="isArchive">
+                      {{note.isArchive ? 'Move to board' : 'Archive' }}
+                  </div>
+                </div>
+              </div>
+            </div>
+        </span>
+    </div>
   </div>
 </div>
 </form>
