@@ -23,8 +23,9 @@
           <div class="ps-project-create-color-picker-container">
             <p class="ps-project-create-color-picker-title"> Project color : </p>
             <div class="ps-project-create-palette-container">
-              <p class="ps-project-create-color" title="click to change color">
-                <a id="id2" class="button is-fullwidth" (click)="togglePalette()"
+              <div class="ps-project-create-color" title="click to change color">
+                <i class="button icon-palette-1 is-fullwidth"
+                id="id2" (click)="togglePalette()"
                    [ngClass]="{'ps-project-create-palette-item-back-white1': project.colorPalette == 0,
                                'ps-project-create-palette-item-back-salmon': project.colorPalette == 1,
                                'ps-project-create-palette-item-back-blue': project.colorPalette == 2,
@@ -32,9 +33,8 @@
                                'ps-project-create-palette-item-back-yellow': project.colorPalette == 4,
                                'ps-project-create-palette-item-back-pink': project.colorPalette == 5,
                                'ps-project-create-palette-item-back-red': project.colorPalette == 6,
-                               'ps-project-create-palette-item-back-green': project.colorPalette == 7}">
-                </a>
-              </p>
+                               'ps-project-create-palette-item-back-green': project.colorPalette == 7}"></i>
+              </div>
               <div #projectCreatePalette [ngStyle]="{'display': showPaletteBoolean ? 'block' : 'none'}" class="ps-project-create-palette">
                 <div class="ps-project-create-palette-colors-section">
                   <div *ngFor='let index of [0,1,2,3,4,5,6,7]' class="ps-project-create-palette-item">
