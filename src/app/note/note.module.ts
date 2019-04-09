@@ -8,7 +8,7 @@ import { BrowserModule }                      from '@angular/platform-browser';
 import { BrowserAnimationsModule }            from '@angular/platform-browser/animations';
 import { CreateEditNoteComponent }             from './create-edit-note/create-edit-note.component';
 import { NvD3Module } from 'ng2-nvd3';
-import { EditorModule } from '@tinymce/tinymce-angular';
+import { EditorModule } from 'pendulums-editor/tinymce-angular-component';
 
 import 'd3';
 import 'nvd3';

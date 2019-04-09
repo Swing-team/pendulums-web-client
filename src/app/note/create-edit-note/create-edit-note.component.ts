@@ -105,6 +105,7 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy, AfterViewInit
       this.noteService.update({note: this.note}).then((note) => {
         this.store.dispatch(this.notesActions.updateNote(note));
         this.loadingBtn = false;
+        this.noteModel.updatedAt = moment(note.updatedAt).format('DD/MM/YYYY HH:mm a')
       })
         .catch(error => {
           this.showError('Server communication error');
