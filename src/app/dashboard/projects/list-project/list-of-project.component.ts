@@ -24,7 +24,7 @@ import { trigger, style, transition, animate }  from '@angular/animations';
 })
 
 export class ListOfProjectComponent implements OnInit {
-  @Input() projects: Observable<Project>;
+  @Input() projects: Project[];
   @Input() serverMessage: any;
   @Input() donation: String = 'active';
   @Input() user: Observable<User>;

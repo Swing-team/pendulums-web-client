@@ -9,6 +9,7 @@ import { PlatformLocation } from '@angular/common';
 
 export class ModalComponent {
   @Input() customStyles: Object;
+  @Input() customBodyStyles: Object;
   @Output() close = new EventEmitter();
   // used in modal service
   @ViewChild('contentContainer', { read: ViewContainerRef }) contentContainer: ViewContainerRef;
