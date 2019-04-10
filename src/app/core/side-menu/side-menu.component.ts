@@ -27,6 +27,7 @@ export class SideMenuComponent implements OnInit {
   @ViewChild('notifications') notifications;
   @ViewChild('donation') donation;
 
+  differ: any
   emailHash: any;
   pendulumNotification: boolean;
   notificationIsActive = false;
@@ -50,12 +51,25 @@ export class SideMenuComponent implements OnInit {
     if (this.router.url === '/dashboard') {
       this.activeItemNumber = 3;
     }
-    if (this.router.url === '/note') {
+    if (this.router.url === '/notes') {
       this.activeItemNumber = 8;
     }
     if (this.router.url === '/profile') {
       this.activeItemNumber = 1;
     }
+
+    // Subscribe to routers event for findout router change for active item.
+    this.router.events.subscribe((event: any) => {
+      if (event.url === '/dashboard') {
+        this.activeItemNumber = 3;
+      }
+      if (event.url === '/notes') {
+        this.activeItemNumber = 8;
+      }
+      if (event.url === '/profile') {
+        this.activeItemNumber = 1;
+      }
+    });
   }
 
   signout() {
