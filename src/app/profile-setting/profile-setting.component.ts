@@ -267,6 +267,15 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
     return true;
   }
 
+  numberOnly(event): boolean {
+    const charCode = (event.which) ? event.which : event.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      return false;
+    }
+    return true;
+
+  }
+
   showError(error) {
     this.errorService.show({
       input: error
