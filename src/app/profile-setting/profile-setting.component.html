@@ -114,12 +114,14 @@
               <div class="columns">
                 <div class="column" *ngIf="settings.relaxationTime.isEnabled">
                   <b>Preset</b> <br>
-                  <select [(ngModel)]="relaxationTimeSelectorModel" (change)="timeSelectorChange()">
-                    <option value="pomodoro1">Pomodoro time set 1</option>
-                    <option value="pomodoro2">Pomodoro time set 2</option>
-                    <option value="pomodoro3">Pomodoro time set 3</option>
-                    <option value="pomodoroCustom">custom time</option>
-                  </select>
+                  <div class="select">
+                    <select [(ngModel)]="relaxationTimeSelectorModel" (change)="timeSelectorChange()" class="ps-body-input ps-pomodoro-time-select">
+                      <option value="pomodoro1">Pomodoro time set 1</option>
+                      <option value="pomodoro2">Pomodoro time set 2</option>
+                      <option value="pomodoro3">Pomodoro time set 3</option>
+                      <option value="pomodoroCustom">custom time</option>
+                    </select>
+                  </div>
                 </div>
                 <div class="column" *ngIf="settings.relaxationTime.isEnabled">
                   <b>Working time by minutes</b> <br>
