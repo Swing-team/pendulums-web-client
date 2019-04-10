@@ -123,15 +123,17 @@
                     </select>
                   </div>
                 </div>
-                <div class="column" *ngIf="settings.relaxationTime.isEnabled">
-                  <b>Working time by minutes</b> <br>
-                  <input [(ngModel)]="workingTimeInputModel" type="number" (keypress)="numberOnly($event)"
-                    class="input" placeholder="Work time(minutes)" (input)="changeDropDown()">
-                </div>
-                <div class="column" *ngIf="settings.relaxationTime.isEnabled">
-                  <b>Resting time by minutes</b>
-                  <input class="ps-content-space" [(ngModel)]="relaxTimeInputModel" type="number" (keypress)="numberOnly($event)"
-                    class="input" placeholder="Relax time(minutes)" (input)="changeDropDown()">
+                <div class="columns is-mobile">
+                  <div class="column" *ngIf="settings.relaxationTime.isEnabled">
+                    <b>Working time by minutes</b>
+                    <input [(ngModel)]="workingTimeInputModel" type="number" (keypress)="numberOnly($event)"
+                      class="input" placeholder="Work time(minutes)" (input)="changeDropDown()">
+                  </div>
+                  <div class="column" *ngIf="settings.relaxationTime.isEnabled">
+                    <b>Resting time by minutes</b>
+                    <input class="ps-content-space" [(ngModel)]="relaxTimeInputModel" type="number" (keypress)="numberOnly($event)"
+                      class="input" placeholder="Relax time(minutes)" (input)="changeDropDown()">
+                  </div>
                 </div>
               </div>
             </div>
