@@ -5,7 +5,7 @@ import {
 import { User }                          from '../../shared/state/user/user.model';
 import { environment }                    from '../../../environments/environment';
 import { Md5 }                           from 'ts-md5/dist/md5';
-import { Router }                        from '@angular/router';
+import { Router, NavigationStart }                        from '@angular/router';
 import { ErrorService }                  from '../error/error.service';
 import { ModalService }                  from '../modal/modal.service';
 import { AppInfoComponent }              from './app-info/app-info.component';
@@ -27,7 +27,6 @@ export class SideMenuComponent implements OnInit {
   @ViewChild('notifications') notifications;
   @ViewChild('donation') donation;
 
-  differ: any
   emailHash: any;
   pendulumNotification: boolean;
   notificationIsActive = false;
@@ -58,16 +57,18 @@ export class SideMenuComponent implements OnInit {
       this.activeItemNumber = 1;
     }
 
-    // Subscribe to routers event for findout router change for active item.
+    // Subscribe to router events to find out the active item
     this.router.events.subscribe((event: any) => {
-      if (event.url === '/dashboard') {
-        this.activeItemNumber = 3;
-      }
-      if (event.url === '/notes') {
-        this.activeItemNumber = 8;
-      }
-      if (event.url === '/profile') {
-        this.activeItemNumber = 1;
+      if (event instanceof NavigationStart) {
+        if (event.url === '/dashboard') {
+          this.activeItemNumber = 3;
+        }
+        if (event.url === '/notes') {
+          this.activeItemNumber = 8;
+        }
+        if (event.url === '/profile') {
+          this.activeItemNumber = 1;
+        }
       }
     });
   }
