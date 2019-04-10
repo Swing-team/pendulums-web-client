@@ -123,12 +123,12 @@
                 </div>
                 <div class="column" *ngIf="settings.relaxationTime.isEnabled">
                   <b>Working time by minutes</b> <br>
-                  <input [(ngModel)]="workingTimeInputModel" type="text"
+                  <input [(ngModel)]="workingTimeInputModel" type="number" pattern="\d*"
                     class="input" placeholder="Work time(minutes)" (input)="changeDropDown()">
                 </div>
                 <div class="column" *ngIf="settings.relaxationTime.isEnabled">
                   <b>Resting time by minutes</b>
-                  <input class="ps-content-space" [(ngModel)]="relaxTimeInputModel" type="text"
+                  <input class="ps-content-space" [(ngModel)]="relaxTimeInputModel" type="number" pattern="\d*"
                     class="input" placeholder="Relax time(minutes)" (input)="changeDropDown()">
                 </div>
               </div>
