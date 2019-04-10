@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import {Component, HostListener, Input, ViewChild} from '@angular/core';
+import {Component, HostListener, Input, ViewChild, ElementRef, OnInit} from '@angular/core';
 import { Project }                      from '../../../shared/state/project/project.model';
 import { Md5 }                          from 'ts-md5/dist/md5';
 import { ProjectService }               from '../../shared/projects.service';
@@ -18,10 +18,11 @@ const EMAIL_REGEX = /^(?=.{8,64}$)[\w!#$%&'*+/=?`{|}~^-]+(?:\.[\w!#$%&'*+/=?`{|}
   styleUrls: ['./create-project.component.sass'],
 })
 
-export class CreateProjectComponent {
+export class CreateProjectComponent implements OnInit {
   @ViewChild('projectImageCanvasElem') projectImageCanvasElem;
   @ViewChild('canvasPreviewImageElem') canvasPreviewImageElem;
   @ViewChild('projectCreatePalette') projectCreatePalette;
+  @ViewChild('projectNameInput') projectNameInput: ElementRef;
   @Input() currentUser: User;
   roles = ['team member', 'admin'];
   project: Project = new Project();
@@ -39,6 +40,10 @@ export class CreateProjectComponent {
               private modalService: ModalService,
               private errorService: ErrorService) {
     this.md5 = new Md5();
+  }
+
+  ngOnInit() {
+    this.projectNameInput.nativeElement.focus();
   }
 
   createProject() {
