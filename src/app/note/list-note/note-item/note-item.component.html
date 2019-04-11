@@ -14,20 +14,20 @@
       <div (click)="editModal()" class="ps-note-item-card-body" [innerHTML]="note.content | safeHtml">{{note.content}}</div>
       <div class="has-text-right columns is-mobile ps-note-item-card-icons ps-note-item-delete">
 
-        <div *ngIf="projectsId && projectsId[note.project]" class="column is-four-fifths has-text-left overflow-hidden">
+        <div *ngIf="projectsId && projectsId[note.project] && !deleteConfirmation" class="column is-four-fifths has-text-left overflow-hidden tag-container">
           <span class="tag tag-border is-white">{{projectsId[note.project]}}</span>
         </div>
         <div class="column">
           <span *ngIf="!deleteConfirmation">
             <i class="icon-trash" (click)="deleteNote()" title="Delete Note"></i>
           </span>
-          <div class="ps-activity-item-button is-pulled-right" *ngIf="deleteConfirmation">
-            <a  *ngIf="!deleteButtonDisabled" class="button ps-activity-item-button-confirmation" (click)="cancelDelete()" title="Cancel Delete">
+          <div class="ps-note-item-button is-pulled-right" *ngIf="deleteConfirmation">
+            <a  *ngIf="!deleteButtonDisabled" class="button ps-note-item-button-confirmation" (click)="cancelDelete()" title="Cancel Delete">
               <span class="icon">
                 <i class="icon-cancel" [ngClass]="{'has-text-danger': !deleteButtonDisabled}"></i>
               </span>
             </a>
-            <a  class="button ps-activity-item-button-confirmation" [ngClass]="{'is-loading': deleteButtonDisabled}" (click)="confirmDelete()" title="Confirm Delete">
+            <a  class="button ps-note-item-button-confirmation" [ngClass]="{'is-loading': deleteButtonDisabled}" (click)="confirmDelete()" title="Confirm Delete">
               <span class="icon">
                 <i class="icon-check" [ngClass]="{'has-text-success': !deleteButtonDisabled}"></i>
               </span>

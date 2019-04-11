@@ -100,7 +100,7 @@
     border-radius: $radius
     background: $ps-card-green
 
-.ps-activity-item-button
+.ps-note-item-button
   overflow: hidden
   // position: absolute
   right: 0
@@ -119,17 +119,23 @@
   .button
     height: 20px
     line-height: 20px
-.ps-activity-item-button-confirmation
+.ps-note-item-button-confirmation
+  margin-right: 4px
+  margin-left: 10px
   border: none
   font-size: 1.35rem
   background-color: transparent
-  padding: 1rem 0.5rem 0 0.5rem !important
+  padding: 0 !important
+
+.tag-container
+  line-height: 22px
 
 .tag-border
   border-radius: $radius !important
   max-width: 100%
   white-space: nowrap
-  overflow: overlay
+  overflow: hidden
+  vertical-align: middle
   text-overflow: ellipsis
   display: inline-block
   padding-top: 3px
