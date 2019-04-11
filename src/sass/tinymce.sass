@@ -7,6 +7,11 @@
 
 .mce-edit-area, .mce-container, .mce-panel, .mce-stack-layout-item
   border: 0 !important
+  iframe
+    @media (max-height: 550px)
+      height: 25vh !important
+    @media (min-height: 550px)
+      height: 35vh !important
 
 .mce-container-body.mce-flow-layout
   border-bottom: 1px solid #595959
@@ -55,8 +60,6 @@
     color: $black !important
 .mce-window
   background: #fff !important
-.mce-edit-area
-  height: 160px !important
 .mce-ico
   font-size: 18px !important
 
