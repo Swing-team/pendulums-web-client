@@ -99,6 +99,10 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
           this.workingTimeInputModel = (this.settings.relaxationTime.workingTime / 60000).toString();
           this.relaxTimeInputModel = (this.settings.relaxationTime.restTime / 60000).toString();
         }
+      } else {
+        this.relaxationTimeSelectorModel = 'pomodoro1';
+          this.workingTimeInputModel = '50';
+          this.relaxTimeInputModel = '15';
       }
     }));
   }
