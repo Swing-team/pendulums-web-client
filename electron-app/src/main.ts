@@ -38,6 +38,9 @@ let userLoggedIn = false;
 if (process.platform === 'win32') {
     trayIconPath = path.join(__dirname, '../build/tray.ico');
     activeTrayIconPath = path.join(__dirname, '../build/tray-yello.ico');
+} else if (process.platform === 'linux') {
+    trayIconPath = path.join(__dirname, '../build/tray@2x.png');
+    activeTrayIconPath = path.join(__dirname, '../build/tray-yello@2x.png');
 } else {
     trayIconPath = path.join(__dirname, '../build/tray.png');
     activeTrayIconPath = path.join(__dirname, '../build/tray-yello.png');
