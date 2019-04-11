@@ -20,13 +20,13 @@
 .icon-user-edit:before { content: '\e812'; } /* '' */
 .icon-stopwatch:before { content: '\e813'; } /* '' */
 .icon-archive:before { content: '\e815'; } /* '' */
-.icon-refresh:before { content: '\e816'; } /* '' */
 .icon-walking:before { content: '\e817'; } /* '' */
 .icon-unarchive-icon:before { content: '\e819'; } /* '' */
 .icon-archive-icon:before { content: '\e81a'; } /* '' */
 .icon-export:before { content: '\e81c'; } /* '' */
 .icon-import:before { content: '\e81e'; } /* '' */
 .icon-palette-1:before { content: '\e820'; } /* '' */
+.icon-refresh:before { content: '\e824'; } /* '' */
 .icon-bug:before { content: '\e827'; } /* '' */
 .icon-bell:before { content: '\e828'; } /* '' */
 .icon-dashboard:before { content: '\e829'; } /* '' */
