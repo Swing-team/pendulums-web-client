@@ -11,7 +11,7 @@ import 'rxjs/add/operator/toPromise';
 @Injectable()
 export class NoteService {
   private options;
-  private turndownService: TurndownService = new TurndownService();
+  private turndownService: TurndownService = new TurndownService({codeBlockStyle: 'fenced'});
   constructor(private http: HttpClient,
               private syncService: SyncService) {
     this.options = {...environment.httpOptions, responseType: 'text'};
@@ -31,7 +31,6 @@ export class NoteService {
       const taskListItems = turndownPluginGfm.taskListItems
       this.turndownService.use(taskListItems)
       content = this.turndownService.turndown(note.note.content);
-
     }
     return this.http
       .post(environment.apiEndpoint + '/notes', {note: {...note.note, content: content}}, {withCredentials: true})
