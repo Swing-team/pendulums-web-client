@@ -144,22 +144,29 @@
 
 .ps-project-create-palette-item-back-salmon
   background: $salmon
-  color: '#4a4a4a' !important
-  .icon-palette, .icon-ellipsis-vert
+  color: rgba(0, 0, 0, 0.7) !important
+  .icon-palette-1, .icon-ellipsis-vert
     &:hover
       color: lighten(#4a4a4a, 10)
 
 .ps-project-create-palette-item-back-white1
   background: $white1
-  color: '#4a4a4a' !important
-  .icon-palette, .icon-ellipsis-vert
+  color: rgba(0, 0, 0, 0.7) !important
+  .icon-palette-1, .icon-ellipsis-vert
     &:hover
       color: lighten(#4a4a4a, 10)
 
 .ps-project-create-palette-item-back-blue
   background: $ps-card-blue
-  color: $paper !important
-  .icon-palette, .icon-ellipsis-vert
+  color: rgba(255, 255, 255, 0.7) !important
+  .select::after
+    border-color: $paper !important
+  .ps-note-date, .icon-check
+    color: rgba(255,255,255,0.7) !important
+  .is-loading::after
+    border-left-color: rgba(255,255,255,0.7) !important
+    border-bottom-color: rgba(255,255,255,0.7) !important
+  .icon-palette-1, .icon-ellipsis-vert
     &:hover
       color: lighten($paper, 10)
   .ps-header-input
@@ -172,11 +179,17 @@
     color: $paper !important
 .ps-project-create-palette-item-back-black
   background: $black
-  color: $paper !important
-  .icon-palette, .icon-ellipsis-vert
+  color: rgba(255, 255, 255, 0.7) !important
+  .select::after
+    border-color: $paper !important
+  .ps-note-date, .icon-check
+    color: rgba(255,255,255,0.7) !important
+  .is-loading::after
+    border-left-color: rgba(255,255,255,0.7) !important
+    border-bottom-color: rgba(255,255,255,0.7) !important
+  .icon-palette-1, .icon-ellipsis-vert
     &:hover
       color: lighten($paper, 10)
-
   .ps-header-input
     border-left: 3px solid $paper
     border-right: 3px solid $paper
@@ -187,21 +200,28 @@
     color: $paper !important
 .ps-project-create-palette-item-back-yellow
   background: $yellow
-  color: '#4a4a4a' !important
-  .icon-palette, .icon-ellipsis-vert
+  color: rgba(0, 0, 0, 0.7) !important
+  .icon-palette-1, .icon-ellipsis-vert
     &:hover
       color: lighten(#4a4a4a, 10)
 .ps-project-create-palette-item-back-pink
   background: $ps-card-pink
-  color: '#4a4a4a' !important
-  .icon-palette, .icon-ellipsis-vert
+  color: rgba(0, 0, 0, 0.7) !important
+  .icon-palette-1, .icon-ellipsis-vert
     &:hover
       color: lighten(#4a4a4a, 10)
 
 .ps-project-create-palette-item-back-red
   background: $ps-card-red
-  color: $paper !important
-  .icon-palette, .icon-ellipsis-vert
+  color: rgba(255, 255, 255, 0.7) !important
+  .select::after
+    border-color: $paper !important
+  .ps-note-date, .icon-check
+    color: rgba(255,255,255,0.7) !important
+  .is-loading::after
+    border-left-color: rgba(255,255,255,0.7) !important
+    border-bottom-color: rgba(255,255,255,0.7) !important
+  .icon-palette-1, .icon-ellipsis-vert
     &:hover
       color: lighten($paper, 10)
   .ps-header-input
@@ -216,8 +236,8 @@
 
 .ps-project-create-palette-item-back-green
   background: $ps-card-green
-  color: '#4a4a4a' !important
-  .icon-palette, .icon-ellipsis-vert
+  color: rgba(0, 0, 0, 0.7) !important
+  .icon-palette-1, .icon-ellipsis-vert
     &:hover
       color: lighten(#4a4a4a, 10)
   .is-loading
@@ -226,22 +246,6 @@
 .ps-bg-input
   background: transparent !important
   border: none
-
-.ps-activity-item-button
-  overflow: hidden
-  i
-    cursor: pointer
-    transition: all ease-in-out $ps-transitions
-  .icon-trash
-    color: $pink
-    &:hover
-      color: lighten($pink, 20)
-  .icon-cancel
-    &:hover
-      color: lighten($red, 20)
-  .icon-check
-    &:hover
-      color: lighten($success, 20)
 
 .ps-act-item-button-confirmation
   border: none
@@ -260,7 +264,7 @@
 .select
   max-width: 160px
 .ps-note-date
-  color: rgba(0,0,0,0.5)
+  color: rgba(0, 0, 0, 0.7)
   font-size: 13px
 .is-loading
   font-size: 13px
@@ -268,13 +272,14 @@
 .icon-check
   font-size: 13px
   padding-right: 0
-  color: rgba(0, 0, 0, 0.5)
+  color: rgba(0, 0, 0, 0.7)
 .button
   &.is-loading
     height: 0
+    margin-left: 12px
     &:after
-      border-left-color: rgba(0, 0, 0, 0.5)
-      border-bottom-color: rgba(0, 0, 0, 0.5)
+      border-left-color: rgba(0, 0, 0, 0.7)
+      border-bottom-color: rgba(0, 0, 0, 0.7)
 .ps-note-bottom
   position: relative
   // display: flex
@@ -300,8 +305,10 @@ select
   // padding-right: 15px !important
 .icon-palette-1
   font-size: 20px
+  transition: color ease-in-out $ps-transitions
 .icon-ellipsis-vert
   font-size: 22px !important
+  transition: color ease-in-out $ps-transitions
 .ttt
   padding-top: 13px
 .columns:last-child
