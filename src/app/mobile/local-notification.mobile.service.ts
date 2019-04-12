@@ -6,13 +6,16 @@ export class LocalNotificationService {
   constructor() {}
 
   showNotification(title: string, message: string) {
-    window['cordova'].plugins.notification.local.schedule({
-      title: title,
-      text: message,
-      foreground: true,
-      icon: 'res://app_icon_round.png',
-      smallIcon: 'res://app_small_icon.png'
-    });
+    // check if deviceready event has already fired
+    if (window['cordova']) {
+      window['cordova'].plugins.notification.local.schedule({
+        title: title,
+        text: message,
+        foreground: true,
+        icon: 'res://app_icon_round.png',
+        smallIcon: 'res://app_small_icon.png'
+      });
+    }
   }
 
   getPermission() {
