@@ -20,6 +20,9 @@
       "test.ts",
       "**/*.spec.ts",
       "**/app.module.ts",
-      "main.ts"
+      "main.ts",
+      "main.mobile.ts",
+      "**/app.mobile.module.ts",
+      "**/*.mobile.service.ts"
     ]
   }

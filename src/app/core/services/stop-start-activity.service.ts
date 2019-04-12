@@ -19,7 +19,7 @@ export class StopStartActivityService {
   private currentActivityCopy: Activity;
   private status: Status;
   private user: User;
-  showNotifIntervar: any;
+  showNotifInterval: any;
 
   constructor( private activityService: ActivityService,
               private store: Store<AppState>,
@@ -114,7 +114,7 @@ export class StopStartActivityService {
     let nextWorkTime = workTime;
     let duration;
 
-    this.showNotifIntervar = setInterval(() => {
+    this.showNotifInterval = setInterval(() => {
       duration = Math.floor((Date.now() - Number(activity.startedAt)) / 1000);
       if (duration === nextWorkTime) {
         this.nativeNotificationService.showNotification(`You need to rest for ${restTime / 60} minutes.`);
@@ -187,33 +187,33 @@ export class StopStartActivityService {
           if (this.currentActivityCopy.id) {
             this.activityService.editCurrentActivity(this.currentActivityCopy.project, this.currentActivityCopy).then((activity) => {
               this.updateStateInSuccess(dividedActivitiesArray);
-              clearInterval(this.showNotifIntervar);
+              clearInterval(this.showNotifInterval);
               resolve();
             })
               .catch(error => {
                 this.updateStateInCatch(error);
-                clearInterval(this.showNotifIntervar);
+                clearInterval(this.showNotifInterval);
                 resolve();
               });
           } else {
             this.activityService.createManually(this.currentActivityCopy.project, this.currentActivityCopy).then((activity) => {
               this.updateStateInSuccess(dividedActivitiesArray);
-              clearInterval(this.showNotifIntervar);
+              clearInterval(this.showNotifInterval);
               resolve();
             })
               .catch((error) => {
                 this.updateStateInCatch(error);
-                clearInterval(this.showNotifIntervar);
+                clearInterval(this.showNotifInterval);
                 resolve();
               });
           }
         } else {
           this.store.dispatch(this.currentActivityActions.clearCurrentActivity());
-          clearInterval(this.showNotifIntervar);
+          clearInterval(this.showNotifInterval);
           resolve();
         }
       } else {
-        clearInterval(this.showNotifIntervar);
+        clearInterval(this.showNotifInterval);
         resolve();
       }
     });

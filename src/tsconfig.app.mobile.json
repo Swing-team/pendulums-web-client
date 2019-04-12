@@ -16,14 +16,13 @@
     "baseUrl": "",
     "types": []
   },
-  "exclude": [
-    "test.ts",
-    "**/*.spec.ts",
-    "main.electron.ts",
-    "**/app.electron.module.ts",
-    "**/*.electron.service.ts",
-    "main.mobile.ts",
-    "**/app.mobile.module.ts",
-    "**/*.mobile.service.ts"
-  ]
-}
+    "exclude": [
+      "test.ts",
+      "**/*.spec.ts",
+      "**/app.module.ts",
+      "main.ts",
+      "main.electron.ts",
+      "**/app.electron.module.ts",
+      "**/*.electron.service.ts",
+    ]
+  }
