@@ -58,7 +58,7 @@ export class ListOfProjectComponent implements OnInit {
         }
       });
     } else {
-      this.showError('This feature is not available in offline mode');
+      this.showError('Not available in offline mode');
     }
   }
 

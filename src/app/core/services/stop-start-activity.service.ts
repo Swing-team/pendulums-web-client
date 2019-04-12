@@ -81,7 +81,7 @@ export class StopStartActivityService {
           .catch(error => {
             // todo: check errors
             if (error.status === 404) {
-              console.log('Project has been deleted before.');
+              console.log('The project has been deleted before.');
               this.store.dispatch(this.projectsActions.removeProject(activity.project));
 
               // if we have current activity on deleted project we should clear it
@@ -117,10 +117,10 @@ export class StopStartActivityService {
     this.showNotifInterval = setInterval(() => {
       duration = Math.floor((Date.now() - Number(activity.startedAt)) / 1000);
       if (duration === nextWorkTime) {
-        this.nativeNotificationService.showNotification(`You need to rest for ${restTime / 60} minutes.`);
+        this.nativeNotificationService.showNotification(`Take a rest and be relaxed for ${restTime / 60} minutes!`);
       }
       if (duration === (nextWorkTime + restTime)) {
-        this.nativeNotificationService.showNotification(`You need to do work for ${workTime / 60} minutes`);
+        this.nativeNotificationService.showNotification(`Ok! It's time to work for next ${workTime / 60} minutes!`);
         nextWorkTime += (workTime + restTime);
       }
     }, 1000)

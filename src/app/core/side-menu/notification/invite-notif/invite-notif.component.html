@@ -1,5 +1,5 @@
 <p>
-  you have invited to <strong>{{project.name}}</strong> project.
+  You have been invited to <strong>{{project.name}}</strong> project
 </p>
 <nav class="level is-mobile">
     <button class="level-item button is-small is-outlined ps-notification-button-accept" (click)="accept(project.id)"
@@ -7,14 +7,14 @@
       <span class="icon">
         <i class="icon-check"></i>
         </span>
-      <span>accept</span>
+      <span>Accept</span>
     </button>
     <button class="level-item button is-small is-outlined ps-notification-button-deny" (click)="deny(project.id)"
         [ngClass]="{'is-loading': denyDisabledIndex === true, 'is-danger': denyDisabledIndex === false}" [disabled]="acceptDisabledIndex">
       <span class="icon">
         <i class="icon-cancel"></i>
         </span>
-      <span>deny</span>
+      <span>Deny</span>
     </button>
 </nav>
 

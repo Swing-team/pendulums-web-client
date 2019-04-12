@@ -21,7 +21,7 @@
           <input [(ngModel)]="project.name" name="name" class="input ps-header-input"
                  placeholder="Untitled Project..." type="text" #projectNameInput>
           <div class="ps-project-create-color-picker-container">
-            <p class="ps-project-create-color-picker-title"> Project color : </p>
+            <p class="ps-project-create-color-picker-title"> Project color: </p>
             <div class="ps-project-create-palette-container">
               <div class="ps-project-create-color" title="click to change color">
                 <i class="button icon-palette-1 is-fullwidth"
@@ -89,7 +89,7 @@
         <div *ngFor='let invited of project.invitedUsers;trackBy:let i = index'
              class="columns is-gapless is-mobile ps-invited-user-item">
           <svg width="36" height="36" [identiconHash]="userEmailHash(invited.email)">
-            Fallback text for browsers not supporting inline svg
+            Your browser does not support SVG
           </svg>
           <span class="column ps-invited-user-email">
           {{invited.email}}

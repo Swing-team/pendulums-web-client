@@ -204,16 +204,16 @@ export class AddManuallyActivityComponent implements OnInit {
 
         if (this.activity) {
           this.activityService.editOldActivity(this.projectId, this.activityModel).then((activity) => {
-            message = 'Activity was edited successfully';
+            message = 'The activity was edited successfully';
             this.pushDividedActivitiesToServer(dividedActivitiesArray, message, activity);
           })
             .catch(error => {
-              this.showError('Server error happened');
+              this.showError('Server error!');
               console.log('error is: ', error);
             });
         } else {
           dividedActivitiesArray.push(this.activityModel);
-          message = 'Activity was created successfully';
+          message = 'The activity was created successfully';
           this.pushDividedActivitiesToServer(dividedActivitiesArray, message);
         }
       }
@@ -228,8 +228,8 @@ export class AddManuallyActivityComponent implements OnInit {
         result.push(activity);
       })
         .catch(error => {
-          this.showError('Server error happened');
-          console.log('server error happened', error);
+          this.showError('Server error!');
+          console.log('server error', error);
         }));
     });
 
@@ -294,11 +294,11 @@ export class AddManuallyActivityComponent implements OnInit {
         if (this.currentActivity.startedAt) {
           if (Number(this.currentActivity.startedAt) < tempFromDate) {
             finalCheck = false;
-            this.showError('The start time could not be after current activity start time');
+            this.showError('The start time could not be after start time of current activity');
           }
           if (Number(this.currentActivity.startedAt) < tempToDate) {
             finalCheck = false;
-            this.showError('The end time could not be after current activity start time');
+            this.showError('The end time could not be after start time of current activity');
           }
         }
       }

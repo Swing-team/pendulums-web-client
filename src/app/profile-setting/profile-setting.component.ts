@@ -120,7 +120,7 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
         this.userEdit.name = this.user.name;
       }
     } else {
-      this.showError('This feature is not available in offline mode');
+      this.showError('Not available in offline mode');
     }
   }
 
@@ -160,7 +160,7 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
         customStyles: {'width': '350px', 'overflow': 'initial'}
       });
     } else {
-      this.showError('This feature is not available in offline mode');
+      this.showError('Not available in offline mode');
     }
   }
 
@@ -186,7 +186,7 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
         this.submitted = false;
       }
     } else {
-      this.showError('This feature is not available in offline mode');
+      this.showError('Not available in offline mode');
     }
   };
 
@@ -199,7 +199,7 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
       if (!this.workingTimeInputModel || !this.relaxTimeInputModel) {
         this.settings.relaxationTime.workingTime = 0;
         this.settings.relaxationTime.restTime = 0;
-        this.showError('Please Fill the times in your profle settings');
+        this.showError('Please fill the rest time fields');
         this.submitted = false;
       } else {
         this.settings.relaxationTime.workingTime = (Number(this.workingTimeInputModel) * 60 * 1000);
@@ -210,7 +210,7 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
       this.userService.updateSettings(this.settings).then(() => {
         this.store.dispatch(this.userActions.updateUserSettings(this.settings));
         this.submitted = false;
-        this.showError('Setting Updated!' );
+        this.showError('Saved successfully');
       }).catch(error => {
         this.submitted = false;
         console.log('error is: ', error);
@@ -261,7 +261,7 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
     if (!User.newPassword
       || User.newPassword.length < 6
       || User.newPassword.length > 32) {
-      this.showError('Password length must be between 6 and 32 characters');
+      this.showError('The password length must be between 6 and 32 characters');
       return false;
     }
     if (User.newPassword !== this.rePassword) {

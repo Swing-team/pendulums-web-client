@@ -6,7 +6,7 @@
            src="{{activityUser.profileImage? environment.imagesEndpoint + '/profile/' + activityUser.profileImage :
                   'assets/images/placeholder.png'}}">
       <svg *ngIf="!activityUser.profileImage" class="ps-activity-member-image" width="20" height="20" [identiconHash]="getEmailHash(activityUser.email)">
-        Fallback text for browsers not supporting inline svg
+        Your browser does not support SVG
       </svg>
       <span class="ps-activity-item-text ps-activity-item-done-by"  title="{{activityUser.name ? activityUser.name : activityUser.email}}">
         <p *ngIf="activityUser.id != currentUser.id">Done by: &nbsp; {{activityUser.name ? activityUser.name : activityUser.email}}</p>
@@ -17,7 +17,7 @@
       <img class="ps-activity-member-image"
            src='assets/images/placeholder.png'>
       <span class="ps-activity-item-text ps-activity-item-done-by">
-        <p>Done by: &nbsp; who has left this project</p>
+        <p>Done by: &nbsp; someone who has left this project</p>
       </span>
     </div>
     <p class="ps-activity-item-text"><i class="icon-stopwatch"></i> from {{from}} to {{to}} / {{duration}}</p>

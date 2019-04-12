@@ -48,10 +48,10 @@ export class RestTimeTrackingService {
             //window['cordova'].plugins.backgroundMode.configure(this.getCurrentActivityNotificationConfig(currentActivity));
             const duration = Math.floor((Date.now() - Number(currentActivity.startedAt)) / 1000);
             if (duration === nextWorkTime) {
-              this.localNotificationService.showNotification('Take a rest!', `You need to rest for ${restTime / 60} minutes.`);
+              this.localNotificationService.showNotification('Take a rest!', `Take a rest and be relaxed for ${restTime / 60} minutes!`);
             }
             if (duration === (nextWorkTime + restTime)) {
-              this.localNotificationService.showNotification('Start to work!', `You need to do work for ${workTime / 60} minutes`);
+              this.localNotificationService.showNotification('Start to work!', `Ok! It's time to work for next ${workTime / 60} minutes!`);
               nextWorkTime += (workTime + restTime);
             }
           }, 1000)

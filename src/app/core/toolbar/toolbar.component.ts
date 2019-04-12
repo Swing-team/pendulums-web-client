@@ -205,7 +205,7 @@ export class ToolbarComponent implements OnInit, OnDestroy, DoCheck  {
         }
       }
     } else {
-      document.getElementsByTagName('swing-select')[0].setAttribute('label', 'Select Project');
+      document.getElementsByTagName('swing-select')[0].setAttribute('label', 'Select a project');
       this.showError('Please create a project first!');
     }
   }

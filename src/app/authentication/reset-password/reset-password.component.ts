@@ -49,7 +49,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
             if (error.status === 404) {
               this.errorMessage = 'Your information not found';
             } else if (error.status === 400) {
-              this.errorMessage = 'Bad request.';
+              this.errorMessage = 'Bad request';
             } else if (error.status === 503) {
               this.errorMessage = 'You have reached the authentication limits, please try in a few minutes!';
             } else {
@@ -66,11 +66,11 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
     if (!User.password
       || User.password.length < 6
       || User.password.length > 32) {
-      this.errorMessage = 'please choose password with 6 to 32 characters ';
+      this.errorMessage = 'The password length must be between 6 and 32 characters ';
       return false;
     }
     if (User.password !== this.rePassword) {
-      this.errorMessage = 'passwords mismatched ';
+      this.errorMessage = 'Passwords mismatched ';
       return false;
     }
     return true;

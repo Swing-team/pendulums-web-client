@@ -54,7 +54,7 @@ export class InviteNotifComponent implements OnInit {
             });
             this.store.dispatch(this.userActions.loadUser(this.user));
             this.acceptDisabledIndex = false;
-            this.showError('The project you invited not found!');
+            this.showError('The project not found!');
           } else {
             console.log('error is: ', error);
           }

@@ -68,7 +68,7 @@ export class ProjectPendingInvitationsComponent {
               this.inviteButtonDisabled = false;
               this.project.invitedUsers.push(invitedUser);
               this.user = {email: null, role: this.roles[0]};
-              this.showError('User is invited');
+              this.showError('The invitation sent');
             }).catch(error => {
             this.inviteButtonDisabled = false;
             this.showError('Server Communication error.');
@@ -91,7 +91,7 @@ export class ProjectPendingInvitationsComponent {
         .then(response => {
           this.store.dispatch(this.projectsActions.removeInvitedUser(this.project.id, invitedUser));
           this.project.invitedUsers.splice(index, 1)
-          this.showError('Invitation was cancelled successfully');
+          this.showError('The invitation was cancelled successfully');
           this.cancelButtonDisabled = false;
           this.cancelInvitationConfirmationViewIndex = -1
         }).catch(error => {

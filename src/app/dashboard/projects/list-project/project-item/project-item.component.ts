@@ -216,7 +216,7 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
         }
       });
     } else {
-      this.showError('This feature is not available in offline mode');
+      this.showError('Not available in offline mode');
     }
   }
 
@@ -224,7 +224,7 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
     if (this.status.netStatus) {
       this.router.navigate(['/activities', this.project.id]);
     } else {
-      this.showError('This feature is not available in offline mode');
+      this.showError('Not available in offline mode');
     }
   }
 

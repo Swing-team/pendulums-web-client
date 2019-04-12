@@ -15,7 +15,7 @@
                         'assets/images/placeholder.png'}}">
           <svg *ngIf="!userEdit.profileImage" (click)="openImageModal()" class="ps-user-image"
                 width="36" height="36" [identiconHash]="emailHash">
-            Fallback text for browsers not supporting inline svg
+            Your browser does not support SVG
           </svg>
           <span class="icon-pencil ps-pencil-image-change" (click)="openImageModal()"></span>
         </div>
@@ -94,14 +94,14 @@
           <div dir="auto">
             <div class="field">
               <b class="title is-4">
-                Profile Settings
+                Settings
               </b>
             </div>
             <div class="field has-text-left">
               <input id="receiveForgottenActivityEmailCheckBox" type="checkbox" [(ngModel)]="settings.receiveForgottenActivityEmail">
-              <label for="receiveForgottenActivityEmailCheckBox"><strong>Forgotten actvity notice</strong></label>
+              <label for="receiveForgottenActivityEmailCheckBox"><strong>Forgotten activity notice</strong></label>
               <div class="ps-setting-info-container">
-                <p class="ps-setting-info">Receive email after 15 minutes while have current activity and tab close</p>
+                <p class="ps-setting-info">Turn on to receive an email if you have a current activity and left the app for 15 minutes</p>
               </div>
             </div>
             <hr>
@@ -109,30 +109,30 @@
               <input id="relaxationTimeCheckBox" type="checkbox" [(ngModel)]="settings.relaxationTime.isEnabled">
               <label for="relaxationTimeCheckBox"><strong>Rest Time</strong></label>
               <div class="ps-setting-info-container">
-                <p class="ps-setting-info">Receive notification for rest after a while with current activity to rest</p>
+                <p class="ps-setting-info">Turn on to receive "Rest Time" notifications in specific intervals</p>
               </div>
               <div class="columns">
                 <div class="column" *ngIf="settings.relaxationTime.isEnabled">
-                  <b>Preset</b> <br>
+                  <b>Presets</b> <br>
                   <div class="select">
                     <select [(ngModel)]="relaxationTimeSelectorModel" (change)="timeSelectorChange()" class="ps-body-input ps-pomodoro-time-select">
                       <option value="pomodoro1">Pomodoro time set 1</option>
                       <option value="pomodoro2">Pomodoro time set 2</option>
                       <option value="pomodoro3">Pomodoro time set 3</option>
-                      <option value="pomodoroCustom">custom time</option>
+                      <option value="pomodoroCustom">Custom time set</option>
                     </select>
                   </div>
                 </div>
                 <div class="columns is-mobile">
                   <div class="column" *ngIf="settings.relaxationTime.isEnabled">
-                    <b>Working time by minutes</b>
+                    <b>Work for (minutes)</b>
                     <input [(ngModel)]="workingTimeInputModel" type="number" (keypress)="numberOnly($event)"
-                      class="input" placeholder="Work time(minutes)" (input)="changeDropDown()">
+                      class="input" placeholder="Work time (minutes)" (input)="changeDropDown()">
                   </div>
                   <div class="column" *ngIf="settings.relaxationTime.isEnabled">
-                    <b>Resting time by minutes</b>
+                    <b>Rest for (minutes)</b>
                     <input class="ps-content-space" [(ngModel)]="relaxTimeInputModel" type="number" (keypress)="numberOnly($event)"
-                      class="input" placeholder="Relax time(minutes)" (input)="changeDropDown()">
+                      class="input" placeholder="Rest time (minutes)" (input)="changeDropDown()">
                   </div>
                 </div>
               </div>

@@ -6,7 +6,7 @@
              src="{{user.profileImage? environment.imagesEndpoint + '/profile/' + user.profileImage :
                       'assets/images/placeholder.png'}}" >
         <svg *ngIf="!user.profileImage" class="ps-user-image" width="36" height="36" [identiconHash]="emailHash">
-          Fallback text for browsers not supporting inline svg
+          Your browser does not support SVG
         </svg>
       </a>
     </li>
@@ -44,10 +44,7 @@
 <article id="bug-report" class="message ps-notifications-container ps-alert-bottom" *ngIf="pendulumNotification">
   <div class="message-body">
     <p class="ps-bug-report-text">
-      Please inform us about that bugs we didn't catch in our testing <a href="https://github.com/Swing-team/pendulums-web-client/issues" target="_blank"> here</a>.
+      Please inform us about the bugs we didn't catch in our tests <a href="https://github.com/Swing-team/pendulums-web-client/issues" target="_blank"> here</a>.
     </p>
   </div>
 </article>
-
-<app-donation #donation *ngIf="donationIsActive" class="ps-notifications-container ps-notifications-container-top"
-              (clickedOutSideOfDonation)="clickedOutSideOfDonation($event)"> </app-donation>

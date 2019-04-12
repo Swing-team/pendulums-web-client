@@ -51,7 +51,7 @@ export class CreateProjectComponent implements OnInit {
       this.invite();
     }
     if (!this.project.name || /^\s*$/.test(this.project.name) || !this.project.name.trim()) {
-      this.showError('Project name is empty');
+      this.showError('The project name is empty');
     } else {
       if (!this.formSubmitted) {
         this.formSubmitted = true;
@@ -66,7 +66,7 @@ export class CreateProjectComponent implements OnInit {
         this.projectImageCanvasElem.nativeElement.toBlob(blob => {
           if (blob.size > 500000) {
             this.formSubmitted = false;
-            this.showError('Image size exceeded from 500KB');
+            this.showError('The image size exceeds from 500KB');
             return;
           }
           // check whether image has been changed or not
@@ -142,7 +142,7 @@ export class CreateProjectComponent implements OnInit {
       console.log('fileType', this.fileTypeString);
     } else {
       console.log('File type is not supported!');
-      this.showError('Picture did no upload. File type is not supported!');
+      this.showError('File type is not supported!');
     }
   }
 
@@ -186,7 +186,7 @@ export class CreateProjectComponent implements OnInit {
     }
     if (this.user.email === this.currentUser.email) {
       console.log('error:', 'you can not invite your self as a team member.');
-      this.showError('you can not invite your self as a team member.');
+      this.showError('You can not invite yourself as a team member.');
       return false;
     }
     return true;

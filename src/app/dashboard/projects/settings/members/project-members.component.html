@@ -5,7 +5,7 @@
            src="{{user.profileImage? environment.imagesEndpoint + '/profile/' + user.profileImage :
                   'assets/images/placeholder.png'}}">
       <svg *ngIf="!user.profileImage" class="ps-project-member-image" width="36" height="36" [identiconHash]="userEmailHash(user.email)">
-        Fallback text for browsers not supporting inline svg
+        Your browser does not support SVG
       </svg>
     </div>
     <div class="column is-10">
@@ -26,7 +26,7 @@
              src="{{member.profileImage? environment.imagesEndpoint + '/profile/' + member.profileImage :
                   'assets/images/placeholder.png'}}">
         <svg *ngIf="!member.profileImage" class="ps-project-member-image" width="36" height="36" [identiconHash]="userEmailHash(member.email)">
-          Fallback text for browsers not supporting inline svg
+          Your browser does not support SVG
         </svg>
       </div>
       <div class="column is-8">
@@ -84,7 +84,7 @@
              src="{{member.profileImage? environment.imagesEndpoint + '/profile/' + member.profileImage :
                   'assets/images/placeholder.png'}}">
         <svg *ngIf="!member.profileImage" class="ps-project-member-image" width="36" height="36" [identiconHash]="userEmailHash(member.email)">
-          Fallback text for browsers not supporting inline svg
+          Your browser does not support SVG
         </svg>
       </div>
       <div class="column is-10">

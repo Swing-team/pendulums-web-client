@@ -175,7 +175,7 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
       this.ChartComponent.getStatAndPrepareData();
       this.tempArray = Removed;
       this.deleteButtonDisabled = false;
-      this.showError('Activity was deleted successfully');
+      this.showError('The activity was deleted successfully');
     })
       .catch(error => {
         this.deleteButtonDisabled = false;
@@ -442,14 +442,12 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
     const file: File = $event.target.files[0];
 
     if (file.type !== 'application/json') {
-      this.showError('Something went wrong in Importing your activities');
-      this.showError('Bad file for import.');
+      this.showError('Wrong file for import.');
       this.isImporting = false;
     }
 
     if (file.size >= 10000000) {
-      this.showError('Something went wrong in Importing your activities');
-      this.showError('File size is big to upload.');
+      this.showError('The File size exceeds the 10MB limit.');
       this.isImporting = false;
     }
 
@@ -457,13 +455,12 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
       const formData = new FormData();
       formData.append('data', file);
       this.activityService.importActivities(this.projectId, formData).then((activities) => {
-
-        this.showError(`Imported ${activities.length} activities`);
+        this.showError(`Successfully imported ${activities.length} activities`);
         this.getActivitiesFromServer();
         this.isImporting = false;
       })
       .catch(error => {
-        this.showError('Something went wrong in Importing your activities');
+        this.showError('Something went wrong when importing your activities');
         console.log('error is: ', error);
         this.isImporting = false;
       });

@@ -60,7 +60,7 @@ export class NoteItemComponent implements OnInit {
   confirmDelete() {
     this.noteService.delete(this.note.id).then(() => {
       this.store.dispatch(this.notesActions.removeNote(this.note.id));
-      this.showError('Note was deleted successfully');
+      this.showError('The note was deleted successfully');
     })
       .catch(error => {
         this.showError('Server communication error');
