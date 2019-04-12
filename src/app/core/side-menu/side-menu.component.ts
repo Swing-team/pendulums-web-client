@@ -25,12 +25,10 @@ export class SideMenuComponent implements OnInit {
   @Input() netConnected: boolean;
   @Input() notifNum: number;
   @ViewChild('notifications') notifications;
-  @ViewChild('donation') donation;
 
   emailHash: any;
   pendulumNotification: boolean;
   notificationIsActive = false;
-  donationIsActive = false;
   activeItemNumber = 0;
   syncing = false;
   environment = environment;
@@ -78,7 +76,7 @@ export class SideMenuComponent implements OnInit {
       this.onSignoutClicked.emit();
       this.activeItemNumber = 4;
     } else {
-      this.showError('This feature is not available in offline mode' );
+      this.showError('Not available in offline mode' );
     }
   }
 
@@ -93,20 +91,6 @@ export class SideMenuComponent implements OnInit {
     this.pendulumNotification = false;
     this.notificationIsActive = !this.notificationIsActive;
     if (!this.notificationIsActive) {
-      if (this.router.url === '/dashboard') {
-        this.activeItemNumber = 3;
-      }
-      if (this.router.url === '/profile') {
-        this.activeItemNumber = 1;
-      }
-    }
-  }
-
-  toggleDonation() {
-    this.activeItemNumber = 4;
-    this.pendulumNotification = false;
-    this.donationIsActive = !this.donationIsActive;
-    if (!this.donationIsActive) {
       if (this.router.url === '/dashboard') {
         this.activeItemNumber = 3;
       }
@@ -142,19 +126,6 @@ export class SideMenuComponent implements OnInit {
     }
   }
 
-  clickedOutSideOfDonation(event) {
-    if (this.donation.nativeElement.contains(event.target)) {
-    } else {
-      this.donationIsActive = false;
-      if (this.router.url === '/dashboard') {
-        this.activeItemNumber = 3;
-      }
-      if (this.router.url === '/profile') {
-        this.activeItemNumber = 1;
-      }
-    }
-  }
-
   @HostListener('document:click', ['$event'])
   clickOutOfMenu(event) {
     if (this.eRef.nativeElement.contains(event.target)) {
@@ -179,7 +150,7 @@ export class SideMenuComponent implements OnInit {
 
   syncSummary() {
     if (!this.netConnected) {
-      this.showError('This feature is not available in offline mode' );
+      this.showError('Not available in offline mode' );
     } else {
       this.syncing = true;
       Promise.all(this.syncService.autoSync())

@@ -43,7 +43,6 @@ import { NotesSelectors }               from '../shared/state/note/notes.selecto
 import { RouterChangeListenerService }  from './services/router-change-listener.service';
 import { InviteNotifComponent }         from './side-menu/notification/invite-notif/invite-notif.component';
 import { NativeNotificationService }    from './services/native-notification.service';
-import { DonationComponent }            from './side-menu/donation/donation.component';
 import { ActivityService } from './services/activity.service';
 
 @NgModule({
@@ -62,7 +61,6 @@ import { ActivityService } from './services/activity.service';
     ImgCropperComponent,
     AppInfoComponent,
     InviteNotifComponent,
-    DonationComponent
   ],
   exports:      [
     ToolbarComponent,
@@ -104,7 +102,6 @@ import { ActivityService } from './services/activity.service';
     ErrorComponent,
     ImgCropperComponent,
     AppInfoComponent,
-    DonationComponent
   ]
 })
 export class CoreModule {
