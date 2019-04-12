@@ -13,7 +13,7 @@ export class NativeNotificationService {
       const _Notification = window['Notification'];
       if (_Notification.permission === 'granted') {
         const options = {
-          icon: '../../../assets/images/icon.ico',
+          icon: 'assets/images/icon.ico',
           silent: false
         }
         const notification = new _Notification(message, options);
