@@ -143,15 +143,15 @@ const createWindow = () => {
     });
 
 
-    win.loadURL(url.format({
-        pathname: path.join(__dirname, '../app/index.html'),
-        protocol: 'file:',
-        slashes: true
-    }));
+    // win.loadURL(url.format({
+    //     pathname: path.join(__dirname, '../app/index.html'),
+    //     protocol: 'file:',
+    //     slashes: true
+    // }));
 
 
-    // win.loadURL('http://localhost:4200');
-    // win.webContents.openDevTools();
+    win.loadURL('http://192.168.1.106:4200');
+    win.webContents.openDevTools();
 
     // Emitted when the window is closed.
     win.on('closed', () => {
@@ -526,9 +526,20 @@ const gotTheLock = app.requestSingleInstanceLock();
 if (!gotTheLock) {
     app.quit();
 } else {
-    if (win) {
-        win.show();
-    }
+    app.on('second-instance', () => {
+        // Someone tried to run a second instance, we should focus our window
+        if (win) {
+          if (win.isMinimized()) {
+            win.restore();
+          }
+          if (win.isVisible) {
+              win.restore();
+          } else {
+              win.show()
+          }
+        }
+        return true;
+  });
 }
 
 
