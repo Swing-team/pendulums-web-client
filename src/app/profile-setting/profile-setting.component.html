@@ -138,8 +138,8 @@
               </div>
             </div>
             <div class="field ps-save-btn-container">
-                <button class="button is-fullwidth ps-profile-pass-button" [ngClass]="{'is-loading': submitted}"
-                [disabled]="submitted || !netConnected" (click)="updateSettings()">Save Settings</button>
+                <button class="button is-fullwidth ps-profile-pass-button" [ngClass]="{'is-loading': settingsSubmitted}"
+                [disabled]="settingsSubmitted || !netConnected" (click)="updateSettings()">Save Settings</button>
             </div>
           </div>
         </div>

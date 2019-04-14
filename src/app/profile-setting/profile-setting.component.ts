@@ -28,6 +28,7 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
   environment = environment;
   rePassword: string;
   submitted = false;
+  settingsSubmitted = false;
   data = {newPassword: null, oldPassword: null};
   user: User;
   userEdit: User;
@@ -191,7 +192,7 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
   };
 
   updateSettings() {
-    this.submitted = true;
+    this.settingsSubmitted = true;
     if (this.settings.relaxationTime.isEnabled) {
       this.nativeNotificationService.getPermission();
     }
@@ -200,19 +201,19 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
         this.settings.relaxationTime.workingTime = 0;
         this.settings.relaxationTime.restTime = 0;
         this.showError('Please fill the rest time fields');
-        this.submitted = false;
+        this.settingsSubmitted = false;
       } else {
         this.settings.relaxationTime.workingTime = (Number(this.workingTimeInputModel) * 60 * 1000);
         this.settings.relaxationTime.restTime = (Number(this.relaxTimeInputModel) * 60 * 1000);
       }
     }
-    if (this.submitted) {
+    if (this.settingsSubmitted) {
       this.userService.updateSettings(this.settings).then(() => {
         this.store.dispatch(this.userActions.updateUserSettings(this.settings));
-        this.submitted = false;
+        this.settingsSubmitted = false;
         this.showError('Saved successfully');
       }).catch(error => {
-        this.submitted = false;
+        this.settingsSubmitted = false;
         console.log('error is: ', error);
         this.showError('Server communication error');
       });
