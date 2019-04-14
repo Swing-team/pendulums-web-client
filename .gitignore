@@ -7,7 +7,6 @@
 /electron-app/dist
 /electron-app/app
 /electron-app/src/main.js
-/mobile-app/platforms
 /mobile-app/plugins
 /mobile-app/www
 
