@@ -17,7 +17,7 @@
        under the License.
  */
 
-package team.swing.pendulumsalpha;
+package team.swing.pendulums;
 
 import android.os.Bundle;
 import org.apache.cordova.*;
