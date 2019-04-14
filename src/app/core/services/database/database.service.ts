@@ -13,7 +13,7 @@ export class DatabaseService {
   constructor(private dexieService: DexieService,
               private store: Store<AppState>) {
     // todo: It can be better later
-    this.stateObserver = store.debounceTime(2000).subscribe((state) => {
+    this.stateObserver = store.debounceTime(100).subscribe((state) => {
       let uId: string;
       uId = state.user.id;
       if (uId) {

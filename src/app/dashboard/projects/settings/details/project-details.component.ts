@@ -56,21 +56,22 @@ export class ProjectDetailsComponent implements OnInit {
 
   updateProject() {
     if (!this.clonedProject.name || /^\s*$/.test(this.clonedProject.name) || !this.clonedProject.name.trim()) {
-      this.showError('Project name is empty');
+      this.showError('The project name is empty');
     } else {
       if (!this.formSubmitted) {
         this.formSubmitted = true;
+        this.clonedProject.name = this.clonedProject.name.trim();
         const formData = new FormData();
         formData.append('project', JSON.stringify({name: this.clonedProject.name, colorPalette: this.clonedProject.colorPalette}));
         this.projectImageCanvasElem.nativeElement.toBlob(blob => {
           if (blob.size > 500000) {
             this.formSubmitted = false;
-            this.showError('Image size exceeded from 500KB');
+            this.showError('The image size exceeds from 500KB');
             return;
           }
           if (this.imageIsEdited) {
             formData.append('image', blob);
-            this.showError('Project image has been edited');
+            this.showError('The project image was updated');
           }
           this.projectServices.update(formData, this.project.id).then((response) => {
             this.showError('The project was edited successfully');
@@ -115,7 +116,7 @@ export class ProjectDetailsComponent implements OnInit {
     } else {
       this.imageIsEdited = false;
       console.log('File type is not supported!');
-      this.showError('Picture did no upload. File type is not supported!');
+      this.showError('File type is not supported!');
     }
   }
 

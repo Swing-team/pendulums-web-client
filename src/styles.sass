@@ -1,5 +1,6 @@
 @import "./sass/fonts.sass"
 @import "./sass/variables.sass"
+@import "./sass/tinymce.sass"
 
 html
   -webkit-tap-highlight-color: transparent
@@ -34,14 +35,26 @@ html
 @import "../node_modules/bulma/bulma.sass"
 @import "assets/fonts/fontello/css/fontello.css"
 
-.grecaptcha-badge
-  display: none
-
 // to fix the responsive issue in the mobile
 .columns
   margin: 0
+
+.ps-no-margin
+  margin: 0 !important
 
 // to fix scroll when modal open
 .ps-scroll-lock
   overflow-y: hidden !important
 
+.ps-note-item-card-body
+  ul
+    list-style: disc !important
+  li
+    margin-left: 20px !important
+.pointer
+  cursor: pointer
+.inline-block
+  display: inline-block !important
+
+.overflow-hidden
+  overflow: hidden

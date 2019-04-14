@@ -1,10 +1,28 @@
 import Dexie from 'dexie';
+import { Settings } from '../../../shared/state/user/user.model';
 
 export class DexieService extends Dexie {
   constructor() {
     super('Pendulum');
     // Whenever you add any entity, please update the
     // entityToKey object of DatabaseService
+    this.version(4).stores({
+      userData: 'userId',
+      activeUser: '++id',
+      appInfo: 'userId',
+    }).upgrade((tb) => {
+      return tb['userData'].toCollection().modify(data => {
+        data.data.settings = {
+          receiveForgottenActivityEmail: true,
+          relaxationTime: {
+            isEnabled: false,
+            workingTime: 3000000,
+            restTime: 900000
+          }
+        } as Settings
+      });
+    });
+
     this.version(3).stores({
       userData: 'userId',
       activeUser: '++id',

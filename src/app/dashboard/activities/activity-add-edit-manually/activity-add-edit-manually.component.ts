@@ -45,6 +45,7 @@ export class AddManuallyActivityComponent implements OnInit {
   ngOnInit() {
     if (this.activity) {
       this.activityModel = _.cloneDeep(this.activity);
+      this.activityModel.name = this.activityModel.name.trim();
       this.fromDate = moment(Number(this.activityModel.startedAt)).format('dddd, MMMM Do YYYY');
       this.fromDateValue = this.activityModel.startedAt;
       this.toDate = moment(Number(this.activityModel.stoppedAt)).format('dddd, MMMM Do YYYY');
@@ -191,7 +192,7 @@ export class AddManuallyActivityComponent implements OnInit {
               stoppedAt = Number(tempStoppedAt);
             }
             const tempResult = {
-              name: this.activityModel.name,
+              name: this.activityModel.name.trim(),
               user: this.activityModel.user,
               project: this.activityModel.project,
               startedAt: startedAt,
@@ -203,16 +204,16 @@ export class AddManuallyActivityComponent implements OnInit {
 
         if (this.activity) {
           this.activityService.editOldActivity(this.projectId, this.activityModel).then((activity) => {
-            message = 'Activity was edited successfully';
+            message = 'The activity was edited successfully';
             this.pushDividedActivitiesToServer(dividedActivitiesArray, message, activity);
           })
             .catch(error => {
-              this.showError('Server error happened');
+              this.showError('Server error!');
               console.log('error is: ', error);
             });
         } else {
           dividedActivitiesArray.push(this.activityModel);
-          message = 'Activity was created successfully';
+          message = 'The activity was created successfully';
           this.pushDividedActivitiesToServer(dividedActivitiesArray, message);
         }
       }
@@ -227,8 +228,8 @@ export class AddManuallyActivityComponent implements OnInit {
         result.push(activity);
       })
         .catch(error => {
-          this.showError('Server error happened');
-          console.log('server error happened', error);
+          this.showError('Server error!');
+          console.log('server error', error);
         }));
     });
 
@@ -247,6 +248,7 @@ export class AddManuallyActivityComponent implements OnInit {
     if (this.IsNullOrWhiteSpace(this.activityModel.name)) {
       this.activityModel.name = 'Untitled Activity';
     }
+    this.activityModel.name = this.activityModel.name.trim();
     if (this.fromDate && this.toDate) {
       const tempCheck = this.checkDate();
       if (tempCheck) {
@@ -292,11 +294,11 @@ export class AddManuallyActivityComponent implements OnInit {
         if (this.currentActivity.startedAt) {
           if (Number(this.currentActivity.startedAt) < tempFromDate) {
             finalCheck = false;
-            this.showError('The start time could not be after current activity start time');
+            this.showError('The start time could not be after start time of current activity');
           }
           if (Number(this.currentActivity.startedAt) < tempToDate) {
             finalCheck = false;
-            this.showError('The end time could not be after current activity start time');
+            this.showError('The end time could not be after start time of current activity');
           }
         }
       }

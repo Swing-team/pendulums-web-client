@@ -21,6 +21,9 @@
     "**/*.spec.ts",
     "main.electron.ts",
     "**/app.electron.module.ts",
-    "**/*.electron.service.ts"
+    "**/*.electron.service.ts",
+    "main.mobile.ts",
+    "**/app.mobile.module.ts",
+    "**/*.mobile.service.ts"
   ]
 }

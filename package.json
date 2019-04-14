@@ -1,6 +1,6 @@
 {
   "name": "pendulum-web-client",
-  "version": "0.4.1",
+  "version": "1.0.0",
   "license": "GPL-3.0-or-later",
   "scripts": {
     "ng": "ng",
@@ -23,7 +23,7 @@
     "electron:build:linux": "npm run electron:ng:build && npm run electron:tsc && cd electron-app && electron-builder --linux",
     "electron:build:win": "npm run electron:ng:build && npm run electron:tsc && cd electron-app && electron-builder --win",
     "cordova:prepare": "cd mobile-app && cordova prepare",
-    "cordova:ng:build": "ng build --base-href ./ --output-path='./mobile-app/www' --prod",
+    "cordova:ng:build": "ng build --app 2 --base-href ./ --output-path='./mobile-app/www' --prod",
     "cordova:build:android": "npm run cordova:ng:build && cd mobile-app && node_modules/.bin/cordova build android --release --buildConfig=build.json"
   },
   "private": true,
@@ -39,7 +39,7 @@
     "@angular/platform-browser-dynamic": "^5.2.10",
     "@angular/router": "^5.2.10",
     "@ngrx/store": "^5.0.0",
-    "bulma": "^0.4.2",
+    "bulma": "^0.4.4",
     "core-js": "^2.5.6",
     "d3": "^3.5.17",
     "dexie": "^1.5.1",
@@ -47,14 +47,20 @@
     "fs-extra": "^7.0.0",
     "hammerjs": "^2.0.8",
     "jdenticon": "^1.8.0",
+    "json2csv": "^4.3.2",
     "lodash": "^4.17.10",
     "moment": "^2.22.1",
     "ng2-img-cropper": "^0.9.0",
     "ng2-nvd3": "^2.0.0",
+    "ngx-cookie-service": "^2.1.0",
     "nvd3": "^1.8.6",
+    "pendulums-editor": "git+https://github.com/Swing-team/pendulums-editor.git",
     "rxjs": "^5.5.10",
+    "showdown": "^1.9.0",
     "socket.io-client": "^2.1.1",
     "ts-md5": "^1.2.4",
+    "turndown": "^5.0.3",
+    "turndown-plugin-gfm": "^1.0.2",
     "zone.js": "^0.8.26"
   },
   "devDependencies": {

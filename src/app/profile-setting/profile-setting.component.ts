@@ -5,7 +5,7 @@ import {
 import { environment }                       from '../../environments/environment';
 import { AuthenticationService }            from '../core/services/authentication.service';
 import { ErrorService }                     from '../core/error/error.service';
-import { User }                             from '../shared/state/user/user.model';
+import { User, Settings }                   from '../shared/state/user/user.model';
 import { Store }                            from '@ngrx/store';
 import { AppState }                         from '../shared/state/appState';
 import { UserActions }                      from '../shared/state/user/user.actions';
@@ -15,7 +15,8 @@ import { ImgCropperComponent }              from './image-cropper/image-cropper.
 import { Md5 }                              from 'ts-md5/dist/md5';
 import { Observable }                       from 'rxjs/Observable';
 import { Subscription }                     from 'rxjs/Subscription';
-
+import { NativeNotificationService }        from '../core/services/native-notification.service';
+import { Location }                         from '@angular/common';
 
 @Component({
   selector: 'profile-setting',
@@ -27,12 +28,17 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
   environment = environment;
   rePassword: string;
   submitted = false;
+  settingsSubmitted = false;
   data = {newPassword: null, oldPassword: null};
   user: User;
   userEdit: User;
   emailHash: any;
   userNameEdited: boolean;
   netConnected: boolean;
+  settings: Settings;
+  relaxationTimeSelectorModel: any;
+  workingTimeInputModel: string;
+  relaxTimeInputModel: string;
   editButtonDisabled = false;
   private status: Observable<any>;
   private subscriptions: Array<Subscription> = [];
@@ -42,7 +48,9 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
                private store: Store<AppState>,
                private userActions: UserActions,
                private userService: UserService,
-               private modalService: ModalService) {
+               private location: Location,
+               private modalService: ModalService,
+               private nativeNotificationService: NativeNotificationService) {
     this.subscriptions.push(store.select('user').subscribe((user: User) => {
       this.user = user;
       this.userEdit = _.cloneDeep(user);
@@ -63,6 +71,41 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
         this.netConnected = true;
       }
     }));
+
+    this.subscriptions.push(this.store.select('user').subscribe((user: User) => {
+      this.user = user;
+      this.userEdit = _.cloneDeep(user);
+      this.settings = _.cloneDeep(user.settings);
+      if (user.email) {
+        this.emailHash = Md5.hashStr(user.email);
+      }
+
+      if (this.settings.relaxationTime.isEnabled) {
+        const workingTime = this.settings.relaxationTime.workingTime;
+        const restTime = this.settings.relaxationTime.restTime;
+        if (workingTime === 3000000 && restTime === 900000) {
+          this.relaxationTimeSelectorModel = 'pomodoro1';
+          this.workingTimeInputModel = (workingTime / 60000).toString();
+          this.relaxTimeInputModel = (restTime / 60000).toString();
+        } else if (workingTime === 1800000 && restTime === 600000) {
+          this.relaxationTimeSelectorModel = 'pomodoro2';
+          this.workingTimeInputModel = (workingTime / 60000).toString();
+          this.relaxTimeInputModel = (restTime / 60000).toString();
+        } else if (workingTime === 1500000 && restTime === 420000) {
+          this.relaxationTimeSelectorModel = 'pomodoro3';
+          this.workingTimeInputModel = (workingTime / 60000).toString();
+          this.relaxTimeInputModel = (restTime / 60000).toString();
+        } else {
+          this.relaxationTimeSelectorModel = 'pomodoroCustom';
+          this.workingTimeInputModel = (this.settings.relaxationTime.workingTime / 60000).toString();
+          this.relaxTimeInputModel = (this.settings.relaxationTime.restTime / 60000).toString();
+        }
+      } else {
+        this.relaxationTimeSelectorModel = 'pomodoro1';
+          this.workingTimeInputModel = '50';
+          this.relaxTimeInputModel = '15';
+      }
+    }));
   }
 
   ngOnDestroy() {
@@ -78,8 +121,12 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
         this.userEdit.name = this.user.name;
       }
     } else {
-      this.showError('This feature is not available in offline mode');
+      this.showError('Not available in offline mode');
     }
+  }
+
+  goBack() {
+    this.location.back();
   }
 
   saveProfile() {
@@ -114,7 +161,7 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
         customStyles: {'width': '350px', 'overflow': 'initial'}
       });
     } else {
-      this.showError('This feature is not available in offline mode');
+      this.showError('Not available in offline mode');
     }
   }
 
@@ -140,15 +187,82 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
         this.submitted = false;
       }
     } else {
-      this.showError('This feature is not available in offline mode');
+      this.showError('Not available in offline mode');
     }
   };
+
+  updateSettings() {
+    this.settingsSubmitted = true;
+    if (this.settings.relaxationTime.isEnabled) {
+      this.nativeNotificationService.getPermission();
+    }
+    if (this.relaxationTimeSelectorModel === 'pomodoroCustom') {
+      if (!this.workingTimeInputModel || !this.relaxTimeInputModel) {
+        this.settings.relaxationTime.workingTime = 0;
+        this.settings.relaxationTime.restTime = 0;
+        this.showError('Please fill the rest time fields');
+        this.settingsSubmitted = false;
+      } else {
+        this.settings.relaxationTime.workingTime = (Number(this.workingTimeInputModel) * 60 * 1000);
+        this.settings.relaxationTime.restTime = (Number(this.relaxTimeInputModel) * 60 * 1000);
+      }
+    }
+    if (this.settingsSubmitted) {
+      this.userService.updateSettings(this.settings).then(() => {
+        this.store.dispatch(this.userActions.updateUserSettings(this.settings));
+        this.settingsSubmitted = false;
+        this.showError('Saved successfully');
+      }).catch(error => {
+        this.settingsSubmitted = false;
+        console.log('error is: ', error);
+        this.showError('Server communication error');
+      });
+    }
+  }
+
+  timeSelectorChange() {
+    if (this.relaxationTimeSelectorModel === 'pomodoro1') {
+      this.workingTimeInputModel = '50';
+      this.relaxTimeInputModel = '15';
+      this.settings.relaxationTime.workingTime = (Number(this.workingTimeInputModel) * 60000);
+      this.settings.relaxationTime.restTime = (Number(this.relaxTimeInputModel) * 60000);
+    } else if (this.relaxationTimeSelectorModel === 'pomodoro2') {
+      this.workingTimeInputModel = '30';
+      this.relaxTimeInputModel = '10';
+      this.settings.relaxationTime.workingTime = (Number(this.workingTimeInputModel) * 60000);
+      this.settings.relaxationTime.restTime = (Number(this.relaxTimeInputModel) * 60000);
+    } else if (this.relaxationTimeSelectorModel === 'pomodoro3') {
+      this.workingTimeInputModel = '25';
+      this.relaxTimeInputModel = '7';
+      this.settings.relaxationTime.workingTime = (Number(this.workingTimeInputModel) * 60000);
+      this.settings.relaxationTime.restTime = (Number(this.relaxTimeInputModel) * 60000);
+    } else if (this.relaxationTimeSelectorModel === 'pomodoroCustom') {
+      this.workingTimeInputModel = '';
+      this.relaxTimeInputModel = '';
+      this.settings.relaxationTime.workingTime = 0;
+      this.settings.relaxationTime.restTime = 0;
+    }
+  }
+
+  changeDropDown() {
+    const workingTime = Number(this.workingTimeInputModel) * 60000;
+    const restTime = Number(this.relaxTimeInputModel) * 60000;
+    if (workingTime === 3000000 && restTime === 900000) {
+      this.relaxationTimeSelectorModel = 'pomodoro1';
+    } else if (workingTime === 1800000 && restTime === 600000) {
+      this.relaxationTimeSelectorModel = 'pomodoro2';
+    } else if (workingTime === 1500000 && restTime === 420000) {
+      this.relaxationTimeSelectorModel = 'pomodoro3';
+    } else {
+      this.relaxationTimeSelectorModel = 'pomodoroCustom';
+    }
+  }
 
   validationPassword(User): boolean {
     if (!User.newPassword
       || User.newPassword.length < 6
       || User.newPassword.length > 32) {
-      this.showError('Password length must be between 6 and 32 characters');
+      this.showError('The password length must be between 6 and 32 characters');
       return false;
     }
     if (User.newPassword !== this.rePassword) {
@@ -156,6 +270,15 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
       return false;
     }
     return true;
+  }
+
+  numberOnly(event): boolean {
+    const charCode = (event.which) ? event.which : event.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      return false;
+    }
+    return true;
+
   }
 
   showError(error) {

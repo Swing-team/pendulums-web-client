@@ -6,6 +6,7 @@ import { ProjectsActions } from '../../../../shared/state/project/projects.actio
 import { NotificationService } from '../notification.service';
 import { NotificationComponent } from '../notification.component';
 import { Project } from '../../../../shared/state/project/project.model';
+import { ErrorService } from 'app/core/error/error.service';
 
 @Component({
   selector: 'app-invite-notif',
@@ -23,6 +24,7 @@ export class InviteNotifComponent implements OnInit {
               private projectsActions: ProjectsActions,
               private notificationService: NotificationService,
               private store: Store<AppState>,
+              private errorService: ErrorService,
               private notificationComponent: NotificationComponent) { }
 
   ngOnInit() {
@@ -44,8 +46,18 @@ export class InviteNotifComponent implements OnInit {
         this.acceptDisabledIndex = false;
       })
         .catch(error => {
-          console.log('error is: ', error);
-          this.acceptDisabledIndex = false;
+          if (error.status === 404) {
+            this.user.pendingInvitations.map((obj, index) => {
+              if (obj.id === projectId) {
+                this.user.pendingInvitations.splice(index, 1);
+              }
+            });
+            this.store.dispatch(this.userActions.loadUser(this.user));
+            this.acceptDisabledIndex = false;
+            this.showError('The project not found!');
+          } else {
+            console.log('error is: ', error);
+          }
         });
     }
   }
@@ -64,9 +76,22 @@ export class InviteNotifComponent implements OnInit {
       })
         .catch(error => {
           console.log('error is: ', error);
-          this.denyDisabledIndex = false;
+          if (error.status === 404) {
+            this.user.pendingInvitations.map((obj, index) => {
+              if (obj.id === projectId) {
+                this.user.pendingInvitations.splice(index, 1);
+              }
+            });
+            this.store.dispatch(this.userActions.loadUser(this.user));
+            this.denyDisabledIndex = false;
+          }
         });
     }
   }
 
+  showError(error) {
+    this.errorService.show({
+      input: error
+    });
+  }
 }

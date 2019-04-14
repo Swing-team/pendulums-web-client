@@ -2,13 +2,16 @@
 
 .ps-modal-card
   overflow: initial
-  @media (max-width: 480px)
-    margin: unset
-    max-height: unset
-    height: 100%
+  margin: 0 5px !important
+  max-height: calc(100vh - 60px)
+  // this was comment for the full screen because of mobile view.
+  // see TG-484 for more
+  // @media (max-width: 480px)
+  //   margin: unset
+  //   max-height: unset
+  //   height: 100%
   .ps-modal-body
     padding-top: 35px
-    padding-bottom: 50px
     border-radius: $radius
     @media (max-width: 480px)
       padding: 40px 10px 10px

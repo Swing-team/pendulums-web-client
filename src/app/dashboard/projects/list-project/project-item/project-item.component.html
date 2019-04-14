@@ -59,7 +59,7 @@
               <img class="ps-member-image" *ngIf="findUserImage(activity.user) !== ''" src="{{findUserImage(activity.user)}}">
               <svg *ngIf="findUserImage(activity.user) === ''" class="ps-member-image ps-back-member-image"
                     width="24" height="34" [identiconHash]="getUserEmailHash(activity.user)">
-                Fallback text for browsers not supporting inline svg
+                Your browser does not support SVG
               </svg>
             </td>
             <td>{{activity.name ? activity.name : 'No recent activity'}}</td>
@@ -90,7 +90,7 @@
               <td class="ps-image-td">
                 <img class="ps-member-image" *ngIf="findUserImage(activity.user) !== ''" src="{{findUserImage(activity.user)}}">
                 <svg *ngIf="findUserImage(activity.user) === ''" class="ps-member-image ps-back-member-image" width="24" height="34" [identiconHash]="getUserEmailHash(activity.user)">
-                  Fallback text for browsers not supporting inline svg
+                  Your browser does not support SVG
                 </svg>
               </td>
               <td>{{activity.name ? activity.name : 'No recent activity'}}</td>

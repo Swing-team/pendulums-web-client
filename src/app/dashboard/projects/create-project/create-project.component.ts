@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import {Component, HostListener, Input, ViewChild} from '@angular/core';
+import {Component, HostListener, Input, ViewChild, ElementRef, OnInit} from '@angular/core';
 import { Project }                      from '../../../shared/state/project/project.model';
 import { Md5 }                          from 'ts-md5/dist/md5';
 import { ProjectService }               from '../../shared/projects.service';
@@ -18,10 +18,11 @@ const EMAIL_REGEX = /^(?=.{8,64}$)[\w!#$%&'*+/=?`{|}~^-]+(?:\.[\w!#$%&'*+/=?`{|}
   styleUrls: ['./create-project.component.sass'],
 })
 
-export class CreateProjectComponent {
+export class CreateProjectComponent implements OnInit {
   @ViewChild('projectImageCanvasElem') projectImageCanvasElem;
   @ViewChild('canvasPreviewImageElem') canvasPreviewImageElem;
   @ViewChild('projectCreatePalette') projectCreatePalette;
+  @ViewChild('projectNameInput') projectNameInput: ElementRef;
   @Input() currentUser: User;
   roles = ['team member', 'admin'];
   project: Project = new Project();
@@ -41,15 +42,20 @@ export class CreateProjectComponent {
     this.md5 = new Md5();
   }
 
+  ngOnInit() {
+    this.projectNameInput.nativeElement.focus();
+  }
+
   createProject() {
     if (this.user.email) {
       this.invite();
     }
     if (!this.project.name || /^\s*$/.test(this.project.name) || !this.project.name.trim()) {
-      this.showError('Project name is empty');
+      this.showError('The project name is empty');
     } else {
       if (!this.formSubmitted) {
         this.formSubmitted = true;
+        this.project.name = this.project.name.trim(); // trim the project name after creation.
         // todo: please create dto model in order to use in interactions with server
         delete this.project['id'];
         delete this.project['recentActivityName'];
@@ -60,7 +66,7 @@ export class CreateProjectComponent {
         this.projectImageCanvasElem.nativeElement.toBlob(blob => {
           if (blob.size > 500000) {
             this.formSubmitted = false;
-            this.showError('Image size exceeded from 500KB');
+            this.showError('The image size exceeds from 500KB');
             return;
           }
           // check whether image has been changed or not
@@ -136,7 +142,7 @@ export class CreateProjectComponent {
       console.log('fileType', this.fileTypeString);
     } else {
       console.log('File type is not supported!');
-      this.showError('Picture did no upload. File type is not supported!');
+      this.showError('File type is not supported!');
     }
   }
 
@@ -180,7 +186,7 @@ export class CreateProjectComponent {
     }
     if (this.user.email === this.currentUser.email) {
       console.log('error:', 'you can not invite your self as a team member.');
-      this.showError('you can not invite your self as a team member.');
+      this.showError('You can not invite yourself as a team member.');
       return false;
     }
     return true;

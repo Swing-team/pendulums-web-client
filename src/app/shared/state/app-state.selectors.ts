@@ -2,6 +2,7 @@ import { createSelector }                             from '@ngrx/store';
 import { Injectable }                                 from '@angular/core';
 import { AppState }                                   from './appState';
 import { ProjectsSelectors }                          from './project/projects.selectors';
+import { NotesSelectors }                          from './note/notes.selectors';
 
 /**
  * Because the data structure is defined within the reducer it is optimal to
@@ -14,8 +15,10 @@ import { ProjectsSelectors }                          from './project/projects.s
 
 @Injectable()
 export class AppStateSelectors {
-  constructor(private projectsSelectors: ProjectsSelectors) { }
+  constructor(private projectsSelectors: ProjectsSelectors, private notesSelectors: NotesSelectors) { }
   getProjectsState = (state: AppState) => state.projects;
+  getNotesState = (state: AppState) => state.notes;
   getProjectsArray = createSelector(this.getProjectsState, this.projectsSelectors.getAllArray);
   getSelectedProject = createSelector(this.getProjectsState, this.projectsSelectors.getSelectedProject);
+  getNotesArray = createSelector(this.getNotesState, this.notesSelectors.getAllArray);
 }

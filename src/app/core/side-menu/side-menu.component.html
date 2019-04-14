@@ -6,19 +6,18 @@
              src="{{user.profileImage? environment.imagesEndpoint + '/profile/' + user.profileImage :
                       'assets/images/placeholder.png'}}" >
         <svg *ngIf="!user.profileImage" class="ps-user-image" width="36" height="36" [identiconHash]="emailHash">
-          Fallback text for browsers not supporting inline svg
+          Your browser does not support SVG
         </svg>
       </a>
     </li>
     <li title="Dashboard"><a [ngClass]="{'is-active': activeItemNumber === 3 }" [routerLink]="['dashboard']" (click)="updateIndex(3)"><span class="icon-dashboard"></span></a></li>
+    <li title="note"><a [ngClass]="{'is-active': activeItemNumber === 8 }" [routerLink]="['notes']" (click)="updateIndex(8)"><span class="icon-sticky-note-o"></span></a></li>
     <li title="Notifications">
       <a [ngClass]="{'is-active': activeItemNumber === 2 }" #notifications (click)="toggleNotifications()">
         <span class="icon-bell"></span>
         <span class="ps-notification-count" *ngIf="user.pendingInvitations.length + notifNum > 0">{{user.pendingInvitations.length + notifNum}}</span>
       </a>
     </li>
-    <li title="Give us a gift"><a [ngClass]="{'is-active': activeItemNumber === 4}"
-      #donation (click)="toggleDonation()"><span class="icon-gift"></span></a></li>
     <li title="Sync">
       <a (click)="syncSummary()" [ngClass]="{'is-disabled': !netConnected, 'ps-sync-animation': syncing, 'ps-sync-disable': syncing}" style="transform: rotate(0deg);">
         <span class="icon-refresh"></span>
@@ -29,7 +28,6 @@
     <li title="Report bug" id="bug-report-icon">
       <a [ngClass]="{'is-active': activeItemNumber === 5 }" (click)="togglePendulumNotifications()">
         <span class="icon-bug"></span>
-        <span class="ps-notification-count">!</span>
       </a>
     </li>
     <li title="New Features">
@@ -46,14 +44,7 @@
 <article id="bug-report" class="message ps-notifications-container ps-alert-bottom" *ngIf="pendulumNotification">
   <div class="message-body">
     <p class="ps-bug-report-text">
-      <strong><span class="icon-error"></span> THIS IS ALPHA SOFTWARE.</strong>
-      <br>
-      This software is pre-release, which means there are likely to be bugs our testing didn't catch. So be aware of data loosing.
-      <br>
-      Please inform us about that bugs we didn't catch in our testing <a href="https://github.com/Swing-team/pendulums-web-client/issues" target="_blank"> here</a>.
+      Please inform us about the bugs we didn't catch in our tests <a href="https://github.com/Swing-team/pendulums-web-client/issues" target="_blank"> here</a>.
     </p>
   </div>
 </article>
-
-<app-donation #donation *ngIf="donationIsActive" class="ps-notifications-container ps-notifications-container-top"
-              (clickedOutSideOfDonation)="clickedOutSideOfDonation($event)"> </app-donation>

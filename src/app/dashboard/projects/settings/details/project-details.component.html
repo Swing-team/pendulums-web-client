@@ -18,23 +18,23 @@
       </div>
       <div class="column ps-header-vertical-align ps-padding-left">
         <input [(ngModel)]="clonedProject.name" name="name" class="input ps-header-input"
-               placeholder="untitled project..." type="text">
+               placeholder="Untitled Project..." type="text">
 
         <div class="ps-project-details-color-picker-container">
-          <p class="ps-project-details-color-picker-title"> Project color : </p>
+          <p class="ps-project-details-color-picker-title"> Project color: </p>
           <div class="ps-project-details-palette-container">
-            <p class="ps-project-details-color" title="click to change color">
-              <a id="id2" class="button is-fullwidth" (click)="togglePalette()"
-                 [ngClass]="{'ps-project-details-palette-item-back-white1': clonedProject.colorPalette == 0,
-                             'ps-project-details-palette-item-back-salmon': clonedProject.colorPalette == 1,
-                             'ps-project-details-palette-item-back-blue': clonedProject.colorPalette == 2,
-                             'ps-project-details-palette-item-back-black': clonedProject.colorPalette == 3,
-                             'ps-project-details-palette-item-back-yellow': clonedProject.colorPalette == 4,
-                             'ps-project-details-palette-item-back-pink': clonedProject.colorPalette == 5,
-                             'ps-project-details-palette-item-back-red': clonedProject.colorPalette == 6,
-                             'ps-project-details-palette-item-back-green': clonedProject.colorPalette == 7}">
-              </a>
-            </p>
+            <div class="ps-project-details-color" title="click to change color">
+                <i class="button icon-palette-1 is-fullwidth"
+                id="id2" (click)="togglePalette()"
+                    [ngClass]="{'ps-project-details-palette-item-back-white1': clonedProject.colorPalette == 0,
+                                'ps-project-details-palette-item-back-salmon': clonedProject.colorPalette == 1,
+                                'ps-project-details-palette-item-back-blue': clonedProject.colorPalette == 2,
+                                'ps-project-details-palette-item-back-black': clonedProject.colorPalette == 3,
+                                'ps-project-details-palette-item-back-yellow': clonedProject.colorPalette == 4,
+                                'ps-project-details-palette-item-back-pink': clonedProject.colorPalette == 5,
+                                'ps-project-details-palette-item-back-red': clonedProject.colorPalette == 6,
+                                'ps-project-details-palette-item-back-green': clonedProject.colorPalette == 7}"></i>
+              </div>
             <div #projectDetailsPalette [ngStyle]="{'display': showPaletteBoollean ? 'block' : 'none'}" class="ps-project-details-palette">
               <div class="ps-project-details-palette-colors-section">
                 <div *ngFor='let index of [0,1,2,3,4,5,6,7]' class="ps-project-details-palette-item">
@@ -96,23 +96,23 @@
       </div>
       <div class="column ps-header-vertical-align ps-padding-left">
         <input [(ngModel)]="clonedProject.name" name="name" class="input ps-header-input ps-header-input-disabled"
-               placeholder="untitled project..." type="text" [disabled]="true">
+               placeholder="Untitled Project..." type="text" [disabled]="true">
 
         <div class="ps-project-details-color-picker-container">
-          <p class="ps-project-details-color-picker-title"> Project color : </p>
+          <p class="ps-project-details-color-picker-title"> Project color: </p>
           <div class="ps-project-details-palette-container">
-            <p class="ps-project-details-color">
-              <a class="button is-fullwidth ps-project-details-color-disabled"
-                 [ngClass]="{'ps-project-details-palette-item-back-white1': clonedProject.colorPalette == 0,
-                             'ps-project-details-palette-item-back-salmon': clonedProject.colorPalette == 1,
-                             'ps-project-details-palette-item-back-blue': clonedProject.colorPalette == 2,
-                             'ps-project-details-palette-item-back-black': clonedProject.colorPalette == 3,
-                             'ps-project-details-palette-item-back-yellow': clonedProject.colorPalette == 4,
-                             'ps-project-details-palette-item-back-pink': clonedProject.colorPalette == 5,
-                             'ps-project-details-palette-item-back-red': clonedProject.colorPalette == 6,
-                             'ps-project-details-palette-item-back-green': clonedProject.colorPalette == 7}">
-              </a>
-            </p>
+            <div class="ps-project-details-color" title="click to change color">
+                <i class="button icon-palette-1 is-fullwidth"
+                id="id2" (click)="togglePalette()"
+                    [ngClass]="{'ps-project-details-palette-item-back-white1': clonedProject.colorPalette == 0,
+                                'ps-project-details-palette-item-back-salmon': clonedProject.colorPalette == 1,
+                                'ps-project-details-palette-item-back-blue': clonedProject.colorPalette == 2,
+                                'ps-project-details-palette-item-back-black': clonedProject.colorPalette == 3,
+                                'ps-project-details-palette-item-back-yellow': clonedProject.colorPalette == 4,
+                                'ps-project-details-palette-item-back-pink': clonedProject.colorPalette == 5,
+                                'ps-project-details-palette-item-back-red': clonedProject.colorPalette == 6,
+                                'ps-project-details-palette-item-back-green': clonedProject.colorPalette == 7}"></i>
+              </div>
           </div>
         </div>
       </div>

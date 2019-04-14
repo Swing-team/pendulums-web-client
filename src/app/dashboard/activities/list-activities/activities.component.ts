@@ -1,5 +1,6 @@
 import 'rxjs/add/operator/switchMap';
 import * as _ from 'lodash';
+import * as json2csv  from 'json2csv';
 import {
   Component, HostListener,
   OnDestroy, OnInit, ViewChild,
@@ -45,6 +46,7 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
   // we need copy of currentActivity to show it in list of activities if it is belong to current project
   currentActivityCopy: ActivityWithIsActive;
   currentActivities: Array<ActivityWithIsActive> = [];
+  currentActivitiesCopy: Array<ActivityWithIsActive> = [];
   userAccess = false;
   selectedUsers = [];
   selectedItemIndex = [];
@@ -56,6 +58,9 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
   }[] = [];
   deleteButtonDisabled = false;
   pageLoaded = false;
+  isExporting = false;
+  isImporting = false;
+  dataFile: any;
   @ViewChild(ChartComponent)
   private ChartComponent: ChartComponent;
 
@@ -170,7 +175,7 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
       this.ChartComponent.getStatAndPrepareData();
       this.tempArray = Removed;
       this.deleteButtonDisabled = false;
-      this.showError('Activity was deleted successfully');
+      this.showError('The activity was deleted successfully');
     })
       .catch(error => {
         this.deleteButtonDisabled = false;
@@ -297,6 +302,7 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
         userCurrentActivity.isActive = true;
         return userCurrentActivity;
       });
+      this.currentActivitiesCopy = _.cloneDeep(this.currentActivities);
     });
   }
 
@@ -373,11 +379,13 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
     event.map((user) => {
       this.selectedUsers.push(user.item.id);
     });
+
+    this.currentActivities = _.cloneDeep(this.currentActivitiesCopy);
     this.currentActivities.map((userCurrentActivity) => {
       if (this.selectedUsers.indexOf(userCurrentActivity.user) > -1) {
         userCurrentActivity.isActive = true;
       } else {
-        userCurrentActivity.isActive = false;
+        this.currentActivities.splice(this.currentActivities.indexOf(userCurrentActivity), 1);
       }
     });
     this.tempArray = [];
@@ -386,6 +394,77 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
     // Now re-render chart component
     this.ChartComponent.selectedUsers = this.selectedUsers;
     this.ChartComponent.getStatAndPrepareData();
+  }
+
+  exportActivitiesAsJson() {
+    if (this.selectedUsers.length > 0) {
+      this.isExporting = true;
+      this.activityService.getActivitiesForExport(this.projectId, this.selectedUsers).then((activities) => {
+        const sJson = JSON.stringify(activities);
+        const element = document.createElement('a');
+        element.setAttribute('href', 'data:text/json;charset=UTF-8,' + encodeURIComponent(sJson));
+        element.setAttribute('download', `${this.project.name}-export.json`);
+        element.style.display = 'none';
+        document.body.appendChild(element);
+        element.click();
+        document.body.removeChild(element);
+        this.isExporting = false;
+      });
+    }
+  }
+
+  exportActivitiesAsCSV() {
+    if (this.selectedUsers.length > 0) {
+      this.isExporting = true;
+      this.activityService.getActivitiesForExport(this.projectId, this.selectedUsers).then((activities) => {
+        const result = json2csv.parse(activities);
+        const element = document.createElement('a');
+        element.setAttribute('href', 'data:text/csv;charset=UTF-8,' + encodeURIComponent(result));
+        element.setAttribute('download', `${this.project.name}-export.csv`);
+        element.style.display = 'none';
+        document.body.appendChild(element);
+        element.click();
+        document.body.removeChild(element);
+        this.isExporting = false;
+      });
+    }
+  }
+
+  importActivities() {
+    const input = document.getElementById('uploadInput');
+    input.click();
+
+  }
+
+  fileUpload($event) {
+    this.isImporting = true;
+
+    const file: File = $event.target.files[0];
+
+    if (file.type !== 'application/json') {
+      this.showError('Wrong file for import.');
+      this.isImporting = false;
+    }
+
+    if (file.size >= 10000000) {
+      this.showError('The File size exceeds the 10MB limit.');
+      this.isImporting = false;
+    }
+
+    if (this.isImporting) {
+      const formData = new FormData();
+      formData.append('data', file);
+      this.activityService.importActivities(this.projectId, formData).then((activities) => {
+        this.showError(`Successfully imported ${activities.length} activities`);
+        this.getActivitiesFromServer();
+        this.isImporting = false;
+      })
+      .catch(error => {
+        this.showError('Something went wrong when importing your activities');
+        console.log('error is: ', error);
+        this.isImporting = false;
+      });
+    }
   }
 }
 

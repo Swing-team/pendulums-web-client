@@ -7,7 +7,15 @@ const initialState: User = {
   email: null,
   name: null,
   profileImage: null,
-  pendingInvitations: []
+  pendingInvitations: [],
+  settings: {
+    receiveForgottenActivityEmail: null,
+    relaxationTime: {
+      isEnabled: null,
+      workingTime: 0,
+      restTime: 0
+    }
+  }
 };
 
 export default function reducer(state = initialState, action: ActionWithPayload<any>) {
@@ -22,6 +30,10 @@ export default function reducer(state = initialState, action: ActionWithPayload<
 
     case UserActions.UPDATE_USER_IMAGE: {
       return Object.assign({}, state , { profileImage: action.payload});
+    }
+
+    case UserActions.UPDATE_USER_SETTINGS: {
+      return Object.assign({}, state, {settings: action.payload});
     }
 
     case UserActions.CLEAR_USER: {

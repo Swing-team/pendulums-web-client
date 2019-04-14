@@ -18,7 +18,11 @@ export class ModalService {
     // get root viewContainerRef
     this.rootViewContainerRef = this.applicationRef.components[0].instance.viewContainerRef;
   }
-
+  applyStyleDynamically(modalConfig: ModalConfig) {
+    if (modalConfig.customBodyStyles) {
+      this.modalComponentRef.instance['customBodyStyles'] = modalConfig.customBodyStyles;
+    }
+  }
   show(modalConfig: ModalConfig) {
     const contentFactory = this.componentFactoryResolver.resolveComponentFactory(modalConfig.component);
     const modalFactory = this.componentFactoryResolver.resolveComponentFactory(ModalComponent);
@@ -85,4 +89,5 @@ interface ModalConfig {
   inputs?:  Object;
   outputs?: Object;
   customStyles?: Object;
+  customBodyStyles?: Object;
 }

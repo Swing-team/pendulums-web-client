@@ -6,9 +6,12 @@ import 'rxjs/add/operator/toPromise';
 
 @Injectable()
 export class UserService {
+  private options;
   constructor(
     private http: HttpClient
-  ) { }
+  ) {
+    this.options = {...environment.httpOptions, responseType: 'text'};
+  }
 
   getSummary(): Promise<any> {
     return this.http
@@ -23,6 +26,14 @@ export class UserService {
       .put(environment.apiEndpoint + '/user' , user, environment.httpOptions)
       .toPromise()
       .then(response => (response as any).user as User)
+      .catch(this.handleError);
+  }
+
+  updateSettings(settings): Promise<any> {
+    return this.http
+      .post(environment.apiEndpoint + '/user/settings', JSON.stringify(settings), this.options)
+      .toPromise()
+      .then()
       .catch(this.handleError);
   }
 

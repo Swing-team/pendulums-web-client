@@ -1,0 +1,315 @@
+@import "../../../sass/variables"
+
+.ps-header-input
+  border-left: 3px solid $black
+  border-right: 3px solid $black
+  border-top: none
+  border-bottom: none
+  border-radius: 0
+  margin-left: 0
+  font-size: 19px
+  box-shadow: none
+  text-align: center
+  &:not(:focus) + label
+    background-color: $white
+    padding: 4px
+    z-index: 2
+    color: $ps-primary
+    text-transform: uppercase
+    font-weight: 500
+    line-height: 2rem
+  &:hover
+    opacity: 0.7
+  &:focus
+    opacity: 0.7
+
+  @media (max-width: 480px)
+    font-size: 20px
+
+.ps-project-create-color-picker-container
+  display: inline-flex
+  margin-left: 10px
+  margin-right: -21px
+  margin-top: 0px
+  .ps-project-create-color-picker-title
+    align-self: center
+    font-size: 16px
+  .ps-project-create-palette-container
+    position: relative
+    .ps-project-create-color
+      margin: 5px
+      margin-top: 6px
+      .button
+        border-radius: 100%
+        border-color: $black !important
+        height: 24px !important
+        width: 24px !important
+        padding: 0 !important
+        transition: all ease-in-out $ps-transitions
+        &.ps-project-create-palette-item-back-salmon
+          background: $salmon
+          &:hover
+            background-color: $salmon-light !important
+        &.ps-project-create-palette-item-back-white1
+          background: $white1
+          &:hover
+            background-color: darken($white1, 5) !important
+        &.ps-project-create-palette-item-back-blue
+          background: $ps-card-blue
+          border: 1px solid $paper !important
+          &:hover
+            background-color: $ps-card-blue-light !important
+        &.ps-project-create-palette-item-back-black
+          background: $black
+          border: 1px solid $paper !important
+          &:hover
+            background-color: $black-light !important
+        &.ps-project-create-palette-item-back-yellow
+          background: $yellow
+          &:hover
+            background-color: $yellow-light !important
+        &.ps-project-create-palette-item-back-pink
+          background: $ps-card-pink
+          &:hover
+            background-color: $ps-card-pink-light !important
+        &.ps-project-create-palette-item-back-red
+          background: $ps-card-red
+          border: 1px solid $paper !important
+          &:hover
+            background-color: $ps-card-red-light !important
+        &.ps-project-create-palette-item-back-green
+          background: $ps-card-green
+          &:hover
+            background-color: $ps-card-green-light !important
+    .ps-project-create-palette
+      position: absolute
+      top: -50px
+      right: 7px
+      padding: 7px
+      background: rgba(0,0,0,0.8)
+      z-index: 99
+      color: $white1
+      font-size: 16px
+      border-radius: $radius
+      @media (max-width: 480px)
+         right: -40px
+      .ps-project-create-palette-colors-section
+        display: inline-flex
+        .ps-project-create-palette-item
+          margin: 5px
+          .button
+            border-radius: 100%
+            height: 30px !important
+            width: 30px !important
+            transition: all ease-in-out $ps-transitions
+            &.ps-project-create-palette-item-back-salmon
+              background: $salmon
+              &:hover
+                background-color: $salmon-light !important
+            &.ps-project-create-palette-item-back-white1
+              background: $white1
+              &:hover
+                background-color: darken($white1, 5) !important
+            &.ps-project-create-palette-item-back-blue
+              background: $ps-card-blue
+              &:hover
+                background-color: $ps-card-blue-light !important
+            &.ps-project-create-palette-item-back-black
+              background: $black
+              &:hover
+                background-color: $black-light !important
+            &.ps-project-create-palette-item-back-yellow
+              background: $yellow
+              &:hover
+                background-color: $yellow-light !important
+            &.ps-project-create-palette-item-back-pink
+              background: $ps-card-pink
+              &:hover
+                background-color: $ps-card-pink-light !important
+            &.ps-project-create-palette-item-back-red
+              background: $ps-card-red
+              &:hover
+                background-color: $ps-card-red-light !important
+            &.ps-project-create-palette-item-back-green
+              background: $ps-card-green
+              &:hover
+                background-color: $ps-card-green-light !important
+.ps-submit-button
+  position: absolute
+  bottom: 0
+  width: 100%
+  left: 0
+  .button
+    border-radius: 0 0 $radius $radius
+
+.ps-project-create-palette-item-back-salmon
+  background: $salmon
+  color: rgba(0, 0, 0, 0.7) !important
+  .icon-palette-1, .icon-ellipsis-vert
+    &:hover
+      color: lighten(#4a4a4a, 10)
+
+.ps-project-create-palette-item-back-white1
+  background: $white1
+  color: rgba(0, 0, 0, 0.7) !important
+  .icon-palette-1, .icon-ellipsis-vert
+    &:hover
+      color: lighten(#4a4a4a, 10)
+
+.ps-project-create-palette-item-back-blue
+  background: $ps-card-blue
+  color: rgba(255, 255, 255, 0.7) !important
+  .select::after
+    border-color: $paper !important
+  .ps-note-date, .icon-check
+    color: rgba(255,255,255,0.7) !important
+  .is-loading::after
+    border-left-color: rgba(255,255,255,0.7) !important
+    border-bottom-color: rgba(255,255,255,0.7) !important
+  .icon-palette-1, .icon-ellipsis-vert
+    &:hover
+      color: lighten($paper, 10)
+  .ps-header-input
+    border-left: 3px solid $paper
+    border-right: 3px solid $paper
+  ::placeholder
+    color: $paper !important
+  .ps-bg-input
+    border: none
+    color: $paper !important
+.ps-project-create-palette-item-back-black
+  background: $black
+  color: rgba(255, 255, 255, 0.7) !important
+  .select::after
+    border-color: $paper !important
+  .ps-note-date, .icon-check
+    color: rgba(255,255,255,0.7) !important
+  .is-loading::after
+    border-left-color: rgba(255,255,255,0.7) !important
+    border-bottom-color: rgba(255,255,255,0.7) !important
+  .icon-palette-1, .icon-ellipsis-vert
+    &:hover
+      color: lighten($paper, 10)
+  .ps-header-input
+    border-left: 3px solid $paper
+    border-right: 3px solid $paper
+  ::placeholder
+    color: $paper !important
+  .ps-bg-input
+    border: none
+    color: $paper !important
+.ps-project-create-palette-item-back-yellow
+  background: $yellow
+  color: rgba(0, 0, 0, 0.7) !important
+  .icon-palette-1, .icon-ellipsis-vert
+    &:hover
+      color: lighten(#4a4a4a, 10)
+.ps-project-create-palette-item-back-pink
+  background: $ps-card-pink
+  color: rgba(0, 0, 0, 0.7) !important
+  .icon-palette-1, .icon-ellipsis-vert
+    &:hover
+      color: lighten(#4a4a4a, 10)
+
+.ps-project-create-palette-item-back-red
+  background: $ps-card-red
+  color: rgba(255, 255, 255, 0.7) !important
+  .select::after
+    border-color: $paper !important
+  .ps-note-date, .icon-check
+    color: rgba(255,255,255,0.7) !important
+  .is-loading::after
+    border-left-color: rgba(255,255,255,0.7) !important
+    border-bottom-color: rgba(255,255,255,0.7) !important
+  .icon-palette-1, .icon-ellipsis-vert
+    &:hover
+      color: lighten($paper, 10)
+  .ps-header-input
+    border-left: 3px solid $paper
+    border-right: 3px solid $paper
+  ::placeholder
+    color: $paper !important
+  .ps-bg-input
+    border: none
+    color: $paper !important
+
+
+.ps-project-create-palette-item-back-green
+  background: $ps-card-green
+  color: rgba(0, 0, 0, 0.7) !important
+  .icon-palette-1, .icon-ellipsis-vert
+    &:hover
+      color: lighten(#4a4a4a, 10)
+  .is-loading
+    color: #4a4a4a !important
+
+.ps-bg-input
+  background: transparent !important
+  border: none
+
+.ps-act-item-button-confirmation
+  border: none
+  font-size: 1.4rem
+  background-color: transparent
+  cursor: default
+  pointer-events: none
+.ps-p-b-0
+  padding-bottom: 0 !important
+.ps-archive
+  padding-top: 5px
+  i
+    font-size: 18px
+.ps-icons
+  padding-top: 20px
+.select
+  max-width: 160px
+.ps-note-date
+  color: rgba(0, 0, 0, 0.7)
+  font-size: 13px
+.is-loading
+  font-size: 13px
+
+.icon-check
+  font-size: 13px
+  padding-right: 0
+  color: rgba(0, 0, 0, 0.7)
+.button
+  &.is-loading
+    height: 0
+    margin-left: 12px
+    &:after
+      border-left-color: rgba(0, 0, 0, 0.7)
+      border-bottom-color: rgba(0, 0, 0, 0.7)
+.ps-note-bottom
+  position: relative
+  // display: flex
+  justify-content: space-around
+  .ps-fill-space
+    flex-grow: 15
+  .ps-color
+    flex-grow: 1
+.saved-txt
+  padding-top: 3px
+.is-up
+  position: absolute
+  margin-top: 1px
+  top: -54px
+  left: -175px
+select
+  option
+    color: black
+.dropdown-item
+  &:hover
+    background-color: $gray
+.ps-color
+  // padding-right: 15px !important
+.icon-palette-1
+  font-size: 20px
+  transition: color ease-in-out $ps-transitions
+.icon-ellipsis-vert
+  font-size: 22px !important
+  transition: color ease-in-out $ps-transitions
+.ttt
+  padding-top: 13px
+.columns:last-child
+  margin-bottom: 0 !important

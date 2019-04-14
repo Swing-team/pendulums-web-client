@@ -58,7 +58,7 @@ export class ForgotPasswordComponent {
 
   validation(User): boolean {
     if (!EMAIL_REGEX.test(User.email)) {
-      this.errorMessage = 'please enter valid email address';
+      this.errorMessage = 'Please enter a valid email address';
       return false;
     }
     return true;

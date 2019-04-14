@@ -12,17 +12,20 @@ import { User } from '../../shared/state/user/user.model';
 import { cloneDeep }                      from 'lodash';
 import { userRoleInProject } from '../../dashboard/shared/utils';
 import * as moment from 'moment';
+import { NativeNotificationService } from './native-notification.service';
 
 @Injectable()
 export class StopStartActivityService {
   private currentActivityCopy: Activity;
   private status: Status;
   private user: User;
+  showNotifInterval: any;
 
   constructor( private activityService: ActivityService,
               private store: Store<AppState>,
               private currentActivityActions: CurrentActivityActions,
               private unSyncedActivityActions: UnSyncedActivityActions,
+              private nativeNotificationService: NativeNotificationService,
               private projectsActions: ProjectsActions) {
     store.select('currentActivity').subscribe((currentActivity: Activity) => {
       this.currentActivityCopy = cloneDeep(currentActivity);
@@ -72,12 +75,13 @@ export class StopStartActivityService {
 
           // if we get ok response from server so we have id for currentActivity and it has to been set
           this.store.dispatch(this.currentActivityActions.loadCurrentActivity(resActivity));
+          this.checkRestTimeSet(activity);
           resolve();
         })
           .catch(error => {
             // todo: check errors
             if (error.status === 404) {
-              console.log('Project has been deleted before.');
+              console.log('The project has been deleted before.');
               this.store.dispatch(this.projectsActions.removeProject(activity.project));
 
               // if we have current activity on deleted project we should clear it
@@ -96,9 +100,31 @@ export class StopStartActivityService {
             console.log('server error happened', error);
           });
       } else {
+        this.checkRestTimeSet(activity);
         resolve();
       }
   })
+  }
+
+  checkRestTimeSet(activity: Activity) {
+    const settings = this.user.settings;
+    const workTime = Math.floor(settings.relaxationTime.workingTime / 1000);
+    const restTime = Math.floor(settings.relaxationTime.restTime / 1000);
+
+    let nextWorkTime = workTime;
+    let duration;
+
+    this.showNotifInterval = setInterval(() => {
+      duration = Math.floor((Date.now() - Number(activity.startedAt)) / 1000);
+      if (duration === nextWorkTime) {
+        this.nativeNotificationService.showNotification(`Take a rest and be relaxed for ${restTime / 60} minutes!`);
+      }
+      if (duration === (nextWorkTime + restTime)) {
+        this.nativeNotificationService.showNotification(`Ok! It's time to work for next ${workTime / 60} minutes!`);
+        nextWorkTime += (workTime + restTime);
+      }
+    }, 1000)
+
   }
 
   manageProjectRecentActivitiesInState(activity: Activity, project: Project) {
@@ -161,27 +187,33 @@ export class StopStartActivityService {
           if (this.currentActivityCopy.id) {
             this.activityService.editCurrentActivity(this.currentActivityCopy.project, this.currentActivityCopy).then((activity) => {
               this.updateStateInSuccess(dividedActivitiesArray);
+              clearInterval(this.showNotifInterval);
               resolve();
             })
               .catch(error => {
                 this.updateStateInCatch(error);
+                clearInterval(this.showNotifInterval);
                 resolve();
               });
           } else {
             this.activityService.createManually(this.currentActivityCopy.project, this.currentActivityCopy).then((activity) => {
               this.updateStateInSuccess(dividedActivitiesArray);
+              clearInterval(this.showNotifInterval);
               resolve();
             })
               .catch((error) => {
                 this.updateStateInCatch(error);
+                clearInterval(this.showNotifInterval);
                 resolve();
               });
           }
         } else {
           this.store.dispatch(this.currentActivityActions.clearCurrentActivity());
+          clearInterval(this.showNotifInterval);
           resolve();
         }
       } else {
+        clearInterval(this.showNotifInterval);
         resolve();
       }
     });
@@ -193,6 +225,7 @@ export class StopStartActivityService {
     this.manageProjectRecentActivitiesInState(this.currentActivityCopy, project);
     // store all divided activities
     dividedActivitiesResult.map((item) => {
+      this.store.dispatch(this.unSyncedActivityActions.addUnSyncedActivity(item));
       this.manageProjectRecentActivitiesInState(item, project);
     });
   }

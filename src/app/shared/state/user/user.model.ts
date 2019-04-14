@@ -6,4 +6,16 @@ export interface User {
   name: string;
   profileImage: string;
   pendingInvitations: Array<Project>;
+  settings: Settings;
+}
+
+export interface Settings {
+  receiveForgottenActivityEmail: boolean;
+  relaxationTime: RelaxationTime
+}
+
+export interface RelaxationTime {
+  isEnabled: boolean,
+  workingTime: number,
+  restTime: number
 }

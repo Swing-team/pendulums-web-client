@@ -7,9 +7,9 @@
 <div class="columns">
   <div class="column has-text-centered">
     <input id="custom-input" type="file" style="display:none" [disabled]="disableButtons" (change)="fileChangeListener($event)">
-    <label class="button is-primary" for="custom-input" [ngClass]="{'ps-is-disabled': disableButtons}">choose a file...</label>
-    <button class="button is-success"  (click)="save()" [disabled]="disableButtons" [ngClass]="{'is-loading': disableButtons}">save</button>
-    <button class="button is-danger" (click)="cancel()" [disabled]="disableButtons">cancel</button>
+    <label class="button is-primary" for="custom-input" [ngClass]="{'ps-is-disabled': disableButtons}">Choose a file...</label>
+    <button class="button is-success"  (click)="save()" [disabled]="disableButtons" [ngClass]="{'is-loading': disableButtons}">Save</button>
+    <button class="button is-danger" (click)="cancel()" [disabled]="disableButtons">Cancel</button>
   </div>
 </div>
 

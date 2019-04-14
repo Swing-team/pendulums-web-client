@@ -38,6 +38,9 @@ let userLoggedIn = false;
 if (process.platform === 'win32') {
     trayIconPath = path.join(__dirname, '../build/tray.ico');
     activeTrayIconPath = path.join(__dirname, '../build/tray-yello.ico');
+} else if (process.platform === 'linux') {
+    trayIconPath = path.join(__dirname, '../build/tray@2x.png');
+    activeTrayIconPath = path.join(__dirname, '../build/tray-yello@2x.png');
 } else {
     trayIconPath = path.join(__dirname, '../build/tray.png');
     activeTrayIconPath = path.join(__dirname, '../build/tray-yello.png');
@@ -124,27 +127,31 @@ const signedOutTrayMenuTemplate: MenuItemConstructorOptions[] = [
 ]
 
 let trayMenu = Menu.buildFromTemplate(signedInTrayMenuTemplate);
+let minimized = false; // see openApp() for more information
 
 const createWindow = () => {
     // Create the browser window.
+    const { width, height } = screen.getPrimaryDisplay().size; // make windows size based on user resolutions
+    
+
     win = new BrowserWindow({
-        width: 1024,
-        height: 650,
+        width: Math.ceil(55 * width / 100),
+        height: Math.ceil(60 * height / 100),
         center: true,
         minWidth: 770,
         minHeight: 630
     });
 
 
-    win.loadURL(url.format({
-        pathname: path.join(__dirname, '../app/index.html'),
-        protocol: 'file:',
-        slashes: true
-    }));
+    // win.loadURL(url.format({
+    //     pathname: path.join(__dirname, '../app/index.html'),
+    //     protocol: 'file:',
+    //     slashes: true
+    // }));
 
 
-    // win.loadURL('http://localhost:4200');
-    // win.webContents.openDevTools();
+    win.loadURL('http://192.168.1.106:4200');
+    win.webContents.openDevTools();
 
     // Emitted when the window is closed.
     win.on('closed', () => {
@@ -163,6 +170,11 @@ const createWindow = () => {
 
     win.on('blur', () => {
         win.webContents.executeJavaScript('document.getElementsByName("activityNameInput").forEach(element => {element.blur()})');
+    });
+
+    // see openApp() for more information
+    win.on('minimize', () => {
+      minimized = true;
     });
 
     win.webContents.on('new-window', (e, URL) => {
@@ -391,6 +403,17 @@ const openWeb = () => {
 };
 
 const openApp = () => {
+    // this logic is related to the issue TG-493
+    // so minimize doesn't actuaaly hide the window and win.restore() doesn't work correctly
+    // so a created a boolean variable called minimized and when win.on('minimize') trigger
+    // the value of minized turns to true so when the user clicks on open App in tray
+    // face no bug. i even check the e.preventDefault and win.hide() whene win.on('minimize) triggers
+    // but this action also hides the icon in menu bar. so by now this is the best option i could think of.
+
+    if (minimized) {
+      win.hide();
+      minimized = false;
+    }
     win.show();
 };
 
@@ -503,9 +526,20 @@ const gotTheLock = app.requestSingleInstanceLock();
 if (!gotTheLock) {
     app.quit();
 } else {
-    if (win) {
-        win.show();
-    }
+    app.on('second-instance', () => {
+        // Someone tried to run a second instance, we should focus our window
+        if (win) {
+          if (win.isMinimized()) {
+            win.restore();
+          }
+          if (win.isVisible) {
+              win.restore();
+          } else {
+              win.show()
+          }
+        }
+        return true;
+  });
 }
 
 

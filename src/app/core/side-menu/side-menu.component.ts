@@ -5,7 +5,7 @@ import {
 import { User }                          from '../../shared/state/user/user.model';
 import { environment }                    from '../../../environments/environment';
 import { Md5 }                           from 'ts-md5/dist/md5';
-import { Router }                        from '@angular/router';
+import { Router, NavigationStart }                        from '@angular/router';
 import { ErrorService }                  from '../error/error.service';
 import { ModalService }                  from '../modal/modal.service';
 import { AppInfoComponent }              from './app-info/app-info.component';
@@ -25,12 +25,10 @@ export class SideMenuComponent implements OnInit {
   @Input() netConnected: boolean;
   @Input() notifNum: number;
   @ViewChild('notifications') notifications;
-  @ViewChild('donation') donation;
 
   emailHash: any;
   pendulumNotification: boolean;
   notificationIsActive = false;
-  donationIsActive = false;
   activeItemNumber = 0;
   syncing = false;
   environment = environment;
@@ -50,9 +48,27 @@ export class SideMenuComponent implements OnInit {
     if (this.router.url === '/dashboard') {
       this.activeItemNumber = 3;
     }
+    if (this.router.url === '/notes') {
+      this.activeItemNumber = 8;
+    }
     if (this.router.url === '/profile') {
       this.activeItemNumber = 1;
     }
+
+    // Subscribe to router events to find out the active item
+    this.router.events.subscribe((event: any) => {
+      if (event instanceof NavigationStart) {
+        if (event.url === '/dashboard') {
+          this.activeItemNumber = 3;
+        }
+        if (event.url === '/notes') {
+          this.activeItemNumber = 8;
+        }
+        if (event.url === '/profile') {
+          this.activeItemNumber = 1;
+        }
+      }
+    });
   }
 
   signout() {
@@ -60,7 +76,7 @@ export class SideMenuComponent implements OnInit {
       this.onSignoutClicked.emit();
       this.activeItemNumber = 4;
     } else {
-      this.showError('This feature is not available in offline mode' );
+      this.showError('Not available in offline mode' );
     }
   }
 
@@ -75,20 +91,6 @@ export class SideMenuComponent implements OnInit {
     this.pendulumNotification = false;
     this.notificationIsActive = !this.notificationIsActive;
     if (!this.notificationIsActive) {
-      if (this.router.url === '/dashboard') {
-        this.activeItemNumber = 3;
-      }
-      if (this.router.url === '/profile') {
-        this.activeItemNumber = 1;
-      }
-    }
-  }
-
-  toggleDonation() {
-    this.activeItemNumber = 4;
-    this.pendulumNotification = false;
-    this.donationIsActive = !this.donationIsActive;
-    if (!this.donationIsActive) {
       if (this.router.url === '/dashboard') {
         this.activeItemNumber = 3;
       }
@@ -124,19 +126,6 @@ export class SideMenuComponent implements OnInit {
     }
   }
 
-  clickedOutSideOfDonation(event) {
-    if (this.donation.nativeElement.contains(event.target)) {
-    } else {
-      this.donationIsActive = false;
-      if (this.router.url === '/dashboard') {
-        this.activeItemNumber = 3;
-      }
-      if (this.router.url === '/profile') {
-        this.activeItemNumber = 1;
-      }
-    }
-  }
-
   @HostListener('document:click', ['$event'])
   clickOutOfMenu(event) {
     if (this.eRef.nativeElement.contains(event.target)) {
@@ -161,7 +150,7 @@ export class SideMenuComponent implements OnInit {
 
   syncSummary() {
     if (!this.netConnected) {
-      this.showError('This feature is not available in offline mode' );
+      this.showError('Not available in offline mode' );
     } else {
       this.syncing = true;
       Promise.all(this.syncService.autoSync())

@@ -65,13 +65,13 @@ export class SignUpComponent {
 
   validation(newUser): boolean {
     if (!EMAIL_REGEX.test(newUser.email)) {
-      this.errorMessage = 'please enter valid email address';
+      this.errorMessage = 'Please enter a valid email address';
       return false;
     }
     if (!newUser.password
       || newUser.password.length < 6
       || newUser.password.length > 32) {
-      this.errorMessage = 'please choose password with 6 to 32 characters ';
+      this.errorMessage = 'The password length must be between 6 and 32 characters ';
       return false;
     }
     return true;

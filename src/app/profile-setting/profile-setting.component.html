@@ -1,6 +1,13 @@
 <div class="container ps-profile-padding">
+<div class="ps-project-name-container">
+    <div class="ps-activity-top-button icon-back" (click)="goBack()" title="Back"></div>
+    <div class="ps-project-name">
+      Profile
+    </div>
+    <div></div>
+  </div>
   <div class="columns is-multiline is-centered">
-    <div class="column is-4-widescreen is-6-desktop is-6-tablet">
+    <div class="column is-4-widescreen is-6-desktop is-6-tablet ps-card-space">
       <div class="box">
         <div class="ps-profile-image-container">
           <img *ngIf="userEdit.profileImage" (click)="openImageModal()" class="ps-user-image"
@@ -8,7 +15,7 @@
                         'assets/images/placeholder.png'}}">
           <svg *ngIf="!userEdit.profileImage" (click)="openImageModal()" class="ps-user-image"
                 width="36" height="36" [identiconHash]="emailHash">
-            Fallback text for browsers not supporting inline svg
+            Your browser does not support SVG
           </svg>
           <span class="icon-pencil ps-pencil-image-change" (click)="openImageModal()"></span>
         </div>
@@ -37,7 +44,7 @@
         <div class="ps-reserve-space"></div>
       </div>
     </div>
-    <div class="column is-4-widescreen is-6-desktop is-6-tablet">
+    <div class="column is-4-widescreen is-6-desktop is-6-tablet ps-card-space">
       <div class="box">
         <form (ngSubmit)="resetPassword()" #resetPasswordForm="ngForm" novalidate>
           <div class="is-centered">
@@ -50,19 +57,19 @@
               <div class="field">
                 <p class="control">
                   <input [(ngModel)]="data.oldPassword" name="password" class="input"
-                         placeholder="Old password" type="password">
+                         placeholder="Old password" type="password" autocomplete="off" value="">
                 </p>
               </div>
               <div class="field">
                 <p class="control">
                   <input [(ngModel)]="data.newPassword" name="password" class="input"
-                         placeholder="New password" type="password">
+                         placeholder="New password" type="password" autocomplete="off" value="">
                 </p>
               </div>
               <div class="field">
                 <p class="control has-icons-right">
                   <input [(ngModel)]="rePassword" name="rePassword" class="input"
-                         placeholder="Re-type new password" type="password">
+                         placeholder="Re-type new password" type="password" autocomplete="off" value="">
                 </p>
               </div>
               <br>
@@ -77,6 +84,65 @@
             </div>
           </div>
         </form>
+      </div>
+    </div>
+  </div>
+  <div class="columns is-multiline is-centered">
+    <div class="column is-8-widescreen is-12-desktop is-12-tablet ps-card-space">
+      <div class="box">
+        <div class="is-centered">
+          <div dir="auto">
+            <div class="field">
+              <b class="title is-4">
+                Settings
+              </b>
+            </div>
+            <div class="field has-text-left">
+              <input id="receiveForgottenActivityEmailCheckBox" type="checkbox" [(ngModel)]="settings.receiveForgottenActivityEmail">
+              <label for="receiveForgottenActivityEmailCheckBox"><strong>Forgotten activity notice</strong></label>
+              <div class="ps-setting-info-container">
+                <p class="ps-setting-info">Turn on to receive an email if you have a current activity and left the app for 15 minutes</p>
+              </div>
+            </div>
+            <hr>
+            <div class="field has-text-left">
+              <input id="relaxationTimeCheckBox" type="checkbox" [(ngModel)]="settings.relaxationTime.isEnabled">
+              <label for="relaxationTimeCheckBox"><strong>Rest Time</strong></label>
+              <div class="ps-setting-info-container">
+                <p class="ps-setting-info">Turn on to receive "Rest Time" notifications in specific intervals</p>
+              </div>
+              <div class="columns">
+                <div class="column" *ngIf="settings.relaxationTime.isEnabled">
+                  <b>Presets</b> <br>
+                  <div class="select">
+                    <select [(ngModel)]="relaxationTimeSelectorModel" (change)="timeSelectorChange()" class="ps-body-input ps-pomodoro-time-select">
+                      <option value="pomodoro1">Pomodoro time set 1</option>
+                      <option value="pomodoro2">Pomodoro time set 2</option>
+                      <option value="pomodoro3">Pomodoro time set 3</option>
+                      <option value="pomodoroCustom">Custom time set</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="columns is-mobile">
+                  <div class="column" *ngIf="settings.relaxationTime.isEnabled">
+                    <b>Work for (minutes)</b>
+                    <input [(ngModel)]="workingTimeInputModel" type="number" (keypress)="numberOnly($event)"
+                      class="input" placeholder="Work time (minutes)" (input)="changeDropDown()">
+                  </div>
+                  <div class="column" *ngIf="settings.relaxationTime.isEnabled">
+                    <b>Rest for (minutes)</b>
+                    <input class="ps-content-space" [(ngModel)]="relaxTimeInputModel" type="number" (keypress)="numberOnly($event)"
+                      class="input" placeholder="Rest time (minutes)" (input)="changeDropDown()">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="field ps-save-btn-container">
+                <button class="button is-fullwidth ps-profile-pass-button" [ngClass]="{'is-loading': settingsSubmitted}"
+                [disabled]="settingsSubmitted || !netConnected" (click)="updateSettings()">Save Settings</button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
