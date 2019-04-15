@@ -38,15 +38,28 @@
   cursor: not-allowed !important
 
 .ps-project-name-container
+  margin-left: 50px
+  margin-right: 50px
   display: flex
-  align-items: center
-  width: 100%
   margin-top: 20px
   margin-bottom: 50px
   padding-left: 8px
   padding-right: 8px
-  justify-content: space-around
-  flex-direction: row
+  justify-content: flex-start
+  flex-flow: row nowrap
+  align-items: center
+  @media (max-width: 700px)
+    margin-left: 25px
+    margin-right: 25px
+  @media (max-width: 500px)
+    margin-left: 0
+    margin-right: 0
+  .ps-note-header-title
+    flex: 1 1 auto
+    justify-content: flex-end
+    align-items: center
+  .ps-note-header-button
+    flex: 0 0 auto
   .ps-activity-top-button
     cursor: pointer
     font-size: 1.5rem
@@ -61,6 +74,7 @@
     min-width: 50px
     z-index: 5
     transition: all ease-in-out $ps-transitions
+
     &:hover
       background-color: darken($paper, 10)
     @media (max-width: 700px)
