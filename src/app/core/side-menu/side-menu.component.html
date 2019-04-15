@@ -24,7 +24,7 @@
       </a>
     </li>
     <li class="ps-fill-space"></li>
-    <li title="{{ netConnected ? 'Sign out' : 'Offline mode!'}}"><a [ngClass]="{'is-active': activeItemNumber === 4 , 'is-disabled': !netConnected}" (click)="signout()"><span class="icon-sign-out"></span></a></li>
+    <li title="{{ netConnected ? 'Sign out' : 'Cannot signout when you are offline'}}"><a [ngClass]="{'is-active': activeItemNumber === 4 , 'is-disabled': !netConnected}" (click)="signout()"><span class="icon-sign-out"></span></a></li>
     <li title="Report bug" id="bug-report-icon">
       <a [ngClass]="{'is-active': activeItemNumber === 5 }" (click)="togglePendulumNotifications()">
         <span class="icon-bug"></span>
