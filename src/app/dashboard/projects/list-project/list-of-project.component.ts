@@ -1,4 +1,4 @@
-import { Component, Input, OnInit }                           from '@angular/core';
+import { Component, Input, OnInit, OnChanges }                           from '@angular/core';
 import { Observable }                                 from 'rxjs/Observable';
 import { ModalService }                               from '../../../core/modal/modal.service';
 import { CreateProjectComponent }                     from '../create-project/create-project.component';
@@ -23,13 +23,13 @@ import { trigger, style, transition, animate }  from '@angular/animations';
   ],
 })
 
-export class ListOfProjectComponent implements OnInit {
+export class ListOfProjectComponent implements OnChanges {
   @Input() projects: Project[];
   @Input() serverMessage: any;
-  @Input() donation: String = 'active';
   @Input() user: Observable<User>;
   @Input() status: Status;
   @Input() currentActivity: Observable<Activity>;
+  serverMessageId: string;
 
   constructor (
     private modalService: ModalService,
@@ -37,18 +37,20 @@ export class ListOfProjectComponent implements OnInit {
     private cookieService: CookieService) {
 
   }
-  ngOnInit() {
-    if (this.cookieService.get('donation') === 'deactive') {
-      this.donation = 'deactive'
-    }
+
+  ngOnChanges() {
+    this.serverMessageId = this.cookieService.get('serverMessageId');
   }
+
   dismiss() {
-    this.donation = 'deactive'
-    this.cookieService.set( 'donation', 'deactive' );
+    this.serverMessageId = this.serverMessage.id;
+    this.cookieService.set( 'serverMessageId', this.serverMessageId );
   }
+
   donate() {
     window.open('https://pendulums.io/donation.html', '_blank');
   }
+
   openCreateProjectModal() {
     if (this.status.netStatus) {
       this.modalService.show({
