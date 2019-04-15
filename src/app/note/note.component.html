@@ -1,12 +1,16 @@
 <div class="container ps-note-padding">
   <div class="ps-project-name-container">
-    <div class="ps-activity-top-button icon-back" (click)="goBack()" title="Back"></div>
-    <app-tab
-        [tabs]="[{name: 'Board'}, {name: 'Archived'}]"
-        (onTabClicked)="getSelectedTab($event)"
-    >
-    </app-tab>
-    <div [ngClass]="!selectedTab ? 'ps-activity-top-button icon-plus' : '' " class="ps-tab" (click)="openCreateNoteModal()" title="Add new note"></div>
+    <div class="ps-note-header-button">
+      <div class="ps-activity-top-button icon-back" (click)="goBack()" title="Back"></div>
+    </div>
+    <div class="ps-note-header-title">
+      <app-tab
+          [tabs]="[{name: 'Board'}, {name: 'Archived'}]"
+          (onTabClicked)="getSelectedTab($event)"
+      >
+      </app-tab>
+    </div>
+    <div class="ps-note-header-button"><div [ngClass]="!selectedTab ? 'ps-activity-top-button icon-plus' : '' " class="ps-tab test2" (click)="openCreateNoteModal()" title="Add new note"></div></div>
   </div>
   <div *ngIf="actives.length === 0 && !selectedTab" class="columns is-multiline">
     <div class="column is-3-widescreen is-4-desktop is-4-tablet is-6-mobile">

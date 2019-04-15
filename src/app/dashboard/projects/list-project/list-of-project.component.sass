@@ -21,13 +21,32 @@
 .ps-project-name-container
   display: flex
   align-items: center
-  width: 100%
   margin-top: 20px
   margin-bottom: 37px
   padding-left: 8px
   padding-right: 8px
-  justify-content: space-around
-  flex-direction: row
+  justify-content: flex-start
+  flex-flow: row nowrap
+  align-items: center
+  margin-left: 50px
+  margin-right: 50px
+  @media (max-width: 700px)
+    margin-left: 25px
+    margin-right: 25px
+  @media (max-width: 500px)
+    margin-left: 0
+    margin-right: 0
+  .ps-project-header-title
+    display: flex
+    flex: 1 1 auto
+    justify-content: center
+    align-items: center
+  .ps-project-header-button
+    display: flex
+    justify-content: center
+    align-items: center
+    flex: 0 0 auto
+    z-index: 9
   .ps-project-name
     margin-left: 10px
     margin-right: 10px
@@ -119,3 +138,5 @@
   display: inline-block
   width: 100%
   text-align: right
+.ps-z-index
+  z-index: 9

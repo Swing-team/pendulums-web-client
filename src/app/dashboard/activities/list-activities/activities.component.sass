@@ -68,17 +68,38 @@
 .ps-header-container
   min-height: 80px
   padding-top: 30px
-
+.ps-z-index
+  z-index: 9
 .ps-project-name-container
   display: flex
   align-items: center
-  width: 100%
   margin-top: 20px
   margin-bottom: 50px
   padding-left: 8px
   padding-right: 8px
-  justify-content: space-around
-  flex-direction: row
+  justify-content: flex-start
+  flex-flow: row nowrap
+  align-items: center
+  margin-left: 50px
+  margin-right: 50px
+
+  @media (max-width: 700px)
+    margin-left: 25px
+    margin-right: 25px
+  @media (max-width: 500px)
+    margin-left: 0
+    margin-right: 0
+  .ps-project-header-title
+    display: flex
+    flex: 1 1 auto
+    justify-content: center
+    align-items: center
+  .ps-project-header-button
+    display: flex
+    justify-content: center
+    align-items: center
+    flex: 0 0 auto
+
   .ps-project-name
     margin-left: 10px
     margin-right: 10px
@@ -129,3 +150,16 @@
 
 .ps-no-display
   display: none
+
+.ps-ativities-padding
+  padding-top: 20px
+  padding-bottom: 20px
+  @media (max-width: $ps-small-screen-size)
+    padding-left: 0
+    padding-right: 0
+  @media (max-width: 770px) and (min-width: 420px)
+    padding-left: 15px
+    padding-right: 15px
+  @media (min-width: 770px)
+    padding-left: 20px
+    padding-right: 20px
