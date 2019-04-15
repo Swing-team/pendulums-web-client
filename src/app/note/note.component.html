@@ -1,6 +1,8 @@
 <div class="container ps-note-padding">
   <div class="ps-project-name-container">
-    <div class="ps-note-header-button"><div class="ps-activity-top-button icon-back" (click)="goBack()" title="Back"></div></div>
+    <div class="ps-note-header-button">
+      <div class="ps-activity-top-button icon-back" (click)="goBack()" title="Back"></div>
+    </div>
     <div class="ps-note-header-title">
       <app-tab
           [tabs]="[{name: 'Board'}, {name: 'Archived'}]"
