@@ -76,7 +76,7 @@ export class SyncService {
       this.dBService
         .getAll('activeUser')
         .then((data) => {
-          if (data.length > 0) {
+          if ((data.length > 0) && (data[0].data) && (data[0].data.length > 0)) {
             uId = data[0].data;
             this.dBService
               .get('userData', uId)

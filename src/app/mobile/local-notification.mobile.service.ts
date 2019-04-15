@@ -7,7 +7,7 @@ export class LocalNotificationService {
 
   showNotification(title: string, message: string) {
     // check if deviceready event has already fired
-    if (window['cordova']) {
+    if (window['cordova'] && window['cordova'].plugins && window['cordova'].plugins.notification) {
       window['cordova'].plugins.notification.local.schedule({
         title: title,
         text: message,
@@ -20,7 +20,7 @@ export class LocalNotificationService {
 
   getPermission() {
     // check if deviceready event has already fired
-    if (window['cordova']) {
+    if (window['cordova'] && window['cordova'].plugins && window['cordova'].plugins.notification) {
       window['cordova'].plugins.notification.local.hasPermission((granted) => {
         console.log('Notification permission status: ' + granted);
         if (!granted) {

@@ -1,6 +1,3 @@
-import 'rxjs/add/operator/pairwise';
-import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/take';
 import { Component, OnInit, Output,
          OnDestroy }                    from '@angular/core';
 import { Subscription }                 from 'rxjs/Subscription';
@@ -9,7 +6,6 @@ import { DatabaseService }              from '../core/services/database/database
 import { Store }                        from '@ngrx/store';
 import { AppState }                     from '../shared/state/appState';
 import { ModalService }                 from '../core/modal/modal.service';
-import { AppService }                   from '../core/services/app.service';
 import { AppStateSelectors }            from '../shared/state/app-state.selectors';
 import { AppInfoComponent }             from '../core/side-menu/app-info/app-info.component';
 import { RouterChangeListenerService }  from '../core/services/router-change-listener.service';
@@ -38,7 +34,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
                private db: DatabaseService,
                private modalService: ModalService,
                private http: HttpClient,
-               private appService: AppService,
                // this service needed to handle router changes so don't remove it
                private routerChangeListenerService: RouterChangeListenerService) {
 
@@ -50,51 +45,35 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.getServerMessage()
+    this.getServerMessage();
     if (!this.hasSeenInfoModal) {
-      this.versionControl = this.user.pairwise().subscribe((userInfo) => {
-        if (userInfo[0].id === null || userInfo[0].id === undefined || userInfo[0].id === '' || userInfo[1].id !== userInfo[0].id) {
-          this.userId = userInfo[1].id;
-        } else {
-          this.userId = userInfo[0].id
+      this.versionControl = this.user.subscribe((userInfo) => {
+        if (userInfo && userInfo.id && userInfo.id.length > 0 && this.userId !== userInfo.id) {
+          this.userId = userInfo.id;
+          // the userInDB is {userId: '...', seenVersions: [...]}
+          this.db.get('appInfo', this.userId)
+          .then((userInDB) => {
+            if (!userInDB || userInDB === '' || !userInDB.userId || userInDB.userId === ''
+              || !userInDB.seenVersions || userInDB.seenVersions === '') {
+              this.db.createOrUpdate('appInfo', {
+                userId: this.userId,
+                seenVersions: [VERSION]
+              });
+              this.showAppInfoModal();
+              this.hasSeenInfoModal = true;
+            } else if (userInDB.seenVersions.indexOf(VERSION) < 0) {
+              // check for existing version that user saw
+              const seenVersionsArray = userInDB.seenVersions;
+              seenVersionsArray.push(VERSION);
+              this.db.update('appInfo', this.userId, {
+                seenVersions: seenVersionsArray
+              });
+              this.showAppInfoModal();
+              this.hasSeenInfoModal = true;
+            }
+          })
+          .catch((err) => console.log(err));
         }
-        // FIXME: Mohammad 08-24-2018: cleanup this code!!!
-        // the userInDB is {userId: '...', seenVersions: [...]}
-        this.db.get('appInfo', this.userId)
-        .then((userInDB) => {
-          if (userInDB === undefined || userInDB === null || userInDB === '') {
-            this.db.createOrUpdate('appInfo', {
-              userId: this.userId,
-              seenVersions: [VERSION]
-            });
-            this.showAppInfoModal();
-            this.hasSeenInfoModal = true;
-          } else if (userInDB.userId === null || userInDB.userId === undefined || userInDB.userId === '') {
-            this.db.createOrUpdate('appInfo', {
-              userId: this.userId,
-              seenVersions: [VERSION]
-            });
-            this.showAppInfoModal();
-            this.hasSeenInfoModal = true;
-          } else if (userInDB.seenVersions === null || userInDB.seenVersions === undefined || userInDB.seenVersions === '') {
-            this.db.createOrUpdate('appInfo', {
-              seenVersions: [VERSION]
-            });
-            this.showAppInfoModal();
-            this.hasSeenInfoModal = true;
-
-          } else if (userInDB.seenVersions.indexOf(VERSION) < 0) {
-            // check for existing version that user saw
-            const seenVersionsArray = userInDB.seenVersions;
-            seenVersionsArray.push(VERSION);
-            this.db.update('appInfo', this.userId, {
-              seenVersions: seenVersionsArray
-            });
-            this.showAppInfoModal();
-            this.hasSeenInfoModal = true;
-          }
-        })
-        .catch((err) => console.log(err));
       });
     }
   }
