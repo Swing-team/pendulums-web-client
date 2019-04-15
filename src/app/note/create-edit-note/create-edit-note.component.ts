@@ -41,6 +41,7 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy, AfterViewInit
   showPaletteBoolean = false;
   noteModel: Note;
   projectIds: Array<any> = [];
+  codeSampleDialogHeight = window.innerHeight * 0.8
 
   constructor(@Host() parent: ModalService,
     private modalService: ModalService,
