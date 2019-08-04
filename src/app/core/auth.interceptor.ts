@@ -24,7 +24,7 @@ export class AuthInterceptor implements HttpInterceptor {
     }, (error: any) => {
       if (error instanceof HttpErrorResponse) {
         if ((error.status === 403) && (window.location.href.match(/\?/g) || []).length < 2) {
-            console.log('The authentication session expires or the user is not authorized. Force refresh of the current page.');
+          console.log('The authentication session expires or the user is not authorized. Force refresh of the current page.');
           this.store.dispatch(this.statusActions.updateIsLogin(false));
         } else if (error.status === 401) {
           this.router.navigate(['dashboard']);
