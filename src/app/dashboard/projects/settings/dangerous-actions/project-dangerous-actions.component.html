@@ -38,10 +38,22 @@
         <div class="ps-choose-member-container">
           <div class="select ps-members-select">
             <select class="ps-body-input" [(ngModel)]="newOwnerId">
-              <option *ngFor="let member of project.teamMembers" [value]="member.id">{{member.name ? member.name : member.email}}</option>
+              <option *ngFor="let member of membersWithoutOwner" [value]="member.id">{{member.name ? member.name : member.email}}</option>
             </select>
           </div>
-          <a class="button is-danger ps-leave-button-inline" (click)="leaveProject()">Leave</a>
+          <a class="button is-danger ps-leave-button-inline" *ngIf="!leaveConfirmation" (click)="confirmToLeave()">Leave</a>
+          <a class="button ps-confirm-button" *ngIf="leaveConfirmation" (click)="cancelLeave()" title="Cancel"
+             [ngClass]="{'is-loading': leaveButtonDisabled, 'is-danger': !leaveButtonDisabled}">
+            <span class="icon">
+              <i class="icon-cancel"></i>
+            </span>
+          </a>
+          <a class="button ps-confirm-button" *ngIf="leaveConfirmation && !leaveButtonDisabled" (click)="leaveProject()"
+              [ngClass]="{'is-success': !leaveButtonDisabled}" title="Confirm">
+            <span class="icon">
+              <i class="icon-check"></i>
+            </span>
+          </a>
         </div>
       </div>
     </div>
@@ -51,6 +63,20 @@
 <div *ngIf="isAdmin || readOnly" dir="auto">
   <div class="box has-text-left ps-bottom-box">
     <p>Leaving <b>WILL NOT</b> delete your data on this project. You can ask the project owner or admins to invite you again.</p>
-    <a class="button is-danger ps-leave-button" (click)="leaveProject()">Leave</a>
+    <a class="button is-danger ps-leave-button" *ngIf="!leaveConfirmation" (click)="confirmToLeave()">Leave</a>
+    <div class="ps-confirmation-container ps-confirmation-margin" *ngIf="leaveConfirmation">
+      <a class="button ps-confirm-button" (click)="cancelLeave()" title="Cancel"
+        [ngClass]="{'is-loading': leaveButtonDisabled, 'is-danger': !leaveButtonDisabled}">
+        <span class="icon">
+          <i class="icon-cancel"></i>
+        </span>
+      </a>
+      <a class="button ps-confirm-button" *ngIf="!leaveButtonDisabled" (click)="leaveProject()"
+        [ngClass]="{'is-success': !leaveButtonDisabled}" title="Confirm">
+        <span class="icon">
+          <i class="icon-check"></i>
+        </span>
+      </a>
+    </div>
   </div>
 </div>

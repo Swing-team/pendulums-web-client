@@ -1,4 +1,4 @@
-import { Component, Input }           from '@angular/core';
+import { Component, Input, OnInit }           from '@angular/core';
 import { Project }                    from '../../../../shared/state/project/project.model';
 import { ProjectService }             from '../../../shared/projects.service';
 import { AppState }                   from '../../../../shared/state/appState';
@@ -7,6 +7,7 @@ import { ProjectsActions }            from '../../../../shared/state/project/pro
 import { ErrorService }               from '../../../../core/error/error.service';
 import { ModalService }               from '../../../../core/modal/modal.service';
 import { CurrentActivityActions }     from '../../../../shared/state/current-activity/current-activity.actions';
+import { TeamMember } from 'app/shared/state/team-member/team-member.model';
 
 @Component({
   selector: 'dangerous-actions',
@@ -14,7 +15,7 @@ import { CurrentActivityActions }     from '../../../../shared/state/current-act
   styleUrls: ['./project-dangerous-actions.component.sass']
 })
 
-export class DangerousActionsComponent {
+export class DangerousActionsComponent implements OnInit {
   @Input() project: Project;
   @Input() readOnly: boolean;
   @Input() isOwner: boolean;
@@ -23,6 +24,10 @@ export class DangerousActionsComponent {
   projectNameInput: String;
   deleteConfirmation = false;
   deleteButtonDisabled = false;
+  leaveConfirmation = false;
+  leaveButtonDisabled = false;
+  newOwnerId: string;
+  membersWithoutOwner: TeamMember[];
 
   constructor(
     private projectService: ProjectService,
@@ -31,6 +36,10 @@ export class DangerousActionsComponent {
     private errorService: ErrorService,
     private modalService: ModalService,
     private currentActivityActions: CurrentActivityActions) {
+  }
+
+  ngOnInit() {
+    this.membersWithoutOwner = this.project.teamMembers.filter(t => t.id !== this.project.owner.id);
   }
 
   confirmToDelete() {
@@ -78,6 +87,40 @@ export class DangerousActionsComponent {
     this.errorService.show({
       input: error
     });
+  }
+
+  confirmToLeave() {
+    if ((this.isOwner && this.newOwnerId) || !this.isOwner) {
+      this.leaveConfirmation = true;
+    } else {
+      this.showError('Select a member as the new project owner.');
+    }
+  }
+
+  cancelLeave() {
+    this.leaveConfirmation = false;
+  }
+
+  leaveProject() {
+    if (!this.leaveButtonDisabled) {
+      this.leaveButtonDisabled = true;
+      this.projectService.leaveProject(this.project.id, this.newOwnerId).then(response => {
+        this.store.dispatch(this.projectsAction.removeProject(this.project.id));
+        this.showError('The project was left successfully');
+
+        // if we have current activity on left project we should clear it
+        if (this.project.id === this.projectIdInCurrentActivity) {
+          this.store.dispatch(this.currentActivityActions.clearCurrentActivity());
+        }
+
+        this.leaveButtonDisabled = false;
+        this.modalService.close();
+      }).catch(error => {
+        this.leaveButtonDisabled = false;
+        this.showError('Server communication error');
+      });
+    }
+
   }
 }
 

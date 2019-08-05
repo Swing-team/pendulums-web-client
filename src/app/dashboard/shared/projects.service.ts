@@ -100,6 +100,20 @@ export class ProjectService {
       });
   }
 
+  leaveProject(projectId: string, newOwnerId?: string) {
+    const options = {
+      withCredentials: true,
+      body: JSON.stringify({newOwnerId})
+    };
+    return this.http
+      .delete(environment.apiEndpoint + '/projects/' + projectId + '/team-members/leave' +
+        '?socketId=' + this.syncService.getSocketId(), options)
+      .toPromise()
+      .then(response => {
+
+      }).catch(this.handleError);
+  }
+
   private handleError(error: any): Promise<any> {
     console.error('An error occurred', error);
     return Promise.reject(error);
