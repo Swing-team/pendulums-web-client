@@ -261,9 +261,14 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
   }
 
   validationPassword(User): boolean {
-    if (!User.newPassword
-      || User.newPassword.length < 6
-      || User.newPassword.length > 32) {
+    if (!User.newPassword) {
+      this.showError('New password should NOT be empty');
+      return false;
+    } else if (!User.oldPassword) {
+      this.showError('Old password should NOT be empty');
+      return false;
+    } else if (User.newPassword.length < 6 || User.newPassword.length > 32) {
+      console.log('im gere');
       this.showError('The password length must be between 6 and 32 characters');
       return false;
     }
