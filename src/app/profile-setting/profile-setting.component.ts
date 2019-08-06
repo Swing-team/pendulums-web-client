@@ -179,6 +179,8 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
             console.log('error is: ', error);
             if (error.status === 503) {
               this.showError('You have reached the authentication limits, please try in a few minutes!');
+            } else if (error.status === 400) {
+              this.showError('Old Password is incorrect!');
             } else {
               this.showError('Server communication error');
             }
