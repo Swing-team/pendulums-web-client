@@ -97,6 +97,23 @@
       <div class="column ps-header-vertical-align ps-padding-left">
         <input [(ngModel)]="clonedProject.name" name="name" class="input ps-header-input ps-header-input-disabled"
                placeholder="Untitled Project..." type="text" [disabled]="true">
+        <div class="ps-project-details-color-picker-container">
+          <p class="ps-project-details-color-picker-title"> Project color: </p>
+          <div class="ps-project-details-palette-container">
+            <div class="ps-project-details-color">
+                <i class="button icon-palette-1 is-fullwidth" disabled
+                id="id2"
+                    [ngClass]="{'ps-project-details-palette-item-back-white1': clonedProject.colorPalette == 0,
+                                'ps-project-details-palette-item-back-salmon': clonedProject.colorPalette == 1,
+                                'ps-project-details-palette-item-back-blue': clonedProject.colorPalette == 2,
+                                'ps-project-details-palette-item-back-black': clonedProject.colorPalette == 3,
+                                'ps-project-details-palette-item-back-yellow': clonedProject.colorPalette == 4,
+                                'ps-project-details-palette-item-back-pink': clonedProject.colorPalette == 5,
+                                'ps-project-details-palette-item-back-red': clonedProject.colorPalette == 6,
+                                'ps-project-details-palette-item-back-green': clonedProject.colorPalette == 7}"></i>
+              </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
