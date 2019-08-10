@@ -17,6 +17,7 @@ import { Observable }                       from 'rxjs/Observable';
 import { Subscription }                     from 'rxjs/Subscription';
 import { NativeNotificationService }        from '../core/services/native-notification.service';
 import { Location }                         from '@angular/common';
+import { DeleteAccountComponent } from './delete-account/delete-account.component';
 
 @Component({
   selector: 'profile-setting',
@@ -286,6 +287,19 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
     }
     return true;
 
+  }
+
+  deleteAccount() {
+    if (this.netConnected) {
+      this.modalService.show({
+        component: DeleteAccountComponent,
+        inputs: {
+          user: this.user
+        },
+      });
+    } else {
+      this.showError('Not available in offline mode');
+    }
   }
 
   showError(error) {

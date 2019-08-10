@@ -1,0 +1,9 @@
+<div class="columns">
+  <div class="column has-text-centered">
+    <!-- TODO: need to change password below -->
+    <p>some text that shows tells the user our policies on delete account.</p>
+    <input [(ngModel)]="userPassword" name="password" class="input" placeholder="Confirm password" type="password" autocomplete="off" value="">
+    <button class="button is-danger ps-action-button"  (click)="delete()" [disabled]="disableButtons" [ngClass]="{'is-loading': disableButtons}">Confirm</button>
+    <button class="button is-success ps-action-button" (click)="cancel()" [disabled]="disableButtons">Cancle</button>
+  </div>
+</div>

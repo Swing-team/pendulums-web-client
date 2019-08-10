@@ -37,6 +37,15 @@ export class UserService {
       .catch(this.handleError);
   }
 
+  deleteAccount(userId:string, userPassword: string): Promise<any> {
+    // TODO: need to change the address of api.
+    return this.http
+      .post(environment.apiEndpoint + '/user/deleteAccount', JSON.stringify({userId, userPassword}), this.options)
+      .toPromise()
+      .then()
+      .catch(this.handleError);
+  }
+
   private handleError(error: any): Promise<any> {
     console.error('An error occurred', error);
     return Promise.reject(error);

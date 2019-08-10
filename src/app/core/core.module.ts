@@ -44,6 +44,7 @@ import { RouterChangeListenerService }  from './services/router-change-listener.
 import { InviteNotifComponent }         from './side-menu/notification/invite-notif/invite-notif.component';
 import { NativeNotificationService }    from './services/native-notification.service';
 import { ActivityService } from './services/activity.service';
+import { DeleteAccountComponent } from 'app/profile-setting/delete-account/delete-account.component';
 
 @NgModule({
   imports:      [
@@ -61,6 +62,7 @@ import { ActivityService } from './services/activity.service';
     ImgCropperComponent,
     AppInfoComponent,
     InviteNotifComponent,
+    DeleteAccountComponent
   ],
   exports:      [
     ToolbarComponent,
@@ -102,6 +104,7 @@ import { ActivityService } from './services/activity.service';
     ErrorComponent,
     ImgCropperComponent,
     AppInfoComponent,
+    DeleteAccountComponent
   ]
 })
 export class CoreModule {
