@@ -14,7 +14,6 @@ import { ErrorService }                           from 'app/core/error/error.ser
 })
 export class DeleteAccountComponent {
   disableButtons = false;
-  @Input() user: User;
   userPassword: string;
   subscriptions: any;
 
@@ -34,7 +33,7 @@ export class DeleteAccountComponent {
     if (!this.disableButtons) {
       this.disableButtons = true;
 
-      this.userService.deleteAccount(this.user.id, this.userPassword).then(() => {
+      this.userService.deleteAccount(this.userPassword).then(() => {
         this.store.dispatch(this.userActions.clearUser());
         this.disableButtons = false;
         this.modalService.close();

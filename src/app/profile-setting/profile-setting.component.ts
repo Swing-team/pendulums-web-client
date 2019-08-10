@@ -293,9 +293,7 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
     if (this.netConnected) {
       this.modalService.show({
         component: DeleteAccountComponent,
-        inputs: {
-          user: this.user
-        },
+        inputs: { },
       });
     } else {
       this.showError('Not available in offline mode');
