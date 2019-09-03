@@ -107,7 +107,7 @@ export class ProjectService {
     };
     return this.http
       .delete(environment.apiEndpoint + '/projects/' + projectId + '/team-members/leave' +
-        '?socketId=' + this.syncService.getSocketId(), options)
+        '?socketId=' + this.socketService.getSocketId(), options)
       .toPromise()
       .then(response => {
 
