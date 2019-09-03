@@ -43,7 +43,9 @@ import { NotesSelectors }               from '../shared/state/note/notes.selecto
 import { RouterChangeListenerService }  from './services/router-change-listener.service';
 import { InviteNotifComponent }         from './side-menu/notification/invite-notif/invite-notif.component';
 import { NativeNotificationService }    from './services/native-notification.service';
-import { ActivityService } from './services/activity.service';
+import { ActivityService }              from './services/activity.service';
+import { DeleteAccountComponent }       from 'app/profile-setting/delete-account/delete-account.component';
+import { SocketService }                from './services/socket.service';
 
 @NgModule({
   imports:      [
@@ -61,6 +63,7 @@ import { ActivityService } from './services/activity.service';
     ImgCropperComponent,
     AppInfoComponent,
     InviteNotifComponent,
+    DeleteAccountComponent
   ],
   exports:      [
     ToolbarComponent,
@@ -90,6 +93,7 @@ import { ActivityService } from './services/activity.service';
     DexieService,
     DatabaseService,
     SyncService,
+    SocketService,
     StopStartActivityService,
     AppService,
     RouterChangeListenerService,
@@ -102,6 +106,7 @@ import { ActivityService } from './services/activity.service';
     ErrorComponent,
     ImgCropperComponent,
     AppInfoComponent,
+    DeleteAccountComponent
   ]
 })
 export class CoreModule {

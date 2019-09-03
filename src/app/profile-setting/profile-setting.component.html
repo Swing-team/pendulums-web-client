@@ -149,4 +149,24 @@
       </div>
     </div>
   </div>
+
+  <div class="columns is-multiline is-centered">
+    <div class="column is-8-widescreen is-12-desktop is-12-tablet ps-card-space">
+      <div class="box">
+        <div class="is-centered">
+          <div dir="auto">
+            <div class="field">
+              <b class="title is-4 ps-dangerous-actions-title">
+                Dangerous Actions
+              </b>
+            </div>
+            <div class="field has-text-left">
+              <button class="button is-fullwidth ps-delete-action-button" [ngClass]="{'is-loading': settingsSubmitted}"
+                [disabled]="settingsSubmitted || !netConnected" (click)="deleteAccount()">Delete Account</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

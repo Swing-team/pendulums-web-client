@@ -1,7 +1,7 @@
 import { Injectable }                 from '@angular/core';
 import { HttpClient, HttpParams }     from '@angular/common/http';
 import { Activity }                   from '../../shared/state/current-activity/current-activity.model';
-import { SyncService }                from './sync.service';
+import { SocketService }                from './socket.service';
 import { environment }                from '../../../environments/environment';
 import 'rxjs/add/operator/toPromise';
 
@@ -10,7 +10,7 @@ export class ActivityService {
   private options;
   constructor(
     private http: HttpClient,
-    private syncService: SyncService
+    private socketService: SocketService
   ) {
     this.options = {...environment.httpOptions, responseType: 'text'};
   }
@@ -18,7 +18,7 @@ export class ActivityService {
   create(projectId, activity): Promise<any> {
     return this.http
       .post(environment.apiEndpoint + '/projects/' + projectId
-        + '/activities?socketId=' + this.syncService.getSocketId() ,
+        + '/activities?socketId=' + this.socketService.getSocketId() ,
         JSON.stringify({activity: activity}) , environment.httpOptions)
       .toPromise()
       .then(response => response as Activity)
@@ -37,7 +37,7 @@ export class ActivityService {
   editCurrentActivity(projectId, activity): Promise<any> {
     return this.http
       .put(environment.apiEndpoint + '/projects/' + projectId + '/activities/current/' + activity.id
-        + '?socketId=' + this.syncService.getSocketId(),
+        + '?socketId=' + this.socketService.getSocketId(),
         JSON.stringify({activity: activity}),
         environment.httpOptions)
       .toPromise()

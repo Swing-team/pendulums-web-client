@@ -1,7 +1,7 @@
 import { Injectable }       from '@angular/core';
 import { HttpClient }       from '@angular/common/http';
 import { Project }          from '../../../shared/state/project/project.model';
-import { SyncService }      from '../../services/sync.service';
+import { SocketService }      from '../../services/socket.service';
 import { environment }      from '../../../../environments/environment';
 import 'rxjs/add/operator/toPromise';
 
@@ -11,7 +11,7 @@ export class NotificationService {
   private options;
   constructor(
     private http: HttpClient,
-    private syncService: SyncService
+    private socketService: SocketService
   ) {
     this.options = {...environment.httpOptions, responseType: 'text'};
   }
@@ -19,7 +19,7 @@ export class NotificationService {
   accept(projectId): Promise<Project> {
     return this.http
       .get(environment.apiEndpoint + '/projects/' + projectId + '/accept-invitation' +
-      '?socketId=' + this.syncService.getSocketId(), environment.httpOptions)
+      '?socketId=' + this.socketService.getSocketId(), environment.httpOptions)
       .toPromise()
       .then(response => response as Project)
       .catch(this.handleError);
@@ -28,7 +28,7 @@ export class NotificationService {
   deny(projectId): Promise<Project> {
     return this.http
       .get(environment.apiEndpoint + '/projects/' + projectId + '/deny-invitation' +
-      '?socketId=' + this.syncService.getSocketId(), this.options)
+      '?socketId=' + this.socketService.getSocketId(), this.options)
       .toPromise()
       .then(response => projectId)
       .catch(this.handleError);

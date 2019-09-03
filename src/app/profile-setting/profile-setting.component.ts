@@ -17,6 +17,7 @@ import { Observable }                       from 'rxjs/Observable';
 import { Subscription }                     from 'rxjs/Subscription';
 import { NativeNotificationService }        from '../core/services/native-notification.service';
 import { Location }                         from '@angular/common';
+import { DeleteAccountComponent } from './delete-account/delete-account.component';
 
 @Component({
   selector: 'profile-setting',
@@ -179,6 +180,8 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
             console.log('error is: ', error);
             if (error.status === 503) {
               this.showError('You have reached the authentication limits, please try in a few minutes!');
+            } else if (error.status === 400) {
+              this.showError('Old Password is incorrect!');
             } else {
               this.showError('Server communication error');
             }
@@ -259,9 +262,14 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
   }
 
   validationPassword(User): boolean {
-    if (!User.newPassword
-      || User.newPassword.length < 6
-      || User.newPassword.length > 32) {
+    if (!User.newPassword) {
+      this.showError('New password should NOT be empty');
+      return false;
+    } else if (!User.oldPassword) {
+      this.showError('Old password should NOT be empty');
+      return false;
+    } else if (User.newPassword.length < 6 || User.newPassword.length > 32) {
+      console.log('im gere');
       this.showError('The password length must be between 6 and 32 characters');
       return false;
     }
@@ -279,6 +287,17 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
     }
     return true;
 
+  }
+
+  deleteAccount() {
+    if (this.netConnected) {
+      this.modalService.show({
+        component: DeleteAccountComponent,
+        inputs: { },
+      });
+    } else {
+      this.showError('Not available in offline mode');
+    }
   }
 
   showError(error) {
