@@ -32,7 +32,7 @@
           </div>
         </div>
       </div>
-      <div class="box has-text-left ps-bottom-box">
+      <div class="box has-text-left ps-bottom-box" *ngIf="project.teamMembers.length > 1">
         <p>Leaving <b>WILL NOT</b> delete your data on this project. You can ask the project owner or admins to invite you again.</p>
         <p class="ps-text-red">You are the project owner; to leave this project you should specify another owner for the project.</p>
         <div class="ps-choose-member-container">
