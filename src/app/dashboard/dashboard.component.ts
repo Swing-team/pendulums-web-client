@@ -42,7 +42,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.user = store.select('user');
     this.status = store.select('status');
     this.projects = store.select(appStateSelectors.getProjectsArray);
-    this.sortBy = store.select(appStateSelectors.getProjectSortBy);
+    this.sortBy = store.select(appStateSelectors.getProjectsSortBy);
     this.hasSeenInfoModal = false
   }
 

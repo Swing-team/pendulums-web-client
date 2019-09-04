@@ -101,7 +101,7 @@ export default function reducer(state = initialState, action: ActionWithPayload<
       return newState;
     }
 
-    case ProjectsActions.UPDATE_SORT_BY: {
+    case ProjectsActions.UPDATE_PROJECTS_SORT_BY: {
       const newState = JSON.parse(JSON.stringify(state));
       newState.sortBy = action.payload;
       return newState;

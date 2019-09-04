@@ -91,6 +91,6 @@ export class ListOfProjectComponent implements OnChanges {
   }
 
   sort(event) {
-    this.store.dispatch(this.projectsActions.updateSortBy(event.selectedItem.value));
+    this.store.dispatch(this.projectsActions.updateProjectsSortBy(event.selectedItem.value));
   }
 }
