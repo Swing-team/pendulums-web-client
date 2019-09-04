@@ -11,7 +11,7 @@
       </a>
     </li>
     <li title="Dashboard"><a [ngClass]="{'is-active': activeItemNumber === 3 }" [routerLink]="['dashboard']" (click)="updateIndex(3)"><span class="icon-dashboard"></span></a></li>
-    <li title="note"><a [ngClass]="{'is-disabled': !netConnected, 'is-active': activeItemNumber === 8 }" [routerLink]="netConnected ? ['notes'] : []" (click)="netConnected && updateIndex(8)"><span class="icon-sticky-note-o"></span></a></li>
+    <li title="note"><a [ngClass]="{'is-active': activeItemNumber === 8 }" [routerLink]="['notes']" (click)="updateIndex(8)"><span class="icon-sticky-note-o"></span></a></li>
     <li title="Notifications">
       <a [ngClass]="{'is-active': activeItemNumber === 2 }" #notifications (click)="toggleNotifications()">
         <span class="icon-bell"></span>
