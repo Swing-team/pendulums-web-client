@@ -8,7 +8,7 @@ import { ProjectsActions }                      from '../../../../shared/state/p
 import { Md5 }                                  from 'ts-md5/dist/md5';
 import { ErrorService }                         from '../../../../core/error/error.service';
 
-const EMAIL_REGEX = /^(?=.{8,64}$)[\w!#$%&'*+/=?`{|}~^-]+(?:\.[\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,6}$/;
+const EMAIL_REGEX = /^[a-zA-Z0-9+\._%-+]{1,256}@[a-zA-Z0-9][a-zA-Z0-9-]{0,64}(\.[a-zA-Z0-9][a-zA-Z0-9-]{0,25})+$/;
 
 
 @Component({

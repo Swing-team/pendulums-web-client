@@ -3,7 +3,7 @@ import { AuthenticationService }      from '../../core/services/authentication.s
 import { Location }                   from '@angular/common';
 import { Router }                     from '@angular/router';
 
-const EMAIL_REGEX = /^(?=.{8,64}$)[\w!#$%&'*+/=?`{|}~^-]+(?:\.[\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,6}$/;
+const EMAIL_REGEX = /^[a-zA-Z0-9+\._%-+]{1,256}@[a-zA-Z0-9][a-zA-Z0-9-]{0,64}(\.[a-zA-Z0-9][a-zA-Z0-9-]{0,25})+$/;
 
 @Component({
   selector: 'forgot-password',
