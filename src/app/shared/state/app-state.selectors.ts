@@ -24,7 +24,9 @@ export class AppStateSelectors {
   // tslint:disable-next-line: member-ordering
   getSelectedProject = createSelector(this.getProjectsState, this.projectsSelectors.getSelectedProject);
   // tslint:disable-next-line: member-ordering
-  getProjectSortBy = createSelector(this.getProjectsState, this.projectsSelectors.getSortBy);
+  getProjectsSortBy = createSelector(this.getProjectsState, this.projectsSelectors.getSortBy);
   // tslint:disable-next-line: member-ordering
   getNotesArray = createSelector(this.getNotesState, this.notesSelectors.getAllArray);
+  // tslint:disable-next-line: member-ordering
+  getNotesSortBy = createSelector(this.getNotesState, this.notesSelectors.getSortBy);
 }

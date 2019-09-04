@@ -8,6 +8,7 @@ import  showdown from 'showdown';
 
 const initialState: Notes = {
   entities: {},
+  sortBy: '+date'
 };
 
 export default function reducer(state = initialState, action: ActionWithPayload<any>) {
@@ -25,13 +26,21 @@ export default function reducer(state = initialState, action: ActionWithPayload<
         parseImgDimensions: true,
         openLinksInNewWindow: true,
         extensions: [taskListEnablerExtension]
-    })
+      });
       reduce(action.payload, function (result, note) {
         note.content = converter.makeHtml(note.content)
         return action.payload;
-    }, {});
+      }, {});
       return {
-        entities: action.payload
+        entities: action.payload,
+        sortBy: state.sortBy ? state.sortBy : '+date'
+      };
+    }
+
+    case NotesActions.LOAD_DB_NOTES: {
+      return {
+        entities: action.payload.entities,
+        sortBy: action.payload.sortBy ? action.payload.sortBy : '+date'
       };
     }
 
@@ -65,6 +74,11 @@ export default function reducer(state = initialState, action: ActionWithPayload<
       const newState = JSON.parse(JSON.stringify(state));
       const index = findIndex(newState.entities, {id: action.payload});
       newState.entities.splice(index, 1);
+      return newState;
+    }
+    case NotesActions.UPDATE_NOTES_SORT_BY: {
+      const newState = JSON.parse(JSON.stringify(state));
+      newState.sortBy = action.payload;
       return newState;
     }
 
