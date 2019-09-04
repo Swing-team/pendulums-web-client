@@ -64,7 +64,7 @@ export class NoteComponent implements OnInit, OnDestroy {
   }
 
   getSelectedTab(event) {
-    if (event.name === 'Archived') {
+    if (event.name === 'Archive') {
       this.subscriptions.push(this.notes.subscribe((params: any) => {
         this.archives = _.filter(params, ['isArchive', true])
       }));
