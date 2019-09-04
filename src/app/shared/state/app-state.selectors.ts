@@ -18,7 +18,13 @@ export class AppStateSelectors {
   constructor(private projectsSelectors: ProjectsSelectors, private notesSelectors: NotesSelectors) { }
   getProjectsState = (state: AppState) => state.projects;
   getNotesState = (state: AppState) => state.notes;
-  getProjectsArray = createSelector(this.getProjectsState, this.projectsSelectors.getAllArray);
+  getUserState = (state: AppState) => state.user;
+  // tslint:disable-next-line: member-ordering
+  getProjectsArray = createSelector(this.getProjectsState, this.getUserState, this.projectsSelectors.getAllArray);
+  // tslint:disable-next-line: member-ordering
   getSelectedProject = createSelector(this.getProjectsState, this.projectsSelectors.getSelectedProject);
+  // tslint:disable-next-line: member-ordering
+  getProjectSortBy = createSelector(this.getProjectsState, this.projectsSelectors.getSortBy);
+  // tslint:disable-next-line: member-ordering
   getNotesArray = createSelector(this.getNotesState, this.notesSelectors.getAllArray);
 }

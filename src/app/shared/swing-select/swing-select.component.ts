@@ -15,6 +15,7 @@ export class SwingSelectComponent implements OnInit, OnChanges {
   @Input() selectedItemIndex: Array<number>;
   @Input() itemTextAttribute: any;
   @Input() width: String = '100%';
+  @Input() hideArrow = false;
   @Output() onItemClicked = new EventEmitter();
 
   selectedItem: any;

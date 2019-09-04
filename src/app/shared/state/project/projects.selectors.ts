@@ -3,6 +3,7 @@ import { values }                     from 'lodash';
 import { Injectable }                 from '@angular/core';
 import { Project }                    from './project.model';
 import { Projects }                   from './projects.model';
+import { User } from '../user/user.model';
 
 /**
  *  Because the data structure is defined within the reducer it is optimal to
@@ -17,5 +18,34 @@ import { Projects }                   from './projects.model';
 export class ProjectsSelectors {
   getEntities = (state: Projects) => state.entities;
   getSelectedProject = (state: Projects) => state.selectedProject;
-  getAllArray = createSelector(this.getEntities, entities => { return values<Project>(entities); });
+  getSortBy = (state: Projects) => state.sortBy;
+  // tslint:disable-next-line: member-ordering
+  getAllArray = (projects: Projects, user: User) => {
+    return values<Project>(projects.entities).sort((p1, p2) => {
+      switch (projects.sortBy) {
+        case '+date': {
+          return p1.id > p2.id ? 1 : -1;
+        }
+        case '-date': {
+          return p1.id < p2.id ? 1 : -1;
+        }
+        case '+name': {
+          return p1.name.toLowerCase() >= p2.name.toLowerCase() ? 1 : -1;
+        }
+        case '-name': {
+          return p1.name.toLowerCase() < p2.name.toLowerCase() ? 1 : -1;
+        }
+        case '+activity': {
+          const a1 = p1.activities.find(a => a.user === user.id);
+          const a2 = p2.activities.find(a => a.user === user.id);
+          return a1.stoppedAt >= a2.stoppedAt ? 1 : -1;
+        }
+        case '-activity': {
+          const a1 = p1.activities.find(a => a.user === user.id);
+          const a2 = p2.activities.find(a => a.user === user.id);
+          return a1.stoppedAt < a2.stoppedAt ? 1 : -1;
+        }
+      }
+    });
+  };
 }

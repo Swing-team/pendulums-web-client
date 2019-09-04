@@ -1,4 +1,4 @@
-<div class="ps-select" [ngStyle]="{'width' : width}">
+<div class="ps-select" [class.ps-select-with-arrow]="!hideArrow" [ngStyle]="{'width' : width}">
   <div *ngIf="type === 'singleSelect'" class="ps-select-label" (click)="toggleIsExpanded()">
     {{
     (selectedItem || selectedItem === 0) ? (

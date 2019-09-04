@@ -6,7 +6,8 @@ import { Project } from './project.model';
 
 const initialState: Projects = {
   entities: {},
-  selectedProject: null
+  selectedProject: null,
+  sortBy: '+date'
 };
 
 export default function reducer(state = initialState, action: ActionWithPayload<any>) {
@@ -23,7 +24,8 @@ export default function reducer(state = initialState, action: ActionWithPayload<
         entities: action.payload.reduce((entities, project) => {
           entities[project.id] = project;
           return entities;
-        }, {})
+        }, {}),
+        sortBy: state.sortBy ? state.sortBy : '+date'
       };
     }
 
@@ -38,6 +40,7 @@ export default function reducer(state = initialState, action: ActionWithPayload<
       return {
         entities: action.payload.entities,
         selectedProject: selectedProject,
+        sortBy: action.payload.sortBy ? action.payload.sortBy : '+date'
       };
     }
 
@@ -95,6 +98,12 @@ export default function reducer(state = initialState, action: ActionWithPayload<
     case ProjectsActions.UPDATE_SELECTED_PROJECT: {
       const newState = JSON.parse(JSON.stringify(state));
       newState.selectedProject = action.payload;
+      return newState;
+    }
+
+    case ProjectsActions.UPDATE_SORT_BY: {
+      const newState = JSON.parse(JSON.stringify(state));
+      newState.sortBy = action.payload;
       return newState;
     }
 

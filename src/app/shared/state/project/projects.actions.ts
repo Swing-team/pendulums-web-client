@@ -21,6 +21,7 @@ export class ProjectsActions {
   static ADD_ACTIVITY_TO_PROJECT = 'ADD_ACTIVITY_TO_PROJECT';
   static REMOVE_PROJECT_ACTIVITIES = 'REMOVE_PROJECT_ACTIVITIES';
   static UPDATE_SELECTED_PROJECT = 'UPDATE_SELECTED_PROJECT';
+  static UPDATE_SORT_BY = 'UPDATE_SORT_BY';
 
   loadProjects(projects: Projects):  ActionWithPayload<Projects> {
     return {
@@ -67,6 +68,13 @@ export class ProjectsActions {
     return {
       type: ProjectsActions.UPDATE_SELECTED_PROJECT,
       payload: projectId
+    };
+  }
+
+  updateSortBy(sortBy: string): ActionWithPayload<string> {
+    return {
+      type: ProjectsActions.UPDATE_SORT_BY,
+      payload: sortBy
     };
   }
 
