@@ -12,6 +12,7 @@ export class SwingSelectComponent implements OnInit, OnChanges {
   @Input() type: String = 'singleSelect';
   @Input() items: Array<any>;
   @Input() label: String = 'Select';
+  @Input() selectAllLabel: string;
   @Input() selectedItemIndex: Array<number>;
   @Input() itemTextAttribute: any;
   @Input() width: String = '100%';
@@ -36,7 +37,7 @@ export class SwingSelectComponent implements OnInit, OnChanges {
       this.selectItemsList.push({
         index: 0,
         selected: this.selectedItemIndex.length ===  this.items.length ? true : false,
-        item: {name: 'Select All'}});
+        item: {name: this.selectAllLabel}});
 
       this.items.map((item, index) => {
         const tempItem = {
