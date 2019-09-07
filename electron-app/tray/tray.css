@@ -52,7 +52,12 @@ body {
   display: flex;
   justify-content: center;
   align-items: baseline;
-  margin: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.ps-nav-level1 {
+  margin-top: 5px;
 }
 
 .ps-nav .ps-nav-level1 .nav-item {
@@ -109,7 +114,6 @@ body {
 
 .ps-nav .ps-nav-level2 .ps-nav-time-span {
   color: #46476f;
-  height: 40px;
   width: 100%;
   font-weight: 500;
   font-size: 24px;

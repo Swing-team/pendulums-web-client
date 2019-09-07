@@ -132,14 +132,14 @@ let minimized = false; // see openApp() for more information
 const createWindow = () => {
     // Create the browser window.
     const { width, height } = screen.getPrimaryDisplay().size; // make windows size based on user resolutions
-    
 
     win = new BrowserWindow({
         width: Math.ceil(55 * width / 100),
         height: Math.ceil(60 * height / 100),
         center: true,
         minWidth: 770,
-        minHeight: 630
+        minHeight: 630,
+        webPreferences: { nodeIntegration: true }
     });
 
 
@@ -149,8 +149,7 @@ const createWindow = () => {
         slashes: true
     }));
 
-
-    // win.loadURL('http://192.168.1.106:4200');
+    // win.loadURL('http://localhost:4200');
     // win.webContents.openDevTools();
 
     // Emitted when the window is closed.
@@ -201,6 +200,7 @@ const createTrayWindow = () => {
         minimizable: false,
         resizable: false,
         movable: false,
+        webPreferences: { nodeIntegration: true }
     });
 
     trayWindow.loadURL(url.format({
@@ -252,13 +252,13 @@ const setupApplicationMenu = () => {
               role: 'paste'
             },
             {
-              role: 'pasteandmatchstyle'
+              role: 'pasteAndMatchStyle'
             },
             {
               role: 'delete'
             },
             {
-              role: 'selectall'
+              role: 'selectAll'
             }
           ]
         },
@@ -266,13 +266,13 @@ const setupApplicationMenu = () => {
           label: 'View',
           submenu: [
             {
-              role: 'resetzoom'
+              role: 'resetZoom'
             },
             {
-              role: 'zoomin'
+              role: 'zoomIn'
             },
             {
-              role: 'zoomout'
+              role: 'zoomOut'
             },
             {
               type: 'separator'
@@ -284,7 +284,7 @@ const setupApplicationMenu = () => {
               type: 'separator'
             },
             {
-                role: 'toggledevtools'
+                role: 'toggleDevTools'
               },
           ]
         },
@@ -305,9 +305,7 @@ const setupApplicationMenu = () => {
             {
                 label: 'Donate us',
                 click () {
-                    shell.openExternal('https://www.coinpayments.net/index.php?cmd=_donate&reset=1&merchant=d88653d' +
-                    'eee05911e2438e35ec41c865e&item_name=Give%20some%20love%20to%20Pendulums%20project&currency=USD&a' +
-                    'mountf=10.00000000&allow_amount=1&want_shipping=0&allow_extra=1&cstyle=grid2');
+                    shell.openExternal('https://pendulums.io/donation.html');
                 }
             },
             {
@@ -340,7 +338,7 @@ const setupApplicationMenu = () => {
                     role: 'hide'
                 },
                 {
-                    role: 'hideothers'
+                    role: 'hideOthers'
                 },
                 {
                     role: 'unhide'
@@ -462,7 +460,7 @@ ipcMain.on('win-user-ready', (event, user) => {
 
 ipcMain.on('win-projects-ready', (event, arg) => {
     if (trayMenu.getMenuItemById('start') && userLoggedIn) {
-        trayMenu.getMenuItemById('start')['submenu'].clear();
+        trayMenu.getMenuItemById('start')['submenu']['clear']();
         for (const project of arg) {
             projects[project.id] = project;
             trayMenu.getMenuItemById('start')['submenu'].append(new MenuItem({
