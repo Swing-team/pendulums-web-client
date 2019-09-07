@@ -1,7 +1,6 @@
 import { Injectable}            from '@angular/core';
 import { HttpClient }           from '@angular/common/http';
 import { Note }              from '../../shared/state/note/note.model';
-import { SyncService }          from '../../core/services/sync.service';
 import { environment }          from '../../../environments/environment';
 import TurndownService from 'turndown';
 import * as turndownPluginGfm from 'turndown-plugin-gfm';
@@ -12,9 +11,19 @@ import 'rxjs/add/operator/toPromise';
 export class NoteService {
   private options;
   private turndownService: TurndownService = new TurndownService({codeBlockStyle: 'fenced'});
-  constructor(private http: HttpClient,
-              private syncService: SyncService) {
+  constructor(private http: HttpClient) {
     this.options = {...environment.httpOptions, responseType: 'text'};
+    this.turndownService.addRule('strikethrough', {
+      filter: ['span', 'del', 's', 'strike'],
+      replacement: function (content, node) {
+        if (((node.nodeName === 'SPAN') && node.style.textDecoration.includes('line-through')) ||
+          (node.nodeName === 'DEL') || (node.nodeName === 'S') || (node.nodeName === 'STRIKE')) {
+          return '~~' + content + '~~';
+        }
+      }
+    });
+    const taskListItems = turndownPluginGfm.taskListItems;
+    this.turndownService.use(taskListItems);
   }
 
   getNotes(): Promise<Note[]> {
@@ -28,8 +37,6 @@ export class NoteService {
   create(note): Promise<Note> {
     let content;
     if (note.note.content) {
-      const taskListItems = turndownPluginGfm.taskListItems
-      this.turndownService.use(taskListItems)
       content = this.turndownService.turndown(note.note.content);
     }
     return this.http
@@ -38,9 +45,8 @@ export class NoteService {
       .then(response => response as Note)
       .catch(this.handleError);
   }
+
   update(note): Promise<Note> {
-    const taskListItems = turndownPluginGfm.taskListItems
-    this.turndownService.use(taskListItems)
     const content = this.turndownService.turndown(note.note.content);
     return this.http
       .put(environment.apiEndpoint + '/notes/' + note.note.id, {note: {...note.note, content: content}}, {withCredentials: true})

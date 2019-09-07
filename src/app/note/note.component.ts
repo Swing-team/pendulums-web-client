@@ -63,9 +63,11 @@ export class NoteComponent implements OnInit, OnDestroy {
       this.sortByItemIndex = this.sortOptions.findIndex(sortOption => sortOption.value === sortBy)
     ));
   }
+
   goBack() {
     this.location.back();
   }
+
   openCreateNoteModal() {
     this.modalService.show({
       component: CreateEditNoteComponent,
