@@ -108,22 +108,24 @@ export class StopStartActivityService {
 
   checkRestTimeSet(activity: Activity) {
     const settings = this.user.settings;
-    const workTime = Math.floor(settings.relaxationTime.workingTime / 1000);
-    const restTime = Math.floor(settings.relaxationTime.restTime / 1000);
+    if (settings.relaxationTime.isEnabled) {
+      const workTime = Math.floor(settings.relaxationTime.workingTime / 1000);
+      const restTime = Math.floor(settings.relaxationTime.restTime / 1000);
 
-    let nextWorkTime = workTime;
-    let duration;
+      let nextWorkTime = workTime;
+      let duration;
 
-    this.showNotifInterval = setInterval(() => {
-      duration = Math.floor((Date.now() - Number(activity.startedAt)) / 1000);
-      if (duration === nextWorkTime) {
-        this.nativeNotificationService.showNotification(`Take a rest and be relaxed for ${restTime / 60} minutes!`);
-      }
-      if (duration === (nextWorkTime + restTime)) {
-        this.nativeNotificationService.showNotification(`Ok! It's time to work for next ${workTime / 60} minutes!`);
-        nextWorkTime += (workTime + restTime);
-      }
-    }, 1000)
+      this.showNotifInterval = setInterval(() => {
+        duration = Math.floor((Date.now() - Number(activity.startedAt)) / 1000);
+        if (duration === nextWorkTime) {
+          this.nativeNotificationService.showNotification(`Take a rest and be relaxed for ${restTime / 60} minutes!`);
+        }
+        if (duration === (nextWorkTime + restTime)) {
+          this.nativeNotificationService.showNotification(`Ok! It's time to work for next ${workTime / 60} minutes!`);
+          nextWorkTime += (workTime + restTime);
+        }
+      }, 1000)
+    }
 
   }
 
