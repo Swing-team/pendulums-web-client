@@ -50,10 +50,11 @@ export class DeleteAccountComponent {
             this.showError(`Incorrect Password!`);
           } else if (error.status === 403) {
             this.showError(`you are not allow to perform this action`);
+            this.modalService.close();
           } else {
             this.showError('Something went wrong! please try again');
+            this.modalService.close();
           }
-          this.modalService.close();
         });
     }
   }
