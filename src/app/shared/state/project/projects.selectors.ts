@@ -38,11 +38,35 @@ export class ProjectsSelectors {
         case '+activity': {
           const a1 = p1.activities.find(a => a.user === user.id);
           const a2 = p2.activities.find(a => a.user === user.id);
+          if (!a1) {
+            return -1;
+          }
+          if (!a2) {
+            return 1;
+          }
+          if (!a1.stoppedAt) {
+            return 1;
+          }
+          if (!a2.stoppedAt) {
+            return -1;
+          }
           return a1.stoppedAt >= a2.stoppedAt ? 1 : -1;
         }
         case '-activity': {
           const a1 = p1.activities.find(a => a.user === user.id);
           const a2 = p2.activities.find(a => a.user === user.id);
+          if (!a1) {
+            return 1;
+          }
+          if (!a2) {
+            return -1;
+          }
+          if (!a1.stoppedAt) {
+            return -1;
+          }
+          if (!a2.stoppedAt) {
+            return 1;
+          }
           return a1.stoppedAt < a2.stoppedAt ? 1 : -1;
         }
       }
