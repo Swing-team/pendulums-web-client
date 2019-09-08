@@ -1,4 +1,4 @@
-<div class="modal is-active">
+<div class="modal is-active" (touchmove)="preventOverScroll($event)">
   <div class="modal-background" (click)="closeModal()"></div>
   <div class="modal-card ps-modal-card" data-backdrop="static" [ngStyle]="customStyles">
     <section class="modal-card-body ps-modal-body" [ngStyle]="customBodyStyles">

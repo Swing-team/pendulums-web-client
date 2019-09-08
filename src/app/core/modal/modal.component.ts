@@ -22,6 +22,11 @@ export class ModalComponent {
       this.closeModal(true);
     })
   }
+
+  preventOverScroll(event) {
+    event.preventDefault();
+  }
+
   closeModal(ignoreIsModalOpen?: boolean) {
     this.close.emit(ignoreIsModalOpen);
   }

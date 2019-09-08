@@ -21,11 +21,12 @@ apply plugin: 'com.android.application'
 
 buildscript {
     repositories {
-        mavenCentral()
-        jcenter()
         maven {
             url "https://maven.google.com"
         }
+        google()
+        mavenCentral()
+        jcenter()
     }
 
     dependencies {
