@@ -17,13 +17,23 @@
 
 .ps-side-menu
   position: fixed
-  left: -$side-menu-size
+  left: -200px;
   top: $toolbar-size
   height: 100vh
   z-index: 10
   transition: 0.5s
   @media (min-width: 1024px)
     left: 0
+
+.ps-menu-opened-background
+  position: fixed
+  top: 0
+  left: 0
+  width: 100%
+  height: 100%
+  z-index: 9
+  background-color: rgba(0, 0, 0, 0.8)
+
 
 .ps-guster-handler
   width: 32px
@@ -32,10 +42,10 @@
   position: fixed
   top: 0
   left: 0
-  z-index: 8
 .ps-side-menu-show
   left: 0
   z-index: 10
+  width: 200px
 
 
 .offline-indicator
