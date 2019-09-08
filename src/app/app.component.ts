@@ -19,6 +19,7 @@ import { AppService }                             from './core/services/app.serv
 import { UnSyncedActivityActions }                from './shared/state/unsynced-activities/unsynced-activities.actions';
 import { AppStateSelectors }                      from './shared/state/app-state.selectors';
 import { VERSION }                                from 'environments/version';
+import { ModalService }                           from './core/modal/modal.service';
 
 @Component({
   selector: 'app-root',
@@ -53,7 +54,8 @@ export class AppComponent implements OnInit {
     private unSyncedActivityActions: UnSyncedActivityActions,
     private appStateSelectors: AppStateSelectors,
     // needed for dynamically loaded components
-    public viewContainerRef: ViewContainerRef
+    public viewContainerRef: ViewContainerRef,
+    private modalService: ModalService
   ) {
     // to initialize state
     this.user = store.select('user');
@@ -84,6 +86,9 @@ export class AppComponent implements OnInit {
         this.store.dispatch(this.unSyncedActivityActions.clearUnSyncedActivity());
         this.syncService.closeConnection();
         if (!this.router.url.includes('resetPassword')) {
+          if (this.modalService.getIsModalOpen()) {
+            this.modalService.close()
+          }
           this.router.navigate(['signIn']);
         }
       }
