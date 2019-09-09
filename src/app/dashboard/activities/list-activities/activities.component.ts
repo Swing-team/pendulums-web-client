@@ -423,7 +423,7 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
           const userDetail = userInProject(this.project, activity.user);
           exportActivities.push({
             name: activity.name,
-            member: userDetail.name ? userDetail.name : userDetail.email,
+            member: userDetail ? (userDetail.name ? userDetail.name : userDetail.email) : 'Someone who has left this project',
             startedAt: (new Date(Number(activity.startedAt))).toLocaleString(),
             stoppedAt: (new Date(Number(activity.stoppedAt))).toLocaleString(),
           });
