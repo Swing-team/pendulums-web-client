@@ -5,18 +5,22 @@ import { AppState }                   from '../shared/state/appState';
 import { AppStateSelectors }          from '../shared/state/app-state.selectors';
 import { User } from 'app/shared/state/user/user.model';
 import { LocalNotificationService } from './local-notification.mobile.service';
+import { Location } from '@angular/common';
 
 @Injectable()
 export class RestTimeTrackingService {
   showNotifInterval: any;
   user: User;
+  isListeningBack = false;
+  backListenerFunction = this.moveAppToBackground.bind(this);
 
   constructor(
     // TODO: Mohammad 04-12-2019: add notification action to stop activity
     private stopStartActivityService: StopStartActivityService,
     private store: Store<AppState>,
     private appStateSelectors: AppStateSelectors,
-    private localNotificationService: LocalNotificationService
+    private localNotificationService: LocalNotificationService,
+    private location: Location,
   ) {
     this.store.select('user').subscribe((user) => {
       if (this.user && !this.user.settings.relaxationTime.isEnabled && user.settings.relaxationTime.isEnabled) {
@@ -30,10 +34,15 @@ export class RestTimeTrackingService {
 
     this.store.select('currentActivity').subscribe((currentActivity) => {
       if (currentActivity.startedAt) {
-        // FIXME: Mohammad 04-12-2019: uncomment these when it's fixed: https://github.com/katzer/cordova-plugin-background-mode/issues/393
-        //window['cordova'].plugins.backgroundMode.enable();
-        //window['cordova'].plugins.backgroundMode.setDefaults(this.getCurrentActivityNotificationConfig(currentActivity));
-
+        window['cordova'].plugins.backgroundMode.on('activate', function() {
+          window['cordova'].plugins.backgroundMode.disableWebViewOptimizations();
+        });
+        window['cordova'].plugins.backgroundMode.enable();
+        window['cordova'].plugins.backgroundMode.setDefaults(this.getCurrentActivityNotificationConfig(currentActivity));
+        if (!this.isListeningBack) {
+          document.addEventListener('backbutton', this.backListenerFunction, false);
+          this.isListeningBack = true;
+        }
         if (this.user.settings.relaxationTime.isEnabled) {
           const settings = this.user.settings;
           const workTime = Math.floor(settings.relaxationTime.workingTime / 1000);
@@ -45,7 +54,7 @@ export class RestTimeTrackingService {
             clearInterval(this.showNotifInterval);
           }
           this.showNotifInterval = setInterval(() => {
-            //window['cordova'].plugins.backgroundMode.configure(this.getCurrentActivityNotificationConfig(currentActivity));
+            window['cordova'].plugins.backgroundMode.configure(this.getCurrentActivityNotificationConfig(currentActivity));
             const duration = Math.floor((Date.now() - Number(currentActivity.startedAt)) / 1000);
             if (duration === nextWorkTime) {
               this.localNotificationService.showNotification('Take a rest!', `Take a rest and be relaxed for ${restTime / 60} minutes!`);
@@ -61,9 +70,11 @@ export class RestTimeTrackingService {
           clearInterval(this.showNotifInterval);
         }
         // check if deviceready event has already fired
-        //if (window['cordova']) {
-          //window['cordova'].plugins.backgroundMode.disable();
-        //}
+        if (window['cordova']) {
+          window['cordova'].plugins.backgroundMode.disable();
+          document.removeEventListener('backbutton', this.backListenerFunction, false);
+          this.isListeningBack = false;
+        }
       }
     });
   }
@@ -75,7 +86,7 @@ export class RestTimeTrackingService {
     return {
       title: currentActivity.name,
       text: timeDuration,
-      icon: 'app_small_icon.png',
+      icon: 'app_small_icon',
       color: '46476F',
       bigText: true
     };
@@ -117,5 +128,13 @@ export class RestTimeTrackingService {
       result = seconds + ' sec';
     }
     return result;
+  }
+
+  private moveAppToBackground() {
+    if ((this.location.path() === '/dashboard') && (document.getElementsByTagName('modal').length === 0)) {
+      window['cordova'].plugins.backgroundMode.moveToBackground();
+    } else {
+      this.location.back();
+    }
   }
 }
