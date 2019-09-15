@@ -12,9 +12,7 @@ export class DexieService extends Dexie {
       appInfo: 'userId',
     }).upgrade((tb) => {
       return tb['userData'].toCollection().modify(data => {
-        Object.keys(data.data.theme.entities).forEach(function(key) {
-          data.data.theme.entities[key].isLightTheme = false;
-        });
+        data.data.theme = { isLightTheme: false };
       });
     });
 
