@@ -14,7 +14,8 @@ import { Observable }                   from 'rxjs/Observable';
 import { Status }                       from '../../shared/state/status/status.model';
 import { environment }                  from '../../../environments/environment';
 import { SocketService }                from './socket.service';
-import { NotesActions } from 'app/shared/state/note/notes.actions';
+import { NotesActions }                 from 'app/shared/state/note/notes.actions';
+import { ThemeActions }                 from 'app/shared/state/theme/theme.actions';
 
 @Injectable()
 export class SyncService {
@@ -36,6 +37,7 @@ export class SyncService {
               private currentActivityActions: CurrentActivityActions,
               private unSyncedActivityActions: UnSyncedActivityActions,
               private notesActions: NotesActions,
+              private themeActions: ThemeActions,
               private socketService: SocketService) {
     this.status = store.select('status');
     this.currentActivity = store.select('currentActivity');
@@ -212,6 +214,7 @@ export class SyncService {
       this.store.dispatch(this.notesActions.loadDbNotes(this.tempState.notes));
       this.store.dispatch(this.currentActivityActions.loadCurrentActivity(this.tempState.currentActivity));
       this.store.dispatch(this.unSyncedActivityActions.loadUnSyncedActivity(this.tempState.unSyncedActivity));
+      this.store.dispatch(this.themeActions.loadTheme(this.tempState.theme));
       this.store.dispatch(this.statusActions.updateStatus({netStatus: false, isLogin: true}));
     } else {
       this.store.dispatch(this.statusActions.updateStatus({isLogin: null}));

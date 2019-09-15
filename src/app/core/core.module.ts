@@ -10,6 +10,7 @@ import { ProjectsActions }              from '../shared/state/project/projects.a
 import { NotesActions }                 from '../shared/state/note/notes.actions';
 import { CurrentActivityActions }       from '../shared/state/current-activity/current-activity.actions';
 import { UnSyncedActivityActions }      from '../shared/state/unsynced-activities/unsynced-activities.actions';
+import { ThemeActions }                 from '../shared/state/theme/theme.actions';
 
 import { UserService }                  from './services/user.service';
 import { AuthenticationService }        from './services/authentication.service';
@@ -87,6 +88,7 @@ import { SocketService }                from './services/socket.service';
     NotesActions,
     CurrentActivityActions,
     UnSyncedActivityActions,
+    ThemeActions,
     AppStateSelectors,
     ProjectsSelectors,
     NotesSelectors,

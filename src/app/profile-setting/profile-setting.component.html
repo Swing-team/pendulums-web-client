@@ -118,7 +118,7 @@
                 <div class="column" *ngIf="settings.relaxationTime.isEnabled">
                   <b>Presets</b> <br>
                   <div class="select">
-                    <select [(ngModel)]="relaxationTimeSelectorModel" (change)="timeSelectorChange()" class="ps-body-input ps-pomodoro-time-select">
+                    <select [(ngModel)]="relaxationTimeSelectorModel" (change)="timeSelectorChange()" class="ps-body-input ps-select">
                       <option value="pomodoro1">Pomodoro time set 1</option>
                       <option value="pomodoro2">Pomodoro time set 2</option>
                       <option value="pomodoro3">Pomodoro time set 3</option>
@@ -138,6 +138,16 @@
                       class="input" placeholder="Rest time (minutes)" (input)="changeDropDown()">
                   </div>
                 </div>
+              </div>
+            </div>
+            <hr>
+            <div class="field has-text-left ps-theme-section">
+              <b>Theme:</b>
+              <div class="select">
+                <select [(ngModel)]="themeSelector" class="ps-body-input ps-select ps-select-theme">
+                  <option value="light">Light</option>
+                  <option value="dark">Dark</option>
+                </select>
               </div>
             </div>
             <div class="field ps-save-btn-container">

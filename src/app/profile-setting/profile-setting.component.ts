@@ -18,6 +18,8 @@ import { Subscription }                     from 'rxjs/Subscription';
 import { NativeNotificationService }        from '../core/services/native-notification.service';
 import { Location }                         from '@angular/common';
 import { DeleteAccountComponent } from './delete-account/delete-account.component';
+import { ThemeActions }                     from 'app/shared/state/theme/theme.actions';
+import { Theme }                            from 'app/shared/state/theme/theme.model';
 
 @Component({
   selector: 'profile-setting',
@@ -38,6 +40,7 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
   netConnected: boolean;
   settings: Settings;
   relaxationTimeSelectorModel: any;
+  themeSelector: any;
   workingTimeInputModel: string;
   relaxTimeInputModel: string;
   editButtonDisabled = false;
@@ -48,6 +51,7 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
                private errorService: ErrorService,
                private store: Store<AppState>,
                private userActions: UserActions,
+               private themeActions: ThemeActions,
                private userService: UserService,
                private location: Location,
                private modalService: ModalService,
@@ -73,6 +77,13 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
       }
     }));
 
+    this.subscriptions.push(this.store.select('theme').subscribe((theme: Theme) => {
+      if (theme.isLightTheme) {
+        this.themeSelector = 'light';
+      } else {
+        this.themeSelector = 'dark';
+      }
+    }));
     this.subscriptions.push(this.store.select('user').subscribe((user: User) => {
       this.user = user;
       this.userEdit = _.cloneDeep(user);
@@ -196,6 +207,13 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
 
   updateSettings() {
     this.settingsSubmitted = true;
+    if (this.themeSelector === 'light') {
+      window.document.children[0].className = 'ps-light-theme';
+      this.store.dispatch(this.themeActions.loadTheme({ isLightTheme: true }));
+    } else {
+      window.document.children[0].className = '';
+      this.store.dispatch(this.themeActions.loadTheme({ isLightTheme: false }));
+    }
     if (this.settings.relaxationTime.isEnabled) {
       this.nativeNotificationService.getPermission();
     }

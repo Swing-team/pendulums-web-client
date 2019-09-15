@@ -20,6 +20,7 @@ import { UnSyncedActivityActions }                from './shared/state/unsynced-
 import { AppStateSelectors }                      from './shared/state/app-state.selectors';
 import { VERSION }                                from 'environments/version';
 import { ModalService }                           from './core/modal/modal.service';
+import { Theme }                                  from './shared/state/theme/theme.model';
 
 @Component({
   selector: 'app-root',
@@ -29,6 +30,7 @@ import { ModalService }                           from './core/modal/modal.servi
 export class AppComponent implements OnInit {
   user: Observable<any>;
   status: Observable<any>;
+  theme: Observable<Theme>;
   private projects: Observable<any>;
   private selectedProject: Observable<string>;
   private currentActivity: Observable<any>;
@@ -63,11 +65,21 @@ export class AppComponent implements OnInit {
     this.selectedProject = store.select(appStateSelectors.getSelectedProject);
     this.currentActivity = store.select('currentActivity');
     this.status = store.select('status');
+    this.theme = store.select('theme');
   }
 
   ngOnInit(): void {
     // to initialize webSocket connection
     const responseResults = this.syncService.init();
+
+    // handle Theme
+    this.theme.subscribe((theme) => {
+      if (theme.isLightTheme) {
+        window.document.children[0].className = 'ps-light-theme';
+      } else {
+        window.document.children[0].className = '';
+      }
+    });
 
     this.appService.getAppVersion().then((version) => {
       this.store.dispatch(this.statusActions.updateStatus({updateNeeded: version > VERSION}));
