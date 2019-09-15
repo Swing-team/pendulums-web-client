@@ -119,7 +119,9 @@ export class AppComponent implements OnInit {
 
   signOut() {
     this.authService.signOut()
-      .then(() => {})
+      .then(() => {
+        this.SideMenuIsActive = false;
+      })
       .catch((error) => {
         if (error.status === 503) {
           // Not sure about this code below. please check!
