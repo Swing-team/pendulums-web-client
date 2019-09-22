@@ -208,10 +208,8 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
   updateSettings() {
     this.settingsSubmitted = true;
     if (this.themeSelector === 'light') {
-      window.document.children[0].className = 'ps-light-theme';
       this.store.dispatch(this.themeActions.loadTheme({ isLightTheme: true }));
     } else {
-      window.document.children[0].className = '';
       this.store.dispatch(this.themeActions.loadTheme({ isLightTheme: false }));
     }
     if (this.settings.relaxationTime.isEnabled) {
