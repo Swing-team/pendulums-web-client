@@ -10,9 +10,16 @@ ant-gen
 # Eclipse builds
 gen
 out
-
-# Gradle builds
+# Gradle build artifacts
+.gradle
+.gradletasknamecache
 /build
+/CordovaLib/build
+/app/build
+gradle-app.setting
+# Android Studio
+.idea
+
 release-signing.properties
 
 ### Android ###
@@ -111,9 +118,6 @@ output.json
 # Java class files
 
 # Generated files
-
-# Gradle files
-.gradle
 
 # Signing files
 .signing/
