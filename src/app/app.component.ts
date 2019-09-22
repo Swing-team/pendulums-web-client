@@ -132,7 +132,9 @@ export class AppComponent implements OnInit {
   signOut() {
     this.authService.signOut()
       .then(() => {
-        this.SideMenuIsActive = false;
+        if (window.innerWidth <= 1024) {
+          this.SideMenuIsActive = false;
+        }
       })
       .catch((error) => {
         if (error.status === 503) {
