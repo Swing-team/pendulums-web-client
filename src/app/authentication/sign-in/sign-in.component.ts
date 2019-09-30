@@ -6,7 +6,7 @@ import { AppState }                         from '../../shared/state/appState';
 import { StatusActions }                    from '../../shared/state/status/status.actions';
 import { SyncService }                      from '../../core/services/sync.service';
 
-const EMAIL_REGEX = /^(?=.{8,64}$)[\w!#$%&'*+/=?`{|}~^-]+(?:\.[\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,6}$/;
+const EMAIL_REGEX = /^[a-zA-Z0-9+\._%-+]{1,256}@[a-zA-Z0-9][a-zA-Z0-9-]{0,64}(\.[a-zA-Z0-9][a-zA-Z0-9-]{0,25})+$/;
 
 @Component({
   selector: 'sign-in',

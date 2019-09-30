@@ -1,5 +1,4 @@
 import 'rxjs/add/operator/toPromise';
-import * as io                          from 'socket.io-client';
 import { Injectable }                   from '@angular/core';
 import { HttpClient }                   from '@angular/common/http';
 import { Store }                        from '@ngrx/store';
@@ -14,11 +13,13 @@ import { UserService }                  from './user.service';
 import { Observable }                   from 'rxjs/Observable';
 import { Status }                       from '../../shared/state/status/status.model';
 import { environment }                  from '../../../environments/environment';
+import { SocketService }                from './socket.service';
+import { NotesActions }                 from 'app/shared/state/note/notes.actions';
+import { ThemeActions }                 from 'app/shared/state/theme/theme.actions';
 
 @Injectable()
 export class SyncService {
   private options: any;
-  private socket = null;
   private tempState: any;
   private status: Observable<any>;
   private currentActivity: Observable<any>;
@@ -34,15 +35,48 @@ export class SyncService {
               private userActions: UserActions,
               private projectsActions: ProjectsActions,
               private currentActivityActions: CurrentActivityActions,
-              private unSyncedActivityActions: UnSyncedActivityActions) {
+              private unSyncedActivityActions: UnSyncedActivityActions,
+              private notesActions: NotesActions,
+              private themeActions: ThemeActions,
+              private socketService: SocketService) {
     this.status = store.select('status');
     this.currentActivity = store.select('currentActivity');
+
     this.status.subscribe((status: Status) => {
       this.isLogin = status.isLogin;
     });
+
     this.currentActivity.subscribe((currentActivity) => {
       this.currentActivityProjectId = currentActivity.project;
     });
+
+    this.socketService.socketConnected$.subscribe(() => {
+      this.getStateFromDb().then(() => {
+        this.autoSync();
+      }).catch(() => {
+        this.getSummaryOnline();
+      });
+    })
+
+    this.socketService.messages$.subscribe((data) => {
+      if (data.type === 'projectRemoved') {
+        this.store.dispatch(this.projectsActions.removeProject(data.data.toString()));
+
+        // if we have current activity on deleted project we should clear it
+        if (this.currentActivityProjectId && (this.currentActivityProjectId.toString() === data.data.toString())) {
+          this.store.dispatch(this.currentActivityActions.clearCurrentActivity());
+        }
+      }
+
+      if (data.type === 'syncNeeded') {
+        Promise.all(this.responseResults).then(() => {
+          this.autoSync();
+        }).catch(() => {
+          console.log('Sync Needed')
+        });
+      }
+    });
+
     this.options = {...environment.httpOptions, responseType: 'text'}
   }
 
@@ -62,7 +96,7 @@ export class SyncService {
 
   syncData(data): Promise<any> {
     return this.http
-      .put(environment.apiEndpoint + '/sync/activities' + '?socketId=' + this.getSocketId()
+      .put(environment.apiEndpoint + '/sync/activities' + '?socketId=' + this.socketService.getSocketId()
       , JSON.stringify(data), this.options)
       .toPromise()
       .then(() => {
@@ -136,47 +170,8 @@ export class SyncService {
     return this.responseResults;
   }
 
-  connectSocket() {
-    this.socket = io(environment.socketEndpoint, {path: environment.socketPath, transports: ['websocket'], upgrade: true});
-    this.socket.on('connect', () => {
-      console.log('websocket connected!');
-      this.getStateFromDb().then(() => {
-        this.autoSync();
-      }).catch(() => {
-        this.getSummaryOnline();
-      });
-      this.store.dispatch(this.statusActions.updateNetStatus(true));
-      this.socket.emit('get', {
-        method: 'get',
-        url: '/socket/subscribe-to-events',
-      }, () => {
-        // listen to events
-      });
-    });
-
-    this.socket.on('message', (data) => {
-      if (data.type === 'projectRemoved') {
-        this.store.dispatch(this.projectsActions.removeProject(data.data.toString()));
-
-        // if we have current activity on deleted project we should clear it
-        if (this.currentActivityProjectId && (this.currentActivityProjectId.toString() === data.data.toString())) {
-          this.store.dispatch(this.currentActivityActions.clearCurrentActivity());
-        }
-      }
-
-      if (data.type === 'syncNeeded') {
-        Promise.all(this.responseResults).then(() => {
-          this.autoSync();
-        }).catch(() => {
-          console.log('Sync Needed')
-        });
-      }
-    });
-
-    this.socket.on('disconnect', (error) => {
-      console.log('websocket disconnected!');
-      this.store.dispatch(this.statusActions.updateNetStatus(false));
-    });
+  private connectSocket() {
+    this.socketService.connectSocket();
   }
 
   getSummaryOnline() {
@@ -199,6 +194,13 @@ export class SyncService {
           });
       })
       .catch(error => {
+        if (error.status === 404) {
+          this.dBService
+          .removeAll('activeUser')
+          .then(() => {
+            this.store.dispatch(this.statusActions.updateStatus({netStatus: true, isLogin: false}));
+          });
+        }
         if (error.status !== 403) {
           this.initialAppOffline();
         }
@@ -209,23 +211,18 @@ export class SyncService {
     if (this.tempState) {
       this.store.dispatch(this.userActions.loadUser(this.tempState.user));
       this.store.dispatch(this.projectsActions.loadDbProjects(this.tempState.projects));
+      this.store.dispatch(this.notesActions.loadDbNotes(this.tempState.notes));
       this.store.dispatch(this.currentActivityActions.loadCurrentActivity(this.tempState.currentActivity));
       this.store.dispatch(this.unSyncedActivityActions.loadUnSyncedActivity(this.tempState.unSyncedActivity));
+      this.store.dispatch(this.themeActions.loadTheme(this.tempState.theme));
       this.store.dispatch(this.statusActions.updateStatus({netStatus: false, isLogin: true}));
     } else {
       this.store.dispatch(this.statusActions.updateStatus({isLogin: null}));
     }
   }
 
-  getSocketId(): string {
-    return this.socket.id;
-  }
-
   closeConnection(): void {
-    if (this.socket) {
-      this.socket.disconnect();
-      this.store.dispatch(this.statusActions.clearStatus());
-    }
+    this.socketService.closeConnection();
   }
 
   private handleError(error: any): Promise<any> {

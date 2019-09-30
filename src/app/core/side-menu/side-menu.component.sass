@@ -6,6 +6,8 @@ $side-menu-item-size: $side-menu-size - 8px
   width: $side-menu-size
   height: 100%
   background-color: $ink
+  @media (max-width: $ps-change-menu-size)
+    width: 100%
   .menu-list
     padding-top: 1rem
     padding-bottom: 1rem
@@ -13,10 +15,16 @@ $side-menu-item-size: $side-menu-size - 8px
     position: relative
     display: flex
     flex-direction: column
+    @media (max-width: $ps-change-menu-size)
+      display: block
     .ps-fill-space
       flex-grow: 1
     li
       padding: 4px
+      @media (max-width: $ps-change-menu-size)
+        padding: unset
+        height: 40px
+        margin: 4px 8px
       a
         display: flex
         transition: all ease-in-out $ps-transitions
@@ -25,12 +33,24 @@ $side-menu-item-size: $side-menu-size - 8px
         position: relative
         height: $side-menu-item-size
         max-height: $side-menu-item-size
+        @media (max-width: $ps-change-menu-size)
+          flex-direction: row
+          align-items: center
+          padding-left: 10px
+          padding-right: 10px
+          border-radius: 4px
+          height: 40px
+          max-height: 40px
         .ps-user-image
           margin: auto
           width: $side-menu-item-size - 8px
           height: $side-menu-item-size - 8px
           border: 1px solid $ink
           border-radius: 100%
+          @media (max-width: $ps-change-menu-size)
+            width: 32px
+            height: 32px
+            margin: unset
         &.is-active
           background-color: lighten($ps-primary,10%) !important
         &.is-disabled
@@ -46,6 +66,8 @@ $side-menu-item-size: $side-menu-size - 8px
           text-align: center
           margin: auto
           color: $paper
+          @media (max-width: $ps-change-menu-size)
+            margin: unset
           &.icon-sign-out
             font-size: 20px
             padding: unset
@@ -54,6 +76,14 @@ $side-menu-item-size: $side-menu-size - 8px
           &.icon-gift
             padding: unset
             padding-bottom: 2px
+        p
+          font-size: 16px
+          font-weight: 500
+          display: block
+          margin-left: 10px
+          color: $paper
+          @media ( min-width: $ps-change-menu-size)
+            display: none
 
 .ps-notifications-container
   position: absolute
@@ -76,6 +106,9 @@ $side-menu-item-size: $side-menu-size - 8px
   -webkit-box-shadow: 0 2px 3px rgba(51, 51, 51, 0.1), 0 0 0 1px rgba(51, 51, 51, 0.1)
   box-shadow: 0 2px 3px rgba(51, 51, 51, 0.1), 0 0 0 1px rgba(51, 51, 51, 0.1)
   border-radius: unset
+  @media ( max-width: $ps-change-menu-size)
+    bottom: unset;
+    top: $side-menu-size * 6 + 40px
   .ps-bug-report-text
     color: #4a4a4a
 

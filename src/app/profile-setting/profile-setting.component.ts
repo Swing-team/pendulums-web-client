@@ -17,6 +17,9 @@ import { Observable }                       from 'rxjs/Observable';
 import { Subscription }                     from 'rxjs/Subscription';
 import { NativeNotificationService }        from '../core/services/native-notification.service';
 import { Location }                         from '@angular/common';
+import { DeleteAccountComponent } from './delete-account/delete-account.component';
+import { ThemeActions }                     from 'app/shared/state/theme/theme.actions';
+import { Theme }                            from 'app/shared/state/theme/theme.model';
 
 @Component({
   selector: 'profile-setting',
@@ -37,6 +40,7 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
   netConnected: boolean;
   settings: Settings;
   relaxationTimeSelectorModel: any;
+  themeSelector: any;
   workingTimeInputModel: string;
   relaxTimeInputModel: string;
   editButtonDisabled = false;
@@ -47,6 +51,7 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
                private errorService: ErrorService,
                private store: Store<AppState>,
                private userActions: UserActions,
+               private themeActions: ThemeActions,
                private userService: UserService,
                private location: Location,
                private modalService: ModalService,
@@ -72,6 +77,13 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
       }
     }));
 
+    this.subscriptions.push(this.store.select('theme').subscribe((theme: Theme) => {
+      if (theme.isLightTheme) {
+        this.themeSelector = 'light';
+      } else {
+        this.themeSelector = 'dark';
+      }
+    }));
     this.subscriptions.push(this.store.select('user').subscribe((user: User) => {
       this.user = user;
       this.userEdit = _.cloneDeep(user);
@@ -179,6 +191,8 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
             console.log('error is: ', error);
             if (error.status === 503) {
               this.showError('You have reached the authentication limits, please try in a few minutes!');
+            } else if (error.status === 400) {
+              this.showError('Old Password is incorrect!');
             } else {
               this.showError('Server communication error');
             }
@@ -193,6 +207,11 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
 
   updateSettings() {
     this.settingsSubmitted = true;
+    if (this.themeSelector === 'light') {
+      this.store.dispatch(this.themeActions.loadTheme({ isLightTheme: true }));
+    } else {
+      this.store.dispatch(this.themeActions.loadTheme({ isLightTheme: false }));
+    }
     if (this.settings.relaxationTime.isEnabled) {
       this.nativeNotificationService.getPermission();
     }
@@ -259,9 +278,13 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
   }
 
   validationPassword(User): boolean {
-    if (!User.newPassword
-      || User.newPassword.length < 6
-      || User.newPassword.length > 32) {
+    if (!User.newPassword) {
+      this.showError('New password should NOT be empty');
+      return false;
+    } else if (!User.oldPassword) {
+      this.showError('Old password should NOT be empty');
+      return false;
+    } else if (User.newPassword.length < 6 || User.newPassword.length > 32) {
       this.showError('The password length must be between 6 and 32 characters');
       return false;
     }
@@ -279,6 +302,17 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
     }
     return true;
 
+  }
+
+  deleteAccount() {
+    if (this.netConnected) {
+      this.modalService.show({
+        component: DeleteAccountComponent,
+        inputs: { },
+      });
+    } else {
+      this.showError('Not available in offline mode');
+    }
   }
 
   showError(error) {

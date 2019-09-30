@@ -21,6 +21,7 @@ import { cloneDeep, uniqBy }                from 'lodash';
 import { PageLoaderService }                from '../../../core/services/page-loader.service';
 import { Subscription }                     from 'rxjs/Subscription';
 import { ChartComponent }                   from './chart-statistics/chart.component';
+import { userInProject } from 'app/dashboard/shared/utils';
 
 type ActivityWithIsActive = Activity & {isActive?: boolean};
 
@@ -417,7 +418,17 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
     if (this.selectedUsers.length > 0) {
       this.isExporting = true;
       this.activityService.getActivitiesForExport(this.projectId, this.selectedUsers).then((activities) => {
-        const result = json2csv.parse(activities);
+        const exportActivities = [];
+        activities.forEach((activity) => {
+          const userDetail = userInProject(this.project, activity.user);
+          exportActivities.push({
+            name: activity.name,
+            member: userDetail ? (userDetail.name ? userDetail.name : userDetail.email) : 'Someone who has left this project',
+            startedAt: (new Date(Number(activity.startedAt))).toLocaleString(),
+            stoppedAt: (new Date(Number(activity.stoppedAt))).toLocaleString(),
+          });
+        });
+        const result = json2csv.parse(exportActivities);
         const element = document.createElement('a');
         element.setAttribute('href', 'data:text/csv;charset=UTF-8,' + encodeURIComponent(result));
         element.setAttribute('download', `${this.project.name}-export.csv`);

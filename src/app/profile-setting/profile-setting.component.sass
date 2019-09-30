@@ -90,10 +90,17 @@
 .select
   max-width: 100%
 
-.ps-pomodoro-time-select
+.ps-theme-section
+  display: flex
+  flex-direction: row
+  align-items: center
+
+.ps-select
   background: transparent !important
   border: thin solid #dbdbdb
   border-radius: 4px
+  &.ps-select-theme
+    margin-left: 12px
 
 .ps-project-name-container
   display: flex
@@ -162,7 +169,7 @@
 .ps-save-btn-container
   padding-top: 24px
 .ps-z-index
-  z-index: 9
+  z-index: 5
 .ps-setting-top-button
   visibility: hidden
   cursor: pointer
@@ -187,3 +194,14 @@
     min-width: 40px
     font-size: 1.2rem
     line-height: 2.5rem
+
+.ps-dangerous-actions-title
+  color: $red !important
+
+.ps-delete-action-button
+  background-color: $red
+  border: unset
+  color: $white
+  transition: all ease-in-out $ps-transitions
+  &:hover
+    background-color: lighten($red, 5%) !important

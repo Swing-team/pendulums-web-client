@@ -1,7 +1,7 @@
 import { Injectable}            from '@angular/core';
 import { HttpClient }           from '@angular/common/http';
 import { Project }              from '../../shared/state/project/project.model';
-import { SyncService }          from '../../core/services/sync.service';
+import { SocketService }        from '../../core/services/socket.service';
 import { environment }          from '../../../environments/environment';
 import 'rxjs/add/operator/toPromise';
 
@@ -10,7 +10,7 @@ import 'rxjs/add/operator/toPromise';
 export class ProjectService {
   private options;
   constructor(private http: HttpClient,
-              private syncService: SyncService) {
+              private socketService: SocketService) {
     this.options = {...environment.httpOptions, responseType: 'text'};
   }
 
@@ -41,7 +41,7 @@ export class ProjectService {
   removeMember(projectId, userId): Promise<any> {
     return this.http
       .delete(environment.apiEndpoint + '/projects/' + projectId + '/team-members/' + userId +
-      '?socketId=' + this.syncService.getSocketId(), this.options)
+      '?socketId=' + this.socketService.getSocketId(), this.options)
       .toPromise()
       .then(response => {
       })
@@ -51,7 +51,7 @@ export class ProjectService {
   inviteMember(projectId, invitedUser): Promise<any> {
     return this.http
       .post(environment.apiEndpoint + '/projects/' + projectId + '/invitation' +
-      '?socketId=' + this.syncService.getSocketId(), JSON.stringify(invitedUser), this.options)
+      '?socketId=' + this.socketService.getSocketId(), JSON.stringify(invitedUser), this.options)
       .toPromise()
       .then(response => {
 
@@ -65,7 +65,7 @@ export class ProjectService {
     };
     return this.http
       .delete(environment.apiEndpoint + '/projects/' + projectId + '/invitation' +
-      '?socketId=' + this.syncService.getSocketId(), options)
+      '?socketId=' + this.socketService.getSocketId(), options)
       .toPromise()
       .then(response => {
 
@@ -84,7 +84,7 @@ export class ProjectService {
   changeTeamMemberRole(projectId, memberId, role) {
     return this.http
       .put(environment.apiEndpoint + '/projects/' + projectId + '/roles' +
-      '?socketId=' + this.syncService.getSocketId(),
+      '?socketId=' + this.socketService.getSocketId(),
         JSON.stringify({
           userWithRole: {
             id: memberId,
@@ -98,6 +98,20 @@ export class ProjectService {
       .catch(error => {
         console.log(error);
       });
+  }
+
+  leaveProject(projectId: string, newOwnerId?: string) {
+    const options = {
+      withCredentials: true,
+      body: JSON.stringify({newOwnerId})
+    };
+    return this.http
+      .delete(environment.apiEndpoint + '/projects/' + projectId + '/team-members/leave' +
+        '?socketId=' + this.socketService.getSocketId(), options)
+      .toPromise()
+      .then(response => {
+
+      }).catch(this.handleError);
   }
 
   private handleError(error: any): Promise<any> {

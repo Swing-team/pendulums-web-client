@@ -22,6 +22,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   @Output() serverMessage: any;
 
   projects: Observable<any>;
+  sortBy: Observable<string>;
   user: Observable<any>;
   currentActivity: Observable<any>;
   status: Observable<any>;
@@ -41,6 +42,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.user = store.select('user');
     this.status = store.select('status');
     this.projects = store.select(appStateSelectors.getProjectsArray);
+    this.sortBy = store.select(appStateSelectors.getProjectsSortBy);
     this.hasSeenInfoModal = false
   }
 

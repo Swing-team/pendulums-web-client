@@ -1,11 +1,12 @@
 import {TeamMember} from '../team-member/team-member.model';
+import { Activity } from '../current-activity/current-activity.model';
 
 export class Project {
   id: string = null;
   name: string = null;
   image: string = null;
   invitedUsers = [];
-  activities = [];
+  activities: Activity[] = [];
   owner: TeamMember;
   teamMembers: Array<TeamMember>;
   admins: Array<TeamMember>;

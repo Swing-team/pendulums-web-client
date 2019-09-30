@@ -1,6 +1,5 @@
 @import '../../../../../sass/variables'
 
-
 .ps-text-red
   color: $red
 
@@ -11,6 +10,10 @@
 .ps-confirmation-container
   margin-top: auto
   margin-right: auto
+  &.ps-confirmation-margin
+    margin-top: 8px
+    margin-left: auto
+    margin-bottom: 10px
 
 .ps-confirm-text-input
   font-size: 0.75rem
@@ -21,23 +24,28 @@
   margin-top: 2px
   border: unset
 
+.ps-leave-button-inline
+  margin-left: 20px
+
 .ps-leave-button
-  columns: $paper
   margin: 10px
-  background-color: $red
   align-self: center
 
 .ps-choose-member-container
   display: flex
   margin: 20px
+  .ps-confirm-button
+    margin: 0 0 0 5px
 
 .ps-members-select
-  flex-basis: 80%
-  margin-right: 30px
-
-.ps-choose-member-button
-  flex-basis: 20%
+  flex: 1
+  font-size: 1rem
+  select
+    width: 100%
 
 .ps-bottom-box
   display: flex
   flex-direction: column
+
+.ps-body-input
+  box-shadow: none

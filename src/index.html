@@ -32,45 +32,69 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
 <style>
-    #loader-wrapper {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 1000;
-      background-color: #46476f;
-    }
+  #loader-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    background-color: #464553;
+    display: inline-block;
+  }
+  #loader {
+    position: relative;
+    width: 24px;
+    height: 24px;
+    top: 46%;
+    top: -webkit-calc(50% - 12px);
+    top: calc(50% - 12px);
+    left: 46%;
+    left: -webkit-calc(50% - 12px);
+    left: calc(50% - 12px);
 
-    #loader {
-      display: block;
-      position: relative;
-      left: 50%;
-      top: 50%;
-      width: 100px;
-      height: 100px;
-      margin: -50px 0 0 -50px;
-      border-radius: 50%;
-      border: 8px solid transparent;
-      border-top-color: #ffd470;
-      border-right-color: #ffd470;
-      border-bottom-color: #ffd470;
-      -webkit-animation: spin 1s linear infinite; /* Chrome, Opera 15+, Safari 5+ */
-      animation: spin 1s linear infinite; /* Chrome, Firefox 16+, IE 10+, Opera */
-    }
+    border-radius: 12px;
+    background-color: #ffd470;
+    -webkit-transform-origin:  50% 50%;
+        transform-origin:  50% 50% ;
+    -webkit-animation: spin 1s ease-in-out infinite;
+        animation: spin 1s ease-in-out infinite;
+  }
 
-    @keyframes spin {
-      0%   {
-        -webkit-transform: rotate(0deg);  /* Chrome, Opera 15+, Safari 3.1+ */
-        -ms-transform: rotate(0deg);  /* IE 9 */
-        transform: rotate(0deg);  /* Firefox 16+, IE 10+, Opera */
-      }
-      100% {
-        -webkit-transform: rotate(360deg);  /* Chrome, Opera 15+, Safari 3.1+ */
-        -ms-transform: rotate(360deg);  /* IE 9 */
-        transform: rotate(360deg);  /* Firefox 16+, IE 10+, Opera */
-      }
-    }
+  #loader:before{
+    content: "";
+    position: absolute;
+    background-color: #ffd470;
+    top: 0px;
+    left: -49px;
+    height: 24px;
+    width: 24px;
+    border-radius: 24px;
+  }
+
+  #loader:after{
+    content: "";
+    position: absolute;
+    background-color: #ffd470;
+    top: 0px;
+    left: 49px;
+    height: 24px;
+    width: 24px;
+    border-radius: 24px;
+  }
+
+
+  @-webkit-keyframes spin{
+      0%{-webkit-transform:rotate(0deg);}
+      50%{-webkit-transform:rotate(180deg);}
+      100%{-webkit-transform:rotate(180deg);}
+  }
+
+  @keyframes spin{
+      0%{transform:rotate(0deg);}
+      50%{transform:rotate(180deg);}
+      100%{transform:rotate(180deg);}
+  }
   </style>
 </head>
 <body>

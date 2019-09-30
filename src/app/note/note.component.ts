@@ -23,9 +23,17 @@ export class NoteComponent implements OnInit, OnDestroy {
   @Output() selectedTab: Boolean = false;
   @Output() projectsId: Object = {};
   notes: Observable<any>;
+  sortBy: Observable<string>;
   projects: Observable<any>;
   archives: Array<any>;
   actives: Array<any>;
+  sortOptions = [
+    {name: 'Sort by date (ascending)', value: '+date'},
+    {name: 'Sort by date (descending)', value: '-date'},
+    {name: 'Sort by title (ascending)', value: '+title'},
+    {name: 'Sort by title (descending)', value: '-title'},
+  ]
+  sortByItemIndex: number;
   private subscriptions: Array<Subscription> = [];
 
   constructor (private modalService: ModalService,
@@ -36,6 +44,7 @@ export class NoteComponent implements OnInit, OnDestroy {
     private notesActions: NotesActions,
   ) {
     this.notes = store.select(appStateSelectors.getNotesArray);
+    this.sortBy = store.select(appStateSelectors.getNotesSortBy);
     this.projects = store.select(appStateSelectors.getProjectsArray);
   }
 
@@ -50,10 +59,15 @@ export class NoteComponent implements OnInit, OnDestroy {
     this.subscriptions.push(this.notes.subscribe((params: any) => {
       this.actives = _.filter(params, ['isArchive', false])
     }));
+    this.subscriptions.push(this.sortBy.subscribe(sortBy =>
+      this.sortByItemIndex = this.sortOptions.findIndex(sortOption => sortOption.value === sortBy)
+    ));
   }
+
   goBack() {
     this.location.back();
   }
+
   openCreateNoteModal() {
     this.modalService.show({
       component: CreateEditNoteComponent,
@@ -64,7 +78,7 @@ export class NoteComponent implements OnInit, OnDestroy {
   }
 
   getSelectedTab(event) {
-    if (event.name === 'Archived') {
+    if (event.name === 'Archive') {
       this.subscriptions.push(this.notes.subscribe((params: any) => {
         this.archives = _.filter(params, ['isArchive', true])
       }));
@@ -72,6 +86,10 @@ export class NoteComponent implements OnInit, OnDestroy {
     } else {
       this.selectedTab = false
     }
+  }
+
+  sort(event) {
+    this.store.dispatch(this.notesActions.updateNotesSortBy(event.selectedItem.value));
   }
 
   ngOnDestroy() {

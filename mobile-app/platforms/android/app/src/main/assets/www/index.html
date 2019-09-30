@@ -1,42 +1,66 @@
 <!doctype html><html lang="en"><head><!-- COMMON TAGS --><meta charset="utf-8"><title>Pendulums</title><!-- Search Engine --><meta name="description" content="Optimize your life"><meta name="image" content="https://pendulums.io/img/pendulums-logos/pendulums-color-logo.png"><!-- Schema.org for Google --><meta itemprop="name" content="Pendulums"><meta itemprop="description" content="Optimize your life"><meta itemprop="image" content="https://pendulums.io/img/pendulums-logos/pendulums-color-logo.png"><!-- Twitter --><meta name="twitter:card" content="summary"><meta name="twitter:title" content="Pendulums"><meta name="twitter:description" content="Optimize your life"><meta name="twitter:site" content="@pendulums_io"><meta name="twitter:creator" content="@pendulums_io"><meta name="twitter:image:src" content="https://pendulums.io/img/pendulums-logos/pendulums-meta-image-small.jpg"><!-- Open Graph general (Facebook, Pinterest & Google+) --><meta name="og:title" content="Pendulums"><meta name="og:description" content="Optimize your life"><meta name="og:image" content="https://pendulums.io/img/pendulums-logos/pendulums-meta-image.jpg"><meta name="og:url" content="https://pendulums.io/"><meta name="og:site_name" content="Pendulums"><meta name="og:locale" content="en_Us"><meta name="fb:admins" content="505011733189287"><meta name="og:type" content="website"><base href="./"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/x-icon" href="favicon.ico"><style>#loader-wrapper {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 1000;
-      background-color: #46476f;
-    }
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    background-color: #464553;
+    display: inline-block;
+  }
+  #loader {
+    position: relative;
+    width: 24px;
+    height: 24px;
+    top: 46%;
+    top: -webkit-calc(50% - 12px);
+    top: calc(50% - 12px);
+    left: 46%;
+    left: -webkit-calc(50% - 12px);
+    left: calc(50% - 12px);
 
-    #loader {
-      display: block;
-      position: relative;
-      left: 50%;
-      top: 50%;
-      width: 100px;
-      height: 100px;
-      margin: -50px 0 0 -50px;
-      border-radius: 50%;
-      border: 8px solid transparent;
-      border-top-color: #ffd470;
-      border-right-color: #ffd470;
-      border-bottom-color: #ffd470;
-      -webkit-animation: spin 1s linear infinite; /* Chrome, Opera 15+, Safari 5+ */
-      animation: spin 1s linear infinite; /* Chrome, Firefox 16+, IE 10+, Opera */
-    }
+    border-radius: 12px;
+    background-color: #ffd470;
+    -webkit-transform-origin:  50% 50%;
+        transform-origin:  50% 50% ;
+    -webkit-animation: spin 1s ease-in-out infinite;
+        animation: spin 1s ease-in-out infinite;
+  }
 
-    @keyframes spin {
-      0%   {
-        -webkit-transform: rotate(0deg);  /* Chrome, Opera 15+, Safari 3.1+ */
-        -ms-transform: rotate(0deg);  /* IE 9 */
-        transform: rotate(0deg);  /* Firefox 16+, IE 10+, Opera */
-      }
-      100% {
-        -webkit-transform: rotate(360deg);  /* Chrome, Opera 15+, Safari 3.1+ */
-        -ms-transform: rotate(360deg);  /* IE 9 */
-        transform: rotate(360deg);  /* Firefox 16+, IE 10+, Opera */
-      }
-    }</style><link href="styles.e54e5e1712dfcbc5ae88.bundle.css" rel="stylesheet"/></head><body><div id="loader-wrapper"><div id="loader"></div></div><app-root></app-root><script>function getBrowser() {
+  #loader:before{
+    content: "";
+    position: absolute;
+    background-color: #ffd470;
+    top: 0px;
+    left: -49px;
+    height: 24px;
+    width: 24px;
+    border-radius: 24px;
+  }
+
+  #loader:after{
+    content: "";
+    position: absolute;
+    background-color: #ffd470;
+    top: 0px;
+    left: 49px;
+    height: 24px;
+    width: 24px;
+    border-radius: 24px;
+  }
+
+
+  @-webkit-keyframes spin{
+      0%{-webkit-transform:rotate(0deg);}
+      50%{-webkit-transform:rotate(180deg);}
+      100%{-webkit-transform:rotate(180deg);}
+  }
+
+  @keyframes spin{
+      0%{transform:rotate(0deg);}
+      50%{transform:rotate(180deg);}
+      100%{transform:rotate(180deg);}
+  }</style><link href="styles.cf66368b96a4b942a08e.bundle.css" rel="stylesheet"/></head><body><div id="loader-wrapper"><div id="loader"></div></div><app-root></app-root><script>function getBrowser() {
       var ua = navigator.userAgent, tem,
         M = ua.match(/(opera|chrome|safari|edge|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
       if(/trident/i.test(M[1])){
@@ -90,4 +114,4 @@
       }
     }
     initBody();
-    applyPolyfills();</script><script type="text/javascript" src="inline.318b50c57b4eba3d437b.bundle.js"></script><script type="text/javascript" src="polyfills.12e45b7cadd5293a5fa4.bundle.js"></script><script type="text/javascript" src="main.8cbd8937da9720393496.bundle.js"></script></body></html>
+    applyPolyfills();</script><script type="text/javascript" src="inline.318b50c57b4eba3d437b.bundle.js"></script><script type="text/javascript" src="polyfills.74048e417b7dd5b502fd.bundle.js"></script><script type="text/javascript" src="main.10c690da5ad6eb803494.bundle.js"></script></body></html>

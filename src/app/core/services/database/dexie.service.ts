@@ -6,6 +6,16 @@ export class DexieService extends Dexie {
     super('Pendulum');
     // Whenever you add any entity, please update the
     // entityToKey object of DatabaseService
+    this.version(5).stores({
+      userData: 'userId',
+      activeUser: '++id',
+      appInfo: 'userId',
+    }).upgrade((tb) => {
+      return tb['userData'].toCollection().modify(data => {
+        data.data.theme = { isLightTheme: false };
+      });
+    });
+
     this.version(4).stores({
       userData: 'userId',
       activeUser: '++id',

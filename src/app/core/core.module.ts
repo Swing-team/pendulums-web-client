@@ -10,6 +10,7 @@ import { ProjectsActions }              from '../shared/state/project/projects.a
 import { NotesActions }                 from '../shared/state/note/notes.actions';
 import { CurrentActivityActions }       from '../shared/state/current-activity/current-activity.actions';
 import { UnSyncedActivityActions }      from '../shared/state/unsynced-activities/unsynced-activities.actions';
+import { ThemeActions }                 from '../shared/state/theme/theme.actions';
 
 import { UserService }                  from './services/user.service';
 import { AuthenticationService }        from './services/authentication.service';
@@ -43,7 +44,9 @@ import { NotesSelectors }               from '../shared/state/note/notes.selecto
 import { RouterChangeListenerService }  from './services/router-change-listener.service';
 import { InviteNotifComponent }         from './side-menu/notification/invite-notif/invite-notif.component';
 import { NativeNotificationService }    from './services/native-notification.service';
-import { ActivityService } from './services/activity.service';
+import { ActivityService }              from './services/activity.service';
+import { DeleteAccountComponent }       from 'app/profile-setting/delete-account/delete-account.component';
+import { SocketService }                from './services/socket.service';
 
 @NgModule({
   imports:      [
@@ -61,6 +64,7 @@ import { ActivityService } from './services/activity.service';
     ImgCropperComponent,
     AppInfoComponent,
     InviteNotifComponent,
+    DeleteAccountComponent
   ],
   exports:      [
     ToolbarComponent,
@@ -84,12 +88,14 @@ import { ActivityService } from './services/activity.service';
     NotesActions,
     CurrentActivityActions,
     UnSyncedActivityActions,
+    ThemeActions,
     AppStateSelectors,
     ProjectsSelectors,
     NotesSelectors,
     DexieService,
     DatabaseService,
     SyncService,
+    SocketService,
     StopStartActivityService,
     AppService,
     RouterChangeListenerService,
@@ -102,6 +108,7 @@ import { ActivityService } from './services/activity.service';
     ErrorComponent,
     ImgCropperComponent,
     AppInfoComponent,
+    DeleteAccountComponent
   ]
 })
 export class CoreModule {

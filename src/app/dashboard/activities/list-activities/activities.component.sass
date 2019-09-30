@@ -7,15 +7,16 @@
     margin-bottom: 0 !important
     .ps-chart-column
       border-radius: $radius !important
+      .ps-chart
+        display: block
       .ps-import-export-container
         width: 100%
         @media (max-width: 470px)
           text-align: center !important
         .ps-export
           text-align: right
-          @media (min-width: 469px)
-            margin-top: -40px
-            margin-bottom: 5px
+          margin-top: 16px
+          margin-bottom: 5px
           .ps-export-icon
             margin-right: 8px
           .ps-export-drop-down
@@ -24,9 +25,8 @@
               padding-right: 1rem
         .ps-import
           text-align: right
-          @media (min-width: 470px)
-            margin-top: -40px
-            margin-bottom: 5px
+          margin-top: 16px
+          margin-bottom: 5px
           .ps-import-icon
             margin-right: 8px
           .ps-import-upload
@@ -69,7 +69,7 @@
   min-height: 80px
   padding-top: 30px
 .ps-z-index
-  z-index: 9
+  z-index: 5
 .ps-project-name-container
   display: flex
   align-items: center

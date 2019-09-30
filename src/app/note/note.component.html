@@ -5,12 +5,27 @@
     </div>
     <div class="ps-note-header-title">
       <app-tab
-          [tabs]="[{name: 'Board'}, {name: 'Archived'}]"
+          [tabs]="[{name: 'Board'}, {name: 'Archive'}]"
           (onTabClicked)="getSelectedTab($event)"
       >
       </app-tab>
     </div>
     <div class="ps-note-header-button"><div [ngClass]="!selectedTab ? 'ps-activity-top-button icon-plus' : '' " class="ps-tab test2" (click)="openCreateNoteModal()" title="Add new note"></div></div>
+  </div>
+  <div class="columns is-mobile is-centered">
+      <div class="column is-half-desktop ps-no-padding">
+          <swing-select [width]="'240px'"
+            [items]="sortOptions"
+            [itemTextAttribute]="'name'"
+            [selectedItemIndex]="[sortByItemIndex]"
+            (onItemClicked)="sort($event)"
+            [label]="'Sort by'"
+            [hideArrow]="true"
+            class="ps-sort"></swing-select>
+          <span class="ps-sort-icon">
+            <i class="icon-sort-alt-down"></i>
+          </span>
+      </div>
   </div>
   <div *ngIf="actives.length === 0 && !selectedTab" class="columns is-multiline">
     <div class="column is-3-widescreen is-4-desktop is-4-tablet is-6-mobile">

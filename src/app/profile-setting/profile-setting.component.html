@@ -118,7 +118,7 @@
                 <div class="column" *ngIf="settings.relaxationTime.isEnabled">
                   <b>Presets</b> <br>
                   <div class="select">
-                    <select [(ngModel)]="relaxationTimeSelectorModel" (change)="timeSelectorChange()" class="ps-body-input ps-pomodoro-time-select">
+                    <select [(ngModel)]="relaxationTimeSelectorModel" (change)="timeSelectorChange()" class="ps-body-input ps-select">
                       <option value="pomodoro1">Pomodoro time set 1</option>
                       <option value="pomodoro2">Pomodoro time set 2</option>
                       <option value="pomodoro3">Pomodoro time set 3</option>
@@ -140,9 +140,39 @@
                 </div>
               </div>
             </div>
+            <hr>
+            <div class="field has-text-left ps-theme-section">
+              <b>Theme:</b>
+              <div class="select">
+                <select [(ngModel)]="themeSelector" class="ps-body-input ps-select ps-select-theme">
+                  <option value="light">Light</option>
+                  <option value="dark">Dark</option>
+                </select>
+              </div>
+            </div>
             <div class="field ps-save-btn-container">
                 <button class="button is-fullwidth ps-profile-pass-button" [ngClass]="{'is-loading': settingsSubmitted}"
                 [disabled]="settingsSubmitted || !netConnected" (click)="updateSettings()">Save Settings</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="columns is-multiline is-centered">
+    <div class="column is-8-widescreen is-12-desktop is-12-tablet ps-card-space">
+      <div class="box">
+        <div class="is-centered">
+          <div dir="auto">
+            <div class="field">
+              <b class="title is-4 ps-dangerous-actions-title">
+                Dangerous Actions
+              </b>
+            </div>
+            <div class="field has-text-left">
+              <button class="button is-fullwidth ps-delete-action-button" [ngClass]="{'is-loading': settingsSubmitted}"
+                [disabled]="settingsSubmitted || !netConnected" (click)="deleteAccount()">Delete Account</button>
             </div>
           </div>
         </div>

@@ -3,12 +3,14 @@ import { HttpClient }         from '@angular/common/http';
 import { User }               from '../../shared/state/user/user.model';
 import { environment }        from '../../../environments/environment';
 import 'rxjs/add/operator/toPromise';
+import { SocketService } from './socket.service';
 
 @Injectable()
 export class UserService {
   private options;
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private socketService: SocketService
   ) {
     this.options = {...environment.httpOptions, responseType: 'text'};
   }
@@ -34,6 +36,19 @@ export class UserService {
       .post(environment.apiEndpoint + '/user/settings', JSON.stringify(settings), this.options)
       .toPromise()
       .then()
+      .catch(this.handleError);
+  }
+
+  deleteAccount(userPassword: string): Promise<any> {
+    const options = {
+      withCredentials: true,
+      body: JSON.stringify({ userPassword })
+    };
+    // TODO: need to change the address of api.
+    return this.http
+      .delete(environment.apiEndpoint + '/user/deleteAccount?socketId=' + this.socketService.getSocketId() , options)
+      .toPromise()
+      .then(userId => userId as string)
       .catch(this.handleError);
   }
 

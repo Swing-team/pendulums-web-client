@@ -8,31 +8,36 @@
         <svg *ngIf="!user.profileImage" class="ps-user-image" width="36" height="36" [identiconHash]="emailHash">
           Your browser does not support SVG
         </svg>
+        <p>Profile</p>
       </a>
     </li>
-    <li title="Dashboard"><a [ngClass]="{'is-active': activeItemNumber === 3 }" [routerLink]="['dashboard']" (click)="updateIndex(3)"><span class="icon-dashboard"></span></a></li>
-    <li title="note"><a [ngClass]="{'is-disabled': !netConnected, 'is-active': activeItemNumber === 8 }" [routerLink]="netConnected ? ['notes'] : []" (click)="netConnected && updateIndex(8)"><span class="icon-sticky-note-o"></span></a></li>
+    <li title="Dashboard"><a [ngClass]="{'is-active': activeItemNumber === 3 }" [routerLink]="['dashboard']" (click)="updateIndex(3)"><span class="icon-dashboard"></span><p>Dashboard</p></a></li>
+    <li title="note"><a [ngClass]="{'is-active': activeItemNumber === 8 }" [routerLink]="['notes']" (click)="updateIndex(8)"><span class="icon-sticky-note-o"></span><p>Notes</p></a></li>
     <li title="Notifications">
       <a [ngClass]="{'is-active': activeItemNumber === 2 }" #notifications (click)="toggleNotifications()">
         <span class="icon-bell"></span>
         <span class="ps-notification-count" *ngIf="user.pendingInvitations.length + notifNum > 0">{{user.pendingInvitations.length + notifNum}}</span>
+        <p>Notifications</p>
       </a>
     </li>
     <li title="Sync">
-      <a (click)="syncSummary()" [ngClass]="{'is-disabled': !netConnected, 'ps-sync-animation': syncing, 'ps-sync-disable': syncing}" style="transform: rotate(0deg);">
-        <span class="icon-refresh"></span>
+      <a (click)="syncSummary()" [ngClass]="{'is-disabled': !netConnected, 'ps-sync-disable': syncing}" style="transform: rotate(0deg);">
+        <span class="icon-refresh" [ngClass]="{'ps-sync-animation': syncing}"></span>
+        <p>Sync</p>
       </a>
     </li>
     <li class="ps-fill-space"></li>
-    <li title="{{ netConnected ? 'Sign out' : 'Cannot signout when you are offline'}}"><a [ngClass]="{'is-active': activeItemNumber === 4 , 'is-disabled': !netConnected}" (click)="signout()"><span class="icon-sign-out"></span></a></li>
+    <li title="{{ netConnected ? 'Sign out' : 'Cannot signout when you are offline'}}"><a [ngClass]="{'is-active': activeItemNumber === 4 , 'is-disabled': !netConnected}" (click)="signout()"><span class="icon-sign-out"></span><p>Log Out</p></a></li>
     <li title="Report bug" id="bug-report-icon">
       <a [ngClass]="{'is-active': activeItemNumber === 5 }" (click)="togglePendulumNotifications()">
         <span class="icon-bug"></span>
+        <p>Report Bug</p>
       </a>
     </li>
     <li title="New Features">
       <a (click)="showModal('AppInfoComponent')">
         <span class="icon-info-circled-alt"></span>
+        <p>New Features</p>
       </a>
     </li>
   </ul>

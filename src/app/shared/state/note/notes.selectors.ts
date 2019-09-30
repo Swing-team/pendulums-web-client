@@ -16,5 +16,24 @@ import { Notes }                   from './notes.model';
 @Injectable()
 export class NotesSelectors {
   getEntities = (state: Notes) => state.entities;
-  getAllArray = createSelector(this.getEntities, entities => { return values<Note>(entities); });
+  getSortBy = (state: Notes) => state.sortBy;
+  // tslint:disable-next-line: member-ordering
+  getAllArray = createSelector(this.getEntities, this.getSortBy, (entities, sortBy) => {
+    return values<Note>(entities).sort((n1, n2) => {
+      switch (sortBy) {
+        case '+date': {
+          return n1.id > n2.id ? 1 : -1;
+        }
+        case '-date': {
+          return n1.id < n2.id ? 1 : -1;
+        }
+        case '+title': {
+          return n1.title.toLowerCase() >= n2.title.toLowerCase() ? 1 : -1;
+        }
+        case '-title': {
+          return n1.title.toLowerCase() < n2.title.toLowerCase() ? 1 : -1;
+        }
+      }
+    });
+  });
 }

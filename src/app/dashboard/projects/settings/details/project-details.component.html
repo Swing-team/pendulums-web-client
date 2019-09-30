@@ -97,13 +97,12 @@
       <div class="column ps-header-vertical-align ps-padding-left">
         <input [(ngModel)]="clonedProject.name" name="name" class="input ps-header-input ps-header-input-disabled"
                placeholder="Untitled Project..." type="text" [disabled]="true">
-
         <div class="ps-project-details-color-picker-container">
           <p class="ps-project-details-color-picker-title"> Project color: </p>
           <div class="ps-project-details-palette-container">
-            <div class="ps-project-details-color" title="click to change color">
-                <i class="button icon-palette-1 is-fullwidth"
-                id="id2" (click)="togglePalette()"
+            <div class="ps-project-details-color">
+                <i class="button icon-palette-1 is-fullwidth" disabled
+                id="id2"
                     [ngClass]="{'ps-project-details-palette-item-back-white1': clonedProject.colorPalette == 0,
                                 'ps-project-details-palette-item-back-salmon': clonedProject.colorPalette == 1,
                                 'ps-project-details-palette-item-back-blue': clonedProject.colorPalette == 2,

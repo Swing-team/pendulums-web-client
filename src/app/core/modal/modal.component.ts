@@ -22,6 +22,7 @@ export class ModalComponent {
       this.closeModal(true);
     })
   }
+
   closeModal(ignoreIsModalOpen?: boolean) {
     this.close.emit(ignoreIsModalOpen);
   }

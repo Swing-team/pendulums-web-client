@@ -19,6 +19,8 @@ import { AppService }                             from './core/services/app.serv
 import { UnSyncedActivityActions }                from './shared/state/unsynced-activities/unsynced-activities.actions';
 import { AppStateSelectors }                      from './shared/state/app-state.selectors';
 import { VERSION }                                from 'environments/version';
+import { ModalService }                           from './core/modal/modal.service';
+import { Theme }                                  from './shared/state/theme/theme.model';
 
 @Component({
   selector: 'app-root',
@@ -28,6 +30,7 @@ import { VERSION }                                from 'environments/version';
 export class AppComponent implements OnInit {
   user: Observable<any>;
   status: Observable<any>;
+  theme: Observable<Theme>;
   private projects: Observable<any>;
   private selectedProject: Observable<string>;
   private currentActivity: Observable<any>;
@@ -53,7 +56,8 @@ export class AppComponent implements OnInit {
     private unSyncedActivityActions: UnSyncedActivityActions,
     private appStateSelectors: AppStateSelectors,
     // needed for dynamically loaded components
-    public viewContainerRef: ViewContainerRef
+    public viewContainerRef: ViewContainerRef,
+    private modalService: ModalService
   ) {
     // to initialize state
     this.user = store.select('user');
@@ -61,11 +65,21 @@ export class AppComponent implements OnInit {
     this.selectedProject = store.select(appStateSelectors.getSelectedProject);
     this.currentActivity = store.select('currentActivity');
     this.status = store.select('status');
+    this.theme = store.select('theme');
   }
 
   ngOnInit(): void {
     // to initialize webSocket connection
     const responseResults = this.syncService.init();
+
+    // handle Theme
+    this.theme.subscribe((theme) => {
+      if (theme.isLightTheme) {
+        window.document.children[0].className = 'ps-light-theme';
+      } else {
+        window.document.children[0].className = '';
+      }
+    });
 
     this.appService.getAppVersion().then((version) => {
       this.store.dispatch(this.statusActions.updateStatus({updateNeeded: version > VERSION}));
@@ -84,6 +98,9 @@ export class AppComponent implements OnInit {
         this.store.dispatch(this.unSyncedActivityActions.clearUnSyncedActivity());
         this.syncService.closeConnection();
         if (!this.router.url.includes('resetPassword')) {
+          if (this.modalService.getIsModalOpen()) {
+            this.modalService.close()
+          }
           this.router.navigate(['signIn']);
         }
       }
@@ -114,7 +131,11 @@ export class AppComponent implements OnInit {
 
   signOut() {
     this.authService.signOut()
-      .then(() => {})
+      .then(() => {
+        if (window.innerWidth <= 1024) {
+          this.SideMenuIsActive = false;
+        }
+      })
       .catch((error) => {
         if (error.status === 503) {
           // Not sure about this code below. please check!

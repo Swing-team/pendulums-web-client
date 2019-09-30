@@ -16,13 +16,14 @@
                     [itemTextAttribute]="['name', 'email']"
                     (onItemClicked)="getSelectedUsers($event)"
                     [label]="'Select Users'"
+                    [selectAllLabel]="'Select All + Members who have left'"
                     [selectedItemIndex]="selectedItemIndex"></swing-select>
     </div>
   </div>
   <div class="columns ps-activities-stat-wrapper">
     <div class="column is-offset-1 is-10 ps-chart-column" style="background-color: white">
       <chart *ngIf="project" [project]="project" [selectedUsers]="selectedUsers" (chartLoaded)="UpdatePageLoader(true)"
-             [parentHasActivity]="projectActivities.length > 0 ? true: false"></chart>
+             [parentHasActivity]="projectActivities.length > 0 ? true: false" class="ps-chart"></chart>
       <div class="ps-import-export-container has-text-right">
         <button class="button ps-import" [ngClass]="{'is-loading': isImporting, 'is-light': isImporting}" (click)="importActivities()">
           <input class="ps-import-upload" id="uploadInput" type="file" accept="application/json" (change)="fileUpload($event)"/>

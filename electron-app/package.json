@@ -1,7 +1,7 @@
 {
   "name": "Pendulums",
   "main": "src/main.js",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Manage and track your time more efficiently using a modern time tracking tool. Pendulums is a free time tracking tool which helps you to manage your time in a better manner with an easy to use interface and useful statistics.",
   "author": {
     "name": "Swing Team",
@@ -14,8 +14,8 @@
     "appId": "team.swing.pendulums",
     "productName": "Pendulums",
     "copyright": "Copyright © 2018 Swing Team",
+    "electronVersion": "6.0.7",
     "asar": true,
-    "electronVersion": "3.0.0-beta.11",
     "files": [
       "src/main.js",
       "app",

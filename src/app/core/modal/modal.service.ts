@@ -16,13 +16,19 @@ export class ModalService {
     private applicationRef: ApplicationRef
   ) {
     // get root viewContainerRef
-    this.rootViewContainerRef = this.applicationRef.components[0].instance.viewContainerRef;
+    // we put it in a setTimeout because of render and some navigate problems
+    // related to TG-654
+    setTimeout(() => {
+      this.rootViewContainerRef = this.applicationRef.components[0].instance.viewContainerRef;
+    }, 0);
   }
+
   applyStyleDynamically(modalConfig: ModalConfig) {
     if (modalConfig.customBodyStyles) {
       this.modalComponentRef.instance['customBodyStyles'] = modalConfig.customBodyStyles;
     }
   }
+
   show(modalConfig: ModalConfig) {
     const contentFactory = this.componentFactoryResolver.resolveComponentFactory(modalConfig.component);
     const modalFactory = this.componentFactoryResolver.resolveComponentFactory(ModalComponent);
