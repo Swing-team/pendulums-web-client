@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, OnDestroy, Output }                   from '@angular/core';
 import { Store }                                      from '@ngrx/store';
 import { AppState }                                   from '../shared/state/appState';
-import { Observable }                                 from 'rxjs/Observable';
+import { Observable ,  Subscription }                                 from 'rxjs';
 import { User }                                       from '../shared/state/user/user.model';
 import { AppStateSelectors }                          from '../shared/state/app-state.selectors';
 import { CreateEditNoteComponent }                    from './create-edit-note/create-edit-note.component';
@@ -10,7 +10,6 @@ import { NoteService }                                from './shared/notes.servi
 import { NotesActions }                               from '../shared/state/note/notes.actions';
 import { Note }                                       from 'app/shared/state/note/note.model';
 import { Location }                                   from '@angular/common';
-import { Subscription }                               from 'rxjs/Subscription';
 import * as _ from 'lodash';
 
 @Component({

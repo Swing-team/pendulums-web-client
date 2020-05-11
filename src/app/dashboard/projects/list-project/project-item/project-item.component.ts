@@ -5,7 +5,7 @@ import {
 import { Project }                            from '../../../../shared/state/project/project.model';
 import { Store }                              from '@ngrx/store';
 import { AppState }                           from '../../../../shared/state/appState';
-import { Observable }                         from 'rxjs/Observable';
+import { Observable ,  Subscription }                         from 'rxjs';
 import { Activity }                           from '../../../../shared/state/current-activity/current-activity.model';
 import { ModalService }                       from '../../../../core/modal/modal.service';
 import { ProjectSettingsModalComponent }      from 'app/dashboard/projects/settings/modal/project-settings-modal.component';
@@ -14,7 +14,6 @@ import { Router }                             from '@angular/router';
 import { ErrorService }                       from '../../../../core/error/error.service';
 import { Status }                             from '../../../../shared/state/status/status.model';
 import { Md5 }                                from 'ts-md5/dist/md5';
-import { Subscription }                       from 'rxjs/Subscription';
 import { StopStartActivityService }           from '../../../../core/services/stop-start-activity.service';
 import { userInProject }                      from '../../../shared/utils';
 import { environment }                        from '../../../../../environments/environment';
@@ -29,7 +28,7 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
   @Input() user: User;
   @Input() status: Status;
   @Input() currentActivity: Observable<Activity>;
-  @ViewChild('activityNameElm') activityNameElm;
+  @ViewChild('activityNameElm', { static: false }) activityNameElm;
   activityStarted = false;
   activityButtonDisabled = false;
   showMore = false;

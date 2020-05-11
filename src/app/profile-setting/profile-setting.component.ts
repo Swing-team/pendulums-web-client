@@ -13,8 +13,7 @@ import { UserService }                      from '../core/services/user.service'
 import { ModalService }                     from '../core/modal/modal.service';
 import { ImgCropperComponent }              from './image-cropper/image-cropper.component';
 import { Md5 }                              from 'ts-md5/dist/md5';
-import { Observable }                       from 'rxjs/Observable';
-import { Subscription }                     from 'rxjs/Subscription';
+import { Observable ,  Subscription }                       from 'rxjs';
 import { NativeNotificationService }        from '../core/services/native-notification.service';
 import { Location }                         from '@angular/common';
 import { DeleteAccountComponent } from './delete-account/delete-account.component';

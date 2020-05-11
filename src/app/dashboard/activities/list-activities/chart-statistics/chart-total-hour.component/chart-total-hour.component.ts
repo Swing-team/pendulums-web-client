@@ -1,4 +1,3 @@
-import 'rxjs/add/operator/switchMap';
 import { Component, Input,
          OnChanges, SimpleChange }          from '@angular/core';
 import { Md5 }                              from 'ts-md5';

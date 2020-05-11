@@ -3,7 +3,6 @@ import { HttpClient, HttpParams }     from '@angular/common/http';
 import { Activity }                   from '../../shared/state/current-activity/current-activity.model';
 import { SocketService }                from './socket.service';
 import { environment }                from '../../../environments/environment';
-import 'rxjs/add/operator/toPromise';
 
 @Injectable()
 export class ActivityService {

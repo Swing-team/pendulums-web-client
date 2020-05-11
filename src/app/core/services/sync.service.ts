@@ -1,4 +1,3 @@
-import 'rxjs/add/operator/toPromise';
 import { Injectable }                   from '@angular/core';
 import { HttpClient }                   from '@angular/common/http';
 import { Store }                        from '@ngrx/store';
@@ -10,7 +9,7 @@ import { ProjectsActions }              from '../../shared/state/project/project
 import { CurrentActivityActions }       from '../../shared/state/current-activity/current-activity.actions';
 import { UnSyncedActivityActions }      from 'app/shared/state/unsynced-activities/unsynced-activities.actions';
 import { UserService }                  from './user.service';
-import { Observable }                   from 'rxjs/Observable';
+import { Observable }                   from 'rxjs';
 import { Status }                       from '../../shared/state/status/status.model';
 import { environment }                  from '../../../environments/environment';
 import { SocketService }                from './socket.service';

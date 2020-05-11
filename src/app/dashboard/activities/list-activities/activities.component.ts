@@ -1,11 +1,10 @@
-import 'rxjs/add/operator/switchMap';
 import * as _ from 'lodash';
 import * as json2csv  from 'json2csv';
 import {
   Component, HostListener,
   OnDestroy, OnInit, ViewChild,
 }                                           from '@angular/core';
-import { Observable }                       from 'rxjs/Observable';
+import { Observable ,  Subscription }                       from 'rxjs';
 import { ActivityService }                  from '../../../core/services/activity.service';
 import { Activity }                         from '../../../shared/state/current-activity/current-activity.model';
 import { ActivatedRoute, Params }           from '@angular/router';
@@ -19,7 +18,6 @@ import { Project }                          from '../../../shared/state/project/
 import { User }                             from '../../../shared/state/user/user.model';
 import { cloneDeep, uniqBy }                from 'lodash';
 import { PageLoaderService }                from '../../../core/services/page-loader.service';
-import { Subscription }                     from 'rxjs/Subscription';
 import { ChartComponent }                   from './chart-statistics/chart.component';
 import { userInProject } from 'app/dashboard/shared/utils';
 
@@ -62,7 +60,7 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
   isExporting = false;
   isImporting = false;
   dataFile: any;
-  @ViewChild(ChartComponent)
+  @ViewChild(ChartComponent, { static: false })
   private ChartComponent: ChartComponent;
 
   constructor (private store: Store<AppState>,

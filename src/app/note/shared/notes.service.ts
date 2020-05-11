@@ -4,7 +4,6 @@ import { Note }              from '../../shared/state/note/note.model';
 import { environment }          from '../../../environments/environment';
 import TurndownService from 'turndown';
 import * as turndownPluginGfm from 'turndown-plugin-gfm';
-import 'rxjs/add/operator/toPromise';
 
 
 @Injectable()

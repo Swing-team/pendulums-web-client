@@ -1,6 +1,5 @@
-import 'rxjs/add/operator/pairwise';
-import 'rxjs/add/operator/filter';
-import { Subscription }             from 'rxjs/Subscription';
+import { pairwise, filter } from 'rxjs/operators';
+import { Subscription }             from 'rxjs';
 import { Injectable }               from '@angular/core';
 import { Store }                    from '@ngrx/store';
 import { Router, RoutesRecognized } from '@angular/router';

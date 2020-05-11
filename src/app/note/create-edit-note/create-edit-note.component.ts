@@ -1,12 +1,11 @@
 import {Component, OnInit, Input, OnDestroy, AfterViewInit, Host, ViewChild, HostListener } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable ,  Subscription } from 'rxjs';
 import { Project } from '../../shared/state/project/project.model';
 import { NoteService } from '../shared/notes.service';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '../../shared/state/appState';
 import { AppStateSelectors } from '../../shared/state/app-state.selectors';
-import { Subscription } from 'rxjs/Subscription';
 import { Note } from 'app/shared/state/note/note.model';
 import { ErrorService }                 from '../../core/error/error.service';
 import { ModalService }                               from '../../core/modal/modal.service';
@@ -30,8 +29,8 @@ import { cloneDeep, includes }                from 'lodash';
 })
 
 export class CreateEditNoteComponent implements OnInit, OnDestroy, AfterViewInit {
-  @ViewChild('createEditNoteForm') createEditNoteForm;
-  @ViewChild('noteCreatePalette') noteCreatePalette;
+  @ViewChild('createEditNoteForm', { static: true }) createEditNoteForm;
+  @ViewChild('noteCreatePalette', { static: true }) noteCreatePalette;
   @Input() loadingBtn = false;
   @Input() note: Note;
   projects: Observable<Project[]>;

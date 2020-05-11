@@ -19,10 +19,10 @@ const EMAIL_REGEX = /^[a-zA-Z0-9+\._%-+]{1,256}@[a-zA-Z0-9][a-zA-Z0-9-]{0,64}(\.
 })
 
 export class CreateProjectComponent implements OnInit {
-  @ViewChild('projectImageCanvasElem') projectImageCanvasElem;
-  @ViewChild('canvasPreviewImageElem') canvasPreviewImageElem;
-  @ViewChild('projectCreatePalette') projectCreatePalette;
-  @ViewChild('projectNameInput') projectNameInput: ElementRef;
+  @ViewChild('projectImageCanvasElem', { static: true }) projectImageCanvasElem;
+  @ViewChild('canvasPreviewImageElem', { static: true }) canvasPreviewImageElem;
+  @ViewChild('projectCreatePalette', { static: true }) projectCreatePalette;
+  @ViewChild('projectNameInput', { static: true }) projectNameInput: ElementRef;
   @Input() currentUser: User;
   roles = ['team member', 'admin'];
   project: Project = new Project();

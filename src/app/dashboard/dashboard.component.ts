@@ -1,7 +1,6 @@
 import { Component, OnInit, Output,
          OnDestroy }                    from '@angular/core';
-import { Subscription }                 from 'rxjs/Subscription';
-import { Observable }                   from 'rxjs/Observable';
+import { Subscription ,  Observable }                 from 'rxjs';
 import { DatabaseService }              from '../core/services/database/database.service';
 import { Store }                        from '@ngrx/store';
 import { AppState }                     from '../shared/state/appState';

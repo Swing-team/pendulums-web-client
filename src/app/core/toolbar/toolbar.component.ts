@@ -2,7 +2,7 @@ import {
   Component, EventEmitter, Inject,
   Input, Output, OnInit, OnDestroy, ViewChild, DoCheck, KeyValueDiffers
 } from '@angular/core';
-import { Observable }                       from 'rxjs/Observable';
+import { Observable ,  Subscription }                       from 'rxjs';
 import { Activity }                         from '../../shared/state/current-activity/current-activity.model';
 import { Project }                          from '../../shared/state/project/project.model';
 import { Store }                            from '@ngrx/store';
@@ -10,7 +10,6 @@ import { AppState }                         from 'app/shared/state/appState';
 import { ProjectsActions }                  from '../../shared/state/project/projects.actions';
 import { ErrorService }                     from '../error/error.service';
 import { User }                   from '../../shared/state/user/user.model';
-import { Subscription }                     from 'rxjs/Subscription';
 import { StopStartActivityService }         from '../services/stop-start-activity.service';
 import { Status }                           from '../../shared/state/status/status.model';
 
@@ -28,7 +27,7 @@ export class ToolbarComponent implements OnInit, OnDestroy, DoCheck  {
   @Input() selectedProjectInput: Observable<string>;
   @Input() currentActivity: Observable<Activity>;
   @Output() onMenuItemClicked = new EventEmitter();
-  @ViewChild('activityNameElm') activityNameElm;
+  @ViewChild('activityNameElm', { static: false }) activityNameElm;
   differ: any;
   currentActivityCopy: Activity;
   showTimeDuration = false;

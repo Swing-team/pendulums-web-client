@@ -1,11 +1,10 @@
-import 'rxjs/add/operator/toPromise';
 import * as io                          from 'socket.io-client';
 import { Injectable }                   from '@angular/core';
 import { Store }                        from '@ngrx/store';
 import { AppState }                     from '../../shared/state/appState';
 import { StatusActions }                from '../../shared/state/status/status.actions';
 import { environment }                  from '../../../environments/environment';
-import { Subject }                      from 'rxjs/Subject';
+import { Subject }                      from 'rxjs';
 
 @Injectable()
 export class SocketService {

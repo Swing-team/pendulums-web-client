@@ -1,10 +1,10 @@
-import 'rxjs/add/operator/debounceTime';
+import { debounceTime } from 'rxjs/operators';
 import {
   Component, ElementRef, OnInit, ViewChild,
   ViewContainerRef
 }                                                 from '@angular/core';
 import { Router }                                 from '@angular/router';
-import { Observable }                             from 'rxjs/Observable';
+import { Observable }                             from 'rxjs';
 import { Store }                                  from '@ngrx/store';
 import { AppState }                               from './shared/state/appState';
 import { UserActions }                            from './shared/state/user/user.actions';
@@ -39,8 +39,8 @@ export class AppComponent implements OnInit {
   netConnected: boolean;
   notifNum = 0;
 
-  @ViewChild('sideMenu', { read: ElementRef }) sideMenu: ElementRef;
-  @ViewChild('menuIcon', { read: ElementRef }) menuIcon: ElementRef;
+  @ViewChild('sideMenu', { read: ElementRef, static: false }) sideMenu: ElementRef;
+  @ViewChild('menuIcon', { read: ElementRef, static: false }) menuIcon: ElementRef;
 
   constructor(
     private authService: AuthenticationService,

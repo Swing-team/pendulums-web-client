@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges }                from '@angular/core';
-import { Observable }                                 from 'rxjs/Observable';
+import { Observable }                                 from 'rxjs';
 import { ModalService }                               from '../../../core/modal/modal.service';
 import { CreateProjectComponent }                     from '../create-project/create-project.component';
 import { Project }                                    from '../../../shared/state/project/project.model';

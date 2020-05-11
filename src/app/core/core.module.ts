@@ -24,7 +24,7 @@ import { NotificationComponent }        from './side-menu/notification/notificat
 import { NotificationService }          from './side-menu/notification/notification.service';
 import { AppInfoComponent }             from './side-menu/app-info/app-info.component';
 import { ImgCropperComponent }          from '../profile-setting/image-cropper/image-cropper.component';
-import { ImageCropperModule }           from 'ng2-img-cropper';
+import { ImageCropperModule }           from 'ngx-img-cropper';
 import { ErrorComponent }               from './error/error.component';
 import { ErrorService }                 from './error/error.service';
 import { DatabaseService }              from './services/database/database.service';
