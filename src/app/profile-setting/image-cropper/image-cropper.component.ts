@@ -1,5 +1,5 @@
 import { Component, ViewChild, Input }            from '@angular/core';
-import { ImageCropperComponent, CropperSettings } from 'ng2-img-cropper';
+import { ImageCropperComponent, CropperSettings } from 'ngx-img-cropper';
 import { ModalService }                           from '../../core/modal/modal.service';
 import { Store }                                  from '@ngrx/store';
 import { AppState }                               from '../../shared/state/appState';
@@ -17,7 +17,7 @@ export class ImgCropperComponent {
   profileData: any;
   croppedImageFile: any;
   cropperSettings: CropperSettings;
-  @ViewChild('cropper', /* TODO: add static flag */ undefined)
+  @ViewChild('cropper', { static: false })
   cropper: ImageCropperComponent;
   disableButtons = false;
 
