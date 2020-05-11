@@ -6,23 +6,18 @@
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "target": "es6",
     "lib": [
       "es2016",
       "dom"
     ],
     "outDir": "../out-tsc/app",
-    "module": "es2015",
     "baseUrl": "",
     "types": []
   },
-    "exclude": [
-      "test.ts",
-      "**/*.spec.ts",
-      "**/app.module.ts",
-      "main.ts",
-      "main.electron.ts",
-      "**/app.electron.module.ts",
-      "**/*.electron.service.ts",
-    ]
-  }
+  "files": [
+    "main.mobile.ts",
+    "polyfills.ts"
+  ],  "include": [
+    "src/**/*.d.ts"
+  ]
+}
