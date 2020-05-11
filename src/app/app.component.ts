@@ -39,8 +39,8 @@ export class AppComponent implements OnInit {
   netConnected: boolean;
   notifNum = 0;
 
-  @ViewChild('sideMenu', { read: ElementRef, static: false }) sideMenu: ElementRef;
-  @ViewChild('menuIcon', { read: ElementRef, static: false }) menuIcon: ElementRef;
+  @ViewChild('sideMenu', { read: ElementRef }) sideMenu: ElementRef;
+  @ViewChild('menuIcon', { read: ElementRef }) menuIcon: ElementRef;
 
   constructor(
     private authService: AuthenticationService,

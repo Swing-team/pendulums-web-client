@@ -28,7 +28,7 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
   @Input() user: User;
   @Input() status: Status;
   @Input() currentActivity: Observable<Activity>;
-  @ViewChild('activityNameElm', { static: false }) activityNameElm;
+  @ViewChild('activityNameElm') activityNameElm;
   activityStarted = false;
   activityButtonDisabled = false;
   showMore = false;

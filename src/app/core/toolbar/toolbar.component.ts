@@ -27,7 +27,7 @@ export class ToolbarComponent implements OnInit, OnDestroy, DoCheck  {
   @Input() selectedProjectInput: Observable<string>;
   @Input() currentActivity: Observable<Activity>;
   @Output() onMenuItemClicked = new EventEmitter();
-  @ViewChild('activityNameElm', { static: false }) activityNameElm;
+  @ViewChild('activityNameElm') activityNameElm;
   differ: any;
   currentActivityCopy: Activity;
   showTimeDuration = false;

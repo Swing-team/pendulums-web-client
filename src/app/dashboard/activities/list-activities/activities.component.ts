@@ -60,7 +60,7 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
   isExporting = false;
   isImporting = false;
   dataFile: any;
-  @ViewChild(ChartComponent, { static: false })
+  @ViewChild(ChartComponent)
   private ChartComponent: ChartComponent;
 
   constructor (private store: Store<AppState>,

@@ -22,9 +22,9 @@ export class ProjectDetailsComponent implements OnInit {
   @Input() readOnly: boolean;
   private clonedProject: Project;
   formSubmitted = false;
-  @ViewChild('projectImageCanvasElem', { static: false }) projectImageCanvasElem;
-  @ViewChild('canvasPreviewImageElem', { static: false }) canvasPreviewImageElem;
-  @ViewChild('projectDetailsPalette', { static: false }) projectDetailsPalette;
+  @ViewChild('projectImageCanvasElem') projectImageCanvasElem;
+  @ViewChild('canvasPreviewImageElem') canvasPreviewImageElem;
+  @ViewChild('projectDetailsPalette') projectDetailsPalette;
   previewImage: String;
   canvasPreviewImage: string;
   fileTypeString: string;

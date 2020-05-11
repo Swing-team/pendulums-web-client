@@ -1,6 +1,8 @@
 import Dexie from 'dexie';
 import { Settings } from '../../../shared/state/user/user.model';
+import { Injectable } from "@angular/core";
 
+@Injectable()
 export class DexieService extends Dexie {
   constructor() {
     super('Pendulum');
