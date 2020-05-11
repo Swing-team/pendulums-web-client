@@ -2,6 +2,7 @@ import { Injectable }   from '@angular/core';
 import { DexieService } from './dexie.service';
 import { Store }        from '@ngrx/store';
 import { AppState }     from '../../../shared/state/appState';
+import { debounceTime }             from 'rxjs/operators';
 
 
 @Injectable()
@@ -13,7 +14,7 @@ export class DatabaseService {
   constructor(private dexieService: DexieService,
               private store: Store<AppState>) {
     // todo: It can be better later
-    this.stateObserver = store.debounceTime(100).subscribe((state) => {
+    this.stateObserver = store.pipe(debounceTime(100)).subscribe((state) => {
       let uId: string;
       uId = state.user.id;
       if (uId) {

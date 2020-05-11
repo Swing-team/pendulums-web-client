@@ -18,8 +18,8 @@ export class RouterChangeListenerService {
 
     this.subscriptions.push(
       this.router.events
-        .filter(e => e instanceof RoutesRecognized)
-        .pairwise()
+        .pipe(filter(e => e instanceof RoutesRecognized))
+        .pipe(pairwise())
         .subscribe((e: any) => {
           if (e[1].url === '/dashboard' && (e[0].url.startsWith('/activities') || e[0].url.startsWith('/profile'))) {
             this.userService.getSummary()
