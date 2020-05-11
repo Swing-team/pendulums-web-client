@@ -51,7 +51,7 @@
     "moment": "^2.22.1",
     "ng2-nvd3": "github:PlugaruT/ng2-nvd3",
     "ngx-cookie-service": "^2.1.0",
-    "ngx-img-cropper": "0.11.0",
+    "ngx-img-cropper": "^9.0.1",
     "nvd3": "^1.8.6",
     "pendulums-editor": "git+https://github.com/Swing-team/pendulums-editor.git",
     "rxjs": "6.5.5",
