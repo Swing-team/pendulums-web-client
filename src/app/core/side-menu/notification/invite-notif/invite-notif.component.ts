@@ -7,6 +7,7 @@ import { NotificationService } from '../notification.service';
 import { NotificationComponent } from '../notification.component';
 import { Project } from '../../../../shared/state/project/project.model';
 import { ErrorService } from 'app/core/error/error.service';
+import { cloneDeep } from 'lodash';
 
 @Component({
   selector: 'app-invite-notif',
@@ -15,7 +16,7 @@ import { ErrorService } from 'app/core/error/error.service';
 })
 export class InviteNotifComponent implements OnInit {
   @Input() project: Project
-  pendingInvitations: Array<object>;
+  pendingInvitations: Array<Project>;
   denyDisabledIndex = false;
   acceptDisabledIndex = false;
   user: any;
@@ -28,7 +29,7 @@ export class InviteNotifComponent implements OnInit {
               private notificationComponent: NotificationComponent) { }
 
   ngOnInit() {
-    this.user = this.notificationComponent.user
+    this.pendingInvitations = cloneDeep(this.notificationComponent.user.pendingInvitations);
   }
 
   accept(projectId) {
@@ -37,22 +38,22 @@ export class InviteNotifComponent implements OnInit {
       this.notificationService.accept(projectId).then((project) => {
         project.activities = [];
         this.store.dispatch(this.projectsActions.addProject(project));
-        this.user.pendingInvitations.map((obj, index) => {
+        this.pendingInvitations.map((obj: Project, index: number) => {
           if (obj.id === projectId) {
-            this.user.pendingInvitations.splice(index, 1);
+            this.pendingInvitations.splice(index, 1);
+            this.store.dispatch(this.userActions.updateUserInvitations(this.pendingInvitations));
           }
         });
-        this.store.dispatch(this.userActions.loadUser(this.user));
         this.acceptDisabledIndex = false;
       })
         .catch(error => {
           if (error.status === 404) {
-            this.user.pendingInvitations.map((obj, index) => {
+            this.pendingInvitations.map((obj: Project, index: number) => {
               if (obj.id === projectId) {
-                this.user.pendingInvitations.splice(index, 1);
+                this.pendingInvitations.splice(index, 1);
+                this.store.dispatch(this.userActions.updateUserInvitations(this.pendingInvitations));
               }
             });
-            this.store.dispatch(this.userActions.loadUser(this.user));
             this.acceptDisabledIndex = false;
             this.showError('The project not found!');
           } else {
@@ -66,23 +67,23 @@ export class InviteNotifComponent implements OnInit {
     if (!this.denyDisabledIndex ) {
       this.denyDisabledIndex = true;
       this.notificationService.deny(projectId).then((Id) => {
-        this.user.pendingInvitations.map((obj, index) => {
+        this.pendingInvitations.map((obj: Project, index: number) => {
           if (obj.id === projectId) {
-            this.user.pendingInvitations.splice(index, 1);
+            this.pendingInvitations.splice(index, 1);
+            this.store.dispatch(this.userActions.updateUserInvitations(this.pendingInvitations));
           }
         });
-        this.store.dispatch(this.userActions.loadUser(this.user));
         this.denyDisabledIndex = false;
       })
         .catch(error => {
           console.log('error is: ', error);
           if (error.status === 404) {
-            this.user.pendingInvitations.map((obj, index) => {
+            this.pendingInvitations.map((obj: Project, index: number) => {
               if (obj.id === projectId) {
-                this.user.pendingInvitations.splice(index, 1);
+                this.pendingInvitations.splice(index, 1);
+                this.store.dispatch(this.userActions.updateUserInvitations(this.pendingInvitations));
               }
             });
-            this.store.dispatch(this.userActions.loadUser(this.user));
             this.denyDisabledIndex = false;
           }
         });

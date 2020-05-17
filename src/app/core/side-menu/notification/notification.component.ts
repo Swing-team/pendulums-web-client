@@ -1,6 +1,6 @@
 import {
   Component, ElementRef, HostListener,
-  Input, OnInit, Output, EventEmitter
+  Input, OnInit, Output, EventEmitter, OnChanges
 }                                        from '@angular/core';
 import { User }                          from '../../../shared/state/user/user.model';
 import { AppService }                    from '../../services/app.service';
@@ -12,7 +12,6 @@ import { VERSION }                       from 'environments/version';
   styleUrls: ['./notification.component.sass'],
 })
 export class NotificationComponent implements OnInit {
-  pendingInvitations: Array<object>;
   @Input() user: User;
   @Output() clickedOutSideOfNotification = new EventEmitter();
   isUpdateAvalable: boolean;
@@ -20,7 +19,6 @@ export class NotificationComponent implements OnInit {
   constructor (private ref: ElementRef,
                private appService: AppService) {}
   ngOnInit() {
-    this.pendingInvitations = this.user.pendingInvitations;
     this.appService.getAppVersion().then((version) => {
       this.isUpdateAvalable = version > VERSION;
     })
