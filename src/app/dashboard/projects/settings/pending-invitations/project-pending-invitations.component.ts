@@ -31,7 +31,7 @@ const EMAIL_REGEX = /^[a-zA-Z0-9+\._%-+]{1,256}@[a-zA-Z0-9][a-zA-Z0-9-]{0,64}(\.
 export class ProjectPendingInvitationsComponent {
   @Input() project: Project;
   roles = ['team member', 'admin'];
-  cancelInvitationConfirmationViewIndex: Number = -1;
+  cancelInvitationConfirmationViewIndex: number = -1;
   user = {email: null, role: this.roles[0]};
   cancelButtonDisabled = false;
   inviteButtonDisabled = false;
