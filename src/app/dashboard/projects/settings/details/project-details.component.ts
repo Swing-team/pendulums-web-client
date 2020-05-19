@@ -20,12 +20,12 @@ import { environment }                    from '../../../../../environments/envi
 export class ProjectDetailsComponent implements OnInit {
   @Input() project: Project;
   @Input() readOnly: boolean;
-  private clonedProject: Project;
+  clonedProject: Project;
   formSubmitted = false;
   @ViewChild('projectImageCanvasElem') projectImageCanvasElem;
   @ViewChild('canvasPreviewImageElem') canvasPreviewImageElem;
   @ViewChild('projectDetailsPalette') projectDetailsPalette;
-  previewImage: String;
+  previewImage: string;
   canvasPreviewImage: string;
   fileTypeString: string;
   imageIsEdited: boolean;
