@@ -17,6 +17,7 @@ import { Md5 }                                from 'ts-md5/dist/md5';
 import { StopStartActivityService }           from '../../../../core/services/stop-start-activity.service';
 import { userInProject }                      from '../../../shared/utils';
 import { environment }                        from '../../../../../environments/environment';
+import { cloneDeep }                          from 'lodash';
 
 @Component({
   selector: 'project-item',
@@ -37,7 +38,7 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
   environment = environment;
 
   private currentActivityCopy: Activity;
-  private taskName: string;
+  taskName: string;
   private activity: Activity;
   private subscriptions: Array<Subscription> = [];
 
@@ -206,10 +207,12 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
 
   showSettings() {
     if (this.status.netStatus) {
+      // HACK: make a clone of project because we change it settings and dispatch it.
+      const project = cloneDeep(this.project);
       this.modalService.show({
         component: ProjectSettingsModalComponent,
         inputs: {
-          project: this.project,
+          project,
           user: this.user,
           projectIdInCurrentActivity: this.currentActivityCopy.project
         }
