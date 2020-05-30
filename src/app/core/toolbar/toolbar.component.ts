@@ -12,6 +12,7 @@ import { ErrorService }                     from '../error/error.service';
 import { User }                   from '../../shared/state/user/user.model';
 import { StopStartActivityService }         from '../services/stop-start-activity.service';
 import { Status }                           from '../../shared/state/status/status.model';
+import { cloneDeep }                        from 'lodash';
 
 @Component({
   selector: 'toolbar',
@@ -52,7 +53,7 @@ export class ToolbarComponent implements OnInit, OnDestroy, DoCheck  {
 
   ngOnInit() {
     this.subscriptions.push(this.projects$.subscribe((projects) => {
-      this.projects = projects;
+      this.projects = cloneDeep(projects);
     }));
 
     if (this.user.pendingInvitations.length > 0 || this.status.updateNeeded) {

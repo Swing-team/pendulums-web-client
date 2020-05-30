@@ -132,6 +132,9 @@ export class StopStartActivityService {
   manageProjectRecentActivitiesInState(activity: Activity, project: Project) {
     const userRoll = userRoleInProject(project, activity.user);
 
+    // HACK: fixed bug for changing the sent state.
+    activity = cloneDeep(activity);
+
     // activityPushType field used to manage the procedure we should update project recent activities in state
     // if it be "push" means that user is team member or project has just 1 team member and we just need to push activity to recent activities
     // if it be "edit" means that user is admin/owner and project members are more that 1 so we should update recent activities
