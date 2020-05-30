@@ -1,5 +1,6 @@
 import {Component, OnInit, Input, OnDestroy, AfterViewInit, Host, ViewChild, HostListener } from '@angular/core';
 import { Observable ,  Subscription } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 import { Project } from '../../shared/state/project/project.model';
 import { NoteService } from '../shared/notes.service';
 
@@ -42,7 +43,8 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy, AfterViewInit
   projectIds: Array<any> = [];
   codeSampleDialogHeight = window.innerHeight * 0.8
 
-  constructor(@Host() parent: ModalService,
+  constructor(
+    private parent: ModalService,
     private modalService: ModalService,
     private store: Store<AppState>,
     private notesActions: NotesActions,
@@ -71,7 +73,7 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy, AfterViewInit
         this.projectIds.push(project.id)
       })
     }))
-    this.subscriptions.push(this.createEditNoteForm.valueChanges.debounceTime(500).subscribe(data => {
+    this.subscriptions.push(this.createEditNoteForm.valueChanges.pipe(debounceTime(500)).subscribe(data => {
       this.createEditNote()
     }))
     this.noteModel = cloneDeep(this.note)
@@ -114,7 +116,7 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy, AfterViewInit
     } else {
         this.noteService.create({note: this.note}).then((note) => {
           this.store.dispatch(this.notesActions.addNote(note));
-          this.note = note as Note
+          this.note = cloneDeep(note);
           this.loadingBtn = false;
       })
         .catch(error => {

@@ -4,6 +4,7 @@ import { ActionWithPayload }  from '../action-with-payload';
 import { values }             from 'lodash';
 import { Note } from './note.model';
 import { findIndex, reduce }             from 'lodash';
+import { cloneDeep } from 'lodash';
 import  showdown from 'showdown';
 
 const initialState: Notes = {
@@ -31,6 +32,7 @@ export default function reducer(state = initialState, action: ActionWithPayload<
   switch (action.type) {
     case NotesActions.LOAD_NOTES: {
       reduce(action.payload, function (result, note) {
+        note = cloneDeep(note);
         note.content = converter.makeHtml(note.content)
         return action.payload;
       }, {});
@@ -49,8 +51,9 @@ export default function reducer(state = initialState, action: ActionWithPayload<
 
     case NotesActions.ADD_NOTE: {
       const newState = JSON.parse(JSON.stringify(state));
-      action.payload.content = converter.makeHtml(action.payload.content)
-      newState.entities[newState.entities.length] = action.payload;
+      const newActionPayload = cloneDeep(action.payload);
+      newActionPayload.content = converter.makeHtml(action.payload.content)
+      newState.entities[newState.entities.length] = newActionPayload;
       newState.entities = values<Note>(newState.entities)
       return newState;
     }
@@ -58,8 +61,9 @@ export default function reducer(state = initialState, action: ActionWithPayload<
     case NotesActions.UPDATE_NOTE: {
       const newState = JSON.parse(JSON.stringify(state));
       const index = findIndex(newState.entities, {id: action.payload.id});
-      action.payload.content = converter.makeHtml(action.payload.content)
-      newState.entities.splice(index, 1, action.payload);
+      const newActionPayload = cloneDeep(action.payload);
+      newActionPayload.content = converter.makeHtml(newActionPayload.content)
+      newState.entities.splice(index, 1, newActionPayload);
       return newState;
     }
 
