@@ -14,13 +14,13 @@ import { VERSION }                       from 'environments/version';
 export class NotificationComponent implements OnInit {
   @Input() user: User;
   @Output() clickedOutSideOfNotification = new EventEmitter();
-  isUpdateAvalable: boolean;
+  isUpdateAvailable: boolean;
 
   constructor (private ref: ElementRef,
                private appService: AppService) {}
   ngOnInit() {
     this.appService.getAppVersion().then((version) => {
-      this.isUpdateAvalable = version > VERSION;
+      this.isUpdateAvailable = version > VERSION;
     })
   }
 

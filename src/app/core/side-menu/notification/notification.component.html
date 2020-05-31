@@ -1,7 +1,7 @@
 <div class="box">
   <article class="media">
     <div class="media-content">
-      <div *ngIf="isUpdateAvalable">
+      <div *ngIf="isUpdateAvailable">
         <div class="content has-text-centered">
           <p>
             <span class="icon-info-circled-alt ps-update-icon"></span>
@@ -15,7 +15,7 @@
         <app-invite-notif [project]="project"></app-invite-notif>
         <hr *ngIf="i+1 != user.pendingInvitations.length">
       </div>
-      <div class="content has-text-centered" *ngIf="user.pendingInvitations.length == 0 && !isUpdateAvalable">
+      <div class="content has-text-centered" *ngIf="user.pendingInvitations.length == 0 && !isUpdateAvailable">
         <p>
         You don't have any new notification!
         </p>
