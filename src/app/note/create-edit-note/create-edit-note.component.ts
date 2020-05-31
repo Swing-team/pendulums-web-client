@@ -34,6 +34,7 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy, AfterViewInit
   @ViewChild('noteCreatePalette', { static: true }) noteCreatePalette;
   @Input() loadingBtn = false;
   @Input() note: Note;
+  @Input() netConnected: boolean;
   projects: Observable<Project[]>;
   projectsCopy: Project[];
   private subscriptions: Subscription[] = [];
@@ -72,14 +73,19 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy, AfterViewInit
       this.projectsCopy.map(project => {
         this.projectIds.push(project.id)
       })
-    }))
-    this.subscriptions.push(this.createEditNoteForm.valueChanges.pipe(debounceTime(500)).subscribe(data => {
-      this.createEditNote()
-    }))
+    }));
+    
     this.noteModel = cloneDeep(this.note)
-    this.noteModel.updatedAt = moment(this.note.updatedAt).format('DD/MM/YYYY HH:mm a')
-    if (!includes(this.projectIds, this.note.project)) {
-      this.note.project = null
+    if (this.netConnected) {
+      this.subscriptions.push(this.createEditNoteForm.valueChanges.pipe(debounceTime(500)).subscribe(data => {
+        this.createEditNote()
+      }));
+      this.noteModel.updatedAt = moment(this.note.updatedAt).format('DD/MM/YYYY HH:mm a')
+      if (!includes(this.projectIds, this.note.project)) {
+        this.note.project = null
+      }
+    } else {
+      this.showError('Edit is NOT available in offline mode; changes you make will not be saved!')
     }
   }
 
@@ -93,7 +99,11 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   ngOnDestroy(): void {
-    this.createEditNote();
+    if (this.netConnected) {
+      this.createEditNote();
+    } else {
+      this.showError('Edit is NOT available in offline mode; changes you made will not be saved!')
+    }
     this.subscriptions.forEach(sub => sub.unsubscribe());
     tinymce.remove();
   }
@@ -102,27 +112,29 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy, AfterViewInit
     if (this.note.title === '' && this.note.content === '') {
       return
     }
-    this.loadingBtn = true;
-    if (this.note.id) {
-      this.noteService.update({note: this.note}).then((note) => {
-        this.store.dispatch(this.notesActions.updateNote(note));
-        this.loadingBtn = false;
-        this.noteModel.updatedAt = moment(note.updatedAt).format('DD/MM/YYYY HH:mm a')
-      })
-        .catch(error => {
-          this.showError('Server communication error');
+    if (this.netConnected) {
+      this.loadingBtn = true;
+      if (this.note.id) {
+        this.noteService.update({note: this.note}).then((note) => {
+          this.store.dispatch(this.notesActions.updateNote(note));
           this.loadingBtn = false;
-        });
-    } else {
-        this.noteService.create({note: this.note}).then((note) => {
-          this.store.dispatch(this.notesActions.addNote(note));
-          this.note = cloneDeep(note);
-          this.loadingBtn = false;
-      })
-        .catch(error => {
-          this.showError('Server communication error');
-          this.loadingBtn = false;
-        });
+          this.noteModel.updatedAt = moment(note.updatedAt).format('DD/MM/YYYY HH:mm a')
+        })
+          .catch(error => {
+            this.showError('Server communication error');
+            this.loadingBtn = false;
+          });
+      } else {
+          this.noteService.create({note: this.note}).then((note) => {
+            this.store.dispatch(this.notesActions.addNote(note));
+            this.note = cloneDeep(note);
+            this.loadingBtn = false;
+        })
+          .catch(error => {
+            this.showError('Server communication error');
+            this.loadingBtn = false;
+          });
+      }
     }
   }
 
@@ -163,7 +175,11 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   archiveNote() {
-    this.note.isArchive = !this.note.isArchive
+    if (this,this.netConnected) {
+      this.note.isArchive = !this.note.isArchive
+    } else {
+      this.showError('This feature is NOT available offline.');
+    }
   }
   showError(error) {
     this.errorService.show({

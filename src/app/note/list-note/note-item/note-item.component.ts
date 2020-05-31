@@ -23,6 +23,7 @@ export class NoteItemComponent implements OnInit {
   @Input() note: Note;
   @Input() projectsId;
   @Input() deleteButtonDisabled: boolean;
+  @Input() netConnected: boolean;
   deleteConfirmation = false;
   constructor(
     private modalService: ModalService,
@@ -45,6 +46,7 @@ export class NoteItemComponent implements OnInit {
       component: CreateEditNoteComponent,
       inputs: {
         note: cloneDeep(this.note),
+        netConnected: this.netConnected,
       }
     });
     this.modalService.applyStyleDynamically({
@@ -54,7 +56,11 @@ export class NoteItemComponent implements OnInit {
   }
 
   deleteNote() {
-    this.deleteConfirmation = true;
+    if (this.netConnected) {
+      this.deleteConfirmation = true;
+    } else {
+      this.showError('This feature is NOt available in offline mode.');
+    }
   }
 
   confirmDelete() {
