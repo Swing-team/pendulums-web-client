@@ -31,9 +31,9 @@ export class AppComponent implements OnInit {
   user: Observable<any>;
   status: Observable<any>;
   theme: Observable<Theme>;
-  private projects: Observable<any>;
-  private selectedProject: Observable<string>;
-  private currentActivity: Observable<any>;
+  public projects: Observable<any>;
+  public selectedProject: Observable<string>;
+  public currentActivity: Observable<any>;
   private previousLoginStatus = null;
   SideMenuIsActive = false;
   netConnected: boolean;
