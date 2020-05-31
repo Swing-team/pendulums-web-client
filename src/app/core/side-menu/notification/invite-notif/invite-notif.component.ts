@@ -16,6 +16,7 @@ import { cloneDeep } from 'lodash';
 })
 export class InviteNotifComponent implements OnInit {
   @Input() project: Project
+  @Input() netConnected: boolean;
   pendingInvitations: Array<Project>;
   denyDisabledIndex = false;
   acceptDisabledIndex = false;
@@ -33,6 +34,11 @@ export class InviteNotifComponent implements OnInit {
   }
 
   accept(projectId) {
+    if (!this.netConnected) {
+      this.showError('Accept or deny is not available in offline mode.');
+      return;
+    }
+
     if (!this.acceptDisabledIndex) {
       this.acceptDisabledIndex = true;
       this.notificationService.accept(projectId).then((project) => {
@@ -64,6 +70,11 @@ export class InviteNotifComponent implements OnInit {
   }
 
   deny(projectId) {
+    if (!this.netConnected) {
+      this.showError('Accept or deny is not available in offline mode.');
+      return;
+    }
+
     if (!this.denyDisabledIndex ) {
       this.denyDisabledIndex = true;
       this.notificationService.deny(projectId).then((Id) => {

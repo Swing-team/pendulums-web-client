@@ -12,7 +12,7 @@
         </div>
       </div>
       <div class="content has-text-centered" *ngFor='let project of user.pendingInvitations;trackBy:let i = index'>
-        <app-invite-notif [project]="project"></app-invite-notif>
+        <app-invite-notif [project]="project" [netConnected]="netConnected"></app-invite-notif>
         <hr *ngIf="i+1 != user.pendingInvitations.length">
       </div>
       <div class="content has-text-centered" *ngIf="user.pendingInvitations.length == 0 && !isUpdateAvailable">

@@ -13,6 +13,7 @@ import { VERSION }                       from 'environments/version';
 })
 export class NotificationComponent implements OnInit {
   @Input() user: User;
+  @Input() netConnected: boolean;
   @Output() clickedOutSideOfNotification = new EventEmitter();
   isUpdateAvailable: boolean;
 
