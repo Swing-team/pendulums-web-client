@@ -86,7 +86,8 @@ export class NoteComponent implements OnInit, OnDestroy {
       this.modalService.show({
         component: CreateEditNoteComponent,
         inputs: {
-          note: new Note()
+          note: new Note(),
+          netConnected: this.netConnected,
         },
       });
     } else {
