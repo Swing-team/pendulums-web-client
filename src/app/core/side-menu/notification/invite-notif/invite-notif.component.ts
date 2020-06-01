@@ -44,22 +44,16 @@ export class InviteNotifComponent implements OnInit {
       this.notificationService.accept(projectId).then((project) => {
         project.activities = [];
         this.store.dispatch(this.projectsActions.addProject(project));
-        this.pendingInvitations.map((obj: Project, index: number) => {
-          if (obj.id === projectId) {
-            this.pendingInvitations.splice(index, 1);
-            this.store.dispatch(this.userActions.updateUserInvitations(this.pendingInvitations));
-          }
-        });
+        const invitationIndex = this.pendingInvitations.findIndex(invitedProject => invitedProject.id === projectId);
+        this.pendingInvitations.splice(invitationIndex, 1);
+        this.store.dispatch(this.userActions.updateUserInvitations(this.pendingInvitations));
         this.acceptDisabledIndex = false;
       })
         .catch(error => {
           if (error.status === 404) {
-            this.pendingInvitations.map((obj: Project, index: number) => {
-              if (obj.id === projectId) {
-                this.pendingInvitations.splice(index, 1);
-                this.store.dispatch(this.userActions.updateUserInvitations(this.pendingInvitations));
-              }
-            });
+            const invitationIndex = this.pendingInvitations.findIndex(invitedProject => invitedProject.id === projectId);
+            this.pendingInvitations.splice(invitationIndex, 1);
+            this.store.dispatch(this.userActions.updateUserInvitations(this.pendingInvitations));
             this.acceptDisabledIndex = false;
             this.showError('The project not found!');
           } else {
@@ -78,23 +72,17 @@ export class InviteNotifComponent implements OnInit {
     if (!this.denyDisabledIndex ) {
       this.denyDisabledIndex = true;
       this.notificationService.deny(projectId).then((Id) => {
-        this.pendingInvitations.map((obj: Project, index: number) => {
-          if (obj.id === projectId) {
-            this.pendingInvitations.splice(index, 1);
-            this.store.dispatch(this.userActions.updateUserInvitations(this.pendingInvitations));
-          }
-        });
+        const invitationIndex = this.pendingInvitations.findIndex(invitedProject => invitedProject.id === projectId);
+        this.pendingInvitations.splice(invitationIndex, 1);
+        this.store.dispatch(this.userActions.updateUserInvitations(this.pendingInvitations));
         this.denyDisabledIndex = false;
       })
         .catch(error => {
           console.log('error is: ', error);
           if (error.status === 404) {
-            this.pendingInvitations.map((obj: Project, index: number) => {
-              if (obj.id === projectId) {
-                this.pendingInvitations.splice(index, 1);
-                this.store.dispatch(this.userActions.updateUserInvitations(this.pendingInvitations));
-              }
-            });
+            const invitationIndex = this.pendingInvitations.findIndex(invitedProject => invitedProject.id === projectId);
+            this.pendingInvitations.splice(invitationIndex, 1);
+            this.store.dispatch(this.userActions.updateUserInvitations(this.pendingInvitations));
             this.denyDisabledIndex = false;
           }
         });
