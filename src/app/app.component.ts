@@ -21,6 +21,8 @@ import { AppStateSelectors }                      from './shared/state/app-state
 import { VERSION }                                from 'environments/version';
 import { ModalService }                           from './core/modal/modal.service';
 import { Theme }                                  from './shared/state/theme/theme.model';
+import { Activity }                               from './shared/state/current-activity/current-activity.model';
+import { Project }                                from './shared/state/project/project.model';
 
 @Component({
   selector: 'app-root',
@@ -31,9 +33,9 @@ export class AppComponent implements OnInit {
   user: Observable<any>;
   status: Observable<any>;
   theme: Observable<Theme>;
-  public projects: Observable<any>;
+  public projects: Observable<Project[]>;
   public selectedProject: Observable<string>;
-  public currentActivity: Observable<any>;
+  public currentActivity: Observable<Activity>;
   private previousLoginStatus = null;
   SideMenuIsActive = false;
   netConnected: boolean;
