@@ -41,10 +41,10 @@ export class UserActions {
     };
   }
 
-  updateUserInvitations(userInvitations: Array<Project>):ActionWithPayload<Array<Project>> {
+  updateUserInvitations(invitedProjectId: string):ActionWithPayload<string> {
     return {
       type: UserActions.UPDATE_USER_PENDING_INVITATIONS,
-      payload: userInvitations
+      payload: invitedProjectId,
     };
   }
 

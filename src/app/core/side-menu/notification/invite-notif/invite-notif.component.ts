@@ -17,7 +17,7 @@ import { cloneDeep } from 'lodash';
 export class InviteNotifComponent implements OnInit {
   @Input() project: Project
   @Input() netConnected: boolean;
-  pendingInvitations: Array<Project>;
+  @Input() pendingInvitations: Array<Project>;
   denyDisabledIndex = false;
   acceptDisabledIndex = false;
   user: any;
@@ -30,7 +30,6 @@ export class InviteNotifComponent implements OnInit {
               private notificationComponent: NotificationComponent) { }
 
   ngOnInit() {
-    this.pendingInvitations = cloneDeep(this.notificationComponent.user.pendingInvitations);
   }
 
   accept(projectId) {
@@ -44,16 +43,12 @@ export class InviteNotifComponent implements OnInit {
       this.notificationService.accept(projectId).then((project) => {
         project.activities = [];
         this.store.dispatch(this.projectsActions.addProject(project));
-        const invitationIndex = this.pendingInvitations.findIndex(invitedProject => invitedProject.id === projectId);
-        this.pendingInvitations.splice(invitationIndex, 1);
-        this.store.dispatch(this.userActions.updateUserInvitations(this.pendingInvitations));
+        this.store.dispatch(this.userActions.updateUserInvitations(projectId));
         this.acceptDisabledIndex = false;
       })
         .catch(error => {
           if (error.status === 404) {
-            const invitationIndex = this.pendingInvitations.findIndex(invitedProject => invitedProject.id === projectId);
-            this.pendingInvitations.splice(invitationIndex, 1);
-            this.store.dispatch(this.userActions.updateUserInvitations(this.pendingInvitations));
+            this.store.dispatch(this.userActions.updateUserInvitations(projectId));
             this.acceptDisabledIndex = false;
             this.showError('The project not found!');
           } else {
@@ -72,17 +67,13 @@ export class InviteNotifComponent implements OnInit {
     if (!this.denyDisabledIndex ) {
       this.denyDisabledIndex = true;
       this.notificationService.deny(projectId).then((Id) => {
-        const invitationIndex = this.pendingInvitations.findIndex(invitedProject => invitedProject.id === projectId);
-        this.pendingInvitations.splice(invitationIndex, 1);
-        this.store.dispatch(this.userActions.updateUserInvitations(this.pendingInvitations));
+        this.store.dispatch(this.userActions.updateUserInvitations(projectId));
         this.denyDisabledIndex = false;
       })
         .catch(error => {
           console.log('error is: ', error);
           if (error.status === 404) {
-            const invitationIndex = this.pendingInvitations.findIndex(invitedProject => invitedProject.id === projectId);
-            this.pendingInvitations.splice(invitationIndex, 1);
-            this.store.dispatch(this.userActions.updateUserInvitations(this.pendingInvitations));
+            this.store.dispatch(this.userActions.updateUserInvitations(projectId));
             this.denyDisabledIndex = false;
           }
         });

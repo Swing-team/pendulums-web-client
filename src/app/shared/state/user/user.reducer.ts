@@ -43,7 +43,8 @@ export default function reducer(state = initialState, action: ActionWithPayload<
 
     case UserActions.UPDATE_USER_PENDING_INVITATIONS: {
       const newState = cloneDeep(state);
-      newState.pendingInvitations = cloneDeep(action.payload);
+      const invitationIndex = newState.pendingInvitations.findIndex(invitedProject => invitedProject.id === action.payload);
+      newState.pendingInvitations.splice(invitationIndex, 1);
       return newState;
     }
 
