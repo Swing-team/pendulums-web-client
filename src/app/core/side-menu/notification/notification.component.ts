@@ -1,6 +1,6 @@
 import {
   Component, ElementRef, HostListener,
-  Input, OnInit, Output, EventEmitter, OnChanges
+  Input, OnInit, Output, EventEmitter
 }                                        from '@angular/core';
 import { User }                          from '../../../shared/state/user/user.model';
 import { AppService }                    from '../../services/app.service';
