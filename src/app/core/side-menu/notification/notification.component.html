@@ -8,7 +8,7 @@
             a new version of Pendulums is available. you can download it from <b><a href="https://pendulums.io/"
               target="_blank" class="ps-link">Here</a></b>.
           </p>
-          <hr *ngIf="!user.pendingInvitations">
+          <hr *ngIf="!user.pendingInvitations || user.pendingInvitations.length !== 0">
         </div>
       </div>
       <div class="content has-text-centered" *ngFor='let project of user.pendingInvitations;trackBy:let i = index'>
