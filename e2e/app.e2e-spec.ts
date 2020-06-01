@@ -1,6 +1,6 @@
 import { PendulumWebClientPage } from './app.po';
 
-describe('pendulum-web-client App', () => {
+describe('pendulums-web-client App', () => {
   let page: PendulumWebClientPage;
 
   beforeEach(() => {

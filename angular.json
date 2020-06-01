@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "pendulum-web-client": {
+    "pendulums-web-client": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -60,18 +60,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "pendulum-web-client:build"
+            "browserTarget": "pendulums-web-client:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "pendulum-web-client:build:production"
+              "browserTarget": "pendulums-web-client:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "pendulum-web-client:build"
+            "browserTarget": "pendulums-web-client:build"
           }
         },
         "test": {
@@ -108,7 +108,7 @@
         }
       }
     },
-    "pendulum-web-client-e2e": {
+    "pendulums-web-client-e2e": {
       "root": "e2e",
       "sourceRoot": "e2e",
       "projectType": "application",
@@ -117,7 +117,7 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "./protractor.conf.js",
-            "devServerTarget": "pendulum-web-client:serve"
+            "devServerTarget": "pendulums-web-client:serve"
           }
         },
         "lint": {
@@ -131,7 +131,7 @@
         }
       }
     },
-    "pendulum-web-client1": {
+    "pendulums-desktop-client": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -188,18 +188,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "pendulum-web-client1:build"
+            "browserTarget": "pendulums-desktop-client:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "pendulum-web-client1:build:production"
+              "browserTarget": "pendulums-desktop-client:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "pendulum-web-client1:build"
+            "browserTarget": "pendulums-desktop-client:build"
           }
         },
         "test": {
@@ -236,7 +236,7 @@
         }
       }
     },
-    "pendulum-web-client1-e2e": {
+    "pendulums-desktop-client-e2e": {
       "root": "e2e",
       "sourceRoot": "e2e",
       "projectType": "application",
@@ -245,7 +245,7 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "./protractor.conf.js",
-            "devServerTarget": "pendulum-web-client1:serve"
+            "devServerTarget": "pendulums-desktop-client:serve"
           }
         },
         "lint": {
@@ -259,7 +259,7 @@
         }
       }
     },
-    "pendulum-web-client2": {
+    "pendulums-mobile-client": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -316,18 +316,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "pendulum-web-client2:build"
+            "browserTarget": "pendulums-mobile-client:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "pendulum-web-client2:build:production"
+              "browserTarget": "pendulums-mobile-client:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "pendulum-web-client2:build"
+            "browserTarget": "pendulums-mobile-client:build"
           }
         },
         "test": {
@@ -364,7 +364,7 @@
         }
       }
     },
-    "pendulum-web-client2-e2e": {
+    "pendulums-mobile-client-e2e": {
       "root": "e2e",
       "sourceRoot": "e2e",
       "projectType": "application",
@@ -373,7 +373,7 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "./protractor.conf.js",
-            "devServerTarget": "pendulum-web-client2:serve"
+            "devServerTarget": "pendulums-mobile-client:serve"
           }
         },
         "lint": {
@@ -388,7 +388,7 @@
       }
     }
   },
-  "defaultProject": "pendulum-web-client",
+  "defaultProject": "pendulums-web-client",
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "app",
