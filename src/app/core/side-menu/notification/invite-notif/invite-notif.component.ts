@@ -35,7 +35,7 @@ export class InviteNotifComponent implements OnInit {
 
   accept(projectId) {
     if (!this.netConnected) {
-      this.showError('Accept or deny is not available in offline mode.');
+      this.showError('No internet connection!');
       return;
     }
 
@@ -71,7 +71,7 @@ export class InviteNotifComponent implements OnInit {
 
   deny(projectId) {
     if (!this.netConnected) {
-      this.showError('Accept or deny is not available in offline mode.');
+      this.showError('No internet connection!');
       return;
     }
 
