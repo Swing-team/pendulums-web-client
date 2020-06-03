@@ -17,7 +17,17 @@
   "files": [
     "main.mobile.ts",
     "polyfills.ts"
-  ],  "include": [
+  ],
+  "include": [
     "src/**/*.d.ts"
+  ],
+  "exclude": [
+    "test.ts",
+    "**/*.spec.ts",
+    "**/app.module.ts",
+    "main.ts",
+    "main.electron.ts",
+    "**/app.electron.module.ts",
+    "**/*.electron.service.ts",
   ]
 }
