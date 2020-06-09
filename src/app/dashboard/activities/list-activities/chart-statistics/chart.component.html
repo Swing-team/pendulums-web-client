@@ -10,9 +10,27 @@
                       [startRangeInput]="fromDate" [endRangeInput]="toDate - 86400000"></swing-calendar>
     </div>
   </div>
-  <div *ngIf="multiLevelData.length > 0">
-    <nvd3 [options]="options" [data]="multiLevelData"></nvd3>
-  </div>
+  <ngx-charts-bar-vertical-stacked class="ps-chart" *ngIf="multiLevelData.length > 0"
+    [results]="multiLevelData"
+    [animations]="true"
+    [legend]="true"
+    [legendPosition]="'below'"
+    [legendTitle]="'Users'"
+    [xAxis]="true"
+    [yAxis]="true"
+    [showGridLines]="true"
+    [showXAxisLabel]="true"
+    [showYAxisLabel]="true"
+    [trimYAxisTicks]="true"
+    [maxYAxisTickLength]="8"
+    [yAxisTickFormatting]="formatDateTick"
+  >
+    <ng-template #tooltipTemplate let-model="model">
+      <h1>{{ model.series + ' | ' + model.label }}</h1>
+      <h2>{{ formatDateTick(model.value) }}</h2>
+    </ng-template>
+  </ngx-charts-bar-vertical-stacked>
+  
   <ng-container *ngIf="usersWithTotal">
     <div *ngIf="usersWithTotal.length > 0">
       <chart-total-hour [inputArray]="usersWithTotal"></chart-total-hour>

@@ -19,9 +19,7 @@ import { BrowserModule }                      from '@angular/platform-browser';
 import { BrowserAnimationsModule }            from '@angular/platform-browser/animations';
 import { ChartComponent }                     from './activities/list-activities/chart-statistics/chart.component';
 import { ChartTotalHourComponent }            from './activities/list-activities/chart-statistics/chart-total-hour.component/chart-total-hour.component';
-import { NvD3Module } from 'ng2-nvd3';
-import 'd3';
-import 'nvd3';
+import { NgxChartsModule }                    from '@swimlane/ngx-charts';
 
 @NgModule({
   imports: [
@@ -29,7 +27,7 @@ import 'nvd3';
     SharedModule,
     BrowserModule,
     BrowserAnimationsModule,
-    NvD3Module
+    NgxChartsModule,
   ],
   declarations: [
     CreateProjectComponent,
