@@ -75,7 +75,6 @@ export class ChartComponent implements OnInit {
       this.activityService.getStat(this.project.id, this.selectedUsers, this.fromDate, this.toDate).then((res) => {
 
         const userStatsResult: {name: string, series: { name: string, value: number }[]}[] = [];
-        console.log(res.result);
         res.result.forEach((userStats) => {
           userStats.stats.forEach((stat, index) => {
             // change xAxisName based on selected dates
