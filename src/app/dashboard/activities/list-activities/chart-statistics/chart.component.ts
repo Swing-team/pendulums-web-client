@@ -125,6 +125,8 @@ export class ChartComponent implements OnInit {
     
     // we should initial usersWithTotal array and not push in it
     this.usersWithTotal = tempUsersWithTotal;
+
+    this.chartLoaded.emit();
   }
 
   showCalender() {
