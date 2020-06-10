@@ -51,7 +51,7 @@ import { SocketService }                from './services/socket.service';
 @NgModule({
   imports:      [
     SharedModule,
-    StoreModule.forRoot(reducerToken),
+    StoreModule.forRoot(reducerToken, { runtimeChecks: { strictActionImmutability: false } }),
     RouterModule,
     ImageCropperModule
   ],
