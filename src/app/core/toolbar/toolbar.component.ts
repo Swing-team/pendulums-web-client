@@ -53,7 +53,7 @@ export class ToolbarComponent implements OnInit, OnDestroy, DoCheck  {
 
   ngOnInit() {
     this.subscriptions.push(this.projects$.subscribe((projects) => {
-      this.projects = cloneDeep(projects);
+      this.projects = projects;
     }));
 
     if (this.user.pendingInvitations.length > 0 || this.status.updateNeeded) {
