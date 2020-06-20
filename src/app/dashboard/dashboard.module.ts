@@ -18,7 +18,6 @@ import { ProfileSettingComponent }            from '../profile-setting/profile-s
 import { BrowserModule }                      from '@angular/platform-browser';
 import { BrowserAnimationsModule }            from '@angular/platform-browser/animations';
 import { ChartComponent }                     from './activities/list-activities/chart-statistics/chart.component';
-import { ChartTotalHourComponent }            from './activities/list-activities/chart-statistics/chart-total-hour.component/chart-total-hour.component';
 import { NgxChartsModule }                    from '@swimlane/ngx-charts';
 
 @NgModule({
@@ -41,7 +40,6 @@ import { NgxChartsModule }                    from '@swimlane/ngx-charts';
     ActivitiesComponent,
     ActivityItemComponent,
     ChartComponent,
-    ChartTotalHourComponent,
     AddManuallyActivityComponent,
     DashboardComponent,
     ProfileSettingComponent

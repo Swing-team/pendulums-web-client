@@ -15,7 +15,7 @@
     [animations]="true"
     [legend]="true"
     [legendPosition]="'below'"
-    [legendTitle]="'Users'"
+    [legendTitle]="''"
     [xAxis]="true"
     [yAxis]="true"
     [showGridLines]="true"
@@ -26,16 +26,10 @@
     [yAxisTickFormatting]="formatDateTick"
   >
     <ng-template #tooltipTemplate let-model="model">
-      <h1>{{ model.series + ' | ' + model.label }}</h1>
+      <h1>{{ model.series + ' | ' + model.extras.userName }}</h1>
       <h2>{{ formatDateTick(model.value) }}</h2>
     </ng-template>
   </ngx-charts-bar-vertical-stacked>
-  
-  <ng-container *ngIf="usersWithTotal">
-    <div *ngIf="usersWithTotal.length > 0">
-      <chart-total-hour [inputArray]="usersWithTotal"></chart-total-hour>
-    </div>
-  </ng-container>
 </div>
 
 <div class="ps-chart-placeholder" *ngIf="selectedUsers.length === 0 || !parentHasActivity">

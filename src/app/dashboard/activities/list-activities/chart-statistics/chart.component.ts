@@ -2,10 +2,17 @@ import {
   Component, EventEmitter, Input,
   OnInit, Output, ViewEncapsulation
 } from '@angular/core';
-import { cloneDeep }                        from 'lodash';
 import { ActivityService }                  from '../../../../core/services/activity.service';
 import { Project }                          from 'app/shared/state/project/project.model';
 import * as moment                          from 'moment';
+
+interface ChartDataType {
+  name: string,
+  series: {
+    name: string,
+    value: number,
+    extras: any }[]
+};
 
 @Component({
   selector: 'chart',
@@ -26,7 +33,7 @@ export class ChartComponent implements OnInit {
   calenderShow = false;
 
   usersWithTotal: any;
-  multiLevelData = [];
+  multiLevelData: ChartDataType[] = [];
   chartType: 'stacked' | 'grouped' = 'stacked';
 
   constructor (private activityService: ActivityService) {
@@ -74,7 +81,8 @@ export class ChartComponent implements OnInit {
     if (this.selectedUsers.length > 0) {
       this.activityService.getStat(this.project.id, this.selectedUsers, this.fromDate, this.toDate).then((res) => {
 
-        const userStatsResult: {name: string, series: { name: string, value: number }[]}[] = [];
+        const userStatsResult: ChartDataType[] = [];
+
         res.result.forEach((userStats) => {
           userStats.stats.forEach((stat, index) => {
             // change xAxisName based on selected dates
@@ -95,9 +103,26 @@ export class ChartComponent implements OnInit {
             const userStatsIndex = userStatsResult.findIndex(x => x.name === xAxisName);
             const user = this.project.teamMembers.find(user => user.id === userStats._id);
             if (userStatsIndex === -1) {
-              userStatsResult.push({name: xAxisName, series: [{name: user.name ? user.name : user.email, value: stat.value}]});
+              userStatsResult.push({
+                name: xAxisName,
+                series: [{
+                  name: user.name ? user.name : user.email,
+                  value: stat.value,
+                  extras: {
+                    userName: user.name ? user.name : user.email,
+                    userId: user.id
+                  }
+                }]
+              });
             } else {
-              userStatsResult[userStatsIndex].series.push({name: user.name ? user.name : user.email, value: stat.value});
+              userStatsResult[userStatsIndex].series.push({
+                name: user.name ? user.name : user.email,
+                value: stat.value,
+                extras: {
+                  userName: user.name ? user.name : user.email,
+                  userId: user.id
+                }
+              });
             }
             
             // Add user totalHour to tempUsersWithTotal
@@ -105,26 +130,27 @@ export class ChartComponent implements OnInit {
             const tempUserWithTotal = tempUsersWithTotal.find(user => user.userId === userStats._id);
             if (!tempUserWithTotal) {
               tempUsersWithTotal.push({
-                disabled: false,
-                userName: user.name,
-                email: user.email,
-                userId: userStats._id,
-                totalHoursPerUser: Number(stat.value),
-                humanizedHour: '',
-                profileImage: user.profileImage
+                userId: user.id,
+                name: user.name ? user.name : user.email,
+                totalHours: Number(stat.value),
               });
             } else {
-              tempUserWithTotal.totalHoursPerUser += stat.value;
+              tempUserWithTotal.totalHours += Number(stat.value);
             }
           });
         });
-        
+
+        userStatsResult.forEach((userStats) => {
+          userStats.series.map(userStat => {
+            const tempUser = tempUsersWithTotal.find(user => user.userId === userStat.extras.userId);
+            userStat.name = userStat.name + ' ' + this.formatDateTick(tempUser.totalHours);
+            return userStat;
+          });
+        });
+
         this.multiLevelData = userStatsResult;
       });
     }
-    
-    // we should initial usersWithTotal array and not push in it
-    this.usersWithTotal = tempUsersWithTotal;
 
     this.chartLoaded.emit();
   }
@@ -137,60 +163,6 @@ export class ChartComponent implements OnInit {
     this.calenderShow = false;
   }
 
-  updateUsersWithTotal(series) {
-    const tempArray = cloneDeep(this.usersWithTotal)
-
-    // We use this variable to handle bug of chart
-    // that happen when all of items in legend not selected but it selects all of items in legend list
-    // so we check if count of selected items be zero we should select all of them again
-    let displayingUserCounts = 0 ;
-
-    tempArray.map((item) => {
-      if (!item.disabled) {
-        displayingUserCounts++;
-      }
-    });
-
-    this.usersWithTotal = [];
-    if (!series.disabled) {
-      tempArray.map((item) => {
-        if (item.userName !== '') {
-          if (item.userName === series.key) {
-            item.disabled = true;
-            displayingUserCounts--;
-          }
-        } else if (item.userName === '') {
-          if (item.email === series.key) {
-            item.disabled = true;
-            displayingUserCounts--;
-          }
-        }
-      })
-    } else if (series.disabled) {
-      tempArray.map((item) => {
-        if (item.userName !== '') {
-          if (item.userName === series.key) {
-            item.disabled = false;
-            displayingUserCounts++;
-          }
-        } else if (item.userName === '') {
-          if (item.email === series.key) {
-            item.disabled = false;
-            displayingUserCounts++;
-          }
-        }
-      })
-    }
-
-    // here we check count of items if it be zero it means that chart has selected all of items so we should do it too
-    if (displayingUserCounts === 0) {
-      tempArray.map((item) => {
-        item.disabled = false;
-      })
-    }
-
-    this.usersWithTotal = tempArray;
-  }
 
   updateDates(event) {
     this.dateString = event.start.format('MMM Do');
