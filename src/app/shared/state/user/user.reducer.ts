@@ -49,7 +49,7 @@ export default function reducer(state = initialState, action: ActionWithPayload<
     }
 
     default: {
-      return cloneDeep(state);
+      return state;
     }
   }
 }

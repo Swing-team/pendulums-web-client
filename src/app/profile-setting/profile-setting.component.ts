@@ -55,13 +55,6 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
                private location: Location,
                private modalService: ModalService,
                private nativeNotificationService: NativeNotificationService) {
-    this.subscriptions.push(store.select('user').subscribe((user: User) => {
-      this.user = user;
-      this.userEdit = _.cloneDeep(user);
-      if (user.email) {
-        this.emailHash = Md5.hashStr(user.email);
-      }
-    }));
     this.status = store.select('status');
   }
 
