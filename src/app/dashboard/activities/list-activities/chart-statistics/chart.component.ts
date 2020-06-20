@@ -143,7 +143,7 @@ export class ChartComponent implements OnInit {
         userStatsResult.forEach((userStats) => {
           userStats.series.map(userStat => {
             const tempUser = tempUsersWithTotal.find(user => user.userId === userStat.extras.userId);
-            userStat.name = userStat.name + ' ' + this.formatDateTick(tempUser.totalHours);
+            userStat.name = userStat.name + ' (' + this.formatDateTick(tempUser.totalHours) + ')';
             return userStat;
           });
         });
