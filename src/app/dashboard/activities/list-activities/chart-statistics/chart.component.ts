@@ -11,7 +11,7 @@ interface ChartDataType {
   series: {
     name: string,
     value: number,
-    extras: any }[]
+    extras?: any }[]
 };
 
 type ChartTypes = 'stack' | 'group';
@@ -150,6 +150,17 @@ export class ChartComponent implements OnInit {
           });
         });
 
+        let empty = ' ';
+        while (userStatsResult.length < 5) {
+          userStatsResult.push({
+            name: empty,
+            series: [{
+              name: empty,
+              value: 0,
+            }]
+          });
+          empty += ' ';
+        }
         this.multiLevelData = userStatsResult;
       });
     }
