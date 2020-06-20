@@ -14,6 +14,8 @@ interface ChartDataType {
     extras: any }[]
 };
 
+type ChartTypes = 'stack' | 'group';
+
 @Component({
   selector: 'chart',
   templateUrl: './chart.component.html',
@@ -34,7 +36,7 @@ export class ChartComponent implements OnInit {
 
   usersWithTotal: any;
   multiLevelData: ChartDataType[] = [];
-  chartType: 'stacked' | 'grouped' = 'stacked';
+  chartType: ChartTypes  = 'stack';
 
   constructor (private activityService: ActivityService) {
   }
@@ -181,5 +183,9 @@ export class ChartComponent implements OnInit {
     this.dateRange = moment.duration(Number(this.toDate) - Number(this.fromDate)).asDays();
     this.getStatAndPrepareData();
     this.calenderShow = false;
+  }
+
+  changeChart(chartType: ChartTypes) {
+    this.chartType = chartType;
   }
 }
