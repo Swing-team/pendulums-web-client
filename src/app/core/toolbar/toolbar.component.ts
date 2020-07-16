@@ -47,7 +47,7 @@ export class ToolbarComponent implements OnInit, OnDestroy, DoCheck  {
                private stopStartActivityService: StopStartActivityService,
                private differs: KeyValueDiffers) {
     this.selectedProject = new Project();
-    this.currentActivityCopy = new Activity();
+    this.currentActivityCopy = {} as Activity;
     this.differ = this.differs.find({}).create();
   }
 
@@ -215,7 +215,7 @@ export class ToolbarComponent implements OnInit, OnDestroy, DoCheck  {
       if (!this.taskName) {
         this.taskName = 'Untitled Activity';
       }
-      const activity = new Activity();
+      const activity: Activity = {} as Activity;
       activity.project = this.selectedProject.id;
       activity.name = this.taskName;
       activity.startedAt = Date.now().toString();

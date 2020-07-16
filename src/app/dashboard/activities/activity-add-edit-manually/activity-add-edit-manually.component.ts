@@ -53,7 +53,7 @@ export class AddManuallyActivityComponent implements OnInit {
       this.fromTime = moment(Number(this.activityModel.startedAt)).format('HH:mm');
       this.toTime = moment(Number(this.activityModel.stoppedAt)).format('HH:mm');
     } else {
-      this.activityModel = new Activity();
+      this.activityModel = {} as Activity;
       this.fromDate = moment().format('dddd, MMMM Do YYYY');
       this.toDate = moment().format('dddd, MMMM Do YYYY');
 

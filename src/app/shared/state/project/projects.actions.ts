@@ -124,7 +124,7 @@ export class ProjectsActions {
       type: ProjectsActions.ADD_ACTIVITY_TO_PROJECT,
       payload: {
         projectId,
-        activity: activity
+        activity
       }
     };
   }
@@ -134,7 +134,7 @@ export class ProjectsActions {
       type: ProjectsActions.UPDATE_PROJECT_ACTIVITIES,
       payload: {
         projectId,
-        activity: activity
+        activity
       }
     };
   }

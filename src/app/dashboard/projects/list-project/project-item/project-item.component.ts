@@ -93,7 +93,7 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
     if (!this.taskName) {
       this.taskName = 'Untitled Activity';
     }
-    this.activity = new Activity();
+    this.activity = {} as Activity;
     this.activity.name = this.taskName;
     this.activity.startedAt = Date.now().toString();
     // we need two below fields for offline logic

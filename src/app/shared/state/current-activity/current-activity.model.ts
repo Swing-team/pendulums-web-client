@@ -1,4 +1,4 @@
-export class Activity {
+export interface Activity {
   id: string;
   name: string;
   startedAt: string;
