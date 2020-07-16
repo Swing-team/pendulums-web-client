@@ -47,17 +47,12 @@ import { NativeNotificationService }    from './services/native-notification.ser
 import { ActivityService }              from './services/activity.service';
 import { DeleteAccountComponent }       from 'app/profile-setting/delete-account/delete-account.component';
 import { SocketService }                from './services/socket.service';
+import { environment } from '../../environments/environment';
 
 @NgModule({
   imports:      [
     SharedModule,
-    StoreModule.forRoot(reducerToken, { runtimeChecks: { 
-      strictActionImmutability: false,
-      strictActionSerializability: true, // FIXME: these options should be all be false in production
-      strictActionWithinNgZone: true,
-      strictStateImmutability: true,
-      strictStateSerializability: true, 
-    }}),
+    StoreModule.forRoot(reducerToken, { runtimeChecks: environment.ngrxRuntimeCheck }),
     RouterModule,
     ImageCropperModule
   ],

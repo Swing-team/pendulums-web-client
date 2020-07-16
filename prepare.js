@@ -28,6 +28,15 @@ export const localConfig: AppConfig = {
   apiEndpoint: 'http://localhost:1337',
   httpOptions: { withCredentials: true, responseType: 'json' },
   imagesEndpoint: 'http://localhost:1337/images',
+
+  // ngrx runtime check
+  ngrxRuntimeCheck: { 
+    strictActionImmutability: false,
+    strictActionSerializability: true,
+    strictActionWithinNgZone: true,
+    strictStateImmutability: true,
+    strictStateSerializability: true, 
+  },
 };
 
 `, { encoding: 'utf-8' });

@@ -8,4 +8,7 @@ export interface AppConfig {
   apiEndpoint: string;
   httpOptions: Object;
   imagesEndpoint: string;
+
+  // ngrx runtime check
+  ngrxRuntimeCheck: Object;
 }
