@@ -5,10 +5,10 @@
                   'ps-back-yellow': project.colorPalette == 4,
                   'ps-back-pink': project.colorPalette == 5,
                   'ps-back-red': project.colorPalette == 6,
-                  'ps-back-green': project.colorPalette == 7}" class="ps-project-item-container">
+                  'ps-back-green': project.colorPalette == 7}" class="ps-project-item-container" (click)="goToProjectDetail()">
   <div class="card ps-project-item-card">
     <div class="card-content ps-project-item-card-content">
-      <div class="media ps-project-item-card-content-media">
+      <div class="media">
         <div class="media-left">
           <figure [ngStyle]="{'background-image': project.image ? 'url(' + environment.imagesEndpoint + '/projects/' + project.image + ')' :
                               'url(assets/images/placeholder.png)'}" class="image ps-project-image-container">
@@ -26,16 +26,7 @@
               <b> {{project.owner.name ? project.owner.name : project.owner.email}}</b>
             </span>
           </p>
-          <p class="ps-header-icon-container">
-            <a [ngClass]="{'is-disabled': !status.netStatus}" title="{{ status.netStatus ? 'Show settings' : 'Offline mode!'}}"
-                (click)="showSettings()">
-              <i class="icon-settings ps-project-icons"></i>
-            </a>
-            <a [ngClass]="{'is-disabled': !status.netStatus}" title="{{ status.netStatus ? 'Go to activities list' : 'Offline mode!'}}"
-                (click)="goToActivities()">
-              <i class="icon-statistic ps-project-icons"></i>
-            </a>
-          </p>
+          <p>{{project.teamMembers.length}} team member</p>
         </div>
         <div class="media-right">
           <div (click)="toggleStopStart()">
@@ -48,77 +39,6 @@
           </div>
         </div>
       </div>
-      <div class="content ps-project-item-main-content">
-        <div class="ps-empty-item" *ngIf="project.activities.length === 0" >
-          There is no activity yet!
-        </div>
-        <table class="table ps-item-table" *ngIf="project.activities.length > 0">
-          <tbody>
-          <tr *ngFor="let activity of project.activities  |slice:0:2" title="{{findUserName(activity.user) + '&#013;' + activity.name}}">
-            <td class="ps-image-td">
-              <img class="ps-member-image" *ngIf="findUserImage(activity.user) !== ''" src="{{findUserImage(activity.user)}}">
-              <svg *ngIf="findUserImage(activity.user) === ''" class="ps-member-image ps-back-member-image"
-                    width="24" height="34" [identiconHash]="getUserEmailHash(activity.user)">
-                Your browser does not support SVG
-              </svg>
-            </td>
-            <td>{{activity.name ? activity.name : 'No recent activity'}}</td>
-            <td class="row-narrow has-text-right">
-              <i *ngIf="activity.stoppedAt || (!activity.stoppedAt && !activity.startedAt)" class="icon-stopwatch"></i>
-              <i *ngIf="!activity.stoppedAt && activity.startedAt" class="icon-walking"></i>
-              {{calculateActivityDuration(activity)}}
-            </td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
-      <footer class="card-footer ps-project-item-footer" *ngIf="project.activities.length > 2">
-        <span class="card-footer-item"></span>
-        <span class="card-footer-item ps-project-item-show-more" (click)="toggleShowMore()">
-          <p><b>show more</b></p>
-          <p class="ps-project-item-show-more-icon"><b><i class="icon-dot-3"></i></b></p>
-        </span>
-        <span class="card-footer-item"></span>
-      </footer>
-    </div>
-
-    <div class="card-content ps-project-item-card-content ps-hidden" [ngClass]="{'ps-visible': showMore}">
-      <div class="content ps-project-item-main-content">
-        <table class="table ps-item-table" *ngIf="project.activities.length > 2">
-          <tbody>
-            <tr *ngFor="let activity of project.activities  |slice:showMoreStart:showMoreEnd" title="{{findUserName(activity.user) + '&#013;' + activity.name}}">
-              <td class="ps-image-td">
-                <img class="ps-member-image" *ngIf="findUserImage(activity.user) !== ''" src="{{findUserImage(activity.user)}}">
-                <svg *ngIf="findUserImage(activity.user) === ''" class="ps-member-image ps-back-member-image" width="24" height="34" [identiconHash]="getUserEmailHash(activity.user)">
-                  Your browser does not support SVG
-                </svg>
-              </td>
-              <td>{{activity.name ? activity.name : 'No recent activity'}}</td>
-              <td class="row-narrow has-text-right">
-                <i *ngIf="activity.stoppedAt || (!activity.stoppedAt && !activity.startedAt)" class="icon-stopwatch"></i>
-                <i *ngIf="!activity.stoppedAt && activity.startedAt" class="icon-walking"></i>
-                {{calculateActivityDuration(activity)}}
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <footer class="card-footer ps-project-item-footer">
-        <span class="card-footer-item ps-project-item-footer-arrow">
-          <span *ngIf="showMoreStart !== 0" (click)="decreasePointer()">
-            <i class="icon-back"></i>
-          </span>
-        </span>
-        <span class="card-footer-item ps-project-item-show-more" (click)="toggleShowMore()">
-          <p><b>show less</b></p>
-          <p class="ps-project-item-show-more-icon"><b><i class="icon-dot-3"></i></b></p>
-        </span>
-        <span class="card-footer-item ps-project-item-footer-arrow">
-          <span *ngIf="showMoreEnd < project.activities.length" (click)="increasePointer()">
-            <i class="icon-arrow-right"></i>
-          </span>
-        </span>
-      </footer>
     </div>
   </div>
 </div>

@@ -230,6 +230,10 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
     }
   }
 
+  goToProjectDetail(): void {
+    console.log('not yet implemented.');
+  }
+
   showError(error) {
     this.errorService.show({
       input: error

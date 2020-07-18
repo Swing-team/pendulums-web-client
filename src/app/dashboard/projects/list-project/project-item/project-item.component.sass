@@ -1,131 +1,10 @@
 @import "../../../../../sass/variables"
-
-.ps-back-blue
-  .ps-project-item-card
-    border-radius: $radius
-    background: $ps-card-blue
-    color: $paper !important
-    .ps-hidden
-      background-color: $ps-card-blue-light !important
-      .ps-item-table
-      td
-        color: #054d59 !important
-      .ps-project-item-footer
-        color: rgba(5, 77, 89, 1) !important
-        .card-footer-item
-          &:hover
-            color: rgba(5, 77, 89, 0.7) !important
-    .ps-owner-name
-      color: rgba(255,255,255,0.5) !important
-    .ps-project-item-card-content
-      .ps-project-item-card-content-media
-        border-bottom: 1px solid rgba(255,255,255,0.3) !important
-    .ps-item-table
-      td
-        color: $paper
-    .ps-header-icon-container
-      .ps-project-icons
-        color: rgba(255,255,255,0.5) !important
-        transition: all ease-in-out $ps-transitions
-        &:hover
-          color: rgba(255,255,255,0.8) !important
-    .ps-project-item-footer
-      color: rgba(255,255,255,0.5) !important
-      .card-footer-item
-        &:hover
-          color: rgba(255,255,255,0.8) !important
-
-.ps-back-black
-  .ps-project-item-card
-    border-radius: $radius
-    background: $black
-    color: $paper !important
-    .ps-hidden
-      background-color: $black-light !important
-    .ps-owner-name
-      color: rgba(255,255,255,0.5) !important
-    .ps-project-item-card-content
-      .ps-project-item-card-content-media
-        border-bottom: 1px solid rgba(255,255,255,0.3) !important
-    .ps-item-table
-      td
-        color: $paper !important
-    .ps-header-icon-container
-      .ps-project-icons
-        color: rgba(255,255,255,0.5) !important
-        transition: all ease-in-out $ps-transitions
-        &:hover
-          color: rgba(255,255,255,0.8) !important
-    .ps-project-item-footer
-      color: rgba(255,255,255,0.5) !important
-      .card-footer-item
-        &:hover
-          color: rgba(255,255,255,0.8) !important
-
-.ps-back-yellow
-  .ps-project-item-card
-    background: $yellow
-    border-radius: $radius
-    .ps-hidden
-      background-color: $yellow-light !important
-
-.ps-back-salmon
-  .ps-project-item-card
-    background: $salmon
-    border-radius: $radius
-    .ps-hidden
-      background-color: $salmon-light !important
-
-.ps-back-white1
-  .ps-project-item-card
-    background: $white1
-    border-radius: $radius
-    .ps-hidden
-      background-color: darken($white1, 5) !important
-
-.ps-back-pink
-  .ps-project-item-card
-    background: $ps-card-pink
-    border-radius: $radius
-    .ps-hidden
-      background-color: $ps-card-pink-light !important
-
-.ps-back-red
-  .ps-project-item-card
-    border-radius: $radius
-    background: $ps-card-red
-    color: $paper !important
-    .ps-hidden
-      background-color: $ps-card-red-light !important
-    .ps-owner-name
-      color: rgba(255,255,255,0.5) !important
-    .ps-project-item-card-content
-      .ps-project-item-card-content-media
-        border-bottom: 1px solid rgba(255,255,255,0.3) !important
-    .ps-item-table
-      td
-        color: $paper !important
-    .ps-header-icon-container
-      .ps-project-icons
-        color: rgba(255,255,255,0.5) !important
-        transition: all ease-in-out $ps-transitions
-        &:hover
-          color: rgba(255,255,255,0.8) !important
-    .ps-project-item-footer
-      color: rgba(255,255,255,0.5) !important
-      .card-footer-item
-        &:hover
-          color: rgba(255,255,255,0.8) !important
-
-.ps-back-green
-  .ps-project-item-card
-    border-radius: $radius
-    background: $ps-card-green
-    .ps-hidden
-      background-color: $ps-card-green-light !important
+@import "./project-backcolor"
 
 .ps-project-item-container
   height: $item-size
+  &:hover
+    cursor: pointer
   .ps-project-item-card
     height: $item-size
     border: unset
@@ -135,120 +14,46 @@
       height: $item-size
       display: flex
       flex-direction: column
-      &.ps-hidden
-        position: absolute
-        top: $item-size
-        background-color: inherit
-        transition: all ease-in-out $ps-transitions
-        &.ps-visible
-          top: 0
-      .ps-project-item-card-content-media
-        font-size: 0.85rem
-        padding-bottom: 10px
-        border-bottom: 1px solid rgba(0,0,0,0.3)
-        .ps-media-content
-          display: grid
-          width: 100%
-          .ps-owner-container
-            overflow: hidden
-            white-space: nowrap
-            text-overflow: ellipsis
-            .ps-owner-name
-              color: rgba(0,0,0,0.5)
-          .ps-header-icon-container
-            margin-top: 6px
-            font-size: 1.1rem !important
-            line-height: 1.1rem !important
-            .ps-project-icons
-              color: rgba(0,0,0,0.5)
-              transition: all ease-in-out $ps-transitions
-              &:hover
-                color: rgba(0,0,0,0.8)
-        .ps-project-image-container
-          height: 80px
-          width: 80px
-          background: no-repeat center center
-          background-size: cover
-          border-radius: $radius !important
-        .ps-item-card-button
-          background-color: rgba(0,0,0,0.5)
-          border: none
-          padding: 0
-          color: $paper
-          border-radius: 100%
-          height: 36px
-          width: 36px
-          min-height: 36px
-          min-width: 36px
-          max-height: 36px
-          max-width: 36px
-          font-size: 24px
-          text-align: center
-          .icon-play
-            margin-left: 2px
-        .ps-project-item-card-title
-          font-size: 1.5rem
+      .ps-media-content
+        display: grid
+        width: 100%
+        .ps-owner-container
           overflow: hidden
           white-space: nowrap
           text-overflow: ellipsis
-        .ps-task-input
-          height: 36px
-          font-size: 0.9rem
-          background-color: rgba(0,0,0,0.3)
-          border-radius: unset
-          border: unset !important
-          color: $paper !important
-      .ps-project-item-main-content
-        margin-bottom: 0
-        flex-grow: 1
-        .ps-empty-item
-          padding-top: 25px
-        .ps-item-table
-          background-color: inherit
-          table-layout: fixed
-          width: 100%
-          white-space: nowrap
-          margin-bottom: 0
-          td
-            font-size: 0.9rem
-            border: unset
-            white-space: nowrap
-            overflow: hidden
-            text-overflow: ellipsis
-            padding: 0
-            &.ps-image-td
-              width: 40px
-              .ps-member-image
-                width: 24px
-                height: 24px
-                border: 1px solid $ink
-                border-radius: 100%
-            &.row-narrow
-              width: 100px
-              text-align: left !important
-          tr
-            &:hover
-              background-color: transparent
-      .ps-project-item-footer
-        border: unset
-        font-size: 0.75rem
-        color: rgba(0,0,0,0.5)
-        .card-footer-item
-          border: unset
-          padding: unset
-          transition: all ease-in-out $ps-transitions
-          &:hover
-            color: rgba(0,0,0,0.8)
-          .icon-arrow-right
-            font-size: 1.2rem
-          .icon-back
-            font-size: 1.2rem
-          &.ps-project-item-footer-arrow
-            cursor: pointer
-        .ps-project-item-show-more
-          display: inline-block
-          cursor: pointer
-          p
-            height: 15px
-          &.ps-project-item-show-more-icon
-            height: 10px
+          .ps-owner-name
+            color: rgba(0,0,0,0.5)
+      .ps-project-image-container
+        height: 80px
+        width: 80px
+        background: no-repeat center center
+        background-size: cover
+        border-radius: $radius !important
+      .ps-item-card-button
+        background-color: rgba(0,0,0,0.5)
+        border: none
+        padding: 0
+        color: $paper
+        border-radius: 100%
+        height: 36px
+        width: 36px
+        min-height: 36px
+        min-width: 36px
+        max-height: 36px
+        max-width: 36px
+        font-size: 24px
+        text-align: center
+        .icon-play
+          margin-left: 2px
+      .ps-project-item-card-title
+        font-size: 1.5rem
+        overflow: hidden
+        white-space: nowrap
+        text-overflow: ellipsis
+      .ps-task-input
+        height: 36px
+        font-size: 0.9rem
+        background-color: rgba(0,0,0,0.3)
+        border-radius: unset
+        border: unset !important
+        color: $paper !important
