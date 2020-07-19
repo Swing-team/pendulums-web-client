@@ -11,7 +11,7 @@ $side-menu-item-size: $side-menu-size - 8px
   .menu-list
     padding-top: 1rem
     padding-bottom: 1rem
-    height: 90% !important
+    height: 100% !important
     position: relative
     display: flex
     flex-direction: column
@@ -82,7 +82,7 @@ $side-menu-item-size: $side-menu-size - 8px
           display: block
           margin-left: 10px
           color: $paper
-          @media ( min-width: $ps-change-menu-size)
+          @media ( min-width: calc( 1px + #{$ps-change-menu-size} ))
             display: none
 
 .ps-notifications-container

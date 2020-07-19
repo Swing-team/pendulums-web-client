@@ -2,7 +2,8 @@
 
 .ps-toolbar
   position: fixed
-  top: 0
+  top: calc( 100vh - #{$toolbar-size} )
+  buttom: 0
   width: 100%
   z-index: 10
   box-shadow: 0 3px 10px #666666
@@ -18,8 +19,7 @@
 .ps-side-menu
   position: fixed
   left: -200px;
-  top: $toolbar-size
-  height: 100vh
+  height: calc( 100vh - #{$toolbar-size} )
   z-index: 10
   transition: 0.5s
   @media (min-width: 1024px)
