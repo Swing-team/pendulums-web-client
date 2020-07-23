@@ -171,7 +171,7 @@ export default function reducer(state = initialState, action: ActionWithPayload<
           newState.entities[action.payload.projectId].activities.splice(index, 1);
         }
       });
-      newState.entities[action.payload.projectId].activities.unshift(action.payload.activity);
+      newState.entities[action.payload.projectId].activities.unshift(JSON.parse(JSON.stringify(action.payload.activity)));
 
       newState.entities[action.payload.projectId].recentActivityName = action.payload.activity.name;
       return newState;
@@ -197,9 +197,9 @@ export default function reducer(state = initialState, action: ActionWithPayload<
       });
 
       if (action.payload.activity.stoppedAt) {
-        doneActivities.unshift(action.payload.activity);
+        doneActivities.unshift(JSON.parse(JSON.stringify(action.payload.activity)));
       } else {
-        dueActivities.unshift(action.payload.activity);
+        dueActivities.unshift(JSON.parse(JSON.stringify(action.payload.activity)));
       }
       newState.entities[action.payload.projectId].activities = (dueActivities.concat(doneActivities)).concat(noActivities);
 
