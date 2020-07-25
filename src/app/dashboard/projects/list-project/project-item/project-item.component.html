@@ -26,7 +26,7 @@
               <b> {{project.owner.name ? project.owner.name : project.owner.email}}</b>
             </span>
           </p>
-          <p>{{project.teamMembers.length}} team member</p>
+          <span class="icon">{{project.teamMembers.length}} <i class="icon-teammember"></i></span>
         </div>
         <div class="media-right">
           <div (click)="toggleStopStart()">
