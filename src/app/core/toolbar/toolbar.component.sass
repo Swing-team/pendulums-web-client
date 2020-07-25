@@ -1,128 +1,28 @@
 @import "../../../sass/variables"
-
-.ps-nav
+.ps-toolbar
   height: $toolbar-size
   background-color: $white
-  .nav-left
-    max-width: 170px
-    overflow: hidden
-  .ps-nav-left
+  display: flex !important
+  align-items: center
+  padding-left: 16px
+  padding-right: 16px
+  .ps-toolbar-right-item
+    background-color: $powderBlue
     color: $ps-primary
-    cursor: pointer
-    padding: 2px
-    max-width: $side-menu-size
-    width: $side-menu-size
-    &:hover
-      background-color: $ps-primary
-      color: $paper
-  .ps-nav-item-menu
-    padding: 0
-    margin: auto
-    position: relative
-    .ps-nav-menu-icon
-      font-size: 2rem
-  .ps-nav-logo-container
-    padding-left: 0
-    @media (min-width: 1024px)
-      padding-left: 0.75rem
-    .ps-nav-item-logo
-      width: 48px !important
-      height: 48px !important
-      min-height: 48px !important
-    .ps-nav-app-name
-      color: $ps-primary
-      font-weight: 500
-      margin-left: 5px
-  .ps-nav-center
-    flex-grow: 1
-    flex-shrink: 1
-    max-width: 500px
-    .nav-item
-      width: 100%
-      position: relative
-      .ps-nav-input
-        width: 100%
-        height: 2.5em
-        position: relative
-        z-index: 1
-        border: none
-        box-shadow: none
-        text-align: center
-        color: $ps-primary
-        font-weight: 500
-        font-size: 1rem
-        padding: 4px
-        line-height: 2rem
-        transition: all ease-in-out $ps-transitions
-        &:not(:focus) + label
-          background-color: $white
-          padding: 4px
-          z-index: 2
-          color: $ps-primary
-          font-weight: 500
-          line-height: 2rem
-          &:hover
-            background-color: $powderBlue
-        &:focus
-          background-color: $powderBlue
-      .ps-nav-label
-        height: 2.5em
-        position: absolute
-        left: 15px
-        right: 15px
-        overflow: hidden
-        white-space: nowrap
-        text-overflow: ellipsis
-        cursor: pointer
-        transition: all ease-in-out $ps-transitions
-      &:after, &:before
-        content: ""
-        min-width: 3px
-        height: 35px
-        background-color: $ps-primary
-        margin: auto
-  .nav-right
-    overflow: inherit
-    max-width: 205px
-    @media (max-width: 330px)
-      padding-right: 0
-    .ps-nav-right-item
-      background-color: $powderBlue
-      color: $ps-primary
-      height: 40px
-      min-width: 160px
-      width: auto
-      font-weight: 500
-      font-size: 24px
-      border-top-left-radius: 20px
-      border-bottom-left-radius: 20px
-      margin: 0 -20px 0 0
-      padding-left: 20px
-      padding-right: 20px
+    height: 40px
+    min-width: 160px
+    width: auto
+    margin-left: auto
+    display: flex
+    align-content: flex-end
+    justify-content: flex-end
+    .ps-toolbar-select-container
       display: flex
-      align-content: center
-      align-items: center
+      padding-right: 8px
       .ps-toolbar-select
-        display: inline-flex
-      .ps-display-span-time
-        overflow: hidden
-        white-space: nowrap
-        text-overflow: ellipsis
-        width: 70px
-        font-size: 16px
-      .ps-time-indicator
-        border-radius: 100%
-        width: 12px
-        height: 12px
-        background-color: $red
-        animation: blink 1s linear infinite
-    // This class used to hide time duration in mobile size
-    .ps-nav-right-time
-      @media (max-width: $ps-mobile + 1px)
-        display: none
+        align-self: center
     .ps-toolbar-play
       z-index: 2
-      position: relative
       .ps-toolbar-button
         padding: 0
         background-color: $ps-primary
@@ -140,65 +40,75 @@
         .icon
           .icon-play
             margin-left: 2px
+    .ps-time-container
+      display: flex
+      .ps-display-span-time
+        overflow: hidden
+        white-space: nowrap
+        text-overflow: ellipsis
+        width: 70px
+        font-size: 16px
+        align-self: center
+      .ps-time-indicator
+        border-radius: 100%
+        width: 12px
+        height: 12px
+        background-color: $red
+        align-self: center
+        margin-right: 6px
+        animation: blink 1s linear infinite
+  .ps-toolbar-left-items
+    flex-shrink: 1
+    max-width: 500px
+    padding: 0.5rem 0.75rem
+    .ps-toolbar-activity
+      width: 100%
+      position: relative
+      display: flex
+      .ps-activity-input
+        width: 100%
+        height: 2.5em
+        position: relative
+        z-index: 1
+        border: none
+        box-shadow: none
+        text-align: center
+        color: $ps-primary
+        font-weight: 500
+        font-size: 1rem
+        padding: 4px 12px
+        line-height: 2rem
+        transition: all ease-in-out $ps-transitions
+        &:not(:focus) + label
+          background-color: $white
+          padding: 4px 12px
+          z-index: 2
+          color: $ps-primary
+          font-weight: 500
+          line-height: 2rem
+          &:hover
+            background-color: $powderBlue
+        &:focus
+          background-color: $powderBlue
+      .ps-activity-label
+        width: 100%
+        text-align: center
+        height: 2.5em
+        position: absolute
+        left: 0px
+        overflow: hidden
+        white-space: nowrap
+        text-overflow: ellipsis
+        cursor: pointer
+        transition: all ease-in-out $ps-transitions
+      &:after, &:before
+        content: ""
+        min-width: 3px
+        height: 35px
+        background-color: $ps-primary
+        margin: auto
+        z-index: 3
 
-.ps-toolbar-time-tooltip
-  background-color: $yellow
-  color: $primary
-  position: absolute
-  font-size: 0.75rem
-  bottom: -32px
-  left: -32px
-  border-radius: $radius
-  line-height: 1.5rem
-  padding-left: 5px
-  padding-right: 5px
-  min-width: 60px
-  @media (min-width: $ps-mobile)
-    display: none
-  &:before
-    content: ' '
-    position: absolute
-    bottom: 100%
-    left: 50%
-    margin-left: -5px
-    border-width: 5px
-    border-style: solid
-    border-color: transparent transparent $yellow transparent
-
-.ps-notification-count
-  background-color: $light-red
-  border-radius: 100%
-  width: 8px
-  height: 8px
-  color: $paper
-  padding: 1px 3px
-  font-size: 12px !important
-  position: absolute
-  top: 10px
-  right: 8px
-  text-align: center
-
-.ps-toolbar-time-icon
-  background-color: $yellow
-  color: $primary
-  position: absolute
-  font-size: 0.8rem
-  padding: 2px
-  bottom: -5px
-  left: -10px
-  border-radius: 100%
-  animation: rotation 2s infinite linear
-  @media (min-width: $ps-mobile + 1px)
-    display: none
-
-
-@keyframes rotation
-  0%, 25%
-    transform: rotate(0deg)
-  50%, 75%
-    transform: rotate(180deg)
-  100%
-    transform: rotate(360deg)
 
 @keyframes blink
   0%
@@ -207,9 +117,3 @@
     opacity: .5
   100%
     opacity: 1
-
-
-
-
-
-

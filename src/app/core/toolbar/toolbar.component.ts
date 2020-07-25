@@ -35,9 +35,9 @@ export class ToolbarComponent implements OnInit, OnDestroy, DoCheck  {
   stopStartButtonDisabled = false;
   selectedProjectIndex: any;
   hasNotification = false;
+  timeDuration: string;
   private selectedProject: Project;
   private taskName: string;
-  private timeDuration: string;
   private activityStarted = false;
   private subscriptions: Array<Subscription> = [];
 
