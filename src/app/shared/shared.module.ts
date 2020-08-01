@@ -10,6 +10,7 @@ import { SwingCalendarComponent }  from './swing-calendar/swing-calendar.compone
 import { SwingTagInputComponent }  from './swing-tag-input/swing-tag-input.component';
 import { TabComponent } from './tab/tab.component';
 import { SafeHtmlPipe } from '../shared/pipes/sanitizeHtmlPipe.pipe';
+import { TopBarComponent } from './top-bar/top-bar.component';
 
 @NgModule({
   imports:      [ CommonModule ],
@@ -19,6 +20,7 @@ import { SafeHtmlPipe } from '../shared/pipes/sanitizeHtmlPipe.pipe';
     SwingSelectComponent,
     SwingCalendarComponent,
     SwingTagInputComponent,
+    TopBarComponent,
     TabComponent,
     SafeHtmlPipe
   ],
@@ -31,6 +33,7 @@ import { SafeHtmlPipe } from '../shared/pipes/sanitizeHtmlPipe.pipe';
     SwingSelectComponent,
     SwingSwitchComponent,
     SwingTagInputComponent,
+    TopBarComponent,
     TabComponent,
     SafeHtmlPipe
   ],

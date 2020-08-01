@@ -1,0 +1,61 @@
+@import '../../../sass/variables'
+
+.ps-top-bar
+  display: flex
+  align-items: center
+  justify-content: flex-start
+  flex-flow: row nowrap
+  background-color: $white
+  position: fixed
+  width: 100%
+  top: 0
+  left: 0
+  height: $top-bar-size
+  z-index: 11
+  .ps-top-bar-item
+    display: flex
+    justify-content: center
+    align-items: center
+    flex: 0 0 auto
+    &.ps-burger-menu
+      display: none
+      padding-left: 8px
+      .ps-burger-menu-icon
+        font-size: 2rem
+      .ps-burger-menu-badge
+        background-color: $light-red
+        border-radius: 100%
+        width: 8px
+        height: 8px
+        color: $paper
+        padding: 1px 3px
+        font-size: 12px !important
+        position: absolute
+        top: 10px
+        right: 8px
+        text-align: center
+    &.ps-top-bar-item-left
+      padding-left: 24px
+    &.ps-top-bar-item-right
+      padding-right: 24px
+    @media (max-width: #{$ps-change-menu-size})
+      &.ps-top-bar-item-left
+        display: none
+      &.ps-burger-menu
+        display: flex
+  .ps-top-bar-title-container
+    display: flex
+    flex: 1 1 auto
+    justify-content: center
+    align-items: center
+    .ps-top-bar-title
+      margin-left: 10px
+      margin-right: 10px
+      min-width: 180px !important
+      width: auto
+      border-radius: $radius
+      color: $paper
+      background: $cornflowerBlue
+      padding: 8px 10px
+      font-size: 1rem
+      justify-content: center

@@ -5,11 +5,11 @@
   top: calc( 100vh - #{$toolbar-size} )
   buttom: 0
   width: 100%
-  z-index: 10
+  z-index: 11
   box-shadow: 0 3px 10px #666666
 
 .ps-main-content
-  padding-top: $toolbar-size
+  padding-top: 0
   &.ps-main-signed-in-content-with-side
     @media (min-width: 1024px)
      padding-left: $side-menu-size !important
@@ -19,7 +19,8 @@
 .ps-side-menu
   position: fixed
   left: -200px;
-  height: calc( 100vh - #{$toolbar-size} )
+  height: calc( 100vh - #{$toolbar-size} - #{$top-bar-size} )
+  top: $top-bar-size
   z-index: 10
   transition: 0.5s
   @media (min-width: 1024px)

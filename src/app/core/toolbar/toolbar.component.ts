@@ -1,6 +1,6 @@
 import {
-  Component, EventEmitter, Inject,
-  Input, Output, OnInit, OnDestroy, ViewChild, DoCheck, KeyValueDiffers
+  Component, EventEmitter,
+  Input, Output, OnInit, OnDestroy, ViewChild
 } from '@angular/core';
 import { Observable ,  Subscription }                       from 'rxjs';
 import { Activity }                         from '../../shared/state/current-activity/current-activity.model';
@@ -9,10 +9,7 @@ import { Store }                            from '@ngrx/store';
 import { AppState }                         from 'app/shared/state/appState';
 import { ProjectsActions }                  from '../../shared/state/project/projects.actions';
 import { ErrorService }                     from '../error/error.service';
-import { User }                   from '../../shared/state/user/user.model';
 import { StopStartActivityService }         from '../services/stop-start-activity.service';
-import { Status }                           from '../../shared/state/status/status.model';
-import { cloneDeep }                        from 'lodash';
 
 @Component({
   selector: 'toolbar',
@@ -20,16 +17,13 @@ import { cloneDeep }                        from 'lodash';
   styleUrls: ['./toolbar.component.sass']
 })
 
-export class ToolbarComponent implements OnInit, OnDestroy, DoCheck  {
-  @Input() user: User;
-  @Input() status: Status;
+export class ToolbarComponent implements OnInit, OnDestroy  {
   projects: Array<Project>;
   @Input() projects$: Observable<Project[]>;
   @Input() selectedProjectInput: Observable<string>;
   @Input() currentActivity: Observable<Activity>;
   @Output() onMenuItemClicked = new EventEmitter();
   @ViewChild('activityNameElm') activityNameElm;
-  differ: any;
   currentActivityCopy: Activity;
   showTimeDuration = false;
   stopStartButtonDisabled = false;
@@ -44,11 +38,9 @@ export class ToolbarComponent implements OnInit, OnDestroy, DoCheck  {
   constructor (private store: Store<AppState>,
                private projectsActions: ProjectsActions,
                private errorService: ErrorService,
-               private stopStartActivityService: StopStartActivityService,
-               private differs: KeyValueDiffers) {
+               private stopStartActivityService: StopStartActivityService,) {
     this.selectedProject = new Project();
     this.currentActivityCopy = {} as Activity;
-    this.differ = this.differs.find({}).create();
   }
 
   ngOnInit() {
@@ -56,9 +48,6 @@ export class ToolbarComponent implements OnInit, OnDestroy, DoCheck  {
       this.projects = projects;
     }));
 
-    if (this.user.pendingInvitations.length > 0 || this.status.updateNeeded) {
-      this.hasNotification = true;
-    }
 
     this.selectedProjectIndex = 0;
 
@@ -111,17 +100,6 @@ export class ToolbarComponent implements OnInit, OnDestroy, DoCheck  {
     this.subscriptions.push(this.selectedProjectInput.subscribe(selectedProjectInput => {
       this.findSelectedProject(selectedProjectInput);
     }));
-  }
-
-  ngDoCheck() {
-    const change = this.differ.diff(this.user.pendingInvitations);
-    if (change) {
-      if (this.user.pendingInvitations.length > 0 || this.status.updateNeeded) {
-        this.hasNotification = true;
-      } else {
-        this.hasNotification = false;
-      }
-    }
   }
 
   ngOnDestroy() {

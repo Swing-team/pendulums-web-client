@@ -23,6 +23,7 @@ import { ModalService }                           from './core/modal/modal.servi
 import { Theme }                                  from './shared/state/theme/theme.model';
 import { Activity }                               from './shared/state/current-activity/current-activity.model';
 import { Project }                                from './shared/state/project/project.model';
+import { SideMenuService } from './core/services/side-menu.service';
 
 @Component({
   selector: 'app-root',
@@ -37,7 +38,7 @@ export class AppComponent implements OnInit {
   public selectedProject: Observable<string>;
   public currentActivity: Observable<Activity>;
   private previousLoginStatus = null;
-  SideMenuIsActive = false;
+  sideMenuIsActive = false;
   netConnected: boolean;
   notifNum = 0;
 
@@ -57,6 +58,7 @@ export class AppComponent implements OnInit {
     private appService: AppService,
     private unSyncedActivityActions: UnSyncedActivityActions,
     private appStateSelectors: AppStateSelectors,
+    private sideMenuService: SideMenuService,
     // needed for dynamically loaded components
     public viewContainerRef: ViewContainerRef,
     private modalService: ModalService
@@ -74,6 +76,10 @@ export class AppComponent implements OnInit {
     // to initialize webSocket connection
     const responseResults = this.syncService.init();
 
+    this.sideMenuService.getIsSideMenuActiveAsObservable().subscribe((isSideMenuActive) => {
+      this.sideMenuIsActive = isSideMenuActive;
+    });
+
     // handle Theme
     this.theme.subscribe((theme) => {
       if (theme.isLightTheme) {
@@ -86,7 +92,7 @@ export class AppComponent implements OnInit {
     this.appService.getAppVersion().then((version) => {
       this.store.dispatch(this.statusActions.updateStatus({updateNeeded: version > VERSION}));
       if (version > VERSION) {
-        this.notifNum = 1;
+        this.notifNum += 1;
       }
     });
     // to handle 403 interceptor by isLogin that has been handle in signOut and authInterceptor
@@ -135,7 +141,7 @@ export class AppComponent implements OnInit {
     this.authService.signOut()
       .then(() => {
         if (window.innerWidth <= 1024) {
-          this.SideMenuIsActive = false;
+          this.sideMenuService.changeIsSideMenuActive(false);
         }
       })
       .catch((error) => {
@@ -147,27 +153,25 @@ export class AppComponent implements OnInit {
   }
 
   clickedOutSideOfMenu(event) {
-    if (this.sideMenu.nativeElement.contains(event.target)) {
-    } else {
+    if (!this.sideMenu.nativeElement.contains(event.target)) {
       if (this.menuIcon) {
-        if (event.target.contains(this.menuIcon)) {
-        } else {
-          this.SideMenuIsActive = false;
+        if (!event.target.contains(this.menuIcon)) {
+          this.sideMenuService.changeIsSideMenuActive(false);
         }
         this.menuIcon = null;
       } else {
-        this.SideMenuIsActive = false;
+        this.sideMenuService.changeIsSideMenuActive(false);
       }
     }
   }
 
   showSideMenu(event) {
     this.menuIcon = event.target;
-    this.SideMenuIsActive = !this.SideMenuIsActive;
+    this.sideMenuService.changeIsSideMenuActive(!this.sideMenuIsActive);
   }
 
   closeMenu() {
-    this.SideMenuIsActive = false;
+    this.sideMenuService.changeIsSideMenuActive(false);
   }
 }
 

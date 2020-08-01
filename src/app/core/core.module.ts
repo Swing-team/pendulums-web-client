@@ -48,6 +48,7 @@ import { ActivityService }              from './services/activity.service';
 import { DeleteAccountComponent }       from 'app/profile-setting/delete-account/delete-account.component';
 import { SocketService }                from './services/socket.service';
 import { environment } from '../../environments/environment';
+import { SideMenuService } from './services/side-menu.service';
 
 @NgModule({
   imports:      [
@@ -102,6 +103,7 @@ import { environment } from '../../environments/environment';
     RouterChangeListenerService,
     NativeNotificationService,
     ActivityService,
+    SideMenuService,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],
   entryComponents: [

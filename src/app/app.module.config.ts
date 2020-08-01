@@ -1,5 +1,5 @@
 // ng and 3rd party modules
-import { BrowserModule }          from '@angular/platform-browser';
+import { BrowserModule, HammerModule }          from '@angular/platform-browser';
 
 // app modules
 import { AppRoutingModule }       from './app-routing.module';
@@ -20,6 +20,7 @@ export const AppModuleConfig = {
     ],
     imports: [
         BrowserModule,
+        HammerModule,
         AppRoutingModule,
         CoreModule,
         AuthenticationModule,
