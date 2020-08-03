@@ -63,10 +63,6 @@ export class ListOfProjectComponent implements OnChanges {
     this.cookieService.set( 'serverMessageId', this.serverMessageId );
   }
 
-  donate() {
-    window.open('https://pendulums.io/donation.html', '_blank');
-  }
-
   openCreateProjectModal() {
     if (this.status.netStatus) {
       this.modalService.show({

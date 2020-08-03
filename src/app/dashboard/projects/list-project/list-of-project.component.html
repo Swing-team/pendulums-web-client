@@ -1,14 +1,6 @@
 <div class="ps-project-name-container">
-  <div class="ps-z-index"><div class="ps-project-header-button ps-donation-top-button icon-gift" (click)="donate()" title="Donate us">
-  </div>
-  </div>
-  <div class="ps-project-header-title">
-    <div class="ps-project-name">
-      Projects
-    </div>
-  </div>
 
-  <div class="ps-activity-top-button icon-plus ps-project-header-button" (click)="openCreateProjectModal()" title="Add new project"></div>
+  <div class="ps-activity-top-button icon-plus ps-project-header-button"  ></div>
 </div>
 <div *ngIf="serverMessage && serverMessageId !== serverMessage.id" class="columns is-mobile is-centered" [@fadeOut]>
     <div class="column is-half-desktop ps-donation" *ngIf="serverMessage">

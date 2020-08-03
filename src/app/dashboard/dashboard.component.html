@@ -1,3 +1,14 @@
+<top-bar class="ps-dashboard-top-bar" title="Dashboard" [user]="user" [status]="status">
+  <div class="ps-logo-container" alignLeft>
+    <img class="ps-top-bar-logo" src="../../assets/images/logo-blue.png">
+    <span class="ps-top-bar-logo-name">PENDULUMS</span>
+  </div>
+  <div title="Add new project" class="ps-top-bar-new-project" (click)="openCreateProjectModal()" alignRight>
+    <i class="icon-plus"></i>
+    <span> New Project</span>
+  </div>
+</top-bar>
+
 <div class="container ps-dashboard-padding">
-<list-of-project [serverMessage]=serverMessage [projects]="projects | async" [sortBy]="sortBy | async" [user]="user | async" [status]="status | async" [currentActivity]="currentActivity"></list-of-project>
+<list-of-project [serverMessage]=serverMessage [projects]="projects | async" [sortBy]="sortBy | async" [user]="user$" [status]="status$ | async" [currentActivity]="currentActivity"></list-of-project>
 </div>
