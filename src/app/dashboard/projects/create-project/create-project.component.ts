@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import {Component, HostListener, Input, ViewChild, ElementRef, OnInit} from '@angular/core';
+import {Component, HostListener, Input, ViewChild, ElementRef, OnInit, NgZone} from '@angular/core';
 import { Project }                      from '../../../shared/state/project/project.model';
 import { Md5 }                          from 'ts-md5/dist/md5';
 import { ProjectService }               from '../../shared/projects.service';
@@ -19,9 +19,9 @@ const EMAIL_REGEX = /^[a-zA-Z0-9+\._%-+]{1,256}@[a-zA-Z0-9][a-zA-Z0-9-]{0,64}(\.
 })
 
 export class CreateProjectComponent implements OnInit {
-  @ViewChild('projectImageCanvasElem', { static: true }) projectImageCanvasElem;
-  @ViewChild('canvasPreviewImageElem', { static: true }) canvasPreviewImageElem;
-  @ViewChild('projectCreatePalette', { static: true }) projectCreatePalette;
+  @ViewChild('projectImageCanvasElem', { static: true }) projectImageCanvasElem: ElementRef;
+  @ViewChild('canvasPreviewImageElem', { static: true }) canvasPreviewImageElem: ElementRef;
+  @ViewChild('projectCreatePalette', { static: true }) projectCreatePalette: ElementRef;
   @ViewChild('projectNameInput', { static: true }) projectNameInput: ElementRef;
   @Input() currentUser: User;
   roles = ['team member', 'admin'];
@@ -38,6 +38,7 @@ export class CreateProjectComponent implements OnInit {
               private store: Store<AppState>,
               private projectsActions: ProjectsActions,
               private modalService: ModalService,
+              private ngZone: NgZone,
               private errorService: ErrorService) {
     this.md5 = new Md5();
   }
@@ -74,8 +75,10 @@ export class CreateProjectComponent implements OnInit {
             formData.append('image', blob);
           }
           this.projectServices.create(formData).then((project) => {
-            project.activities = [];
-            this.store.dispatch(this.projectsActions.addProject(project));
+            this.ngZone.run(() => {
+              project.activities = [];
+              this.store.dispatch(this.projectsActions.addProject(project));
+            });
             this.showError('The project was created successfully');
             this.project = new Project();
             this.formSubmitted = false;
