@@ -29,6 +29,9 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
   @Input() user: User;
   @Input() status: Status;
   @Input() currentActivity: Observable<Activity>;
+  @Input() dividerLine: boolean;
+  @Input() isEditable: boolean = false;
+  @Input() currentActivities: Activity[] = [];
   @ViewChild('activityNameElm') activityNameElm;
   activityStarted = false;
   activityButtonDisabled = false;
@@ -68,8 +71,6 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
         this.currentActivityCopy = currentActivity;
       }));
     }
-
-    this.initializePointers();
   }
 
   ngOnDestroy() {
@@ -180,21 +181,6 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
     return Md5.hashStr(user.email);
   }
 
-  toggleShowMore() {
-    this.showMore = !this.showMore;
-    this.initializePointers();
-  }
-
-  initializePointers() {
-    this.showMoreStart = 0;
-    this.showMoreEnd = 5;
-    if (this.project.activities.length > 5) {
-      this.showMoreEnd = 5;
-    } else {
-      this.showMoreEnd = this.project.activities.length;
-    }
-  }
-
   increasePointer() {
     this.showMoreStart = this.showMoreStart + 5;
     this.showMoreEnd = this.showMoreEnd + 5;
@@ -214,24 +200,21 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
         inputs: {
           project,
           user: this.user,
-          projectIdInCurrentActivity: this.currentActivityCopy.project
+          projectIdInCurrentActivity: this.currentActivityCopy ? this.currentActivityCopy.project : null
         }
       });
     } else {
       this.showError('Not available in offline mode');
     }
   }
-
   goToActivities(): void {
-    if (this.status.netStatus) {
-      this.router.navigate(['/activities', this.project.id]);
-    } else {
-      this.showError('Not available in offline mode');
+    if (!this.isEditable) {
+      if (this.status.netStatus) {
+        this.router.navigate(['/activities', this.project.id]);
+      } else {
+        this.showError('Not available in offline mode');
+      }
     }
-  }
-
-  goToProjectDetail(): void {
-    console.log('not yet implemented.');
   }
 
   showError(error) {

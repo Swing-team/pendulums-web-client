@@ -2,16 +2,12 @@
 @import "./project-backcolor"
 
 .ps-project-item-container
-  height: $item-size
-  &:hover
-    cursor: pointer
+  height: 100%
   .ps-project-item-card
-    height: $item-size
     border: unset
     overflow-y: hidden
     .ps-project-item-card-content
       padding: 10px !important
-      height: $item-size
       display: flex
       flex-direction: column
       .ps-media-content
@@ -45,6 +41,8 @@
         text-align: center
         .icon-play
           margin-left: 2px
+        .icon-pencil
+          font-size: 1rem
       .ps-project-item-card-title
         font-size: 1.5rem
         overflow: hidden
@@ -57,3 +55,31 @@
         border-radius: unset
         border: unset !important
         color: $paper !important
+      .ps-project-detail-container
+        display: flex
+        flex-direction: row
+        justify-content: space-around
+        align-items: center
+        .ps-project-detail
+          display: flex
+          flex-direction: column
+          justify-content: center
+          align-items: center
+          .ps-project-detail-circle
+            border-radius: 100%
+            width: 75px
+            height: 75px
+            display: flex
+            justify-content: center
+            align-items: center
+            border: 3px solid $black-light
+            .ps-total-hours-text
+              font-weight: 500
+              font-size: 1rem
+          .ps-project-detail-subtitle
+            padding-top: 8px
+            font-weight: 500
+
+.ps-divider-line
+  margin: 0rem 1.5rem 1rem 1.5rem !important
+  background-color: $black !important

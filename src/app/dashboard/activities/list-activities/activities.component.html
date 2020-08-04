@@ -1,14 +1,35 @@
-<div class="container ps-activities-container ps-ativities-padding">
-  <div class="ps-project-name-container">
-    <div class="ps-z-index"><div class="ps-activity-top-button ps-project-header-button icon-back" (click)="goBack()" title="Back"></div></div>
-    <div class=" ps-project-header-title">
-      <div class="ps-project-name" *ngIf="project">
-        {{project.name}}
-      </div>
-    </div>
-    <!-- <div class="ps-activity-top-button icon-export" (click)="exportActivities()" title="Export Activities"></div> -->
+<top-bar class="ps-activities-top-bar" [title]="project.name">
+  <div class="ps-logo-container" alignLeft>
+    <img class="ps-top-bar-logo" src="../../assets/images/logo-blue.png">
+    <span class="ps-top-bar-logo-name">PENDULUMS</span>
+  </div>
+</top-bar>
+
+<div class="container ps-activities-container ps-activities-padding">
+  <div class="ps-header-container">
+    <div class="ps-activity-top-button ps-project-header-button icon-back" (click)="goBack()" title="Back"></div>
     <div class="ps-activity-top-button ps-project-header-button icon-plus" (click)="openAddManuallyModal()" title="Add new activity"></div>
   </div>
+
+  <div class="ps-details-container">
+    <project-item
+      [project]="project"
+      [user]="user"
+      [status]="status"
+      [currentActivity]="currentActivityCopy"
+      [currentActivities]="currentActivitiesCopy"
+      isEditable="true"
+    ></project-item>
+    <project-item
+      [project]="project"
+      [user]="user"
+      [status]="status"
+      [currentActivity]="currentActivityCopy"
+      [currentActivities]="currentActivitiesCopy"
+      isEditable="true"
+    ></project-item>
+  </div>
+  
   <div class="pa-stuff-container" *ngIf="userAccess">
     <div *ngIf="project" class="ps-stat-user-filter-wrapper" title="Select users">
       <swing-select [type]="'multiSelect'"

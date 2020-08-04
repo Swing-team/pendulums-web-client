@@ -35,6 +35,6 @@
     <div class="has-primary-text ps-project-create" [ngClass]="{'ps-add-project-disabled': !status.netStatus}" (click)="openCreateProjectModal()">+ Add project</div>
   </div>
   <div *ngFor='let project of projects; trackBy: projectsTrackBy' class="column is-4-widescreen is-6-desktop is-6-tablet ps-list-project-no-padding">
-    <project-item [project]="project" [user]="user" [status]="status" [currentActivity]="currentActivity"> </project-item>
+    <project-item [project]="project" [user]="user" [status]="status" [currentActivity]="currentActivity" class="ps-project-clickable"> </project-item>
   </div>
 </div>

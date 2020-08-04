@@ -5,7 +5,7 @@
                   'ps-back-yellow': project.colorPalette == 4,
                   'ps-back-pink': project.colorPalette == 5,
                   'ps-back-red': project.colorPalette == 6,
-                  'ps-back-green': project.colorPalette == 7}" class="ps-project-item-container" (click)="goToProjectDetail()">
+                  'ps-back-green': project.colorPalette == 7}" class="ps-project-item-container" (click)="goToActivities()">
   <div class="card ps-project-item-card">
     <div class="card-content ps-project-item-card-content">
       <div class="media">
@@ -26,10 +26,13 @@
               <b> {{project.owner.name ? project.owner.name : project.owner.email}}</b>
             </span>
           </p>
-          <span class="icon-teammember"> {{project.teamMembers.length}}</span>
+          <div>
+            <span class="icon-teammember"> {{project.teamMembers.length}}</span>
+            <span *ngIf="isEditable">/ {{ project.admins.length + 1 }} Admins</span>
+          </div>
         </div>
         <div class="media-right">
-          <div (click)="toggleStopStart()">
+          <div *ngIf="!isEditable" (click)="toggleStopStart()">
             <a  class="button ps-item-card-button" [ngClass]="{'is-loading': activityButtonDisabled}">
               <span class="icon">
                 <i *ngIf="activityStarted" class="icon-stop" title="Stop activity"></i>
@@ -37,8 +40,37 @@
               </span>
             </a>
           </div>
+          <div *ngIf="isEditable" (click)="showSettings()">
+            <a  class="button ps-item-card-button">
+              <span class="icon">
+                <i class="icon-pencil" title="Project setting"></i>
+              </span>
+            </a>
+          </div>
         </div>
       </div>
     </div>
+    
+    <div *ngIf="isEditable">
+      <hr class="ps-divider-line">
+      <div class="card-content ps-project-item-card-content">
+        <div class="ps-project-detail-container">
+          <div class="ps-project-detail">
+            <div class="ps-project-detail-circle">
+              <!-- TODO: the time should be come from an API call -->
+              <span class="ps-total-hours-text">2:43</span>
+            </div>
+            <span class="ps-project-detail-subtitle">Total Hours</span>
+          </div>
+          <div class="ps-project-detail">
+            <div class="ps-project-detail-circle">
+              <span class="ps-total-hours-text">{{currentActivities.length}}</span>
+            </div>
+            <span class="ps-project-detail-subtitle">Current Activities</span>
+          </div>
+        </div>
+      </div>
+    </div> 
+
   </div>
 </div>

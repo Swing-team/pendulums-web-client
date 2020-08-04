@@ -19,7 +19,8 @@ import { User }                             from '../../../shared/state/user/use
 import { cloneDeep, uniqBy }                from 'lodash';
 import { PageLoaderService }                from '../../../core/services/page-loader.service';
 import { ChartComponent }                   from './chart-statistics/chart.component';
-import { userInProject } from 'app/dashboard/shared/utils';
+import { userInProject }                    from 'app/dashboard/shared/utils';
+import { Status }                           from 'app/shared/state/status/status.model';
 
 type ActivityWithIsActive = Activity & {isActive?: boolean};
 
@@ -31,9 +32,10 @@ type ActivityWithIsActive = Activity & {isActive?: boolean};
 export class ActivitiesComponent implements OnInit, OnDestroy {
   projectId: string;
   project: Project;
+  user: User;
+  status: Status;
   private pageNumber = 0;
   private scrollEnable = true;
-  private user: User;
   private activitiesLoaded = false;
   private chartLoaded = false;
   // we need this boolean to handle projects subscribe to run just one time
@@ -74,6 +76,7 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
     this.subscriptions.push(store.select('user').subscribe((user: any) => {
       this.user = cloneDeep(user);
     }));
+    this.subscriptions.push(this.store.select('status').subscribe((status) => this.status = status));
   }
 
   ngOnInit() {
