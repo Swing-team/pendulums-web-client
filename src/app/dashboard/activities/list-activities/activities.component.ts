@@ -48,6 +48,8 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
   currentActivityCopy: ActivityWithIsActive;
   currentActivities: Array<ActivityWithIsActive> = [];
   currentActivitiesCopy: Array<ActivityWithIsActive> = [];
+  currentActivitiesPagination: Array<Array<ActivityWithIsActive>> = [];
+  currentActivitiesPaginationIndex = 0;
   userAccess = false;
   selectedUsers = [];
   selectedItemIndex = [];
@@ -305,6 +307,19 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
         return userCurrentActivity;
       });
       this.currentActivitiesCopy = _.cloneDeep(this.currentActivities);
+      this.currentActivitiesPagination = [];
+      this.currentActivitiesPaginationIndex = 0;
+      let tempPageIndex = 0
+      for (let index = 0; index < this.currentActivitiesCopy.length; index++) {
+        const activity = this.currentActivitiesCopy[index];
+        if (index !== 0 && index % 2 === 0) {
+          tempPageIndex++;
+        }
+        if (!this.currentActivitiesPagination[tempPageIndex]) {
+          this.currentActivitiesPagination[tempPageIndex] = new Array<ActivityWithIsActive>();
+        }
+        this.currentActivitiesPagination[tempPageIndex].push(activity);
+      }
     });
   }
 
@@ -344,6 +359,19 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
 
     if (this.pageLoaded) {
       this.pageLoaderService.hideLoading();
+    }
+  }
+
+  prevCurrentActivitiesPage() {
+    this.currentActivitiesPaginationIndex--;
+  }
+
+  nextCurrentActivitiesPage() {
+    const nextActivity = this.currentActivitiesPagination[this.currentActivitiesPaginationIndex + 1];
+    if (nextActivity && nextActivity[0] && nextActivity[0].id) {
+      this.currentActivitiesPaginationIndex++;
+    } else {
+      this.showError('There are no more current activities');
     }
   }
 

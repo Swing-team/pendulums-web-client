@@ -54,7 +54,7 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.taskName = this.project.recentActivityName;
-    if (this.currentActivity) {
+    if (this.currentActivity && !this.isEditable) {
       this.subscriptions.push(this.currentActivity.subscribe((currentActivity) => {
         if (currentActivity.project === this.project.id) {
           this.activityStarted = true;

@@ -1,33 +1,50 @@
-<top-bar class="ps-activities-top-bar" [title]="project.name">
+<top-bar *ngIf="project" class="ps-activities-top-bar" [title]="project.name">
   <div class="ps-logo-container" alignLeft>
     <img class="ps-top-bar-logo" src="../../assets/images/logo-blue.png">
     <span class="ps-top-bar-logo-name">PENDULUMS</span>
   </div>
 </top-bar>
 
-<div class="container ps-activities-container ps-activities-padding">
+<div *ngIf="project" class="container ps-activities-container ps-activities-padding">
   <div class="ps-header-container">
     <div class="ps-activity-top-button ps-project-header-button icon-back" (click)="goBack()" title="Back"></div>
     <div class="ps-activity-top-button ps-project-header-button icon-plus" (click)="openAddManuallyModal()" title="Add new activity"></div>
   </div>
 
-  <div class="ps-details-container">
+  <div class="columns ps-details-container">
     <project-item
       [project]="project"
       [user]="user"
       [status]="status"
-      [currentActivity]="currentActivityCopy"
       [currentActivities]="currentActivitiesCopy"
       isEditable="true"
+      class="column is-4-widescreen is-6-desktop is-6-tablet"
     ></project-item>
-    <project-item
-      [project]="project"
-      [user]="user"
-      [status]="status"
-      [currentActivity]="currentActivityCopy"
-      [currentActivities]="currentActivitiesCopy"
-      isEditable="true"
-    ></project-item>
+    <div class="column is-4-widescreen is-6-desktop is-6-tablet ps-current-activities">
+      <ng-container *ngIf="!currentActivitiesPagination.length">
+        <div class="ps-no-currents">
+          <p class="ps-no-currents-text">There are no current activities</p>
+        </div>
+      </ng-container>
+      <div class="ps-card-container">
+        <ng-container *ngIf="currentActivitiesPagination.length > 0">
+          <div *ngFor='let currentActivityOfUser of currentActivitiesPagination[currentActivitiesPaginationIndex]; let i = index' class="ps-current-container">
+            <div *ngIf='currentActivityOfUser.isActive'>
+              <hr class="ps-current-divider" *ngIf="i % 2 !== 0">
+              <activity-item [activity]="currentActivityOfUser" [project]="project" [currentUser]="user"></activity-item>
+            </div>
+          </div>
+        </ng-container>
+        <div class="ps-current-activity-pagination">
+          <span class="ps-icon-back">
+            <i *ngIf="currentActivitiesPaginationIndex > 0"  (click)="prevCurrentActivitiesPage()" class="icon-back"></i>
+          </span>
+          <span class="ps-icon-next">
+            <i *ngIf="currentActivitiesPagination.length > 1"  (click)="nextCurrentActivitiesPage()" class="icon-arrow-right"></i>
+          </span>
+        </div>
+      </div>
+    </div>
   </div>
   
   <div class="pa-stuff-container" *ngIf="userAccess">
