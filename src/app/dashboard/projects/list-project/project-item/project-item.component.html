@@ -31,7 +31,7 @@
           </div>
         </div>
         <div class="media-right">
-          <div *ngIf="!isEditable" (click)="toggleStopStart()">
+          <div *ngIf="!isEditable" (click)="toggleStopStart(); $event.stopPropagation()">
             <a  class="button ps-item-card-button" [ngClass]="{'is-loading': activityButtonDisabled}">
               <span class="icon">
                 <i *ngIf="activityStarted" class="icon-stop" title="Stop activity"></i>
