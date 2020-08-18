@@ -10,5 +10,102 @@
 </top-bar>
 
 <div class="container ps-dashboard-padding">
-<list-of-project [serverMessage]=serverMessage [projects]="projects | async" [sortBy]="sortBy | async" [user]="user$" [status]="status$ | async" [currentActivity]="currentActivity"></list-of-project>
+  <div class="columns is-multiline">
+    <div class="column is-6 ps-chart-container">
+      <div class="card">
+        <div class="card-content">
+          <div class="columns is-mobile is-centered">
+            <div class="column ps-chart-calendar-wrapper">
+              <input [(ngModel)]="doughnutDateString" type="text" (focus)="showDoughnutCalender()">
+              <div *ngIf="doughnutCalenderShow" class="ps-calendar-wrapper">
+                <button class="button is-pulled-right is-small ps-close-calender-button" (click)="closeDoughnutCalender()">
+                  <span class="icon is-small">X</span>
+                </button>
+                <swing-calendar
+                  (rangeSelected)="updateDoughnutStat($event)"
+                  calendarType="range"
+                  [startRangeInput]="doughnutStartTime"
+                  [endRangeInput]="doughnutEndTime - 86400000"
+                ></swing-calendar>
+              </div>
+            </div>
+          </div>
+          <div class="ps-pie-chart-container">
+            <ng-container *ngIf="doughnutChartStats && doughnutChartStats.length > 0">
+              <div class="ps-pie-legend">
+                <p class="ps-pie-legend-title">
+                  Total hours:
+                </p>
+                <p class="ps-pie-legend-total">
+                  123:34
+                </p>
+              </div>
+              <div class="ps-pie-chart">
+                <ngx-charts-pie-chart
+                  [results]="doughnutChartStats"
+                  [labels]="true"
+                  [doughnut]="true"
+                  [labels]="false"
+                  [arcWidth]="0.5"
+                  [tooltipText]="doughnutToolTipText"
+                  class="ps-chart"
+                ></ngx-charts-pie-chart>
+              </div>
+            </ng-container>
+          </div>
+          <p class="ps-no-activities" *ngIf="!doughnutChartStats || doughnutChartStats.length === 0">
+            There are no activities on selected time
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="column is-6 ps-chart-container">
+      <div class="card">
+        <div class="card-content">
+          <div class="columns is-mobile is-centered">
+            <div class="column ps-chart-calendar-wrapper">
+              <input [(ngModel)]="areaChartDateString" type="text" (focus)="showAreaChartCalender()">
+              <div *ngIf="areaChartCalenderShow" class="ps-calendar-wrapper">
+                <button class="button is-pulled-right is-small ps-close-calender-button" (click)="closeAreaChartCalender()">
+                  <span class="icon is-small">X</span>
+                </button>
+                <swing-calendar
+                  calendarType="date"
+                  [inputDate]="todayDate"
+                  (dateSelected)="updateAreaChartStat($event)"
+                ></swing-calendar>
+              </div>
+            </div>
+          </div>
+          <div class="ps-area-chart-container">
+            <ngx-charts-area-chart *ngIf="areaChartStats && areaChartStats.length > 0"
+              [results]="areaChartStats"
+              [xAxis]="true"
+              [yAxis]="true"
+              [xAxisTickFormatting]="formatDateTick"
+              [yAxisTickFormatting]="formatHoursTick"
+              [maxXAxisTickLength]="7"
+              [maxYAxisTickLength]="6"
+              [curve]=""
+              class="ps-chart"
+            >
+            <ng-template #tooltipTemplate let-model="model">
+              <h1>{{ formatDateTick(model.name) }}</h1>
+              <h1>{{ formatHoursTick(model.value) }}</h1>
+            </ng-template>
+            
+            <ng-template #seriesTooltipTemplate let-model="model">
+              <h1>{{ formatHoursTick(model[0].value) }}</h1>
+            </ng-template>
+            </ngx-charts-area-chart>
+            <p *ngIf="!areaChartStats || areaChartStats.length === 0" class="ps-no-activities">
+              There are no activities on this project
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <list-of-project [serverMessage]=serverMessage [projects]="projects | async" [sortBy]="sortBy | async" [user]="user$" [status]="status$ | async" [currentActivity]="currentActivity"></list-of-project>
 </div>

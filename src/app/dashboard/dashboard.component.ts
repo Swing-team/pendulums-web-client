@@ -16,6 +16,9 @@ import { Status }                       from 'app/shared/state/status/status.mod
 import { User }                         from 'app/shared/state/user/user.model';
 import { Project }                      from 'app/shared/state/project/project.model';
 import { Activity }                     from 'app/shared/state/current-activity/current-activity.model';
+import { DoughnutChartInterface }       from './shared/charts-model/doughnut-chart.model';
+import { AreaChartInterface }           from './shared/charts-model/area-chart-model';
+import * as moment from 'moment';
 
 @Component({
   selector: 'dashboard',
@@ -35,6 +38,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
   userId: string;
   subscriptions: Subscription[] = [];
   hasSeenInfoModal: boolean;
+  doughnutChartStats: Array<DoughnutChartInterface>;
+  doughnutCalenderShow = false;
+  doughnutDateString: string;
+  doughnutStartTime: number;
+  doughnutEndTime: number;
+  areaChartCalenderShow = false;
+  areaChartDateString: string;
+  areaChartStats: Array<AreaChartInterface>;
+  todayDate: number;
 
   constructor (private store: Store<AppState>,
                appStateSelectors: AppStateSelectors,
@@ -94,6 +106,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.status = status;
       })
     );
+    
+    this.todayDate = moment.now();
+    this.updateAreaChartStat(moment());
+    this.updateDoughnutStat({
+      start: moment().subtract(7, 'days'),
+      end: moment()
+    });
+    
   }
   
   getServerMessage(): Promise<any> {
@@ -134,6 +154,85 @@ export class DashboardComponent implements OnInit, OnDestroy {
       component: AppInfoComponent,
       inputs: {}
     });
+  }
+
+  formatHoursTick(time: number) {
+    time = time / 1000;
+    const hours = Math.floor(time / 3600);
+    const minutes = Math.floor((time - (hours * 3600)) / 60);
+
+    let hoursString = hours.toString();
+    let minutesString = minutes.toString();
+
+    if (hours   < 10) {hoursString   = '0' + hours; }
+    if (minutes < 10) {minutesString = '0' + minutes; }
+    const result = hoursString + ': ' + minutesString;
+    return result;
+  }
+
+  formatDateTick(date: string) {
+    const newDate = new Date(date);
+    return newDate.getFullYear().toString().substring(2) + '-' + newDate.getMonth() + '-' + newDate.getDate();
+  }
+
+  doughnutToolTipText({ data }) {
+    let time = data.value;
+    time = time / 1000;
+    const hours = Math.floor(time / 3600);
+    const minutes = Math.floor((time - (hours * 3600)) / 60);
+
+    let hoursString = hours.toString();
+    let minutesString = minutes.toString();
+
+    if (hours   < 10) {hoursString   = '0' + hours; }
+    if (minutes < 10) {minutesString = '0' + minutes; }
+    const duration = hoursString + ': ' + minutesString;
+    
+    return `
+      <span class="tooltip-label">${data.label}</span>
+      <span class="tooltip-val">${duration}</span>
+    `;
+  }
+
+  showDoughnutCalender() {
+    this.doughnutCalenderShow = true;
+  }
+
+  closeDoughnutCalender() {
+    this.doughnutCalenderShow = false;
+  }
+  
+  showAreaChartCalender() {
+    this.areaChartCalenderShow = true;
+  }
+
+  closeAreaChartCalender() {
+    this.areaChartCalenderShow = false;
+  }
+
+  updateDoughnutStat(event: {start: moment.Moment, end: moment.Moment}) {
+    this.doughnutDateString = event.start.format('MMM Do');
+    const firstIdsMonth =  event.start.month();
+    const secondIdsMonth =  event.end.month();
+    let temp = '';
+    if (firstIdsMonth === secondIdsMonth) {
+      temp = event.end.format('Do');
+    } else {
+      temp = event.end.format('MMM Do');
+    }
+    this.doughnutDateString = this.doughnutDateString + ' - ' + temp;
+
+    this.doughnutStartTime = event.start.startOf('day').valueOf();
+    this.doughnutEndTime = (event.end.add(1, 'days')).startOf('day').valueOf();
+    // TODO: get data from service here
+    this.doughnutCalenderShow = false
+  }
+
+  updateAreaChartStat(event: moment.Moment) {
+    this.areaChartDateString = event.format('MMM Do');
+    const date = event.format('YYYY-M-D');
+    // TODO: get data from service here
+    this.areaChartCalenderShow = false;
   }
 }
 
