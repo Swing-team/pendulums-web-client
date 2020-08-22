@@ -12,6 +12,7 @@
       </a>
     </li>
     <li title="Dashboard"><a [ngClass]="{'is-active': activeItemNumber === 3 }" [routerLink]="['dashboard']" (click)="updateIndex(3)"><span class="icon-dashboard"></span><p>Dashboard</p></a></li>
+    <li title="Dashboard"><a [ngClass]="{'is-active': activeItemNumber === 9 }" [routerLink]="['projects']" (click)="updateIndex(9)"><span class="icon-projects"></span><p>Projects</p></a></li>
     <li title="note"><a [ngClass]="{'is-active': activeItemNumber === 8 }" [routerLink]="['notes']" (click)="updateIndex(8)"><span class="icon-sticky-note-o"></span><p>Notes</p></a></li>
     <li title="Notifications">
       <a [ngClass]="{'is-active': activeItemNumber === 2 }" #notifications (click)="toggleNotifications()">

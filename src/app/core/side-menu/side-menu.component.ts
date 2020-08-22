@@ -91,12 +91,7 @@ export class SideMenuComponent implements OnInit {
     this.pendulumNotification = false;
     this.notificationIsActive = !this.notificationIsActive;
     if (!this.notificationIsActive) {
-      if (this.router.url === '/dashboard') {
-        this.activeItemNumber = 3;
-      }
-      if (this.router.url === '/profile') {
-        this.activeItemNumber = 1;
-      }
+      this.setActiveItem()
     }
   }
 
@@ -104,12 +99,7 @@ export class SideMenuComponent implements OnInit {
     this.activeItemNumber = 5;
     this.pendulumNotification = !this.pendulumNotification;
     if (!this.pendulumNotification) {
-      if (this.router.url === '/dashboard') {
-        this.activeItemNumber = 3;
-      }
-      if (this.router.url === '/profile') {
-        this.activeItemNumber = 1;
-      }
+      this.setActiveItem();
     }
   }
 
@@ -117,12 +107,22 @@ export class SideMenuComponent implements OnInit {
     if (this.notifications.nativeElement.contains(event.target)) {
     } else {
       this.notificationIsActive = false;
-      if (this.router.url === '/dashboard') {
-        this.activeItemNumber = 3;
-      }
-      if (this.router.url === '/profile') {
-        this.activeItemNumber = 1;
-      }
+      this.setActiveItem();
+    }
+  }
+
+  private setActiveItem() {
+    if (this.router.url === '/dashboard') {
+      this.activeItemNumber = 3;
+    }
+    if (this.router.url === '/profile') {
+      this.activeItemNumber = 1;
+    }
+    if (this.router.url === '/notes') {
+      this.activeItemNumber = 8;
+    }
+    if (this.router.url === '/projects') {
+      this.activeItemNumber = 9;
     }
   }
 
