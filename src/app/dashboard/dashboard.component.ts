@@ -5,16 +5,11 @@ import { DatabaseService }              from '../core/services/database/database
 import { Store }                        from '@ngrx/store';
 import { AppState }                     from '../shared/state/appState';
 import { ModalService }                 from '../core/modal/modal.service';
-import { AppStateSelectors }            from '../shared/state/app-state.selectors';
 import { AppInfoComponent }             from '../core/side-menu/app-info/app-info.component';
 import { RouterChangeListenerService }  from '../core/services/router-change-listener.service';
 import { VERSION }                      from 'environments/version';
-import { HttpClient }                   from '@angular/common/http';
 import { environment }                  from '../../environments/environment';
-import { Status }                       from 'app/shared/state/status/status.model';
 import { User }                         from 'app/shared/state/user/user.model';
-import { Project }                      from 'app/shared/state/project/project.model';
-import { Activity }                     from 'app/shared/state/current-activity/current-activity.model';
 
 @Component({
   selector: 'dashboard',
@@ -24,29 +19,17 @@ import { Activity }                     from 'app/shared/state/current-activity/
 export class DashboardComponent implements OnInit, OnDestroy {
   @Output() serverMessage: any;
 
-  projects: Observable<Project[]>;
-  sortBy: Observable<string>;
   user$: Observable<User>;
-  user: User;
-  currentActivity: Observable<Activity>;
-  status$: Observable<Status>;
-  status: Status;
-  // userId: string;
   subscriptions: Subscription[] = [];
   hasSeenInfoModal: boolean;
 
   constructor (private store: Store<AppState>,
-               appStateSelectors: AppStateSelectors,
                private db: DatabaseService,
                private modalService: ModalService,
-               private http: HttpClient,
                // this service needed to handle router changes so don't remove it
                private routerChangeListenerService: RouterChangeListenerService) {
 
     this.user$ = store.select('user');
-    this.status$ = store.select('status');
-    this.projects = store.select(appStateSelectors.getProjectsArray);
-    this.sortBy = store.select(appStateSelectors.getProjectsSortBy);
     this.hasSeenInfoModal = false
   }
 
