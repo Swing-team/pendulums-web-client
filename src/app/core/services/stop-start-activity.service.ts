@@ -10,7 +10,7 @@ import { Status } from '../../shared/state/status/status.model';
 import { Project } from '../../shared/state/project/project.model';
 import { User } from '../../shared/state/user/user.model';
 import { cloneDeep }                      from 'lodash';
-import { userRoleInProject } from '../../dashboard/shared/utils';
+import { userRoleInProject } from 'app/utils/project.util';
 import * as moment from 'moment';
 import { NativeNotificationService } from './native-notification.service';
 

@@ -19,7 +19,7 @@ import { User }                             from '../../../shared/state/user/use
 import { cloneDeep, uniqBy }                from 'lodash';
 import { PageLoaderService }                from '../../../core/services/page-loader.service';
 import { ChartComponent }                   from './chart-statistics/chart.component';
-import { userInProject }                    from 'app/dashboard/shared/utils';
+import { userInProject }                    from 'app/utils/project.util';
 import { Status }                           from 'app/shared/state/status/status.model';
 
 type ActivityWithIsActive = Activity & {isActive?: boolean};

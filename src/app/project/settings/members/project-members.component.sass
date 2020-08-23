@@ -1,0 +1,112 @@
+@import '../../../../sass/variables'
+
+.ps-border-red
+  border: 1px solid red
+
+.ps-border-blue
+  border: 1px solid blue
+
+.ps-container
+  width: 100%
+  display: flex
+  flex-direction: column
+  justify-content: center
+  align-items: center
+
+.ps-section-you-container
+  display: flex
+  width: 100%
+  height: 56px
+  justify-content: flex-start
+  align-items: center
+  @media (max-width: 480px)
+    margin-bottom: 16px
+  @media (max-width: 350px)
+    padding: 10px 5px
+
+.ps-project-member-image
+  vertical-align: middle
+  width: 36px
+  height: 36px
+  min-width: 36px
+  min-height: 36px
+  border: 1px solid $ink
+  border-radius: 100%
+  margin: 0 !important
+
+.ps-section-you-role
+  flex-basis: 45%
+  text-align: right
+  margin-right: 10px
+
+.ps-team-members-item-container
+  width: 100%
+  justify-content: flex-start
+  align-items: center
+  position: relative
+  border-bottom: 1px solid #dedfcb
+  padding: 10px 5px
+  @media (max-width: 350px)
+    padding: 10px 2px
+  &:nth-child(2)
+    border-top: 1px solid #dedfcb
+  svg
+    margin: 10px
+
+.ps-user-email
+  flex-basis: 45%
+  text-align: left
+  padding-left: 10px
+  word-break: break-all
+
+.ps-user-role
+  flex-basis: 25%
+  text-align: left
+  padding-left: 10px
+  @media (min-width: 478px)
+    width: 50%
+  @media (max-width: 478px) and (min-width: 350px)
+    width: 75%
+
+.ps-member-item-button
+  overflow: hidden
+  font-size: 1.4rem
+  position: absolute
+  right: 0
+  bottom: 15px
+  i
+    cursor: pointer
+  @media (max-width: $ps-mobile)
+    font-size: 1rem
+
+.ps-member-item-button-confirmation
+  border: none
+  padding: 0.5rem !important
+  font-size: 1.4rem
+  background-color: transparent
+  transition:  all ease-in-out $ps-transitions
+  @media (max-width: $ps-mobile)
+    font-size: 1rem
+  .ps-is-danger
+    color: $red
+    &:hover
+      color: lighten($red, 30)
+  .ps-is-success
+    color: $success
+    &:hover
+      color: lighten($success, 30)
+
+.ps-member-item-remove-team-member
+  border: none
+  font-size: 0.75rem
+  background-color: transparent
+
+swing-select
+  .ps-select
+    width: auto !important
+
+.ps-owner-role
+  font-size: 0.75rem !important
+
+.ps-margin-bottom
+  margin-bottom: 0.5rem !important

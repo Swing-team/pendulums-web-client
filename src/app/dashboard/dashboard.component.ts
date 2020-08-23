@@ -1,6 +1,6 @@
 import { Component, OnInit, Output,
          OnDestroy }                    from '@angular/core';
-import { Subscription ,  Observable }                 from 'rxjs';
+import { Subscription ,  Observable }   from 'rxjs';
 import { DatabaseService }              from '../core/services/database/database.service';
 import { Store }                        from '@ngrx/store';
 import { AppState }                     from '../shared/state/appState';
@@ -11,14 +11,10 @@ import { RouterChangeListenerService }  from '../core/services/router-change-lis
 import { VERSION }                      from 'environments/version';
 import { HttpClient }                   from '@angular/common/http';
 import { environment }                  from '../../environments/environment';
-import { CreateProjectComponent }       from './projects/create-project/create-project.component';
 import { Status }                       from 'app/shared/state/status/status.model';
 import { User }                         from 'app/shared/state/user/user.model';
 import { Project }                      from 'app/shared/state/project/project.model';
 import { Activity }                     from 'app/shared/state/current-activity/current-activity.model';
-import { DoughnutChartInterface }       from './shared/charts-model/doughnut-chart.model';
-import { AreaChartInterface }           from './shared/charts-model/area-chart-model';
-import * as moment from 'moment';
 
 @Component({
   selector: 'dashboard',
@@ -35,18 +31,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
   currentActivity: Observable<Activity>;
   status$: Observable<Status>;
   status: Status;
-  userId: string;
+  // userId: string;
   subscriptions: Subscription[] = [];
   hasSeenInfoModal: boolean;
-  doughnutChartStats: Array<DoughnutChartInterface>;
-  doughnutCalenderShow = false;
-  doughnutDateString: string;
-  doughnutStartTime: number;
-  doughnutEndTime: number;
-  areaChartCalenderShow = false;
-  areaChartDateString: string;
-  areaChartStats: Array<AreaChartInterface>;
-  todayDate: number;
 
   constructor (private store: Store<AppState>,
                appStateSelectors: AppStateSelectors,
@@ -56,7 +43,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
                // this service needed to handle router changes so don't remove it
                private routerChangeListenerService: RouterChangeListenerService) {
 
-    this.currentActivity = store.select('currentActivity');
     this.user$ = store.select('user');
     this.status$ = store.select('status');
     this.projects = store.select(appStateSelectors.getProjectsArray);
@@ -65,31 +51,25 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.getServerMessage();
     if (!this.hasSeenInfoModal) {
       this.subscriptions.push(
         this.user$.subscribe((userInfo) => {
-          this.user = userInfo;
-          
-          if (userInfo && userInfo.id && userInfo.id.length > 0 && this.userId !== userInfo.id) {
-            this.userId = userInfo.id;
+          if (userInfo && userInfo.id) {
             // the userInDB is {userId: '...', seenVersions: [...]}
-            this.db.get('appInfo', this.userId)
+            this.db.get('appInfo', userInfo.id)
             .then((userInDB) => {
-              if (!userInDB || userInDB === '' || !userInDB.userId || userInDB.userId === ''
-                || !userInDB.seenVersions || userInDB.seenVersions === '') {
+              if (!userInDB || !userInDB.userId || !userInDB.seenVersions) {
                 this.db.createOrUpdate('appInfo', {
-                  userId: this.userId,
+                  userId: userInfo.id,
                   seenVersions: [VERSION]
                 });
                 this.showAppInfoModal();
                 this.hasSeenInfoModal = true;
               } else if (userInDB.seenVersions.indexOf(VERSION) < 0) {
                 // check for existing version that user saw
-                const seenVersionsArray = userInDB.seenVersions;
-                seenVersionsArray.push(VERSION);
-                this.db.update('appInfo', this.userId, {
-                  seenVersions: seenVersionsArray
+                userInDB.seenVersions.push(VERSION);
+                this.db.update('appInfo', userInfo.id, {
+                  seenVersions: userInDB.seenVersions,
                 });
                 this.showAppInfoModal();
                 this.hasSeenInfoModal = true;
@@ -99,43 +79,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
           }
         })
       );
-    }
-
-    this.subscriptions.push(
-      this.status$.subscribe((status) => {
-        this.status = status;
-      })
-    );
-    
-    this.todayDate = moment.now();
-    this.updateAreaChartStat(moment());
-    this.updateDoughnutStat({
-      start: moment().subtract(7, 'days'),
-      end: moment()
-    });
-    
-  }
-  
-  getServerMessage(): Promise<any> {
-    return this.http
-      .get(environment.apiEndpoint + '/serverMessage', environment.httpOptions)
-      .toPromise()
-      .then(response => {
-        this.serverMessage = (response as any).serverMessage
-      })
-      .catch(this.handleError);
-  }
-
-  openCreateProjectModal() {
-    if (this.status.netStatus) {
-      this.modalService.show({
-        component: CreateProjectComponent,
-        inputs: {
-          currentUser: this.user
-        }
-      });
-    } else {
-      this.handleError('Not available in offline mode');
     }
   }
 
@@ -155,85 +98,5 @@ export class DashboardComponent implements OnInit, OnDestroy {
       inputs: {}
     });
   }
-
-  formatHoursTick(time: number) {
-    time = time / 1000;
-    const hours = Math.floor(time / 3600);
-    const minutes = Math.floor((time - (hours * 3600)) / 60);
-
-    let hoursString = hours.toString();
-    let minutesString = minutes.toString();
-
-    if (hours   < 10) {hoursString   = '0' + hours; }
-    if (minutes < 10) {minutesString = '0' + minutes; }
-    const result = hoursString + ': ' + minutesString;
-    return result;
-  }
-
-  formatDateTick(date: string) {
-    const newDate = new Date(date);
-    return newDate.getFullYear().toString().substring(2) + '-' + newDate.getMonth() + '-' + newDate.getDate();
-  }
-
-  doughnutToolTipText({ data }) {
-    let time = data.value;
-    time = time / 1000;
-    const hours = Math.floor(time / 3600);
-    const minutes = Math.floor((time - (hours * 3600)) / 60);
-
-    let hoursString = hours.toString();
-    let minutesString = minutes.toString();
-
-    if (hours   < 10) {hoursString   = '0' + hours; }
-    if (minutes < 10) {minutesString = '0' + minutes; }
-    const duration = hoursString + ': ' + minutesString;
-    
-    return `
-      <span class="tooltip-label">${data.label}</span>
-      <span class="tooltip-val">${duration}</span>
-    `;
-  }
-
-  showDoughnutCalender() {
-    this.doughnutCalenderShow = true;
-  }
-
-  closeDoughnutCalender() {
-    this.doughnutCalenderShow = false;
-  }
-  
-  showAreaChartCalender() {
-    this.areaChartCalenderShow = true;
-  }
-
-  closeAreaChartCalender() {
-    this.areaChartCalenderShow = false;
-  }
-
-  updateDoughnutStat(event: {start: moment.Moment, end: moment.Moment}) {
-    this.doughnutDateString = event.start.format('MMM Do');
-    const firstIdsMonth =  event.start.month();
-    const secondIdsMonth =  event.end.month();
-    let temp = '';
-    if (firstIdsMonth === secondIdsMonth) {
-      temp = event.end.format('Do');
-    } else {
-      temp = event.end.format('MMM Do');
-    }
-    this.doughnutDateString = this.doughnutDateString + ' - ' + temp;
-
-    this.doughnutStartTime = event.start.startOf('day').valueOf();
-    this.doughnutEndTime = (event.end.add(1, 'days')).startOf('day').valueOf();
-    // TODO: get data from service here
-    this.doughnutCalenderShow = false
-  }
-
-  updateAreaChartStat(event: moment.Moment) {
-    this.areaChartDateString = event.format('MMM Do');
-    const date = event.format('YYYY-M-D');
-    // TODO: get data from service here
-    this.areaChartCalenderShow = false;
-  }
 }
-
 

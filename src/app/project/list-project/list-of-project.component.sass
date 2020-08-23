@@ -1,0 +1,73 @@
+@import "../../../sass/variables"
+
+.ps-project-create
+  background: $yellow
+  border: unset
+  color: $ps-primary
+  cursor: pointer
+  height: $item-size
+  font-size: 1.8rem
+  font-weight: 500
+  line-height: $item-size
+  border-radius:  $radius
+
+.ps-list-project-no-padding
+  .ps-project-clickable
+    cursor: pointer
+  @media (max-width: $ps-mobile)
+    padding-top: unset
+
+.ps-add-project-disabled
+  cursor: not-allowed !important
+
+.ps-donation
+  border: 1px solid $black
+  background-color: $white
+  margin: 3px auto 0 auto
+  border-radius: 6px
+  text-align: left
+  -webkit-box-shadow: 0 2px 3px rgba(51, 51, 51, 0.1), 0 0 0 1px rgba(51, 51, 51, 0.1)
+  box-shadow: 0 2px 3px rgba(51, 51, 51, 0.1), 0 0 0 1px rgba(51, 51, 51, 0.1)
+  margin-bottom: 19px
+.ps-donation-dismiss
+  float: right
+  cursor: pointer
+  color: $red
+.ps-icon-cancel
+  font-size: 1.3rem
+.ps-no-background
+  background-color: unset
+
+.ps-header-delete-button
+  border-radius: 100%
+  background-color: transparent
+  color: #999
+  &:hover
+    background: $white !important
+    border-color: transparent !important
+    color: #999
+  @media (max-width: 480px)
+    margin-top: -10px
+    margin-right: -10px
+.donation-box
+  display: inline-block
+  width: 100%
+  text-align: right
+.ps-z-index
+  z-index: 5
+
+.ps-sort
+  background: #fafafa
+  display: inline-block
+  height: 36px
+  padding-left: 4px
+  padding-right: 4px
+  border-radius: 4px
+  font-weight: 800
+  margin-left: -6px
+
+.ps-sort-icon
+  margin-left: -32px
+  vertical-align: top
+  line-height: 36px
+  display: inline-block
