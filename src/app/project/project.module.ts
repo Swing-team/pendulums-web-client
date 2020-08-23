@@ -9,10 +9,12 @@ import { DangerousActionsComponent } from './settings/dangerous-actions/project-
 import { ListOfProjectComponent } from './list-project/list-of-project.component';
 import { ProjectService } from './project.service';
 import { SharedModule } from 'app/shared/shared.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   imports: [
     SharedModule,
+    BrowserAnimationsModule,
   ],
   exports: [],
   declarations: [

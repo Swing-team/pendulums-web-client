@@ -5,6 +5,7 @@ import { ActivitiesComponent } from './list-activities/activities.component';
 import { ActivityItemComponent } from './list-activities/activity-item/activity-item.component';
 import { ChartComponent } from './list-activities/chart-statistics/chart.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 
@@ -12,6 +13,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
   imports: [
     SharedModule,
     NgxChartsModule,
+    BrowserAnimationsModule,
   ],
   declarations: [
     ActivitiesComponent,

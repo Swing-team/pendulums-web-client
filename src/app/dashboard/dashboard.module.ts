@@ -10,7 +10,6 @@ import { BrowserAnimationsModule }            from '@angular/platform-browser/an
     AppRoutingModule,
     SharedModule,
     BrowserModule,
-    BrowserAnimationsModule,
   ],
   declarations: [
     DashboardComponent,
