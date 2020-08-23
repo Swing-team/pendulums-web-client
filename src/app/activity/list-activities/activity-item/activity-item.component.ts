@@ -3,12 +3,12 @@ import {
   Input, OnInit, Output, ViewContainerRef
 } from '@angular/core';
 import { trigger, style, transition, animate }  from '@angular/animations';
-import { Activity }                             from '../../../../shared/state/current-activity/current-activity.model';
-import { Project }                              from '../../../../shared/state/project/project.model';
-import { User }                                 from '../../../../shared/state/user/user.model';
 import { userInProject }                        from 'app/utils/project.util';
 import { Md5 }                                  from 'ts-md5/dist/md5';
-import { environment }                          from '../../../../../environments/environment';
+import { Activity } from 'app/shared/state/current-activity/current-activity.model';
+import { Project } from 'app/shared/state/project/project.model';
+import { User } from 'app/shared/state/user/user.model';
+import { environment } from 'environments/environment';
 
 @Component({
   selector: 'activity-item',

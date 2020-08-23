@@ -13,6 +13,7 @@ import { AppComponent }           from './app.component';
 import { NotFoundComponent }      from './not-found/not-found.component';
 import { CookieService } from 'ngx-cookie-service';
 import { ProjectModule } from './project/project.module';
+import { ActivityModule } from './activity/activity.module';
 
 export const AppModuleConfig = {
     declarations: [
@@ -27,6 +28,7 @@ export const AppModuleConfig = {
         AuthenticationModule,
         DashboardModule,
         ProjectModule,
+        ActivityModule,
         NoteModule
     ],
     providers: [CookieService],

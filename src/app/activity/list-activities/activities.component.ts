@@ -5,22 +5,22 @@ import {
   OnDestroy, OnInit, ViewChild,
 }                                           from '@angular/core';
 import { Observable ,  Subscription }                       from 'rxjs';
-import { ActivityService }                  from '../../../core/services/activity.service';
-import { Activity }                         from '../../../shared/state/current-activity/current-activity.model';
 import { ActivatedRoute, Params }           from '@angular/router';
 import { Location }                         from '@angular/common';
-import { ModalService }                     from '../../../core/modal/modal.service';
 import { AddManuallyActivityComponent }     from '../activity-add-edit-manually/activity-add-edit-manually.component';
-import { ErrorService }                     from '../../../core/error/error.service';
 import { Store }                            from '@ngrx/store';
-import { AppState }                         from '../../../shared/state/appState';
-import { Project }                          from '../../../shared/state/project/project.model';
-import { User }                             from '../../../shared/state/user/user.model';
 import { cloneDeep, uniqBy }                from 'lodash';
-import { PageLoaderService }                from '../../../core/services/page-loader.service';
 import { ChartComponent }                   from './chart-statistics/chart.component';
 import { userInProject }                    from 'app/utils/project.util';
 import { Status }                           from 'app/shared/state/status/status.model';
+import { Activity } from 'app/shared/state/current-activity/current-activity.model';
+import { Project } from 'app/shared/state/project/project.model';
+import { User } from 'app/shared/state/user/user.model';
+import { AppState } from 'app/shared/state/appState';
+import { ActivityService } from 'app/core/services/activity.service';
+import { ModalService } from 'app/core/modal/modal.service';
+import { ErrorService } from 'app/core/error/error.service';
+import { PageLoaderService } from 'app/core/services/page-loader.service';
 
 type ActivityWithIsActive = Activity & {isActive?: boolean};
 

@@ -2,10 +2,10 @@ import * as _ from 'lodash';
 import * as moment from 'moment';
 import { Component, Input, OnInit,
   Output, EventEmitter }                    from '@angular/core';
-import { Activity }                         from '../../../shared/state/current-activity/current-activity.model';
-import { ActivityService }                  from '../../../core/services/activity.service';
-import { ModalService }                     from '../../../core/modal/modal.service';
-import { ErrorService }                     from '../../../core/error/error.service';
+import { Activity } from 'app/shared/state/current-activity/current-activity.model';
+import { ActivityService } from 'app/core/services/activity.service';
+import { ModalService } from 'app/core/modal/modal.service';
+import { ErrorService } from 'app/core/error/error.service';
 
 @Component({
   selector: 'create-activity',

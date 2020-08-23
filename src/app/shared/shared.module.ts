@@ -11,6 +11,7 @@ import { SwingTagInputComponent }  from './swing-tag-input/swing-tag-input.compo
 import { TabComponent } from './tab/tab.component';
 import { SafeHtmlPipe } from '../shared/pipes/sanitizeHtmlPipe.pipe';
 import { TopBarComponent } from './top-bar/top-bar.component';
+import { ProjectItemComponent } from './project-item/project-item.component';
 
 @NgModule({
   imports:      [ CommonModule ],
@@ -22,6 +23,7 @@ import { TopBarComponent } from './top-bar/top-bar.component';
     SwingTagInputComponent,
     TopBarComponent,
     TabComponent,
+    ProjectItemComponent,
     SafeHtmlPipe
   ],
   exports:      [
@@ -35,6 +37,7 @@ import { TopBarComponent } from './top-bar/top-bar.component';
     SwingTagInputComponent,
     TopBarComponent,
     TabComponent,
+    ProjectItemComponent,
     SafeHtmlPipe
   ],
   providers:    [  ],

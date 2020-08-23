@@ -6,7 +6,7 @@ import { ForgotPasswordComponent }      from './authentication/forgot-password/f
 import { ResetPasswordComponent }       from './authentication/reset-password/reset-password.component';
 import { DashboardComponent }           from './dashboard/dashboard.component';
 import { NoteComponent }                from './note/note.component';
-import { ActivitiesComponent }          from './dashboard/activities/list-activities/activities.component';
+import { ActivitiesComponent }          from './activity/list-activities/activities.component';
 import { ProfileSettingComponent }      from './profile-setting/profile-setting.component';
 import { AuthGuardService }             from './core/services/router-guards/auth-guard.service';
 import { AnonymousGuardService }        from './core/services/router-guards/anonymous-guard.service';

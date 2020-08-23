@@ -2,7 +2,7 @@ import {
   Component, EventEmitter, Input,
   OnInit, Output, ViewEncapsulation
 } from '@angular/core';
-import { ActivityService }                  from '../../../../core/services/activity.service';
+import { ActivityService }                  from 'app/core/services/activity.service';
 import { Project }                          from 'app/shared/state/project/project.model';
 import * as moment                          from 'moment';
 

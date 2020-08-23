@@ -7,7 +7,6 @@ import { ProjectMembersComponent } from './settings/members/project-members.comp
 import { ProjectPendingInvitationsComponent } from './settings/pending-invitations/project-pending-invitations.component';
 import { DangerousActionsComponent } from './settings/dangerous-actions/project-dangerous-actions.component';
 import { ListOfProjectComponent } from './list-project/list-of-project.component';
-import { ProjectItemComponent } from './list-project/project-item/project-item.component';
 import { ProjectService } from './project.service';
 import { SharedModule } from 'app/shared/shared.module';
 
@@ -25,8 +24,6 @@ import { SharedModule } from 'app/shared/shared.module';
     ProjectPendingInvitationsComponent,
     DangerousActionsComponent,
     ListOfProjectComponent,
-    ProjectItemComponent,
-
   ],
   providers: [
     ProjectService,
