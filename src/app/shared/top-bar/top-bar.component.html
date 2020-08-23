@@ -3,14 +3,11 @@
     <span [ngClass]="{'ps-burger-menu-badge': hasNotification}"></span>
     <span class="icon-menu ps-burger-menu-icon"></span>
   </div>
+  
   <div class="ps-top-bar-item ps-top-bar-item-left">
     <ng-content select="[alignLeft]"></ng-content>
   </div>
-  <div class="ps-top-bar-title-container">
-    <div class="ps-top-bar-title">
-      {{ title ? title : 'Pendulums' }}
-    </div>
-  </div>
+  
   <div class="ps-top-bar-item ps-top-bar-item-right">
     <ng-content select="[alignRight]"></ng-content>
   </div>
