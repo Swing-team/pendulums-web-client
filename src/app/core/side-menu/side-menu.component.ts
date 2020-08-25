@@ -45,15 +45,7 @@ export class SideMenuComponent implements OnInit {
     this.pendulumNotification = false;
 
     // initial active item in side menu by router
-    if (this.router.url === '/dashboard') {
-      this.activeItemNumber = 3;
-    }
-    if (this.router.url === '/notes') {
-      this.activeItemNumber = 8;
-    }
-    if (this.router.url === '/profile') {
-      this.activeItemNumber = 1;
-    }
+    this.setActiveItem();
 
     // Subscribe to router events to find out the active item
     this.router.events.subscribe((event: any) => {
@@ -66,6 +58,9 @@ export class SideMenuComponent implements OnInit {
         }
         if (event.url === '/profile') {
           this.activeItemNumber = 1;
+        }
+        if (event.url === '/projects') {
+          this.activeItemNumber = 9;
         }
       }
     });
