@@ -10,6 +10,8 @@ import { RouterChangeListenerService }  from '../core/services/router-change-lis
 import { VERSION }                      from 'environments/version';
 import { environment }                  from '../../environments/environment';
 import { User }                         from 'app/shared/state/user/user.model';
+import { Project }                      from 'app/shared/state/project/project.model';
+import { Status }                       from 'app/shared/state/status/status.model';
 
 @Component({
   selector: 'dashboard',
@@ -20,6 +22,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   @Output() serverMessage: any;
 
   user$: Observable<User>;
+  status$: Observable<Status>;
+  recentProjects: Project[];
   subscriptions: Subscription[] = [];
   hasSeenInfoModal: boolean;
 
@@ -30,6 +34,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                private routerChangeListenerService: RouterChangeListenerService) {
 
     this.user$ = store.select('user');
+    this.status$ = store.select('status');
     this.hasSeenInfoModal = false
   }
 
@@ -63,6 +68,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
         })
       );
     }
+  }
+
+  prepareRecentProjects() {
+    // TODO: We need to call a service to get recent projects in here
   }
 
   private handleError(error: any): Promise<any> {

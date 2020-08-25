@@ -1,0 +1,49 @@
+@import '../../../sass/variables'
+
+.ps-recent-projects-container
+  background-color: $white1
+  border-radius: $radius
+  display: flex
+  flex-direction: column
+  height: $ps-widget-size
+  
+  .ps-project-item
+    cursor: pointer
+    width: 100%
+  
+  .ps-no-recent-activities
+    margin-top: auto
+    margin-bottom: auto
+    font-weight: bold
+    color: $primary
+    font-size: 18px
+  
+  .ps-recent-projects-footer
+    display: flex
+    justify-content: space-between
+    align-items: flex-end
+    .ps-new-project
+      display: flex
+      justify-content: center
+      align-items: center
+      padding: 4px
+      padding-right: 8px
+      margin-left: 24px
+      margin-bottom: 12px
+      font-weight: bold
+      border: 2px solid $primary
+      border-radius: $radius
+    .ps-more-project
+      display: flex
+      justify-content: center
+      align-items: center
+      padding: 4px
+      margin-right: 24px
+      margin-bottom: 12px
+      font-weight: bold
+      border: 2px solid $primary
+      border-radius: $radius
+
+
+.ps-flex-grow
+  flex-grow: 1
