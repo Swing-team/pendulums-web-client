@@ -15,6 +15,7 @@
   .ps-top-bar-item
     display: flex
     align-items: center
+    
     &.ps-burger-menu
       display: none
       padding-left: 8px
@@ -33,9 +34,22 @@
         top: 10px
         right: 8px
         text-align: center
+    
     &.ps-top-bar-item-left
       padding-left: 24px
       justify-self: flex-start
+      .ps-logo-container
+        display: flex
+        align-items: center
+        .ps-top-bar-logo
+          min-height: 48px !important
+          height: 48px !important
+          width: 48px !important
+        .ps-top-bar-logo-name
+          color: $primary
+          font-weight: 500
+          margin-left: 5px
+    
     &.ps-top-bar-item-right
       padding-right: 24px
       justify-self: flex-end

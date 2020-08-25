@@ -5,7 +5,10 @@
   </div>
   
   <div class="ps-top-bar-item ps-top-bar-item-left">
-    <ng-content select="[alignLeft]"></ng-content>
+    <div class="ps-logo-container" alignLeft>
+      <img class="ps-top-bar-logo" src="../../assets/images/logo-blue.png">
+      <span class="ps-top-bar-logo-name">{{title}}</span>
+    </div>
   </div>
   
   <div class="ps-top-bar-item ps-top-bar-item-right">
