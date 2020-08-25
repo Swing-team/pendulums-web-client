@@ -14,12 +14,11 @@
   z-index: 11
   .ps-top-bar-item
     display: flex
-    justify-content: center
     align-items: center
-    flex: 0 0 auto
     &.ps-burger-menu
       display: none
       padding-left: 8px
+      justify-self: flex-start
       .ps-burger-menu-icon
         font-size: 2rem
       .ps-burger-menu-badge
@@ -36,9 +35,23 @@
         text-align: center
     &.ps-top-bar-item-left
       padding-left: 24px
+      justify-self: flex-start
     &.ps-top-bar-item-right
       padding-right: 24px
-      min-width: 150px // this is to make title in middle
+      justify-self: flex-end
+      .ps-donation-btn
+        background-color: $yellow
+        width: 50px
+        height: 50px
+        border-radius: 100%
+        display: flex
+        justify-content: center
+        align-items: center
+        transition: all ease-in-out $ps-transitions
+        &:hover
+          background-color: darken($yellow, 20%)
+        span
+          font-size: 1.6rem
     @media (max-width: #{$ps-change-menu-size})
       &.ps-top-bar-item-left
         display: none

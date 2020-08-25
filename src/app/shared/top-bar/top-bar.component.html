@@ -9,6 +9,9 @@
   </div>
   
   <div class="ps-top-bar-item ps-top-bar-item-right">
+    <a *ngIf="showDonationButton" target="_blank" title="Donate to us" href="https://pendulums.io/donation.html" class="ps-donation-btn">
+      <span class="icon-gift"></span>
+    </a>
     <ng-content select="[alignRight]"></ng-content>
   </div>
 </div>
