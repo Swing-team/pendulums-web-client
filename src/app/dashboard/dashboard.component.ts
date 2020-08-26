@@ -12,6 +12,7 @@ import { environment }                  from '../../environments/environment';
 import { User }                         from 'app/shared/state/user/user.model';
 import { Project }                      from 'app/shared/state/project/project.model';
 import { Status }                       from 'app/shared/state/status/status.model';
+import { AreaChartInterface } from 'app/models/charts-model/area-chart-model';
 
 @Component({
   selector: 'dashboard',
@@ -26,6 +27,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   recentProjects: Project[];
   subscriptions: Subscription[] = [];
   hasSeenInfoModal: boolean;
+  selectItems: string[] = [];
+  areaChartData: AreaChartInterface[];
 
   constructor (private store: Store<AppState>,
                private db: DatabaseService,
@@ -35,7 +38,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     this.user$ = store.select('user');
     this.status$ = store.select('status');
-    this.hasSeenInfoModal = false
+    this.hasSeenInfoModal = false;
+    this.selectItems = ['last day', 'last week', 'last month', 'last 3 month', 'last year'];
   }
 
   ngOnInit() {
@@ -72,6 +76,56 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   prepareRecentProjects() {
     // TODO: We need to call a service to get recent projects in here
+  }
+
+  areaChartSelectItemChanged(event: {index: number; selectedItem: string}) {
+    // TODO: we need to call a service to get events based on duration.
+    this.areaChartData = [
+      {
+        name: 'this is not important',
+        series: [
+          {
+            name: 'date 1',
+            value: Math.random() * 60 * 60 * 1000,
+          },
+          {
+            name: 'date 2',
+            value: Math.random() * 60 * 60 * 1000,
+          },
+          {
+            name: 'date 3',
+            value: Math.random() * 60 * 60 * 1000,
+          },
+          {
+            name: 'date 4',
+            value: Math.random() * 60 * 60 * 1000,
+          },
+          {
+            name: 'date 5',
+            value: Math.random() * 60 * 60 * 1000,
+          },
+        ],
+      }
+    ]
+  }
+
+  trimAreaChartYAxis(duration: number): string {
+    let x = duration / 1000;
+    // minutes
+    x /= 60;
+    const minutes = Math.floor(x % 60);
+    // hours
+    x /= 60;
+    const hours = Math.floor(x);
+
+    let result: string;
+    if (minutes < 10) {
+      result = hours + ':0' + minutes ;
+    } else {
+      result = hours + ':' + minutes ;
+    }
+
+    return result;
   }
 
   private handleError(error: any): Promise<any> {
