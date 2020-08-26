@@ -1,0 +1,40 @@
+<div class="ps-stat-chart-container">
+  <swing-select class="ps-stat-chart-select"
+    [items]="selectItems"
+    [selectedItemIndex]="[]"
+    [label]="'Select duration'"
+    (onItemClicked)="selectItemChanged($event)"
+  ></swing-select>
+  <div *ngIf="areaChartData && areaChartData.length > 0" class="ps-area-chart-container">
+    <ngx-charts-area-chart
+      [results]="areaChartData"
+      [xAxis]="true"
+      [yAxis]="true"
+      [trimXAxisTicks]="trimXAxis"
+      [trimYAxisTicks]="trimYAxis"
+      [showGridLines]="true"
+      [maxXAxisTickLength]="8"
+      [maxYAxisTickLength]="8"
+      [xAxisTickFormatting]="xAxisTickFormatting"
+      [yAxisTickFormatting]="yAxisTickFormatting"
+      [curve]="curve"
+    >
+      <ng-template #tooltipTemplate let-model="model">
+        <h1 *ngIf="yAxisTickFormatting">{{ yAxisTickFormatting(model.value) }}</h1>
+        <h1 *ngIf="!yAxisTickFormatting">{{ model.value }}</h1>
+        <h2 *ngIf="xAxisTickFormatting">{{ xAxisTickFormatting(model.name) }}</h2>
+        <h2 *ngIf="!xAxisTickFormatting">{{ model.name }}</h2>
+      </ng-template>
+  
+      <ng-template #seriesTooltipTemplate let-model="model">
+        <h1 *ngIf="yAxisTickFormatting">{{ yAxisTickFormatting(model[0].value) }}</h1>
+        <h1 *ngIf="!yAxisTickFormatting">{{ model[0].value }}</h1>
+        <h2 *ngIf="xAxisTickFormatting">{{ xAxisTickFormatting(model[0].name) }}</h2>
+        <h2 *ngIf="!xAxisTickFormatting">{{ model[0].name }}</h2>
+      </ng-template>
+    </ngx-charts-area-chart>
+  </div>
+  <div *ngIf="!areaChartData || areaChartData.length === 0" class="ps-no-activities-container">
+    <p class="ps-no-activities">There are no recent activities.</p>
+  </div>
+</div>
