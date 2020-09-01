@@ -76,14 +76,14 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy, AfterViewInit
     }));
     
     this.noteModel = cloneDeep(this.note)
+    this.noteModel.updatedAt = moment(this.note.updatedAt).format('DD/MM/YYYY HH:mm a')
+    if (!includes(this.projectIds, this.note.project)) {
+      this.note.project = null
+    }
     if (this.netConnected) {
       this.subscriptions.push(this.createEditNoteForm.valueChanges.pipe(debounceTime(500)).subscribe(data => {
         this.createEditNote()
       }));
-      this.noteModel.updatedAt = moment(this.note.updatedAt).format('DD/MM/YYYY HH:mm a')
-      if (!includes(this.projectIds, this.note.project)) {
-        this.note.project = null
-      }
     } else {
       this.showError('Edit is NOT available in offline mode; changes you make will not be saved!')
     }
