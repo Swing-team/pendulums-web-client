@@ -15,6 +15,8 @@ export class RecentActivitiesComponent implements OnInit {
   activitiesPagination: Array<Array<RecentActivityWithProject>> = [];
   activitiesPaginationIndex = 0;
 
+  private ITEMS_IN_PAGE = 3;
+
   constructor(
     private errorService: ErrorService,
   ) { }
@@ -37,7 +39,7 @@ export class RecentActivitiesComponent implements OnInit {
     let tempPageIndex = 0
     for (let index = 0; index < this.recentActivitiesWithProject.length; index++) {
       const item = this.recentActivitiesWithProject[index];
-      if (index !== 0 && index % 2 === 0) {
+      if (index !== 0 && index % this.ITEMS_IN_PAGE === 0) {
         tempPageIndex++;
       }
       if (!this.activitiesPagination[tempPageIndex]) {

@@ -10,8 +10,14 @@
   flex-grow: 2
   .ps-recent-activity
     flex-grow: 1
-    .ps-recent-activity-divider
-      margin: 0.5rem 0
+    min-width: 520px
+    align-self: center
+    @media ( max-width: 520px )
+      min-width: 320px
+  .ps-recent-activity-divider
+    margin: 8px 32px
+    background-color: $black
+    opacity: 0.4
   .ps-recent-activity-pagination
     display: flex
     justify-content: space-between

@@ -1,9 +1,11 @@
 <div class="ps-recent-activities-container">
   <ng-container *ngIf="activitiesPagination && activitiesPagination.length > 0">
-    <div *ngFor='let item of activitiesPagination[activitiesPaginationIndex]; let i = index' class="ps-recent-activity">
-      <hr *ngIf="i % 2 !== 0" class="ps-recent-activity-divider">
-      <activity-item [activity]="item.activity" [project]="item.project" [currentUser]="currentUser"></activity-item>
-    </div>
+    <ng-container *ngFor='let item of activitiesPagination[activitiesPaginationIndex]; let i = index'>
+      <div class="ps-recent-activity">
+        <activity-item [activity]="item.activity" [project]="item.project" [currentUser]="currentUser"></activity-item>
+      </div>
+      <hr *ngIf="i % 2 !== 0 || i == 0" class="ps-recent-activity-divider">
+    </ng-container>
   </ng-container>
   <div class="ps-recent-activity-pagination">
     <span class="ps-icon-back">
