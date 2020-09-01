@@ -175,7 +175,7 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   archiveNote() {
-    if (this,this.netConnected) {
+    if (this.netConnected) {
       this.note.isArchive = !this.note.isArchive
     } else {
       this.showError('This feature is NOT available offline.');
