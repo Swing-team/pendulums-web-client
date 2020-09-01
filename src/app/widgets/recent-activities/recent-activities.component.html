@@ -7,6 +7,9 @@
       <hr *ngIf="i % 2 !== 0 || i == 0" class="ps-recent-activity-divider">
     </ng-container>
   </ng-container>
+  <ng-container *ngIf="!activitiesPagination || activitiesPagination.length === 0">
+    <p class="ps-no-recent-activities">There are no recent activities!</p>
+  </ng-container>
   <div class="ps-recent-activity-pagination">
     <span class="ps-icon-back">
       <i *ngIf="activitiesPaginationIndex > 0"  (click)="prevRecentActivitiesPage()" class="icon-back"></i>
