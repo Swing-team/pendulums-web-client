@@ -18,5 +18,11 @@
         (onSelectItemChanged)="areaChartSelectItemChanged($event)"
       ></stat-chart>
     </div>
+    <div class="column is-6-widescreen is-6-desktop is-6-tablet">
+      <recent-activities
+        [recentActivitiesWithProject]="recentActivitiesWithProject"
+        [currentUser]="user$ | async"
+      ></recent-activities>
+    </div>
   </div>
 </div>

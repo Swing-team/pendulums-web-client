@@ -1,0 +1,24 @@
+@import '../../../sass/variables'
+
+.ps-recent-activities-container
+  background-color: $white1
+  border-radius: $radius
+  display: flex
+  flex-direction: column
+  height: $ps-widget-size
+  padding: 0
+  flex-grow: 2
+  .ps-recent-activity
+    flex-grow: 1
+    .ps-recent-activity-divider
+      margin: 0.5rem 0
+  .ps-recent-activity-pagination
+    display: flex
+    justify-content: space-between
+    margin-bottom: 8px
+    .ps-icon-back
+      cursor: pointer
+      margin-left: 75px
+    .ps-icon-next
+      cursor: pointer
+      margin-right: 75px

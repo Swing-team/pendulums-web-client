@@ -13,6 +13,8 @@ import { User }                         from 'app/shared/state/user/user.model';
 import { Project }                      from 'app/shared/state/project/project.model';
 import { Status }                       from 'app/shared/state/status/status.model';
 import { AreaChartInterface } from 'app/models/charts-model/area-chart-model';
+import { Projects } from 'app/shared/state/project/projects.model';
+import { RecentActivityWithProject } from 'app/widgets/recent-activities/model/recent-activities-with-project.model';
 
 @Component({
   selector: 'dashboard',
@@ -25,6 +27,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   user$: Observable<User>;
   status$: Observable<Status>;
   recentProjects: Project[];
+  projects$: Observable<Projects>;
+  recentActivitiesWithProject: RecentActivityWithProject[] = [];
   subscriptions: Subscription[] = [];
   hasSeenInfoModal: boolean;
   selectItems: string[] = [];
@@ -38,6 +42,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     this.user$ = store.select('user');
     this.status$ = store.select('status');
+    this.projects$ = store.select('projects');
     this.hasSeenInfoModal = false;
     this.selectItems = ['last day', 'last week', 'last month', 'last 3 month', 'last year'];
   }
@@ -72,6 +77,28 @@ export class DashboardComponent implements OnInit, OnDestroy {
         })
       );
     }
+
+    this.prepareRecentActivities();
+  }
+
+  prepareRecentActivities() {
+    this.subscriptions.push(
+      this.projects$.subscribe(
+        (projects) => {
+          if (projects.entities && projects.entities['5ec1472be220fe0025786482']) {
+            this.recentActivitiesWithProject = [];
+            const project = JSON.parse(JSON.stringify(projects.entities['5ec1472be220fe0025786482']));
+            const activities = JSON.parse(JSON.stringify(projects.entities['5ec1472be220fe0025786482'].activities));
+            activities.forEach((activity) => {
+              this.recentActivitiesWithProject.push({
+                activity,
+                project,
+              });
+            });
+          }
+        }
+      ),
+    );
   }
 
   prepareRecentProjects() {

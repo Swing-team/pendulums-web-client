@@ -1,0 +1,16 @@
+<div class="ps-recent-activities-container">
+  <ng-container *ngIf="activitiesPagination && activitiesPagination.length > 0">
+    <div *ngFor='let item of activitiesPagination[activitiesPaginationIndex]; let i = index' class="ps-recent-activity">
+      <hr *ngIf="i % 2 !== 0" class="ps-recent-activity-divider">
+      <activity-item [activity]="item.activity" [project]="item.project" [currentUser]="currentUser"></activity-item>
+    </div>
+  </ng-container>
+  <div class="ps-recent-activity-pagination">
+    <span class="ps-icon-back">
+      <i *ngIf="activitiesPaginationIndex > 0"  (click)="prevRecentActivitiesPage()" class="icon-back"></i>
+    </span>
+    <span class="ps-icon-next">
+      <i *ngIf="activitiesPagination.length > 1"  (click)="nextRecentActivitiesPage()" class="icon-arrow-right"></i>
+    </span>
+  </div>
+</div>
