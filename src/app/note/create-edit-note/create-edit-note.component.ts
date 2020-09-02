@@ -84,7 +84,7 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy, AfterViewInit
         this.createEditNote()
       }));
     } else {
-      this.showError('Edit is NOT available in offline mode; changes you make will not be saved!')
+      this.showError('Edit is not available in offline mode; changes you make will not be saved!')
     }
   }
 
@@ -101,7 +101,7 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy, AfterViewInit
     if (this.netConnected) {
       this.createEditNote();
     } else {
-      this.showError('Edit is NOT available in offline mode; changes you made will not be saved!')
+      this.showError('Edit is not available in offline mode; changes you made will not be saved!')
     }
     this.subscriptions.forEach(sub => sub.unsubscribe());
     tinymce.remove();
@@ -177,7 +177,7 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy, AfterViewInit
     if (this.netConnected) {
       this.note.isArchive = !this.note.isArchive
     } else {
-      this.showError('This feature is NOT available offline.');
+      this.showError('This feature is not available offline.');
     }
   }
   showError(error) {
