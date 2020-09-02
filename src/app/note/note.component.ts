@@ -85,7 +85,7 @@ export class NoteComponent implements OnInit, OnDestroy {
         },
       });
     } else {
-      this.showError('This feature is NOT available in offline mode.');
+      this.showError('This feature is not available in offline mode.');
     }
   }
 

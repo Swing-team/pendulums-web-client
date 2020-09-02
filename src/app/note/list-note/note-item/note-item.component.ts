@@ -59,7 +59,7 @@ export class NoteItemComponent implements OnInit {
     if (this.netConnected) {
       this.deleteConfirmation = true;
     } else {
-      this.showError('This feature is Not available in offline mode.');
+      this.showError('This feature is not available in offline mode.');
     }
   }
 
