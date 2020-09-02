@@ -43,13 +43,8 @@ export default function reducer(state = initialState, action: ActionWithPayload<
     }
 
     case NotesActions.LOAD_DB_NOTES: {
-      const newPayload = action.payload.entities.map((note: Note) => {
-        note.content = converter.makeHtml(note.content);
-        return note;
-      });
-
       return {
-        entities: newPayload,
+        entities: action.payload.entities,
         sortBy: action.payload.sortBy ? action.payload.sortBy : '+date'
       };
     }
