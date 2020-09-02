@@ -17,7 +17,7 @@ export class ImgCropperComponent {
   profileData: any;
   croppedImageFile: any;
   cropperSettings: CropperSettings;
-  @ViewChild('cropper', { static: false })
+  @ViewChild('cropper')
   cropper: ImageCropperComponent;
   disableButtons = false;
 
