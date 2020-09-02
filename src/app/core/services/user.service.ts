@@ -2,7 +2,6 @@ import { Injectable }         from '@angular/core';
 import { HttpClient }         from '@angular/common/http';
 import { User }               from '../../shared/state/user/user.model';
 import { environment }        from '../../../environments/environment';
-import 'rxjs/add/operator/toPromise';
 import { SocketService } from './socket.service';
 
 @Injectable()

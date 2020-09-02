@@ -2,7 +2,7 @@ import {
   Component, EventEmitter, Inject,
   Input, Output, OnInit, OnDestroy, ViewChild, DoCheck, KeyValueDiffers
 } from '@angular/core';
-import { Observable }                       from 'rxjs/Observable';
+import { Observable ,  Subscription }                       from 'rxjs';
 import { Activity }                         from '../../shared/state/current-activity/current-activity.model';
 import { Project }                          from '../../shared/state/project/project.model';
 import { Store }                            from '@ngrx/store';
@@ -10,9 +10,9 @@ import { AppState }                         from 'app/shared/state/appState';
 import { ProjectsActions }                  from '../../shared/state/project/projects.actions';
 import { ErrorService }                     from '../error/error.service';
 import { User }                   from '../../shared/state/user/user.model';
-import { Subscription }                     from 'rxjs/Subscription';
 import { StopStartActivityService }         from '../services/stop-start-activity.service';
 import { Status }                           from '../../shared/state/status/status.model';
+import { cloneDeep }                        from 'lodash';
 
 @Component({
   selector: 'toolbar',
@@ -47,7 +47,7 @@ export class ToolbarComponent implements OnInit, OnDestroy, DoCheck  {
                private stopStartActivityService: StopStartActivityService,
                private differs: KeyValueDiffers) {
     this.selectedProject = new Project();
-    this.currentActivityCopy = new Activity();
+    this.currentActivityCopy = {} as Activity;
     this.differ = this.differs.find({}).create();
   }
 
@@ -215,7 +215,7 @@ export class ToolbarComponent implements OnInit, OnDestroy, DoCheck  {
       if (!this.taskName) {
         this.taskName = 'Untitled Activity';
       }
-      const activity = new Activity();
+      const activity: Activity = {} as Activity;
       activity.project = this.selectedProject.id;
       activity.name = this.taskName;
       activity.startedAt = Date.now().toString();

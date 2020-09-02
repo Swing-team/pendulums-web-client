@@ -3,7 +3,7 @@ import { Router, CanActivate,
   ActivatedRouteSnapshot, RouterStateSnapshot }    from '@angular/router';
 import { Store }                                          from '@ngrx/store';
 import { AppState }                                       from '../../../shared/state/appState';
-import { Observable}                                      from 'rxjs/Observable';
+import { Observable }                                      from 'rxjs';
 import { User }                                           from '../../../shared/state/user/user.model';
 
 @Injectable()

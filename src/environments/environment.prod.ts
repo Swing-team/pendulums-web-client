@@ -10,4 +10,13 @@ export const environment: AppConfig = {
   apiEndpoint: 'https://app.pendulums.io/api',
   httpOptions: { responseType: 'json' },
   imagesEndpoint: 'https://app.pendulums.io/api/images',
+
+  // ngrx runtime check
+  ngrxRuntimeCheck: { 
+    strictActionImmutability: false,
+    strictActionSerializability: false,
+    strictActionWithinNgZone: false,
+    strictStateImmutability: false,
+    strictStateSerializability: false, 
+  },
 };

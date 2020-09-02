@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, OnDestroy, Output }                   from '@angular/core';
 import { Store }                                      from '@ngrx/store';
 import { AppState }                                   from '../shared/state/appState';
-import { Observable }                                 from 'rxjs/Observable';
+import { Observable ,  Subscription }                                 from 'rxjs';
 import { User }                                       from '../shared/state/user/user.model';
 import { AppStateSelectors }                          from '../shared/state/app-state.selectors';
 import { CreateEditNoteComponent }                    from './create-edit-note/create-edit-note.component';
@@ -10,7 +10,8 @@ import { NoteService }                                from './shared/notes.servi
 import { NotesActions }                               from '../shared/state/note/notes.actions';
 import { Note }                                       from 'app/shared/state/note/note.model';
 import { Location }                                   from '@angular/common';
-import { Subscription }                               from 'rxjs/Subscription';
+import { Status }                                     from 'app/shared/state/status/status.model';
+import { ErrorService }                               from 'app/core/error/error.service';
 import * as _ from 'lodash';
 
 @Component({
@@ -27,6 +28,8 @@ export class NoteComponent implements OnInit, OnDestroy {
   projects: Observable<any>;
   archives: Array<any>;
   actives: Array<any>;
+  status: Observable<Status>;
+  netConnected: boolean;
   sortOptions = [
     {name: 'Sort by date (ascending)', value: '+date'},
     {name: 'Sort by date (descending)', value: '-date'},
@@ -42,13 +45,17 @@ export class NoteComponent implements OnInit, OnDestroy {
     private location: Location,
     private store: Store<AppState>,
     private notesActions: NotesActions,
+    private errorService: ErrorService,
   ) {
     this.notes = store.select(appStateSelectors.getNotesArray);
     this.sortBy = store.select(appStateSelectors.getNotesSortBy);
     this.projects = store.select(appStateSelectors.getProjectsArray);
+    this.status = store.select('status');
   }
 
   ngOnInit(): void {
+    this.subscriptions.push(this.status.subscribe((status: Status) => this.netConnected = status.netStatus));
+
     this.noteService.getNotes().then((notes) => {
       this.store.dispatch(this.notesActions.loadNotes(notes));
     })
@@ -69,12 +76,17 @@ export class NoteComponent implements OnInit, OnDestroy {
   }
 
   openCreateNoteModal() {
-    this.modalService.show({
-      component: CreateEditNoteComponent,
-      inputs: {
-        note: new Note()
-      },
-    });
+    if (this.netConnected) {
+      this.modalService.show({
+        component: CreateEditNoteComponent,
+        inputs: {
+          note: new Note(),
+          netConnected: this.netConnected,
+        },
+      });
+    } else {
+      this.showError('This feature is not available in offline mode.');
+    }
   }
 
   getSelectedTab(event) {
@@ -95,6 +107,12 @@ export class NoteComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subscriptions.map((subscribe) => {
       subscribe.unsubscribe()
+    });
+  }
+
+  showError(error) {
+    this.errorService.show({
+      input: error
     });
   }
 

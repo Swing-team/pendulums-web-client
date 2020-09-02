@@ -363,7 +363,7 @@ export class SwingCalendarComponent implements OnInit {
             'end': tempStartDate
           }
         }
-        this.rangeSelected.next(result);
+        this.rangeSelected.emit(result);
       }
     }
   }
@@ -406,7 +406,7 @@ export class SwingCalendarComponent implements OnInit {
         const selectedDateMili = Date.parse(`${tempMonth + 1} ${sDate.date}, ${this.currYear}`);
         const selectedDate = moment(selectedDateMili);
         if (selectedDate.isSameOrBefore(moment())) {
-          this.dateSelected.next(selectedDate);
+          this.dateSelected.emit(selectedDate);
         }
       }
     }
@@ -456,6 +456,6 @@ export class SwingCalendarComponent implements OnInit {
       }
     }
 
-    this.rangeSelected.next(result);
+    this.rangeSelected.emit(result);
   }
 }

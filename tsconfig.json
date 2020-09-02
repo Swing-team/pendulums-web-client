@@ -1,6 +1,9 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "downlevelIteration": true,
+    "importHelpers": true,
+    "module": "ESNext",
     "outDir": "./dist/out-tsc",
     "baseUrl": "src",
     "sourceMap": true,
@@ -8,13 +11,16 @@
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "target": "es6",
+    "target": "ES6",
     "typeRoots": [
       "node_modules/@types"
     ],
     "lib": [
-      "es2016",
+      "ES2018",
       "dom"
     ]
+  },
+  "angularCompilerOptions": {
+    "preserveWhitespaces": true
   }
 }

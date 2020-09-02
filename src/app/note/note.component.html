@@ -34,12 +34,12 @@
   </div>
   <div *ngIf="!selectedTab" class="columns is-multiline">
     <div *ngFor='let active of actives'  class="column is-3-widescreen is-4-desktop is-4-tablet is-6-mobile">
-      <note-item [note]="active" [projectsId]="projectsId"></note-item>
+      <note-item [note]="active" [projectsId]="projectsId" [netConnected]="netConnected"></note-item>
     </div>
   </div>
   <div class="columns is-multiline" *ngIf="selectedTab">
     <div *ngFor='let archive of archives' class="column is-3-widescreen is-4-desktop is-4-tablet is-6-mobile">
-      <note-item [note]="archive" [projectsId]="projectsId"></note-item>
+      <note-item [note]="archive" [projectsId]="projectsId" [netConnected]="netConnected"></note-item>
     </div>
   </div>
 </div>

@@ -1,6 +1,7 @@
 import { User }                 from './user.model';
 import { UserActions }          from './user.actions';
 import { ActionWithPayload }    from '../action-with-payload';
+import { cloneDeep }            from 'lodash';
 
 const initialState: User = {
   id: null,
@@ -38,6 +39,13 @@ export default function reducer(state = initialState, action: ActionWithPayload<
 
     case UserActions.CLEAR_USER: {
       return initialState;
+    }
+
+    case UserActions.UPDATE_USER_PENDING_INVITATIONS: {
+      const newState = cloneDeep(state);
+      const invitationIndex = newState.pendingInvitations.findIndex(invitedProject => invitedProject.id === action.payload);
+      newState.pendingInvitations.splice(invitationIndex, 1);
+      return newState;
     }
 
     default: {

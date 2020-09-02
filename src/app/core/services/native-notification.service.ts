@@ -18,7 +18,7 @@ export class NativeNotificationService {
         }
         const notification = new _Notification(message, options);
 
-      } else if (_Notification.permission !== 'denied' || _Notification.permission === 'default') {
+      } else if (_Notification.permission === 'default') {
         _Notification.requestPermission((permission) => {
           if (permission === 'granted') {
             const notification = new _Notification(message);
@@ -31,8 +31,7 @@ export class NativeNotificationService {
   getPermission() {
     if ('Notification' in window) {
       const _Notification = window['Notification'];
-      if ((_Notification.permission !== 'denied' || _Notification.permission === 'default') &&
-       _Notification.permission !== 'granted') {
+      if (_Notification.permission === 'default') {
         _Notification.requestPermission();
        }
     }

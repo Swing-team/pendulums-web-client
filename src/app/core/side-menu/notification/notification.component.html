@@ -1,21 +1,21 @@
 <div class="box">
   <article class="media">
     <div class="media-content">
-      <div *ngIf="isUpdateAvalable">
+      <div *ngIf="isUpdateAvailable">
         <div class="content has-text-centered">
           <p>
             <span class="icon-info-circled-alt ps-update-icon"></span>
             a new version of Pendulums is available. you can download it from <b><a href="https://pendulums.io/"
               target="_blank" class="ps-link">Here</a></b>.
           </p>
-          <hr *ngIf="pendingInvitations != 0">
+          <hr *ngIf="!user.pendingInvitations || user.pendingInvitations.length !== 0">
         </div>
       </div>
-      <div class="content has-text-centered" *ngFor='let project of pendingInvitations;trackBy:let i = index'>
-        <app-invite-notif [project]="project"></app-invite-notif>
-        <hr *ngIf="i+1 != pendingInvitations.length">
+      <div class="content has-text-centered" *ngFor='let project of user.pendingInvitations;trackBy:let i = index'>
+        <app-invite-notif [project]="project" [pendingInvitations]="user.pendingInvitations"></app-invite-notif>
+        <hr *ngIf="i+1 != user.pendingInvitations.length">
       </div>
-      <div class="content has-text-centered" *ngIf="pendingInvitations.length == 0 && !isUpdateAvalable">
+      <div class="content has-text-centered" *ngIf="user.pendingInvitations.length == 0 && !isUpdateAvailable">
         <p>
         You don't have any new notification!
         </p>

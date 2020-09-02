@@ -12,17 +12,15 @@ import { VERSION }                       from 'environments/version';
   styleUrls: ['./notification.component.sass'],
 })
 export class NotificationComponent implements OnInit {
-  pendingInvitations: Array<object>;
   @Input() user: User;
   @Output() clickedOutSideOfNotification = new EventEmitter();
-  isUpdateAvalable: boolean;
+  isUpdateAvailable: boolean;
 
   constructor (private ref: ElementRef,
                private appService: AppService) {}
   ngOnInit() {
-    this.pendingInvitations = this.user.pendingInvitations;
     this.appService.getAppVersion().then((version) => {
-      this.isUpdateAvalable = version > VERSION;
+      this.isUpdateAvailable = version > VERSION;
     })
   }
 

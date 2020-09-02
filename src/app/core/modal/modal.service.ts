@@ -1,7 +1,7 @@
 import { ComponentFactoryResolver, Injectable,
          ViewContainerRef, ApplicationRef, ComponentRef }         from '@angular/core';
 import { ModalComponent }                           from './modal.component';
-import { Subscription }                             from 'rxjs/Subscription';
+import { Subscription }                             from 'rxjs';
 
 @Injectable()
 export class ModalService {

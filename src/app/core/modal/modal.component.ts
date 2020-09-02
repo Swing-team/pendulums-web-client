@@ -12,7 +12,7 @@ export class ModalComponent {
   @Input() customBodyStyles: Object;
   @Output() close = new EventEmitter();
   // used in modal service
-  @ViewChild('contentContainer', { read: ViewContainerRef }) contentContainer: ViewContainerRef;
+  @ViewChild('contentContainer', { read: ViewContainerRef, static: true }) contentContainer: ViewContainerRef;
 
   constructor(location: PlatformLocation) {
     // TODO: Ashkan 7/17/2018 :

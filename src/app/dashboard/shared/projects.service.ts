@@ -3,7 +3,6 @@ import { HttpClient }           from '@angular/common/http';
 import { Project }              from '../../shared/state/project/project.model';
 import { SocketService }        from '../../core/services/socket.service';
 import { environment }          from '../../../environments/environment';
-import 'rxjs/add/operator/toPromise';
 
 
 @Injectable()

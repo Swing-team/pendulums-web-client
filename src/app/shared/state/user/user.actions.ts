@@ -2,6 +2,7 @@ import { Injectable }           from '@angular/core';
 import { Action }               from '@ngrx/store';
 import { User, Settings }                 from './user.model';
 import { ActionWithPayload }    from '../action-with-payload';
+import { Project } from '../project/project.model';
 
 @Injectable()
 export class UserActions {
@@ -10,6 +11,7 @@ export class UserActions {
   static UPDATE_USER_NAME = 'UPDATE_USER_NAME';
   static UPDATE_USER_IMAGE = 'UPDATE_USER_IMAGE';
   static UPDATE_USER_SETTINGS = 'UPDATE_USER_SETTINGS';
+  static UPDATE_USER_PENDING_INVITATIONS = 'UPDATE_USER_PENDING_INVITATIONS';
 
   loadUser(user: User): ActionWithPayload<User> {
     return {
@@ -36,6 +38,13 @@ export class UserActions {
     return {
       type: UserActions.UPDATE_USER_SETTINGS,
       payload: userSettings
+    };
+  }
+
+  updateUserInvitations(invitedProjectId: string):ActionWithPayload<string> {
+    return {
+      type: UserActions.UPDATE_USER_PENDING_INVITATIONS,
+      payload: invitedProjectId,
     };
   }
 

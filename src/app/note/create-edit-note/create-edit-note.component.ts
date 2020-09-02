@@ -1,12 +1,12 @@
 import {Component, OnInit, Input, OnDestroy, AfterViewInit, Host, ViewChild, HostListener } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable ,  Subscription } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 import { Project } from '../../shared/state/project/project.model';
 import { NoteService } from '../shared/notes.service';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '../../shared/state/appState';
 import { AppStateSelectors } from '../../shared/state/app-state.selectors';
-import { Subscription } from 'rxjs/Subscription';
 import { Note } from 'app/shared/state/note/note.model';
 import { ErrorService }                 from '../../core/error/error.service';
 import { ModalService }                               from '../../core/modal/modal.service';
@@ -30,10 +30,11 @@ import { cloneDeep, includes }                from 'lodash';
 })
 
 export class CreateEditNoteComponent implements OnInit, OnDestroy, AfterViewInit {
-  @ViewChild('createEditNoteForm') createEditNoteForm;
-  @ViewChild('noteCreatePalette') noteCreatePalette;
+  @ViewChild('createEditNoteForm', { static: true }) createEditNoteForm;
+  @ViewChild('noteCreatePalette', { static: true }) noteCreatePalette;
   @Input() loadingBtn = false;
   @Input() note: Note;
+  @Input() netConnected: boolean;
   projects: Observable<Project[]>;
   projectsCopy: Project[];
   private subscriptions: Subscription[] = [];
@@ -43,7 +44,7 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy, AfterViewInit
   projectIds: Array<any> = [];
   codeSampleDialogHeight = window.innerHeight * 0.8
 
-  constructor(@Host() parent: ModalService,
+  constructor(
     private modalService: ModalService,
     private store: Store<AppState>,
     private notesActions: NotesActions,
@@ -71,14 +72,19 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy, AfterViewInit
       this.projectsCopy.map(project => {
         this.projectIds.push(project.id)
       })
-    }))
-    this.subscriptions.push(this.createEditNoteForm.valueChanges.debounceTime(500).subscribe(data => {
-      this.createEditNote()
-    }))
+    }));
+    
     this.noteModel = cloneDeep(this.note)
     this.noteModel.updatedAt = moment(this.note.updatedAt).format('DD/MM/YYYY HH:mm a')
     if (!includes(this.projectIds, this.note.project)) {
       this.note.project = null
+    }
+    if (this.netConnected) {
+      this.subscriptions.push(this.createEditNoteForm.valueChanges.pipe(debounceTime(500)).subscribe(data => {
+        this.createEditNote()
+      }));
+    } else {
+      this.showError('Edit is not available in offline mode; changes you make will not be saved!')
     }
   }
 
@@ -92,7 +98,11 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   ngOnDestroy(): void {
-    this.createEditNote();
+    if (this.netConnected) {
+      this.createEditNote();
+    } else {
+      this.showError('Edit is not available in offline mode; changes you made will not be saved!')
+    }
     this.subscriptions.forEach(sub => sub.unsubscribe());
     tinymce.remove();
   }
@@ -101,27 +111,29 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy, AfterViewInit
     if (this.note.title === '' && this.note.content === '') {
       return
     }
-    this.loadingBtn = true;
-    if (this.note.id) {
-      this.noteService.update({note: this.note}).then((note) => {
-        this.store.dispatch(this.notesActions.updateNote(note));
-        this.loadingBtn = false;
-        this.noteModel.updatedAt = moment(note.updatedAt).format('DD/MM/YYYY HH:mm a')
-      })
-        .catch(error => {
-          this.showError('Server communication error');
+    if (this.netConnected) {
+      this.loadingBtn = true;
+      if (this.note.id) {
+        this.noteService.update({note: this.note}).then((note) => {
+          this.store.dispatch(this.notesActions.updateNote(note));
           this.loadingBtn = false;
-        });
-    } else {
-        this.noteService.create({note: this.note}).then((note) => {
-          this.store.dispatch(this.notesActions.addNote(note));
-          this.note = note as Note
-          this.loadingBtn = false;
-      })
-        .catch(error => {
-          this.showError('Server communication error');
-          this.loadingBtn = false;
-        });
+          this.noteModel.updatedAt = moment(note.updatedAt).format('DD/MM/YYYY HH:mm a')
+        })
+          .catch(error => {
+            this.showError('Server communication error');
+            this.loadingBtn = false;
+          });
+      } else {
+          this.noteService.create({note: this.note}).then((note) => {
+            this.store.dispatch(this.notesActions.addNote(note));
+            this.note = cloneDeep(note);
+            this.loadingBtn = false;
+        })
+          .catch(error => {
+            this.showError('Server communication error');
+            this.loadingBtn = false;
+          });
+      }
     }
   }
 
@@ -162,7 +174,11 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   archiveNote() {
-    this.note.isArchive = !this.note.isArchive
+    if (this.netConnected) {
+      this.note.isArchive = !this.note.isArchive
+    } else {
+      this.showError('This feature is not available offline.');
+    }
   }
   showError(error) {
     this.errorService.show({

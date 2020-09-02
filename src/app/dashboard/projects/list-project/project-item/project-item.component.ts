@@ -5,7 +5,7 @@ import {
 import { Project }                            from '../../../../shared/state/project/project.model';
 import { Store }                              from '@ngrx/store';
 import { AppState }                           from '../../../../shared/state/appState';
-import { Observable }                         from 'rxjs/Observable';
+import { Observable ,  Subscription }                         from 'rxjs';
 import { Activity }                           from '../../../../shared/state/current-activity/current-activity.model';
 import { ModalService }                       from '../../../../core/modal/modal.service';
 import { ProjectSettingsModalComponent }      from 'app/dashboard/projects/settings/modal/project-settings-modal.component';
@@ -14,10 +14,10 @@ import { Router }                             from '@angular/router';
 import { ErrorService }                       from '../../../../core/error/error.service';
 import { Status }                             from '../../../../shared/state/status/status.model';
 import { Md5 }                                from 'ts-md5/dist/md5';
-import { Subscription }                       from 'rxjs/Subscription';
 import { StopStartActivityService }           from '../../../../core/services/stop-start-activity.service';
 import { userInProject }                      from '../../../shared/utils';
 import { environment }                        from '../../../../../environments/environment';
+import { cloneDeep }                          from 'lodash';
 
 @Component({
   selector: 'project-item',
@@ -38,7 +38,7 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
   environment = environment;
 
   private currentActivityCopy: Activity;
-  private taskName: string;
+  taskName: string;
   private activity: Activity;
   private subscriptions: Array<Subscription> = [];
 
@@ -93,7 +93,7 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
     if (!this.taskName) {
       this.taskName = 'Untitled Activity';
     }
-    this.activity = new Activity();
+    this.activity = {} as Activity;
     this.activity.name = this.taskName;
     this.activity.startedAt = Date.now().toString();
     // we need two below fields for offline logic
@@ -207,10 +207,12 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
 
   showSettings() {
     if (this.status.netStatus) {
+      // HACK: make a clone of project because we change it settings and dispatch it.
+      const project = cloneDeep(this.project);
       this.modalService.show({
         component: ProjectSettingsModalComponent,
         inputs: {
-          project: this.project,
+          project,
           user: this.user,
           projectIdInCurrentActivity: this.currentActivityCopy.project
         }

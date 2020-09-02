@@ -13,8 +13,7 @@ import { UserService }                      from '../core/services/user.service'
 import { ModalService }                     from '../core/modal/modal.service';
 import { ImgCropperComponent }              from './image-cropper/image-cropper.component';
 import { Md5 }                              from 'ts-md5/dist/md5';
-import { Observable }                       from 'rxjs/Observable';
-import { Subscription }                     from 'rxjs/Subscription';
+import { Observable ,  Subscription }                       from 'rxjs';
 import { NativeNotificationService }        from '../core/services/native-notification.service';
 import { Location }                         from '@angular/common';
 import { DeleteAccountComponent } from './delete-account/delete-account.component';
@@ -56,13 +55,6 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
                private location: Location,
                private modalService: ModalService,
                private nativeNotificationService: NativeNotificationService) {
-    this.subscriptions.push(store.select('user').subscribe((user: User) => {
-      this.user = user;
-      this.userEdit = _.cloneDeep(user);
-      if (user.email) {
-        this.emailHash = Md5.hashStr(user.email);
-      }
-    }));
     this.status = store.select('status');
   }
 
@@ -279,10 +271,10 @@ export class ProfileSettingComponent implements OnInit, OnDestroy {
 
   validationPassword(User): boolean {
     if (!User.newPassword) {
-      this.showError('New password should NOT be empty');
+      this.showError('New password should not be empty');
       return false;
     } else if (!User.oldPassword) {
-      this.showError('Old password should NOT be empty');
+      this.showError('Old password should not be empty');
       return false;
     } else if (User.newPassword.length < 6 || User.newPassword.length > 32) {
       this.showError('The password length must be between 6 and 32 characters');
