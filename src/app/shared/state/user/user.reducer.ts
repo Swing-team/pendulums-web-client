@@ -38,7 +38,7 @@ export default function reducer(state = initialState, action: ActionWithPayload<
     }
 
     case UserActions.CLEAR_USER: {
-      return cloneDeep(initialState);
+      return initialState;
     }
 
     case UserActions.UPDATE_USER_PENDING_INVITATIONS: {
