@@ -3,7 +3,7 @@ import { Notes }           from './notes.model';
 import { ActionWithPayload }  from '../action-with-payload';
 import { values }             from 'lodash';
 import { Note } from './note.model';
-import { findIndex, reduce }             from 'lodash';
+import { findIndex }             from 'lodash';
 import { cloneDeep } from 'lodash';
 import  showdown from 'showdown';
 
@@ -31,20 +31,25 @@ const converter = new showdown.Converter({
 export default function reducer(state = initialState, action: ActionWithPayload<any>) {
   switch (action.type) {
     case NotesActions.LOAD_NOTES: {
-      reduce(action.payload, function (result, note) {
-        note = cloneDeep(note);
-        note.content = converter.makeHtml(note.content)
-        return action.payload;
-      }, {});
+      const newPayload = action.payload.map((note: Note) => {
+        note.content = converter.makeHtml(note.content);
+        return note;
+      });
+      
       return {
-        entities: action.payload,
+        entities: newPayload,
         sortBy: state.sortBy ? state.sortBy : '+date'
       };
     }
 
     case NotesActions.LOAD_DB_NOTES: {
+      const newPayload = action.payload.entities.map((note: Note) => {
+        note.content = converter.makeHtml(note.content);
+        return note;
+      });
+
       return {
-        entities: action.payload.entities,
+        entities: newPayload,
         sortBy: action.payload.sortBy ? action.payload.sortBy : '+date'
       };
     }
