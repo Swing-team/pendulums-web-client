@@ -11,6 +11,7 @@ import { ActivityService } from 'app/core/services/activity.service';
 import { Activity } from 'app/shared/state/current-activity/current-activity.model';
 import { BarChartInterface } from 'app/widgets/stat-chart/charts-models/bar-chart.model';
 import { AreaChartInterface } from 'app/models/charts-model/area-chart-model';
+import { RecentActivityWithProject } from 'app/widgets/recent-activities/model/recent-activities-with-project.model';
 
 @Component({
   selector: 'project-dashboard',
@@ -29,6 +30,7 @@ export class ProjectDashboardComponent implements OnInit, OnDestroy {
   statChartSelectedItems: string[];
   barChartData: BarChartInterface[] = [];
   areaChartData: AreaChartInterface[] = [];
+  recentActivitiesWithProject: RecentActivityWithProject[] = [];
 
   constructor(
     private route: ActivatedRoute,
