@@ -21,6 +21,7 @@ import { ActivityService } from 'app/core/services/activity.service';
 import { ModalService } from 'app/core/modal/modal.service';
 import { ErrorService } from 'app/core/error/error.service';
 import { PageLoaderService } from 'app/core/services/page-loader.service';
+import { RecentActivityWithProject } from 'app/widgets/recent-activities/model/recent-activities-with-project.model';
 
 type ActivityWithIsActive = Activity & {isActive?: boolean};
 
@@ -47,9 +48,7 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
   // we need copy of currentActivity to show it in list of activities if it is belong to current project
   currentActivityCopy: ActivityWithIsActive;
   currentActivities: Array<ActivityWithIsActive> = [];
-  currentActivitiesCopy: Array<ActivityWithIsActive> = [];
-  currentActivitiesPagination: Array<Array<ActivityWithIsActive>> = [];
-  currentActivitiesPaginationIndex = 0;
+  currentActivitiesWithProject: RecentActivityWithProject[] = [];
   userAccess = false;
   selectedUsers = [];
   selectedItemIndex = [];
@@ -143,6 +142,15 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
           }
           this.currentActivityCopy = null;
         }
+        this.currentActivitiesWithProject = [];
+        this.currentActivities.forEach(currentActivity => {
+          this.currentActivitiesWithProject.push(
+            {
+              activity: currentActivity,
+              project: this.project,
+            }
+          );
+        });
       }));
     };
   }
@@ -306,20 +314,6 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
         userCurrentActivity.isActive = true;
         return userCurrentActivity;
       });
-      this.currentActivitiesCopy = _.cloneDeep(this.currentActivities);
-      this.currentActivitiesPagination = [];
-      this.currentActivitiesPaginationIndex = 0;
-      let tempPageIndex = 0
-      for (let index = 0; index < this.currentActivitiesCopy.length; index++) {
-        const activity = this.currentActivitiesCopy[index];
-        if (index !== 0 && index % 2 === 0) {
-          tempPageIndex++;
-        }
-        if (!this.currentActivitiesPagination[tempPageIndex]) {
-          this.currentActivitiesPagination[tempPageIndex] = new Array<ActivityWithIsActive>();
-        }
-        this.currentActivitiesPagination[tempPageIndex].push(activity);
-      }
     });
   }
 
@@ -362,19 +356,6 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
     }
   }
 
-  prevCurrentActivitiesPage() {
-    this.currentActivitiesPaginationIndex--;
-  }
-
-  nextCurrentActivitiesPage() {
-    const nextActivity = this.currentActivitiesPagination[this.currentActivitiesPaginationIndex + 1];
-    if (nextActivity && nextActivity[0] && nextActivity[0].id) {
-      this.currentActivitiesPaginationIndex++;
-    } else {
-      this.showError('There are no more current activities');
-    }
-  }
-
   calculateTimeDuration (duration) {
     let result: string;
     let x = duration / 1000;
@@ -410,7 +391,6 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
       this.selectedUsers.push(user.item.id);
     });
 
-    this.currentActivities = _.cloneDeep(this.currentActivitiesCopy);
     this.currentActivities.map((userCurrentActivity) => {
       if (this.selectedUsers.indexOf(userCurrentActivity.user) > -1) {
         userCurrentActivity.isActive = true;

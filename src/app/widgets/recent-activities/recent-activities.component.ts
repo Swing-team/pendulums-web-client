@@ -11,6 +11,9 @@ import { ErrorService } from 'app/core/error/error.service';
 export class RecentActivitiesComponent implements OnInit {
   @Input() recentActivitiesWithProject: RecentActivityWithProject[];
   @Input() currentUser: User;
+  @Input() matchHeightWithParent: boolean;
+  @Input() matchWidthWithParent: boolean;
+  @Input() emptyPlaceHolder: string;
 
   activitiesPagination: Array<Array<RecentActivityWithProject>> = [];
   activitiesPaginationIndex = 0;

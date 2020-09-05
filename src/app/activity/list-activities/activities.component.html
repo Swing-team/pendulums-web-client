@@ -11,39 +11,24 @@
     <div class="ps-activity-top-button ps-project-header-button icon-plus" (click)="openAddManuallyModal()" title="Add new activity"></div>
   </div>
 
-  <div class="columns ps-details-container">
-    <project-item
-      [project]="project"
-      [user]="user"
-      [status]="status"
-      [currentActivities]="currentActivitiesCopy"
-      isEditable="true"
-      class="column is-4-widescreen is-6-desktop is-6-tablet"
-    ></project-item>
-    <div class="column is-4-widescreen is-6-desktop is-6-tablet ps-current-activities">
-      <ng-container *ngIf="!currentActivitiesPagination.length">
-        <div class="ps-no-currents">
-          <p class="ps-no-currents-text">There are no current activities</p>
-        </div>
-      </ng-container>
-      <div class="ps-card-container">
-        <ng-container *ngIf="currentActivitiesPagination.length > 0">
-          <div *ngFor='let currentActivityOfUser of currentActivitiesPagination[currentActivitiesPaginationIndex]; let i = index' class="ps-current-container">
-            <div *ngIf='currentActivityOfUser.isActive'>
-              <hr class="ps-current-divider" *ngIf="i % 2 !== 0">
-              <activity-item [activity]="currentActivityOfUser" [project]="project" [currentUser]="user"></activity-item>
-            </div>
-          </div>
-        </ng-container>
-        <div class="ps-current-activity-pagination">
-          <span class="ps-icon-back">
-            <i *ngIf="currentActivitiesPaginationIndex > 0"  (click)="prevCurrentActivitiesPage()" class="icon-back"></i>
-          </span>
-          <span class="ps-icon-next">
-            <i *ngIf="currentActivitiesPagination.length > 1"  (click)="nextCurrentActivitiesPage()" class="icon-arrow-right"></i>
-          </span>
-        </div>
-      </div>
+  <div class="columns is-multiline ps-details-container">
+    <div class="column is-4-widescreen is-6-desktop is-6-tablet is-12-mobile">
+      <project-item
+        [project]="project"
+        [user]="user"
+        [status]="status"
+        [currentActivities]="currentActivities"
+        isEditable="true"
+      ></project-item>
+    </div>
+    <div class="column is-4-widescreen is-6-desktop is-6-tablet is-12-mobile ps-current-activities">
+      <recent-activities
+        [recentActivitiesWithProject]="currentActivitiesWithProject"
+        [currentUser]="user"
+        [matchHeightWithParent]="true"
+        [matchWidthWithParent]="true"
+        emptyPlaceHolder="There are no current activities!"
+      ></recent-activities>
     </div>
   </div>
   
