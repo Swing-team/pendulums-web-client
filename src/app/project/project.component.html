@@ -1,3 +1,5 @@
+<top-bar title="Projects" [showDonationButton]="true"></top-bar>
+
 <div class="container ps-projects-padding">
   <list-of-project [serverMessage]=serverMessage [projects]="projects$ | async" [sortBy]="sortBy$ | async" [user]="user$" [status]="status$ | async" [currentActivity]="currentActivity$"></list-of-project>
 </div>
