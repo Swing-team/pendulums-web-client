@@ -11,11 +11,13 @@ import { ProjectService } from './project.service';
 import { SharedModule } from 'app/shared/shared.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ProjectDashboardComponent } from './project-dashboard/project-dashboard.component';
+import { WidgetsModule } from 'app/widgets/widgets.module';
 
 @NgModule({
   imports: [
     SharedModule,
     BrowserAnimationsModule,
+    WidgetsModule,
   ],
   exports: [],
   declarations: [

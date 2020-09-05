@@ -1,0 +1,14 @@
+@import '../../../sass/variables'
+
+.ps-project-dashboard-padding
+  padding-top: calc( 20px  +  #{$toolbar-size})
+  padding-bottom: 20px
+  @media (max-width: $ps-small-screen-size)
+    padding-left: 0
+    padding-right: 0
+  @media (max-width: 770px) and (min-width: 420px)
+    padding-left: 15px
+    padding-right: 15px
+  @media (min-width: 770px)
+    padding-left: 20px
+    padding-right: 20px
