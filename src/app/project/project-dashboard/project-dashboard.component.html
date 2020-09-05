@@ -11,5 +11,16 @@
         isEditable="true"
       ></project-item>
     </div>
+
+    <div class="column is-6-widescreen is-6-desktop is-6-tablet">
+      <stat-chart
+        [selectItems]="statChartSelectedItems"
+        [chartType]="isOwnerOrAdmin ? 'bar' : 'area'"
+        [barChartData]="barChartData"
+        [areaChartData]="areaChartData"
+        [yAxisTickFormatting]="trimYAxis"
+        (onSelectItemChanged)="barChartSelectItemChanged($event)"
+      ></stat-chart>
+    </div>
   </div>
 </div>
