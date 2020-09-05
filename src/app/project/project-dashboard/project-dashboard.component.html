@@ -19,7 +19,7 @@
         [barChartData]="barChartData"
         [areaChartData]="areaChartData"
         [yAxisTickFormatting]="trimYAxis"
-        (onSelectItemChanged)="barChartSelectItemChanged($event)"
+        (onSelectItemChanged)="ChartSelectItemChanged($event)"
       ></stat-chart>
     </div>
 
@@ -28,6 +28,14 @@
         [recentActivitiesWithProject]="recentActivitiesWithProject"
         [currentUser]="user$ | async"
       ></recent-activities>
+    </div>
+
+    <div class="column is-6-widescreen is-6-desktop is-6-tablet">
+      <recent-notes
+        [notes]="recentNotes"
+        [netConnected]="(status$ | async).netStatus"
+        [projectsId]="projectsId"
+      ></recent-notes>
     </div>
   </div>
 </div>

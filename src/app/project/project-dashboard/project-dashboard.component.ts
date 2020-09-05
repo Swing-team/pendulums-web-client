@@ -12,6 +12,8 @@ import { Activity } from 'app/shared/state/current-activity/current-activity.mod
 import { BarChartInterface } from 'app/widgets/stat-chart/charts-models/bar-chart.model';
 import { AreaChartInterface } from 'app/models/charts-model/area-chart-model';
 import { RecentActivityWithProject } from 'app/widgets/recent-activities/model/recent-activities-with-project.model';
+import { Note } from 'app/shared/state/note/note.model';
+import { AppStateSelectors } from 'app/shared/state/app-state.selectors';
 
 @Component({
   selector: 'project-dashboard',
@@ -22,6 +24,8 @@ import { RecentActivityWithProject } from 'app/widgets/recent-activities/model/r
 export class ProjectDashboardComponent implements OnInit, OnDestroy {
   project: Project;
   projectId: string;
+  projects$: Observable<any>;
+  projectsId: Object = {};
   subscriptions: Subscription[] = [];
   user$: Observable<User>;
   status$: Observable<Status>;
@@ -31,15 +35,18 @@ export class ProjectDashboardComponent implements OnInit, OnDestroy {
   barChartData: BarChartInterface[] = [];
   areaChartData: AreaChartInterface[] = [];
   recentActivitiesWithProject: RecentActivityWithProject[] = [];
+  recentNotes: Note[];
 
   constructor(
     private route: ActivatedRoute,
     private projectService: ProjectService,
     private activityService: ActivityService,
+    private appStateSelectors: AppStateSelectors,
     private store: Store<AppState>,
   ) {
     this.user$ = this.store.select('user');
     this.status$ = this.store.select('status');
+    this.projects$ = store.select(this.appStateSelectors.getProjectsArray)
     this.statChartSelectedItems = ['last day', 'last week', 'last month', 'last 3 month', 'last year'];
   }
 
@@ -67,6 +74,10 @@ export class ProjectDashboardComponent implements OnInit, OnDestroy {
         this.currentActivities = currentActivities;
       });
     }));
+
+    this.subscriptions.push(this.projects$.subscribe((params: any) => {
+      this.projectsId = params.reduce((obj, project) => ({...obj, [project.id]: project.name}), {})
+    }));
   }
   
   ngOnDestroy() {
@@ -75,7 +86,7 @@ export class ProjectDashboardComponent implements OnInit, OnDestroy {
     });
   }
 
-  barChartSelectItemChanged(event: {index: number; selectedItem: string}) {
+  ChartSelectItemChanged(event: {index: number; selectedItem: string}) {
     // TODO: make the proper response.
   }
 
