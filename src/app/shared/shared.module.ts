@@ -13,6 +13,7 @@ import { SafeHtmlPipe } from '../shared/pipes/sanitizeHtmlPipe.pipe';
 import { TopBarComponent } from './top-bar/top-bar.component';
 import { ProjectItemComponent } from './project-item/project-item.component';
 import { ActivityItemComponent } from './activity-item/activity-item.component';
+import { NoteItemComponent } from './note-item/note-item.component';
 
 @NgModule({
   imports:      [ CommonModule ],
@@ -26,6 +27,7 @@ import { ActivityItemComponent } from './activity-item/activity-item.component';
     TabComponent,
     ProjectItemComponent,
     ActivityItemComponent,
+    NoteItemComponent,
     SafeHtmlPipe
   ],
   exports:      [
@@ -41,6 +43,7 @@ import { ActivityItemComponent } from './activity-item/activity-item.component';
     TabComponent,
     ProjectItemComponent,
     ActivityItemComponent,
+    NoteItemComponent,
     SafeHtmlPipe
   ],
   providers:    [  ],

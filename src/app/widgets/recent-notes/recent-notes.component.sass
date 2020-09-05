@@ -1,0 +1,41 @@
+@import '../../../sass/variables'
+
+.ps-recent-notes-container
+  background-color: $white1
+  border-radius: $radius
+  display: flex
+  flex-direction: column
+  height: $ps-widget-size
+  padding: 0
+  flex-grow: 2
+
+  .ps-no-recent-notes
+    margin-top: auto
+    margin-bottom: auto
+    font-weight: bold
+    color: $primary
+    font-size: 18px
+
+  .ps-recent-notes-footer
+    display: flex
+    justify-content: space-between
+    align-items: flex-end
+    
+    .ps-new-note
+      display: flex
+      justify-content: center
+      align-items: center
+      padding: 4px
+      padding-right: 8px
+      margin-left: 24px
+      margin-bottom: 12px
+      font-weight: bold
+    
+    .ps-more-notes
+      display: flex
+      justify-content: center
+      align-items: center
+      padding: 4px
+      margin-right: 24px
+      margin-bottom: 12px
+      font-weight: bold

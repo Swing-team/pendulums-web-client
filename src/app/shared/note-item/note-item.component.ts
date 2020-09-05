@@ -1,13 +1,13 @@
 import { Component, OnInit, Input, ViewEncapsulation }                   from '@angular/core';
 import { Store }                                      from '@ngrx/store';
-import { Note }                                       from '../../../shared/state/note/note.model';
-import { NoteService }                                from '../../shared/notes.service';
-import { ErrorService }                               from '../../../core/error/error.service';
-import { AppState }                                   from '../../../shared/state/appState';
-import { NotesActions }                               from '../../../shared/state/note/notes.actions';
-import { ModalService }                               from '../../../core/modal/modal.service';
-import { CreateEditNoteComponent }                    from '../../create-edit-note/create-edit-note.component';
+import { Note }                                       from '../../shared/state/note/note.model';
+import { ErrorService }                               from '../../core/error/error.service';
+import { AppState }                                   from '../../shared/state/appState';
+import { NotesActions }                               from '../../shared/state/note/notes.actions';
+import { ModalService }                               from '../../core/modal/modal.service';
 import { cloneDeep }                                  from 'lodash';
+import { NoteService }                                from 'app/note/shared/notes.service';
+import { CreateEditNoteComponent }                    from 'app/note/create-edit-note/create-edit-note.component';
 
 
 

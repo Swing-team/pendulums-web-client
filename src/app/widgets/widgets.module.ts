@@ -5,6 +5,7 @@ import { AppRoutingModule } from 'app/app-routing.module';
 import { StatChartComponent } from './stat-chart/stat-chart.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { RecentActivitiesComponent } from './recent-activities/recent-activities.component';
+import { RecentNotesComponent } from './recent-notes/recent-notes.component';
 
 @NgModule({
   imports: [
@@ -16,11 +17,13 @@ import { RecentActivitiesComponent } from './recent-activities/recent-activities
     RecentProjectsComponent,
     StatChartComponent,
     RecentActivitiesComponent,
+    RecentNotesComponent,
   ],
   exports: [
     RecentProjectsComponent,
     StatChartComponent,
     RecentActivitiesComponent,
+    RecentNotesComponent,
   ],
   providers: [],
 })
