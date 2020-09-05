@@ -3,10 +3,21 @@
     <p class="ps-no-recent-notes">There are no recent notes!</p>
   </ng-container>
   <ng-container *ngIf="notes && notes.length > 0">
-    <!-- TODO: implement todo design-->
+    <div class="columns ps-notes-container">
+      <ng-container *ngFor="let note of notes; let i = index">
+        <div *ngIf="i < 2" class="column is-6">
+          <note-item *ngIf="note && note.id"
+            [note]="note"
+            [setFullHeight]="true"
+            [netConnected]="true"
+            [projectsId]="projectsId"
+          ></note-item>
+        </div>
+      </ng-container>
+    </div>
   </ng-container>
   <div class="ps-recent-notes-footer">
-    <a class="ps-new-note"><i class="icon-plus"></i> New Note</a>
+    <a class="ps-new-note" (click)="showCreateEditNoteModal()"><i class="icon-plus"></i> New Note</a>
     <a class="ps-more-notes" [routerLink]="['/notes']" >More Notes</a>
   </div>
 </div>

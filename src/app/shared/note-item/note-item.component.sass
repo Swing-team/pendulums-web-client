@@ -1,14 +1,14 @@
 @import "../../../sass/variables"
 
 .ps-note-item-container
-  height: $item-size
+  height: $note-item-height
   .ps-note-item-card
-    height: $item-size
+    height: $note-item-height
     border: unset
     overflow-y: hidden
     .ps-note-item-card-content
       padding: 10px !important
-      height: $item-size
+      height: $note-item-height
       display: flex
       flex-direction: column
       cursor: pointer
@@ -141,3 +141,9 @@
   padding-top: 3px
 ::-webkit-scrollbar
   display: none
+
+.ps-full-height
+  height: 100% !important
+  max-height: 300px !important
+  @media ( max-width: 768px )
+    height: $note-item-height !important

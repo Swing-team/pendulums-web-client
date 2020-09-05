@@ -14,6 +14,8 @@ import { Project }                      from 'app/shared/state/project/project.m
 import { Status }                       from 'app/shared/state/status/status.model';
 import { AreaChartInterface } from 'app/models/charts-model/area-chart-model';
 import { RecentActivityWithProject } from 'app/widgets/recent-activities/model/recent-activities-with-project.model';
+import { Note } from 'app/shared/state/note/note.model';
+import { AppStateSelectors } from 'app/shared/state/app-state.selectors';
 
 @Component({
   selector: 'dashboard',
@@ -25,6 +27,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   user$: Observable<User>;
   status$: Observable<Status>;
+  projects$: Observable<any>;
+  projectsId: Object = {};
+  recentNotes: Note[] = [];
   recentProjects: Project[];
   recentActivitiesWithProject: RecentActivityWithProject[] = [];
   subscriptions: Subscription[] = [];
@@ -35,11 +40,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
   constructor (private store: Store<AppState>,
                private db: DatabaseService,
                private modalService: ModalService,
+               private appStateSelectors: AppStateSelectors,
                // this service needed to handle router changes so don't remove it
                private routerChangeListenerService: RouterChangeListenerService) {
 
     this.user$ = store.select('user');
     this.status$ = store.select('status');
+    this.projects$ = store.select(this.appStateSelectors.getProjectsArray)
     this.hasSeenInfoModal = false;
     this.selectItems = ['last day', 'last week', 'last month', 'last 3 month', 'last year'];
   }
@@ -76,6 +83,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     this.prepareRecentActivities();
+    this.prepareRecentProjects();
+    this.prepareRecentNotes();
   }
 
   prepareRecentActivities() {
@@ -84,6 +93,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   prepareRecentProjects() {
     // TODO: We need to call a service to get recent projects in here
+  }
+
+  prepareRecentNotes() {
+    this.subscriptions.push(this.projects$.subscribe((params: any) => {
+      this.projectsId = params.reduce((obj, project) => ({...obj, [project.id]: project.name}), {})
+    }));
+    // TODO: we need to call a service to get recent notes in here
   }
 
   areaChartSelectItemChanged(event: {index: number; selectedItem: string}) {

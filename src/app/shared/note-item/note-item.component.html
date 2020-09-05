@@ -5,9 +5,11 @@
                   'ps-back-yellow': note.colorPalette == 4,
                   'ps-back-pink': note.colorPalette == 5,
                   'ps-back-red': note.colorPalette == 6,
-                  'ps-back-green': note.colorPalette == 7}" class="ps-note-item-container">
-  <div class="card ps-note-item-card">
-    <div class="card-content ps-note-item-card-content">
+                  'ps-back-green': note.colorPalette == 7,
+                  'ps-full-height': setFullHeight
+                }" class="ps-note-item-container">
+  <div class="card ps-note-item-card" [ngClass]="{'ps-full-height': setFullHeight}">
+    <div class="card-content ps-note-item-card-content" [ngClass]="{'ps-full-height': setFullHeight}">
       <div (click)="editModal()" class="ps-note-item-card-content-media">
         <div class="ps-note-item-card-title">{{note.title}}</div>
       </div>

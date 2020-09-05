@@ -24,6 +24,7 @@ export class NoteItemComponent implements OnInit {
   @Input() projectsId;
   @Input() deleteButtonDisabled: boolean;
   @Input() netConnected: boolean;
+  @Input() setFullHeight: boolean;
   deleteConfirmation = false;
   constructor(
     private modalService: ModalService,
