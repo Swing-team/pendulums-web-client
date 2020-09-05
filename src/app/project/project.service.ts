@@ -21,7 +21,7 @@ export class ProjectService {
       .catch(this.handleError);
   }
 
-  getProject(projectId): Promise<any> {
+  getProject(projectId): Promise<Project> {
     return this.http
       .get(environment.apiEndpoint + '/projects/' + projectId, environment.httpOptions)
       .toPromise()

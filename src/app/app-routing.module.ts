@@ -13,6 +13,7 @@ import { AnonymousGuardService }        from './core/services/router-guards/anon
 import { ModalRouterGuardService }      from './core/services/router-guards/modal-router-guard.service';
 import { NotFoundComponent }            from './not-found/not-found.component';
 import { ProjectComponent }             from './project/project.component';
+import { ProjectDashboardComponent }    from './project/project-dashboard/project-dashboard.component';
 
 const appRoutes: Routes = [
   {
@@ -51,6 +52,12 @@ const appRoutes: Routes = [
     canActivate: [AuthGuardService],
     canDeactivate: [ModalRouterGuardService],
     component: ProjectComponent
+  },
+  {
+    path: 'projects/:projectId',
+    canActivate: [AuthGuardService],
+    canDeactivate: [ModalRouterGuardService],
+    component: ProjectDashboardComponent
   },
   {
     path: 'notes',

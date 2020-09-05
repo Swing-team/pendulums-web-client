@@ -207,10 +207,10 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
       this.showError('Not available in offline mode');
     }
   }
-  goToActivities(): void {
+  goToProjectDashboard(): void {
     if (!this.isEditable) {
       if (this.status.netStatus) {
-        this.router.navigate(['/activities', this.project.id]);
+        this.router.navigate(['/projects', this.project.id]);
       } else {
         this.showError('Not available in offline mode');
       }

@@ -10,6 +10,7 @@ import { ListOfProjectComponent } from './list-project/list-of-project.component
 import { ProjectService } from './project.service';
 import { SharedModule } from 'app/shared/shared.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ProjectDashboardComponent } from './project-dashboard/project-dashboard.component';
 
 @NgModule({
   imports: [
@@ -26,6 +27,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ProjectPendingInvitationsComponent,
     DangerousActionsComponent,
     ListOfProjectComponent,
+    ProjectDashboardComponent,
   ],
   providers: [
     ProjectService,
