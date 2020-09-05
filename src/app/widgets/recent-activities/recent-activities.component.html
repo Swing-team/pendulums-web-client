@@ -11,12 +11,14 @@
     <p *ngIf="!emptyPlaceHolder" class="ps-no-recent-activities">There are no recent activities!</p>
     <p *ngIf="emptyPlaceHolder" class="ps-no-recent-activities">{{ emptyPlaceHolder }}</p>
   </ng-container>
-  <div class="ps-recent-activity-pagination">
+  <div class="ps-recent-activity-footer">
+    <a class="ps-new-activities"><i class="icon-plus"></i>New Activity</a>
     <span class="ps-icon-back">
       <i *ngIf="activitiesPaginationIndex > 0"  (click)="prevRecentActivitiesPage()" class="icon-back"></i>
     </span>
     <span class="ps-icon-next">
       <i *ngIf="activitiesPagination.length > 1"  (click)="nextRecentActivitiesPage()" class="icon-arrow-right"></i>
     </span>
+    <a class="ps-more-activities">More Activities</a>
   </div>
 </div>
