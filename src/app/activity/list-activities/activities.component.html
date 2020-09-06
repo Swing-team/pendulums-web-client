@@ -33,47 +33,38 @@
   </div>
   
   <div class="pa-stuff-container" *ngIf="userAccess">
-    <div *ngIf="project" class="ps-stat-user-filter-wrapper" title="Select users">
-      <swing-select [type]="'multiSelect'"
-                    [items]="project.teamMembers"
-                    [itemTextAttribute]="['name', 'email']"
-                    (onItemClicked)="getSelectedUsers($event)"
-                    [label]="'Select Users'"
-                    [selectAllLabel]="'Select All + Members who have left'"
-                    [selectedItemIndex]="selectedItemIndex"></swing-select>
-    </div>
-  </div>
-  <div class="columns ps-activities-stat-wrapper">
-    <div class="column is-offset-1 is-10 ps-chart-column" style="background-color: white">
-      <chart *ngIf="project" [project]="project" [selectedUsers]="selectedUsers" (chartLoaded)="UpdatePageLoader(true)"
-             [parentHasActivity]="projectActivities.length > 0 ? true: false" class="ps-chart"></chart>
-      <div class="ps-import-export-container has-text-right">
-        <button class="button ps-import" [ngClass]="{'is-loading': isImporting, 'is-light': isImporting}" (click)="importActivities()">
-          <input class="ps-import-upload" id="uploadInput" type="file" accept="application/json" (change)="fileUpload($event)"/>
-          <span class="icon-import ps-import-icon"></span>
-          <span>Import (Json)</span>
+    <div class="ps-chart-calendar-wrapper">
+      <input [(ngModel)]="dateString" type="text" (focus)="showCalender()" >
+      <div class="ps-calendar-range-wrapper" *ngIf="calenderShow">
+        <button class="button is-pulled-right is-small ps-close-calender-button"
+                (click)="closeCalender()">
+          <span class="icon is-small">X</span>
         </button>
-        <div *ngIf="projectActivities.length > 0" class="dropdown ps-export is-right" [ngClass]="{'is-hoverable': !isExporting}">
-          <div class="dropdown-trigger">
-            <button class="button" [ngClass]="{'is-loading': isExporting, 'is-light': isExporting}" aria-haspopup="true" attr.aria-controls="dropdownMenu">
-              <span class="icon-export ps-export-icon"></span>
-              <span>Export</span>
-            </button>
-          </div>
-          <div class="dropdown-menu ps-export-drop-down has-text-centered" #dropdownMenu role="menu">
-            <div class="dropdown-content">
-              <a class="dropdown-item ps-export-item" (click)="exportActivitiesAsJson()">
-                Json
-              </a>
-              <a class="dropdown-item ps-export-item" (click)="exportActivitiesAsCSV()">
-                CSV
-              </a>
-            </div>
-          </div>
-        </div>
+        <swing-calendar
+          (rangeSelected)="updateDates($event)"
+          calendarType="range"
+          [startRangeInput]="fromDate"
+          [endRangeInput]="toDate - 86400000"
+        ></swing-calendar>
       </div>
     </div>
   </div>
+  
+  <div class="columns ps-activities-stat-wrapper">
+    <div class="column is-offset-1 is-10 ps-chart-column" style="background-color: white">
+      <chart *ngIf="project"
+        [project]="project"
+        [selectedUsers]="selectedUsers"
+        (chartLoaded)="UpdatePageLoader(true)"
+        [calendarUpdateEvent]="calendarUpdateEvent"
+        [fromDate]="fromDate"
+        [toDate]="toDate"
+        [parentHasActivity]="projectActivities.length > 0 ? true: false"
+        class="ps-chart"
+      ></chart>
+    </div>
+  </div>
+  
   <div class="columns">
     <div class="column is-offset-3-widescreen is-6-widescreen is-4-fullhd is-offset-4-fullhd is-6-desktop is-offset-3-desktop is-6-tablet is-offset-3-tablet ps-activities-column">
       <div *ngIf="currentActivities.length > 0 && this.selectedUsers.length > 0" class="ps-activity-item">

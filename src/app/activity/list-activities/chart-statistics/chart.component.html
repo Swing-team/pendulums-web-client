@@ -3,17 +3,6 @@
     <input type="radio" value="Group" [checked]="chartType === 'group'" (change)="changeChart('group')"> Group
     <input type="radio" value="Stack" [checked]="chartType === 'stack'" (change)="changeChart('stack')"> Stack
   </div>
-  <div class="ps-chart-calendar-wrapper">
-    <input [(ngModel)]="dateString" type="text" (focus)="showCalender()" >
-    <div class="ps-calendar-range-wrapper" *ngIf="calenderShow">
-      <button class="button is-pulled-right is-small ps-close-calender-button"
-              (click)="closeCalender()">
-        <span class="icon is-small">X</span>
-      </button>
-      <swing-calendar (rangeSelected)="updateDates($event)" calendarType="range"
-                      [startRangeInput]="fromDate" [endRangeInput]="toDate - 86400000"></swing-calendar>
-    </div>
-  </div>
   <div class="ps-ngx-chart-wrapper">
     <ngx-charts-bar-vertical-stacked class="ps-chart" *ngIf="multiLevelData.length > 0 && chartType === 'stack'"
       [results]="multiLevelData"

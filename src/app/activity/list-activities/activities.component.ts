@@ -22,6 +22,7 @@ import { ModalService } from 'app/core/modal/modal.service';
 import { ErrorService } from 'app/core/error/error.service';
 import { PageLoaderService } from 'app/core/services/page-loader.service';
 import { RecentActivityWithProject } from 'app/widgets/recent-activities/model/recent-activities-with-project.model';
+import * as moment from 'moment';
 
 type ActivityWithIsActive = Activity & {isActive?: boolean};
 
@@ -63,6 +64,11 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
   isExporting = false;
   isImporting = false;
   dataFile: any;
+  toDate: number;
+  fromDate: number;
+  dateString: string;
+  calendarUpdateEvent: any;
+  calenderShow: boolean = false;
   @ViewChild(ChartComponent)
   private ChartComponent: ChartComponent;
 
@@ -153,6 +159,8 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
         });
       }));
     };
+
+    this.calendarInit();
   }
 
   ngOnDestroy() {
@@ -485,6 +493,49 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
         this.isImporting = false;
       });
     }
+  }
+
+  calendarInit() {
+    // configure date range for first api call
+    this.fromDate = moment().subtract(7, 'days').startOf('day').valueOf();
+    this.toDate = moment().add(1, 'days').startOf('day').valueOf();
+    this.dateString = moment().subtract(7, 'days').format('MMM Do');
+    const firstIdsMonth =  moment().subtract(7, 'days').month();
+    const secondIdsMonth =  moment().month();
+    let temp = '';
+    if (firstIdsMonth === secondIdsMonth) {
+      temp = moment().format('Do');
+    } else {
+      temp = moment().format('MMM Do');
+    }
+    this.dateString = this.dateString + ' - ' + temp;
+  }
+
+  showCalender() {
+    this.calenderShow = true;
+  }
+
+  closeCalender() {
+    this.calenderShow = false;
+  }
+
+  updateDates(event) {
+    this.calendarUpdateEvent = event;
+
+    this.dateString = event.start.format('MMM Do');
+    const firstIdsMonth =  event.start.month();
+    const secondIdsMonth =  event.end.month();
+    let temp = '';
+    if (firstIdsMonth === secondIdsMonth) {
+      temp = event.end.format('Do');
+    } else {
+      temp = event.end.format('MMM Do');
+    }
+    this.dateString = this.dateString + ' - ' + temp;
+
+    this.fromDate = event.start.startOf('day').valueOf();
+    this.toDate = (event.end.add(1, 'days')).startOf('day').valueOf();
+    this.calenderShow = false;
   }
 }
 
