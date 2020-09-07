@@ -32,10 +32,14 @@
   .ps-activities-stat-wrapper
     padding-top: 20px
     margin-bottom: 0 !important
-    .ps-chart-column
-      border-radius: $radius !important
-      .ps-chart
-        display: block
+    .ps-chart-column-container
+      padding-bottom: 0
+      padding-top: 0
+      .ps-chart-column
+        background-color: $white
+        border-radius: $radius !important
+        .ps-chart
+          display: block
 
   .ps-activities-column
     padding-top: 0 !important
@@ -111,26 +115,34 @@
       font-size: 1.2rem
       line-height: 2.5rem
 
-.pa-stuff-container
+.ps-stuff-container
   display: flex
   align-items: center
-  justify-content: space-around
+  justify-content: space-between
+  background-color: $white
+  border-radius: $radius
+  min-height: 60px
+  @media ( max-width: 920px )
+    flex-direction: column
+    justify-content: center
+  
   .ps-stat-user-filter-wrapper
     margin-left: 10px
-    margin-right: 10px
-    background-color: $paper
+    background-color: $white
     max-height: 40px
-    max-width: 500px
+    max-width: 300px
     flex-grow: 1
     border-radius: $radius
+    border: 1px solid #d7d7d7
   .ps-import-export-container
-    width: 100%
+    margin-right: 10px
+    max-width: 300px
+    @media ( max-width: 920px )
+      margin-right: 0px
     @media (max-width: 470px)
       text-align: center !important
     .ps-export
       text-align: right
-      margin-top: 16px
-      margin-bottom: 5px
       .ps-export-icon
         margin-right: 8px
       .ps-export-drop-down
@@ -139,8 +151,6 @@
           padding-right: 1rem
     .ps-import
       text-align: right
-      margin-top: 16px
-      margin-bottom: 5px
       .ps-import-icon
         margin-right: 8px
       .ps-import-upload
@@ -164,6 +174,17 @@
 
 .ps-chart-calendar-wrapper
   position: relative
+  @media ( max-width: 920px )
+    margin: 20px 0
+  input
+    font-weight: 500
+    font-size: 1rem
+    text-align: center
+    color: $primary
+    border: 1px solid #d7d7d7
+    border-radius: $radius
+    min-width: 320px
+    min-height: 35px
 
 .ps-calendar-range-wrapper
   background: #fff
