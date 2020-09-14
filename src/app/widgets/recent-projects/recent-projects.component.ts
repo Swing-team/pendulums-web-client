@@ -5,6 +5,8 @@ import { Status } from 'app/shared/state/status/status.model';
 import { CreateProjectComponent } from 'app/project/create-project/create-project.component';
 import { ModalService } from 'app/core/modal/modal.service';
 import { ErrorService } from 'app/core/error/error.service';
+import { Activity } from 'app/shared/state/current-activity/current-activity.model';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'recent-projects',
@@ -16,6 +18,7 @@ export class RecentProjectsComponent implements OnInit {
   @Input() projects: Project[];
   @Input() user: User;
   @Input() status: Status;
+  @Input() currentActivity$: Observable<Activity>;
 
   constructor(
     private modalService: ModalService,

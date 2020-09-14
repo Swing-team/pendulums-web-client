@@ -16,6 +16,7 @@ import { AreaChartInterface } from 'app/models/charts-model/area-chart-model';
 import { RecentActivityWithProject } from 'app/widgets/recent-activities/model/recent-activities-with-project.model';
 import { Note } from 'app/shared/state/note/note.model';
 import { AppStateSelectors } from 'app/shared/state/app-state.selectors';
+import { Activity } from 'app/shared/state/current-activity/current-activity.model';
 
 @Component({
   selector: 'dashboard',
@@ -26,8 +27,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
   @Output() serverMessage: any;
 
   user$: Observable<User>;
+  user: User;
   status$: Observable<Status>;
-  projects$: Observable<any>;
+  projects$: Observable<Project[]>;
+  currentActivity$: Observable<Activity>;
   projectsId: Object = {};
   recentNotes: Note[] = [];
   recentProjects: Project[];
@@ -47,6 +50,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.user$ = store.select('user');
     this.status$ = store.select('status');
     this.projects$ = store.select(this.appStateSelectors.getProjectsArray)
+    this.currentActivity$ = store.select('currentActivity');
     this.hasSeenInfoModal = false;
     this.selectItems = ['last day', 'last week', 'last month', 'last 3 month', 'last year'];
   }
@@ -55,6 +59,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     if (!this.hasSeenInfoModal) {
       this.subscriptions.push(
         this.user$.subscribe((userInfo) => {
+          this.user = userInfo;
+
           if (userInfo && userInfo.id) {
             // the userInDB is {userId: '...', seenVersions: [...]}
             this.db.get('appInfo', userInfo.id)
@@ -93,6 +99,27 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   prepareRecentProjects() {
     // TODO: We need to call a service to get recent projects in here
+    this.subscriptions.push(
+      this.projects$.subscribe((projects) => {
+        this.recentProjects = projects.sort((p1, p2) => {
+          const a1 = p1.activities.find(a => a.user === this.user.id);
+          const a2 = p2.activities.find(a => a.user === this.user.id);
+          if (!a1) {
+            return -1;
+          }
+          if (!a2) {
+            return 1;
+          }
+          if (!a1.stoppedAt) {
+            return 1;
+          }
+          if (!a2.stoppedAt) {
+            return -1;
+          }
+          return a1.stoppedAt >= a2.stoppedAt ? 1 : -1;
+        });
+      }),
+    );
   }
 
   prepareRecentNotes() {

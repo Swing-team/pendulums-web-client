@@ -1,8 +1,8 @@
 <div class="ps-recent-projects-container">
   <ng-container *ngIf="projects && projects.length > 0">
-    <project-item *ngIf="projects[0]" [project]="projects[0]" [user]="user" [status]="status" [isEditable]="false"  class="ps-project-item"> </project-item>
-    <project-item *ngIf="projects[1]" [project]="projects[1]" [user]="user" [status]="status" [isEditable]="false"  class="ps-project-item"> </project-item>
-    <project-item *ngIf="projects[2]" [project]="projects[2]" [user]="user" [status]="status" [isEditable]="false"  class="ps-project-item"> </project-item>
+    <project-item *ngIf="projects[0]" [project]="projects[0]" [user]="user" [status]="status" [isEditable]="false" [currentActivity]="currentActivity$"  class="ps-project-item"> </project-item>
+    <project-item *ngIf="projects[1]" [project]="projects[1]" [user]="user" [status]="status" [isEditable]="false" [currentActivity]="currentActivity$"  class="ps-project-item"> </project-item>
+    <project-item *ngIf="projects[2]" [project]="projects[2]" [user]="user" [status]="status" [isEditable]="false" [currentActivity]="currentActivity$"  class="ps-project-item"> </project-item>
   </ng-container>
 
   <ng-container *ngIf="!projects || projects.length === 0">
