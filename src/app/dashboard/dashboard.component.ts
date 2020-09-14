@@ -17,6 +17,8 @@ import { RecentActivityWithProject } from 'app/widgets/recent-activities/model/r
 import { Note } from 'app/shared/state/note/note.model';
 import { AppStateSelectors } from 'app/shared/state/app-state.selectors';
 import { Activity } from 'app/shared/state/current-activity/current-activity.model';
+import { Notes } from 'app/shared/state/note/notes.model';
+import { values } from 'lodash';
 
 @Component({
   selector: 'dashboard',
@@ -32,6 +34,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   projects$: Observable<Project[]>;
   currentActivity$: Observable<Activity>;
   projectsId: Object = {};
+  notes$: Observable<Notes>;
   recentNotes: Note[] = [];
   recentProjects: Project[];
   recentActivitiesWithProject: RecentActivityWithProject[] = [];
@@ -50,6 +53,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.user$ = store.select('user');
     this.status$ = store.select('status');
     this.projects$ = store.select(this.appStateSelectors.getProjectsArray)
+    this.notes$ = store.select('notes')
     this.currentActivity$ = store.select('currentActivity');
     this.hasSeenInfoModal = false;
     this.selectItems = ['last day', 'last week', 'last month', 'last 3 month', 'last year'];
@@ -126,6 +130,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.projectsId = params.reduce((obj, project) => ({...obj, [project.id]: project.name}), {})
     }));
     // TODO: we need to call a service to get recent notes in here
+    this.subscriptions.push(this.notes$.subscribe((notes) => {
+      this.recentNotes = values<Note>(notes.entities).sort((n1, n2) => (n1.updatedAt > n2.updatedAt ? 1 : -1));
+    }));
   }
 
   areaChartSelectItemChanged(event: {index: number; selectedItem: string}) {
