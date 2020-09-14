@@ -98,7 +98,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   prepareRecentProjects() {
-    // TODO: We need to call a service to get recent projects in here
     this.subscriptions.push(
       this.projects$.subscribe((projects) => {
         this.recentProjects = projects.sort((p1, p2) => {
