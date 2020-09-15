@@ -11,6 +11,7 @@ import { ProjectsActions }                from 'app/shared/state/project/project
 import { ErrorService }                   from 'app/core/error/error.service';
 import { ModalService }                   from 'app/core/modal/modal.service';
 import { environment }                    from 'environments/environment';
+import { NgZone }                         from '@angular/core';
 
 @Component({
   selector: 'project-details',
@@ -35,6 +36,7 @@ export class ProjectDetailsComponent implements OnInit {
               private store: Store<AppState>,
               private projectsAction: ProjectsActions,
               private errorService: ErrorService,
+              private ngZone: NgZone,
               private modalService: ModalService) {
   }
 
@@ -76,7 +78,9 @@ export class ProjectDetailsComponent implements OnInit {
           this.projectServices.update(formData, this.project.id).then((response) => {
             this.showError('The project was edited successfully');
             this.clonedProject.image = response[0].image;
-            this.store.dispatch(this.projectsAction.updateProject(this.clonedProject))
+            this.ngZone.run(() => {
+              this.store.dispatch(this.projectsAction.updateProject(this.clonedProject));
+            });
             this.formSubmitted = false;
             this.modalService.close();
           })
