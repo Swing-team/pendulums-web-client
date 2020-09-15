@@ -10,27 +10,8 @@
     <div class="ps-activity-top-button ps-project-header-button icon-back" (click)="goBack()" title="Back"></div>
     <div class="ps-activity-top-button ps-project-header-button icon-plus" (click)="openAddManuallyModal()" title="Add new activity"></div>
   </div>
-
-  <div class="columns is-multiline ps-details-container">
-    <div class="column is-6-widescreen is-6-desktop is-6-tablet is-12-mobile ps-project-widget">
-      <project-item
-        [project]="project"
-        [user]="user"
-        [status]="status"
-        [currentActivities]="currentActivities"
-        isEditable="true"
-      ></project-item>
-    </div>
-    <div class="column is-6-widescreen is-6-desktop is-6-tablet is-12-mobile ps-current-activities">
-      <recent-activities
-        [recentActivitiesWithProject]="currentActivitiesWithProject"
-        [currentUser]="user"
-        [matchHeightWithParent]="true"
-        [matchWidthWithParent]="true"
-        emptyPlaceHolder="There are no current activities!"
-      ></recent-activities>
-    </div>
   
+  <div class="columns is-multiline ps-details-container">
     <div class="column is-12-widescreen is-12-desktop is-12-tablet is-12-mobile" *ngIf="userAccess">
       <div class="ps-stuff-container">
         <div *ngIf="project" class="ps-stat-user-filter-wrapper" title="Select users">
@@ -112,6 +93,7 @@
     </div>
   </div>
   
+
   <div class="columns">
     <div class="column is-offset-3-widescreen is-6-widescreen is-4-fullhd is-offset-4-fullhd is-6-desktop is-offset-3-desktop is-6-tablet is-offset-3-tablet ps-activities-column">
       <div *ngIf="currentActivities.length > 0 && this.selectedUsers.length > 0" class="ps-activity-item">
