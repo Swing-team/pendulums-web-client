@@ -58,28 +58,33 @@ export class ProjectDashboardComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.subscriptions.push(this.route.params.subscribe((params: Params) => {
       this.projectId = params['projectId'];
-      this.projectService.getProject(this.projectId).then((project) => {
-        this.project = project;
+      this.subscriptions.push(this.projects$.subscribe((projects: Project[]) => {
+        const tmpIndex = projects.findIndex((project) => project.id === this.projectId);
+        this.project = projects[tmpIndex];
 
         // find if this user admin or owner of this project
-        this.subscriptions.push(this.user$.subscribe((user) => {
-          this.isOwnerOrAdmin = project.owner.id === user.id;
-          if (!this.isOwnerOrAdmin) {
-            if (project.admins) {
-              project.admins.forEach((teamMember) => {
-                if (teamMember.id === user.id) {
-                  this.isOwnerOrAdmin = true;
-                }
-              });
+        if (this.project) {
+          this.subscriptions.push(this.user$.subscribe((user) => {
+            this.isOwnerOrAdmin = this.project.owner.id === user.id;
+            if (!this.isOwnerOrAdmin) {
+              if (this.project.admins) {
+                this.project.admins.forEach((teamMember) => {
+                  if (teamMember.id === user.id) {
+                    this.isOwnerOrAdmin = true;
+                  }
+                });
+              }
             }
-          }
-        }));
-      });
-      this.activityService.getCurrentActivities(this.projectId).then((currentActivities) => {
-        this.currentActivities = currentActivities;
-      });
-      
-      this.prepareRecentNotes();
+          }));
+        }
+
+        this.activityService.getCurrentActivities(this.projectId).then((currentActivities) => {
+          this.currentActivities = currentActivities;
+        });
+        
+        this.prepareRecentNotes();
+      }));
+
     }));
   }
   
