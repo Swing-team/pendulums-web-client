@@ -14,6 +14,8 @@ import { AreaChartInterface } from 'app/models/charts-model/area-chart-model';
 import { RecentActivityWithProject } from 'app/widgets/recent-activities/model/recent-activities-with-project.model';
 import { Note } from 'app/shared/state/note/note.model';
 import { AppStateSelectors } from 'app/shared/state/app-state.selectors';
+import { Notes } from 'app/shared/state/note/notes.model';
+import { values } from 'lodash'
 
 @Component({
   selector: 'project-dashboard',
@@ -26,6 +28,8 @@ export class ProjectDashboardComponent implements OnInit, OnDestroy {
   projectId: string;
   projects$: Observable<any>;
   projectsId: Object = {};
+  notes$: Observable<Notes>;
+  notes: Note[];
   subscriptions: Subscription[] = [];
   user$: Observable<User>;
   status$: Observable<Status>;
@@ -47,6 +51,7 @@ export class ProjectDashboardComponent implements OnInit, OnDestroy {
     this.user$ = this.store.select('user');
     this.status$ = this.store.select('status');
     this.projects$ = store.select(this.appStateSelectors.getProjectsArray)
+    this.notes$ = store.select('notes');
     this.statChartSelectedItems = ['last day', 'last week', 'last month', 'last 3 month', 'last year'];
   }
 
@@ -73,10 +78,8 @@ export class ProjectDashboardComponent implements OnInit, OnDestroy {
       this.activityService.getCurrentActivities(this.projectId).then((currentActivities) => {
         this.currentActivities = currentActivities;
       });
-    }));
-
-    this.subscriptions.push(this.projects$.subscribe((params: any) => {
-      this.projectsId = params.reduce((obj, project) => ({...obj, [project.id]: project.name}), {})
+      
+      this.prepareRecentNotes();
     }));
   }
   
@@ -84,6 +87,26 @@ export class ProjectDashboardComponent implements OnInit, OnDestroy {
     this.subscriptions.forEach(s => {
       s.unsubscribe();
     });
+  }
+
+  prepareRecentNotes() {
+    this.subscriptions.push(
+      this.projects$.subscribe((params: any) => {
+        this.projectsId = params.reduce((obj, project) => ({ ...obj, [project.id]: project.name }), {})
+      }));
+
+    this.subscriptions.push(
+      this.notes$.subscribe((notes) => {
+        this.recentNotes = [];
+        const notesArray = values<Note>(notes.entities);
+        notesArray.forEach(note => {
+          if (note.project === this.projectId) {
+            this.recentNotes.push(note)
+          }
+        });
+        this.recentNotes.sort((n1, n2) => (n1.updatedAt > n2.updatedAt ? 1 : -1));
+      })
+    );
   }
 
   ChartSelectItemChanged(event: {index: number; selectedItem: string}) {
