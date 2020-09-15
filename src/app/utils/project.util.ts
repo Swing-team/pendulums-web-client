@@ -2,9 +2,9 @@ import { User } from 'app/shared/state/user/user.model';
 
 export const userRoleInProject = (project, userId) => {
   let role = 'team member';
-  if (project.owner.id === userId) {
+  if (project.owner === userId) {
     role = 'owner';
-  } else {
+  } else if (project.admins) {
     project.admins.map(user => {
       if (user.id === userId) {
         role = 'admin';

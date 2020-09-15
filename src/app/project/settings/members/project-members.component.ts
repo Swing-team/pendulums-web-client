@@ -91,7 +91,7 @@ export class ProjectMembersComponent implements OnInit {
   }
 
   userEmailHash(email) {
-    return Md5.hashStr(email);
+    return Md5.hashStr(email ? email : '');
   }
 
   getUserRole() {
