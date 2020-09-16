@@ -13,7 +13,7 @@ import { AppState } from '../state/appState';
 })
 export class TopBarComponent implements OnInit, OnDestroy, DoCheck {
   @Input() title: string;
-  @Input() showDonationButton: boolean;
+  @Input() showDonationButton: boolean = true;
 
   user$: Observable<User>;
   user: User;
