@@ -8,7 +8,6 @@ import { ModalService }                 from '../core/modal/modal.service';
 import { AppInfoComponent }             from '../core/side-menu/app-info/app-info.component';
 import { RouterChangeListenerService }  from '../core/services/router-change-listener.service';
 import { VERSION }                      from 'environments/version';
-import { environment }                  from '../../environments/environment';
 import { User }                         from 'app/shared/state/user/user.model';
 import { Project }                      from 'app/shared/state/project/project.model';
 import { Status }                       from 'app/shared/state/status/status.model';
@@ -41,7 +40,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
   hasSeenInfoModal: boolean;
   selectItems: string[] = [];
-  areaChartData: AreaChartInterface[];
+  areaChartData: AreaChartInterface[] = [];
 
   constructor (private store: Store<AppState>,
                private db: DatabaseService,

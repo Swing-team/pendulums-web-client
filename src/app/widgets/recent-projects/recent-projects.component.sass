@@ -6,40 +6,36 @@
   display: flex
   flex-direction: column
   height: $ps-widget-size
-  
+  overflow: hidden
+
+  .ps-projects-container
+    display: flex
+    flex-direction: column
+    align-items: center
+    flex-grow: 1
+
   .ps-project-item
     cursor: pointer
     width: 100%
-  
+    display: block
+
   .ps-no-recent-projects
     margin-top: auto
     margin-bottom: auto
     font-weight: bold
     color: $primary
     font-size: 18px
-  
+
   .ps-recent-projects-footer
     display: flex
     justify-content: space-between
-    align-items: flex-end
+    align-items: center
+    padding: 16px
+    height: 64px
     .ps-new-project
-      display: flex
-      justify-content: center
-      align-items: center
       padding: 4px
-      padding-right: 8px
-      margin-left: 24px
-      margin-bottom: 12px
+      margin-right: 8px
       font-weight: bold
     .ps-more-project
-      display: flex
-      justify-content: center
-      align-items: center
       padding: 4px
-      margin-right: 24px
-      margin-bottom: 12px
       font-weight: bold
-
-
-.ps-flex-grow
-  flex-grow: 1

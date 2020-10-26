@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Note } from 'app/shared/state/note/note.model';
 import { ModalService } from 'app/core/modal/modal.service';
 import { CreateEditNoteComponent } from 'app/note/create-edit-note/create-edit-note.component';
@@ -9,16 +9,14 @@ import { CreateEditNoteComponent } from 'app/note/create-edit-note/create-edit-n
   styleUrls: ['./recent-notes.component.sass'],
 })
 
-export class RecentNotesComponent implements OnInit {
+export class RecentNotesComponent {
   @Input() notes: Note[];
   @Input() netConnected: boolean;
   @Input() projectsId;
-  
+
   constructor(
     private modalService: ModalService,
   ) { }
-
-  ngOnInit() { }
 
   showCreateEditNoteModal() {
     this.modalService.show({

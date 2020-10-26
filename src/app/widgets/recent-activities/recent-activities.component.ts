@@ -99,7 +99,7 @@ export class RecentActivitiesComponent implements OnInit, OnDestroy {
       // there is output if needed
       // outputs: {
       //   responseActivity: (params) => {
-          
+
       //   }
       // },
       customStyles: {'width': '400px'}

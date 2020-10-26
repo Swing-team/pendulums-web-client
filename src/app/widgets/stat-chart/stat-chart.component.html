@@ -26,7 +26,7 @@
           <h2 *ngIf="xAxisTickFormatting">{{ xAxisTickFormatting(model.name) }}</h2>
           <h2 *ngIf="!xAxisTickFormatting">{{ model.name }}</h2>
         </ng-template>
-    
+
         <ng-template #seriesTooltipTemplate let-model="model">
           <h1 *ngIf="yAxisTickFormatting">{{ yAxisTickFormatting(model[0].value) }}</h1>
           <h1 *ngIf="!yAxisTickFormatting">{{ model[0].value }}</h1>
@@ -36,7 +36,7 @@
       </ngx-charts-area-chart>
     </div>
     <div *ngIf="!areaChartData || areaChartData.length === 0" class="ps-no-activities-container">
-      <p class="ps-no-activities">There are no recent activities.</p>
+      <p class="ps-no-activities">There is not enough data</p>
     </div>
   </ng-container>
   <ng-container *ngIf="chartType === 'bar'">
@@ -59,7 +59,7 @@
           <h2 *ngIf="xAxisTickFormatting">{{ xAxisTickFormatting(model.name) }}</h2>
           <h2 *ngIf="!xAxisTickFormatting">{{ model.name }}</h2>
         </ng-template>
-    
+
         <ng-template #seriesTooltipTemplate let-model="model">
           <h1 *ngIf="yAxisTickFormatting">{{ yAxisTickFormatting(model[0].value) }}</h1>
           <h1 *ngIf="!yAxisTickFormatting">{{ model[0].value }}</h1>
@@ -69,7 +69,8 @@
       </ngx-charts-bar-vertical>
     </div>
     <div *ngIf="!barChartData || barChartData.length === 0" class="ps-no-activities-container">
-      <p class="ps-no-activities">There are no recent activities.</p>
+      <p class="ps-no-activities">There is not enough data</p>
     </div>
   </ng-container>
 </div>
+

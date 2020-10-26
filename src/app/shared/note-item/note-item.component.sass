@@ -1,7 +1,6 @@
 @import "../../../sass/variables"
 
 .ps-note-item-container
-  height: $note-item-height
   .ps-note-item-card
     height: $note-item-height
     border: unset
@@ -13,10 +12,11 @@
       flex-direction: column
       cursor: pointer
       .ps-note-item-card-icons
-        position: relative
-        margin-top: auto
-        background: rgba(0, 0,0 , 0.6)
-        margin: -10px
+        position: absolute
+        background: rgba(0, 0, 0, 0.6)
+        bottom: 12px
+        left: 0
+        right: 0
         .icon-trash
           color: $white !important
           &:hover
@@ -145,5 +145,3 @@
 .ps-full-height
   height: 100% !important
   max-height: 300px !important
-  @media ( max-width: 768px )
-    height: $note-item-height !important

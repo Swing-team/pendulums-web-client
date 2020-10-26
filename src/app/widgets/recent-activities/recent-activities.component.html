@@ -8,10 +8,10 @@
     </ng-container>
   </ng-container>
   <ng-container *ngIf="!activitiesPagination || activitiesPagination.length === 0">
-    <p *ngIf="!emptyPlaceHolder" class="ps-no-recent-activities">There are no recent activities!</p>
+    <p *ngIf="!emptyPlaceHolder" class="ps-no-recent-activities">There are no recent activities</p>
     <p *ngIf="emptyPlaceHolder" class="ps-no-recent-activities">{{ emptyPlaceHolder }}</p>
   </ng-container>
-  <div class="ps-recent-activity-footer">
+  <div class="ps-recent-activity-footer" *ngIf="!showFooterPagination || activitiesPagination.length > 0">
     <ng-container *ngIf="showFooterPagination">
       <span class="ps-icon-back">
         <i *ngIf="activitiesPaginationIndex > 0"  (click)="prevRecentActivitiesPage()" class="icon-back"></i>

@@ -1,19 +1,18 @@
 <div class="ps-recent-notes-container">
   <ng-container *ngIf="!notes || notes.length == 0">
-    <p class="ps-no-recent-notes">There are no recent notes!</p>
+    <p class="ps-no-recent-notes">There are no recent notes</p>
   </ng-container>
   <ng-container *ngIf="notes && notes.length > 0">
-    <div class="columns ps-notes-container">
-      <ng-container *ngFor="let note of notes; let i = index">
-        <div *ngIf="i < 2" class="column is-6">
-          <note-item *ngIf="note && note.id"
-            [note]="note"
-            [setFullHeight]="true"
-            [netConnected]="true"
-            [projectsId]="projectsId"
-          ></note-item>
-        </div>
-      </ng-container>
+    <div class="ps-notes-container columns is-multiline is-mobile">
+      <span class="column is-6" *ngFor="let note of notes | slice:0:4;" style="padding: 8px">
+        <note-item *ngIf="note && note.id"
+                   class="ps-note-item"
+                   [note]="note"
+                   [setFullHeight]="true"
+                   [netConnected]="true"
+                   [projectsId]="projectsId">
+        </note-item>
+      </span>
     </div>
   </ng-container>
   <div class="ps-recent-notes-footer">

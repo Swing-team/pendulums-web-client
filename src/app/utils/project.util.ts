@@ -5,7 +5,7 @@ export const userRoleInProject = (project, userId) => {
   if (project.owner.id === userId) {
     role = 'owner';
   } else {
-    project.admins.foreach(user => {
+    project.admins.forEach(user => {
       if (user.id === userId) {
         role = 'admin';
       }

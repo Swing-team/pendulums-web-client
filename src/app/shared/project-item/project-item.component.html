@@ -6,7 +6,7 @@
                   'ps-back-pink': project.colorPalette == 5,
                   'ps-back-red': project.colorPalette == 6,
                   'ps-back-green': project.colorPalette == 7}" class="ps-project-item-container" (click)="goToProjectDashboard()">
-  <div class="card ps-project-item-card">
+  <div class="card ps-project-item-card" [class.ps-has-border-radius]="hasBorderRadius">
     <div class="card-content ps-project-item-card-content">
       <div class="media">
         <div class="media-left">
@@ -49,7 +49,7 @@
         </div>
       </div>
     </div>
-    
+
     <div *ngIf="isEditable">
       <hr class="ps-divider-line">
       <div class="card-content ps-project-item-card-content">
@@ -69,7 +69,7 @@
           </div>
         </div>
       </div>
-    </div> 
+    </div>
 
   </div>
 </div>

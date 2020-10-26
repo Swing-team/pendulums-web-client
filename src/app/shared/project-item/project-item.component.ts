@@ -32,6 +32,7 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
   @Input() dividerLine: boolean;
   @Input() isEditable: boolean = false;
   @Input() currentActivities: Activity[] = [];
+  @Input() hasBorderRadius = true;
   @ViewChild('activityNameElm') activityNameElm;
   activityStarted = false;
   activityButtonDisabled = false;

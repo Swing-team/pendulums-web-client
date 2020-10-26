@@ -1,4 +1,4 @@
-<top-bar *ngIf="project" class="ps-activities-top-bar" [title]="project.name">
+<top-bar *ngIf="project" showDonationButton="true" class="ps-activities-top-bar" [title]="project.name">
   <div class="ps-logo-container" alignLeft>
     <img class="ps-top-bar-logo" src="../../assets/images/logo-blue.png">
     <span class="ps-top-bar-logo-name">PENDULUMS</span>
@@ -10,7 +10,7 @@
     <div class="ps-activity-top-button ps-project-header-button icon-back" (click)="goBack()" title="Back"></div>
     <div class="ps-activity-top-button ps-project-header-button icon-plus" (click)="openAddManuallyModal()" title="Add new activity"></div>
   </div>
-  
+
   <div class="columns is-multiline ps-details-container">
     <div class="column is-12-widescreen is-12-desktop is-12-tablet is-12-mobile" *ngIf="userAccess">
       <div class="ps-stuff-container">
@@ -25,7 +25,7 @@
             [selectedItemIndex]="selectedItemIndex"
           ></swing-select>
         </div>
-  
+
         <div class="ps-chart-calendar-wrapper">
           <input [(ngModel)]="dateString" type="text" (focus)="showCalender()" >
           <div class="ps-calendar-range-wrapper" *ngIf="calenderShow">
@@ -41,7 +41,7 @@
             ></swing-calendar>
           </div>
         </div>
-  
+
         <div class="ps-import-export-container">
           <button class="button ps-import" [ngClass]="{'is-loading': isImporting, 'is-light': isImporting}"
             (click)="importActivities()">
@@ -50,7 +50,7 @@
             <span class="icon-import ps-import-icon"></span>
             <span>Import (Json)</span>
           </button>
-        
+
           <div *ngIf="projectActivities.length > 0" class="dropdown ps-export is-right"
             [ngClass]="{'is-hoverable': !isExporting}">
             <div class="dropdown-trigger">
@@ -75,7 +75,7 @@
       </div>
     </div>
   </div>
-  
+
   <div class="columns ps-activities-stat-wrapper">
     <div class="column is-12 ps-chart-column-container">
       <div class="ps-chart-column">
@@ -92,7 +92,7 @@
       </div>
     </div>
   </div>
-  
+
 
   <div class="columns">
     <div class="column is-offset-3-widescreen is-6-widescreen is-4-fullhd is-offset-4-fullhd is-6-desktop is-offset-3-desktop is-6-tablet is-offset-3-tablet ps-activities-column">
