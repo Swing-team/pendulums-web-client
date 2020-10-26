@@ -208,6 +208,7 @@ export class ProjectItemComponent implements OnInit, OnDestroy {
       this.showError('Not available in offline mode');
     }
   }
+
   goToProjectDashboard(): void {
     if (!this.isEditable) {
       if (this.status.netStatus) {
