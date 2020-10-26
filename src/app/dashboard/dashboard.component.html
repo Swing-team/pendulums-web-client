@@ -16,7 +16,7 @@
         chartType="area"
         [areaChartData]="areaChartData"
         [yAxisTickFormatting]="trimAreaChartYAxis"
-        (onSelectItemChanged)="areaChartSelectItemChanged($event)"
+        (onSelectItemChanged)="prepareStats($event)"
       ></stat-chart>
     </div>
     <div class="column is-6-widescreen is-6-desktop is-6-tablet" *ngIf="recentActivitiesWithProject.length > 0">

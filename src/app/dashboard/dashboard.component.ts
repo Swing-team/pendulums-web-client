@@ -18,6 +18,8 @@ import { AppStateSelectors } from 'app/shared/state/app-state.selectors';
 import { Activity } from 'app/shared/state/current-activity/current-activity.model';
 import { Notes } from 'app/shared/state/note/notes.model';
 import { values } from 'lodash';
+import { UserStatsService } from './user-stats.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'dashboard',
@@ -39,23 +41,25 @@ export class DashboardComponent implements OnInit, OnDestroy {
   recentActivitiesWithProject: RecentActivityWithProject[] = [];
   subscriptions: Subscription[] = [];
   hasSeenInfoModal: boolean;
-  selectItems: string[] = [];
+  selectItems: string[] = ['last week', 'last month', 'last 3 months', 'last year'];
   areaChartData: AreaChartInterface[] = [];
 
-  constructor (private store: Store<AppState>,
-               private db: DatabaseService,
-               private modalService: ModalService,
-               private appStateSelectors: AppStateSelectors,
-               // this service needed to handle router changes so don't remove it
-               private routerChangeListenerService: RouterChangeListenerService) {
+  constructor (
+    private store: Store<AppState>,
+    private db: DatabaseService,
+    private modalService: ModalService,
+    private appStateSelectors: AppStateSelectors,
+    // this service needed to handle router changes so don't remove it
+    private routerChangeListenerService: RouterChangeListenerService,
+    private userStatsService: UserStatsService,
+  ) {
 
-    this.user$ = store.select('user');
-    this.status$ = store.select('status');
-    this.projects$ = store.select(this.appStateSelectors.getProjectsArray)
-    this.notes$ = store.select('notes')
-    this.currentActivity$ = store.select('currentActivity');
+    this.user$ = this.store.select('user');
+    this.status$ = this.store.select('status');
+    this.projects$ = this.store.select(this.appStateSelectors.getProjectsArray)
+    this.notes$ = this.store.select('notes')
+    this.currentActivity$ = this.store.select('currentActivity');
     this.hasSeenInfoModal = false;
-    this.selectItems = ['last day', 'last week', 'last month', 'last 3 month', 'last year'];
   }
 
   ngOnInit() {
@@ -91,8 +95,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
       );
     }
 
-    this.prepareRecentActivities();
     this.prepareRecentProjects();
+    this.prepareStats({ index: 0 });
+    this.prepareRecentActivities();
     this.prepareRecentNotes();
   }
 
@@ -134,35 +139,52 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }));
   }
 
-  areaChartSelectItemChanged(event: {index: number; selectedItem: string}) {
-    // TODO: we need to call a service to get events based on duration.
-    this.areaChartData = [
-      {
-        name: 'this is not important',
-        series: [
-          {
-            name: 'date 1',
-            value: Math.random() * 60 * 60 * 1000,
-          },
-          {
-            name: 'date 2',
-            value: Math.random() * 60 * 60 * 1000,
-          },
-          {
-            name: 'date 3',
-            value: Math.random() * 60 * 60 * 1000,
-          },
-          {
-            name: 'date 4',
-            value: Math.random() * 60 * 60 * 1000,
-          },
-          {
-            name: 'date 5',
-            value: Math.random() * 60 * 60 * 1000,
-          },
-        ],
+  async prepareStats(event: {index: number; selectedItem?: string}) {
+    let from = 0
+    let to = moment(Date.now()).endOf('day').valueOf();
+
+    switch (event.index) {
+      case 0: {
+        from = moment(Date.now()).subtract(6, 'days').startOf('day').valueOf();
+        break;
       }
-    ]
+      case 1: {
+        from = moment(Date.now()).subtract(29, 'days').startOf('day').valueOf();
+        break;
+      }
+      case 2: {
+        from = moment(Date.now()).subtract(89, 'days').startOf('day').valueOf();
+        break;
+      }
+      case 3: {
+        from = moment(Date.now()).subtract(364, 'days').startOf('day').valueOf();
+        break;
+      }
+    }
+    const res = await this.userStatsService.getUserStats(from, to);
+
+    if (res && res.result) {
+      this.areaChartData = [{
+        name: 'Your stats',
+        series: res.result.map((column, index) => {
+          let xAxisName =  moment(Number(column._id)).format('MMM Do');
+          if (res.columnSize !== 1) {
+            let nextBoundaryId = to;
+            if (index + 2 <= res.result.length) {
+              nextBoundaryId = Number(res.result[index + 1]._id) - 1;
+            }
+            const firstIdsMonth =  moment(Number(column._id)).month();
+            const secondIdsMonth =  moment(nextBoundaryId).month();
+            if (firstIdsMonth === secondIdsMonth) {
+              xAxisName += '-' + moment(nextBoundaryId).format('Do');
+            } else {
+              xAxisName += '-' + moment(nextBoundaryId).format('MMM Do');
+            }
+          }
+          return { name: xAxisName, value: column.value}
+        })
+      }];
+    }
   }
 
   trimAreaChartYAxis(duration: number): string {
