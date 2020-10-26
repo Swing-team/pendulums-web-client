@@ -52,7 +52,7 @@ export class ProjectDashboardComponent implements OnInit, OnDestroy {
     this.status$ = this.store.select('status');
     this.projects$ = store.select(this.appStateSelectors.getProjectsArray)
     this.notes$ = store.select('notes');
-    this.statChartSelectedItems = ['last day', 'last week', 'last month', 'last 3 month', 'last year'];
+    this.statChartSelectedItems = ['last week', 'last month', 'last 3 months', 'last year'];
   }
 
   ngOnInit() {
@@ -62,7 +62,7 @@ export class ProjectDashboardComponent implements OnInit, OnDestroy {
         const tmpIndex = projects.findIndex((project) => project.id === this.projectId);
         this.project = projects[tmpIndex];
 
-        // find if this user admin or owner of this project
+        // find if this user is admin or owner of this project
         if (this.project) {
           this.subscriptions.push(this.user$.subscribe((user) => {
             this.isOwnerOrAdmin = this.project.owner.id === user.id;
@@ -81,13 +81,13 @@ export class ProjectDashboardComponent implements OnInit, OnDestroy {
         this.activityService.getCurrentActivities(this.projectId).then((currentActivities) => {
           this.currentActivities = currentActivities;
         });
-        
+
         this.prepareRecentNotes();
       }));
 
     }));
   }
-  
+
   ngOnDestroy() {
     this.subscriptions.forEach(s => {
       s.unsubscribe();
@@ -136,5 +136,5 @@ export class ProjectDashboardComponent implements OnInit, OnDestroy {
 
     return result;
   }
-  
+
 }
