@@ -74,28 +74,30 @@ export class ChartComponent implements OnInit, OnChanges {
     if (this.fromDate && this.toDate) {
       this.multiLevelData = [];
       const tempUsersWithTotal = [];
-      
+
       if (this.selectedUsers.length > 0) {
         this.activityService.getStat(this.project.id, this.selectedUsers, this.fromDate, this.toDate).then((res) => {
-  
+
           const userStatsResult: ChartDataType[] = [];
-  
+
           res.result.forEach((userStats) => {
             userStats.stats.forEach((stat, index) => {
               // change xAxisName based on selected dates
               let xAxisName =  moment(Number(stat.id)).format('MMM Do');
               if (res.columnSize !== 1) {
+                let nextBoundaryId = this.toDate;
                 if (index + 2 <= userStats.stats.length) {
-                  const firstIdsMonth =  moment(Number(stat.id)).month();
-                  const secondIdsMonth =  moment(Number(userStats.stats[index + 1].id) - 1).month();
-                  if (firstIdsMonth === secondIdsMonth) {
-                    xAxisName += '-' + moment(Number(userStats.stats[index + 1].id) - 1).format('Do');
-                  } else {
-                    xAxisName += '-' + moment(Number(userStats.stats[index + 1].id) - 1).format('MMM Do');
-                  }
+                  nextBoundaryId = Number(userStats.stats[index + 1].id) - 1;
+                }
+                const firstIdsMonth =  moment(Number(stat.id)).month();
+                const secondIdsMonth =  moment(nextBoundaryId).month();
+                if (firstIdsMonth === secondIdsMonth) {
+                  xAxisName += '-' + moment(nextBoundaryId).format('Do');
+                } else {
+                  xAxisName += '-' + moment(nextBoundaryId).format('MMM Do');
                 }
               }
-              
+
               // Add user stat to chart result
               const userStatsIndex = userStatsResult.findIndex(x => x.name === xAxisName);
               const user = this.project.teamMembers.find(user => user.id === userStats._id);
@@ -121,7 +123,7 @@ export class ChartComponent implements OnInit, OnChanges {
                   }
                 });
               }
-              
+
               // Add user totalHour to tempUsersWithTotal
               // if user does not exits in tempUsersWithTotal, pushes a new object else change the totalHours
               const tempUserWithTotal = tempUsersWithTotal.find(user => user.userId === userStats._id);
@@ -136,7 +138,7 @@ export class ChartComponent implements OnInit, OnChanges {
               }
             });
           });
-  
+
           userStatsResult.forEach((userStats) => {
             userStats.series.map(userStat => {
               const tempUser = tempUsersWithTotal.find(user => user.userId === userStat.extras.userId);
@@ -144,7 +146,7 @@ export class ChartComponent implements OnInit, OnChanges {
               return userStat;
             });
           });
-  
+
           let empty = ' ';
           while (userStatsResult.length < 5) {
             userStatsResult.push({
@@ -159,7 +161,7 @@ export class ChartComponent implements OnInit, OnChanges {
           this.multiLevelData = userStatsResult;
         });
       }
-  
+
       this.chartLoaded.emit();
     }
   }
