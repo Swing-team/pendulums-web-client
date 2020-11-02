@@ -1,5 +1,5 @@
 import { createSelector }             from '@ngrx/store';
-import { values }                     from 'lodash';
+import { sortBy, values }                     from 'lodash';
 import { Injectable }                 from '@angular/core';
 import { Note }                    from './note.model';
 import { Notes }                   from './notes.model';
@@ -15,25 +15,37 @@ import { Notes }                   from './notes.model';
 
 @Injectable()
 export class NotesSelectors {
+  private sortFunction(n1: Note, n2: Note, sortBy: string) {
+    switch (sortBy) {
+      case '+date': {
+        return n1.id > n2.id ? 1 : -1;
+      }
+      case '-date': {
+        return n1.id < n2.id ? 1 : -1;
+      }
+      case '+title': {
+        return n1.title.toLowerCase() >= n2.title.toLowerCase() ? 1 : -1;
+      }
+      case '-title': {
+        return n1.title.toLowerCase() < n2.title.toLowerCase() ? 1 : -1;
+      }
+      case '+updateDate': {
+        return n1.updatedAt > n2.updatedAt ? 1 : -1;
+      }
+      case '-updateDate': {
+        return n1.updatedAt < n2.updatedAt ? 1 : -1;
+      }
+    }
+  };
+
   getEntities = (state: Notes) => state.entities;
   getSortBy = (state: Notes) => state.sortBy;
   // tslint:disable-next-line: member-ordering
   getAllArray = createSelector(this.getEntities, this.getSortBy, (entities, sortBy) => {
-    return values<Note>(entities).sort((n1, n2) => {
-      switch (sortBy) {
-        case '+date': {
-          return n1.id > n2.id ? 1 : -1;
-        }
-        case '-date': {
-          return n1.id < n2.id ? 1 : -1;
-        }
-        case '+title': {
-          return n1.title.toLowerCase() >= n2.title.toLowerCase() ? 1 : -1;
-        }
-        case '-title': {
-          return n1.title.toLowerCase() < n2.title.toLowerCase() ? 1 : -1;
-        }
-      }
-    });
+    return values<Note>(entities).sort((n1, n2) => this.sortFunction(n1, n2, sortBy));
+  });
+
+  getActiveNotesSortedBy = createSelector(this.getEntities, (entities, params) => {
+    return values<Note>(entities).filter(n => n.isArchive === false).sort((n1, n2) => this.sortFunction(n1, n2, params.sortBy));
   });
 }

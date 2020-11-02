@@ -2,7 +2,7 @@ import {Component, OnInit, Input, OnDestroy, AfterViewInit, Host, ViewChild, Hos
 import { Observable ,  Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { Project } from '../../shared/state/project/project.model';
-import { NoteService } from '../shared/notes.service';
+import { NoteService } from '../../core/services/notes.service';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '../../shared/state/appState';
@@ -73,7 +73,7 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy, AfterViewInit
         this.projectIds.push(project.id)
       })
     }));
-    
+
     this.noteModel = cloneDeep(this.note)
     this.noteModel.updatedAt = moment(this.note.updatedAt).format('DD/MM/YYYY HH:mm a')
     if (!includes(this.projectIds, this.note.project)) {

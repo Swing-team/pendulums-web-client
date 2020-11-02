@@ -16,7 +16,6 @@ import { RecentActivityWithProject } from 'app/widgets/recent-activities/model/r
 import { Note } from 'app/shared/state/note/note.model';
 import { AppStateSelectors } from 'app/shared/state/app-state.selectors';
 import { Activity } from 'app/shared/state/current-activity/current-activity.model';
-import { Notes } from 'app/shared/state/note/notes.model';
 import { values } from 'lodash';
 import { UserStatsService } from './user-stats.service';
 import * as moment from 'moment';
@@ -35,7 +34,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   projects$: Observable<Project[]>;
   currentActivity$: Observable<Activity>;
   projectsId: Object = {};
-  notes$: Observable<Notes>;
+  notes$: Observable<Note[]>;
   recentNotes: Note[] = [];
   recentProjects: Project[];
   recentActivitiesWithProject: RecentActivityWithProject[] = [];
@@ -56,8 +55,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     this.user$ = this.store.select('user');
     this.status$ = this.store.select('status');
-    this.projects$ = this.store.select(this.appStateSelectors.getProjectsArray)
-    this.notes$ = this.store.select('notes')
+    this.projects$ = this.store.select(this.appStateSelectors.getProjectsArray);
+    this.notes$ = this.store.select(this.appStateSelectors.getActiveNotesSortedBy, { sortBy: '-updateDate' });
     this.currentActivity$ = this.store.select('currentActivity');
     this.hasSeenInfoModal = false;
   }
@@ -133,10 +132,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.subscriptions.push(this.projects$.subscribe((params: any) => {
       this.projectsId = params.reduce((obj, project) => ({...obj, [project.id]: project.name}), {})
     }));
-    // TODO: we need to call a service to get recent notes in here
-    this.subscriptions.push(this.notes$.subscribe((notes) => {
-      this.recentNotes = values<Note>(notes.entities).sort((n1, n2) => (n1.updatedAt > n2.updatedAt ? 1 : -1));
-    }));
+
+    this.subscriptions.push(this.notes$.subscribe((notes) => this.recentNotes = notes));
   }
 
   async prepareStats(event: {index: number; selectedItem?: string}) {
@@ -204,11 +201,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     return result;
-  }
-
-  private handleError(error: any): Promise<any> {
-    console.error('An error occurred', error);
-    return Promise.reject(error);
   }
 
   ngOnDestroy() {

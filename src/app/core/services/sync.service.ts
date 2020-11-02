@@ -15,6 +15,7 @@ import { environment }                  from '../../../environments/environment'
 import { SocketService }                from './socket.service';
 import { NotesActions }                 from 'app/shared/state/note/notes.actions';
 import { ThemeActions }                 from 'app/shared/state/theme/theme.actions';
+import { NoteService }                  from 'app/core/services/notes.service';
 
 @Injectable()
 export class SyncService {
@@ -28,6 +29,7 @@ export class SyncService {
 
   constructor(private http: HttpClient,
               private userService: UserService,
+              private noteService: NoteService,
               private store: Store<AppState>,
               private statusActions: StatusActions,
               private dBService: DatabaseService,
@@ -204,6 +206,12 @@ export class SyncService {
           this.initialAppOffline();
         }
       }));
+
+    this.responseResults.push(
+      this.noteService.getNotes().then((notes) => {
+        this.store.dispatch(this.notesActions.loadNotes(notes));
+      })
+    );
   }
 
   initialAppOffline() {

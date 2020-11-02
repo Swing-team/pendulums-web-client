@@ -6,7 +6,7 @@ import { AppState }                                   from '../../shared/state/a
 import { NotesActions }                               from '../../shared/state/note/notes.actions';
 import { ModalService }                               from '../../core/modal/modal.service';
 import { cloneDeep }                                  from 'lodash';
-import { NoteService }                                from 'app/note/shared/notes.service';
+import { NoteService }                                from 'app/core/services/notes.service';
 import { CreateEditNoteComponent }                    from 'app/note/create-edit-note/create-edit-note.component';
 
 

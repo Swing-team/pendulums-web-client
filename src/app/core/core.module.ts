@@ -49,6 +49,7 @@ import { DeleteAccountComponent }       from 'app/profile-setting/delete-account
 import { SocketService }                from './services/socket.service';
 import { environment } from '../../environments/environment';
 import { SideMenuService } from './services/side-menu.service';
+import { NoteService } from './services/notes.service';
 
 @NgModule({
   imports:      [
@@ -104,6 +105,7 @@ import { SideMenuService } from './services/side-menu.service';
     NativeNotificationService,
     ActivityService,
     SideMenuService,
+    NoteService,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],
   entryComponents: [

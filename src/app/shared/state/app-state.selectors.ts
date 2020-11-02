@@ -29,4 +29,6 @@ export class AppStateSelectors {
   getNotesArray = createSelector(this.getNotesState, this.notesSelectors.getAllArray);
   // tslint:disable-next-line: member-ordering
   getNotesSortBy = createSelector(this.getNotesState, this.notesSelectors.getSortBy);
+
+  getActiveNotesSortedBy = createSelector(this.getNotesState, this.notesSelectors.getActiveNotesSortedBy);
 }
