@@ -6,7 +6,7 @@ import { User }                                       from '../shared/state/user
 import { AppStateSelectors }                          from '../shared/state/app-state.selectors';
 import { CreateEditNoteComponent }                    from './create-edit-note/create-edit-note.component';
 import { ModalService }                               from '../core/modal/modal.service';
-import { NoteService }                                from './shared/notes.service';
+import { NoteService }                                from '../core/services/notes.service';
 import { NotesActions }                               from '../shared/state/note/notes.actions';
 import { Note }                                       from 'app/shared/state/note/note.model';
 import { Location }                                   from '@angular/common';
@@ -35,6 +35,8 @@ export class NoteComponent implements OnInit, OnDestroy {
     {name: 'Sort by date (descending)', value: '-date'},
     {name: 'Sort by title (ascending)', value: '+title'},
     {name: 'Sort by title (descending)', value: '-title'},
+    {name: 'Sort by access date (ascending)', value: '+updateDate'},
+    {name: 'Sort by access date (descending)', value: '-updateDate'},
   ]
   sortByItemIndex: number;
   private subscriptions: Array<Subscription> = [];
