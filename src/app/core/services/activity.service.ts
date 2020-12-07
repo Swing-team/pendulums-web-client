@@ -114,6 +114,14 @@ export class ActivityService {
       .catch(this.handleError);
   }
 
+  getUserRecentActivities(): Promise<Activity[]> {
+    return this.http
+      .get(environment.apiEndpoint + '/user/activities', environment.httpOptions)
+      .toPromise()
+      .then(response => response as Activity[])
+      .catch(this.handleError);
+  }
+
   private handleError(error: any): Promise<any> {
     console.error('An error occurred', error);
     return Promise.reject(error);

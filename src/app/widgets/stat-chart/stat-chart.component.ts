@@ -21,8 +21,9 @@ export class StatChartComponent implements OnInit {
   @Input() xAxisTickFormatting: any; // callable function
   @Input() yAxisTickFormatting: any; // callable function
   @Output() onSelectItemChanged = new EventEmitter();
+  @Output() onRefreshClicked = new EventEmitter();
 
-  curve = shape.curveCatmullRom;
+  curve = shape.curveMonotoneX;
 
   constructor() { }
 
@@ -30,5 +31,9 @@ export class StatChartComponent implements OnInit {
 
   selectItemChanged(event: {index: number; selectedItem: string}) {
     this.onSelectItemChanged.emit(event);
+  }
+
+  refresh() {
+    this.onRefreshClicked.emit();
   }
 }

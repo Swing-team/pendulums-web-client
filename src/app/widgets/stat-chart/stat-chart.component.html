@@ -1,10 +1,15 @@
 <div class="ps-stat-chart-container">
-  <swing-select class="ps-stat-chart-select"
-    [items]="selectItems"
-    [selectedItemIndex]="[0]"
-    [label]="'Select duration'"
-    (onItemClicked)="selectItemChanged($event)"
-  ></swing-select>
+  <div class="ps-stat-chart-header">
+    <swing-select class="ps-stat-chart-select"
+      [items]="selectItems"
+      [selectedItemIndex]="[0]"
+      [label]="'Select duration'"
+      (onItemClicked)="selectItemChanged($event)"
+    ></swing-select>
+    <a (click)="refresh()" class="ps-refresh-chart" title="Refresh">
+      <span class="icon-refresh"></span>
+    </a>
+  </div>
   <ng-container *ngIf="chartType === 'area'">
     <div *ngIf="areaChartData && areaChartData.length > 0" class="ps-chart-container">
       <ngx-charts-area-chart

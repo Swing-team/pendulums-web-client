@@ -10,13 +10,14 @@
         [currentActivity$]="currentActivity$"
       ></recent-projects>
     </div>
-    <div class="column is-6-widescreen is-6-desktop is-6-tablet" *ngIf="areaChartData.length > 0">
+    <div class="column is-6-widescreen is-6-desktop is-6-tablet">
       <stat-chart
         [selectItems]="selectItems"
         chartType="area"
         [areaChartData]="areaChartData"
         [yAxisTickFormatting]="trimAreaChartYAxis"
         (onSelectItemChanged)="prepareStats($event)"
+        (onRefreshClicked)="prepareStats()"
       ></stat-chart>
     </div>
     <div class="column is-6-widescreen is-6-desktop is-6-tablet" *ngIf="recentActivitiesWithProject.length > 0">
@@ -24,6 +25,7 @@
         [recentActivitiesWithProject]="recentActivitiesWithProject"
         [currentUser]="user$ | async"
         [showFooterPagination]="true"
+        (onRefreshClicked)="prepareRecentActivities()"
       ></recent-activities>
     </div>
     <div class="column is-6-widescreen is-6-desktop is-6-tablet">

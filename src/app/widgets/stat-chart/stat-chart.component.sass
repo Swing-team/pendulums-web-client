@@ -17,12 +17,33 @@
       color: $primary
       font-size: 18px
 
-  .ps-stat-chart-select
-    margin-top: 8px
-    align-self: center
-    width: 240px
-    border: 2px solid $primary
-    border-radius: $radius
+  .ps-stat-chart-header
+    display: flex
+    align-items: center
+    justify-content: center
+    padding: 0 8px
+
+    .ps-stat-chart-select
+      margin-top: 8px
+      align-self: center
+      width: 240px
+      border: 2px solid $primary
+      border-radius: $radius
+      flex-grow: 1
+
+    .ps-refresh-chart
+      width: 40px
+      height: 40px
+      display: flex
+      align-items: center
+      justify-content: center
+      margin-left: 8px
+      margin-top: 8px
+      border-radius: 100%
+
+      &:hover
+        background-color: darken($paper, 15)
+
 
   .ps-chart-container
     display: flex

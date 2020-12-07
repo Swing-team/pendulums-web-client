@@ -16,9 +16,9 @@ import { RecentActivityWithProject } from 'app/widgets/recent-activities/model/r
 import { Note } from 'app/shared/state/note/note.model';
 import { AppStateSelectors } from 'app/shared/state/app-state.selectors';
 import { Activity } from 'app/shared/state/current-activity/current-activity.model';
-import { values } from 'lodash';
 import { UserStatsService } from './user-stats.service';
 import * as moment from 'moment';
+import { ActivityService } from 'app/core/services/activity.service';
 
 @Component({
   selector: 'dashboard',
@@ -42,6 +42,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   hasSeenInfoModal: boolean;
   selectItems: string[] = ['last week', 'last month', 'last 3 months', 'last year'];
   areaChartData: AreaChartInterface[] = [];
+  previouslyChartFetchedFrom: number;
+  previouslyChartFetchedTo: number;
 
   constructor (
     private store: Store<AppState>,
@@ -51,6 +53,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     // this service needed to handle router changes so don't remove it
     private routerChangeListenerService: RouterChangeListenerService,
     private userStatsService: UserStatsService,
+    private activityService: ActivityService,
   ) {
 
     this.user$ = this.store.select('user');
@@ -100,8 +103,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.prepareRecentNotes();
   }
 
-  prepareRecentActivities() {
-    // TODO: We need to call a service to get recent activities in here
+  async prepareRecentActivities() {
+    const activities = await this.activityService.getUserRecentActivities();
+    this.recentActivitiesWithProject = activities.map(a => { return { activity: a, project: this.recentProjects[0] } });
   }
 
   prepareRecentProjects() {
@@ -136,29 +140,33 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.subscriptions.push(this.notes$.subscribe((notes) => this.recentNotes = notes));
   }
 
-  async prepareStats(event: {index: number; selectedItem?: string}) {
-    let from = 0
-    let to = moment(Date.now()).endOf('day').valueOf();
+  async prepareStats(event?: {index: number; selectedItem?: string}) {
+    if (event) {
+      let from = 0;
+      let to = moment(Date.now()).endOf('day').valueOf();
 
-    switch (event.index) {
-      case 0: {
-        from = moment(Date.now()).subtract(6, 'days').startOf('day').valueOf();
-        break;
+      switch (event.index) {
+        case 0: {
+          from = moment(Date.now()).subtract(6, 'days').startOf('day').valueOf();
+          break;
+        }
+        case 1: {
+          from = moment(Date.now()).subtract(29, 'days').startOf('day').valueOf();
+          break;
+        }
+        case 2: {
+          from = moment(Date.now()).subtract(89, 'days').startOf('day').valueOf();
+          break;
+        }
+        case 3: {
+          from = moment(Date.now()).subtract(364, 'days').startOf('day').valueOf();
+          break;
+        }
       }
-      case 1: {
-        from = moment(Date.now()).subtract(29, 'days').startOf('day').valueOf();
-        break;
-      }
-      case 2: {
-        from = moment(Date.now()).subtract(89, 'days').startOf('day').valueOf();
-        break;
-      }
-      case 3: {
-        from = moment(Date.now()).subtract(364, 'days').startOf('day').valueOf();
-        break;
-      }
+      this.previouslyChartFetchedFrom = from;
+      this.previouslyChartFetchedTo = to;
     }
-    const res = await this.userStatsService.getUserStats(from, to);
+    const res = await this.userStatsService.getUserStats(this.previouslyChartFetchedFrom, this.previouslyChartFetchedTo);
 
     if (res && res.result) {
       this.areaChartData = [{
@@ -166,7 +174,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         series: res.result.map((column, index) => {
           let xAxisName =  moment(Number(column._id)).format('MMM Do');
           if (res.columnSize !== 1) {
-            let nextBoundaryId = to;
+            let nextBoundaryId = this.previouslyChartFetchedTo;
             if (index + 2 <= res.result.length) {
               nextBoundaryId = Number(res.result[index + 1]._id) - 1;
             }
