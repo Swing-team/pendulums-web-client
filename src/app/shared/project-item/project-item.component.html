@@ -18,7 +18,7 @@
           <p class="ps-project-item-card-title" *ngIf="!activityStarted" title="{{project.name}}">{{project.name}}</p>
           <p *ngIf="activityStarted">
             <input #activityNameElm name="projectItemActivityNameInput" [(ngModel)]="taskName" class="input ps-task-input" (change)="nameActivity($event)"
-                    placeholder="Activity Name" type="text">
+                   (click)="$event.stopPropagation()" placeholder="Activity Name" type="text">
           </p>
           <p class="ps-owner-container" title="{{project.owner.name ? project.owner.name : project.owner.email}}">
             <span>Owned by |&nbsp;</span>
