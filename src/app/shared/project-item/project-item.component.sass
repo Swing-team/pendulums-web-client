@@ -15,76 +15,97 @@
       padding: 10px !important
       display: flex
       flex-direction: column
-      .ps-media-content
-        display: grid
-        width: 100%
-        .ps-owner-container
-          overflow: hidden
-          white-space: nowrap
-          text-overflow: ellipsis
-          font-size: 0.9rem
-          .ps-owner-name
-            color: rgba(0,0,0,0.5)
-      .ps-project-image-container
-        height: 80px
-        width: 80px
-        background: no-repeat center center
-        background-size: cover
-        border-radius: $radius !important
-      .ps-item-card-button
-        background-color: rgba(0,0,0,0.5)
-        border: none
-        padding: 0
-        color: $paper
-        border-radius: 100%
-        height: 36px
-        width: 36px
-        min-height: 36px
-        min-width: 36px
-        max-height: 36px
-        max-width: 36px
-        font-size: 24px
-        text-align: center
-        .icon-play
-          margin-left: 2px
-        .icon-pencil
-          font-size: 1rem
-      .ps-project-item-card-title
-        font-size: 1.2rem
-        overflow: hidden
-        white-space: nowrap
-        text-overflow: ellipsis
-      .ps-task-input
-        height: 36px
-        font-size: 0.9rem
-        background-color: rgba(0,0,0,0.3)
-        border-radius: unset
-        border: unset !important
-        color: $paper !important
-      .ps-project-detail-container
-        display: flex
-        flex-direction: row
-        justify-content: space-around
+
+      .ps-project-details-container
         align-items: center
-        .ps-project-detail
+
+        .ps-media-content
+          display: grid
+          width: 100%
+          .ps-owner-container
+            overflow: hidden
+            white-space: nowrap
+            text-overflow: ellipsis
+            font-size: 14px
+            .ps-owner-name
+              color: rgba(0,0,0,0.5)
+
+          .ps-project-team-members-count
+            font-size: 14px
+            height: 21px
+
+        .ps-project-image-container
+          height: 80px
+          width: 80px
+          background: no-repeat center center
+          background-size: cover
+          border-radius: $radius !important
+        .ps-item-card-button
+          background-color: rgba(0,0,0,0.5)
+          border: none
+          padding: 0
+          color: $paper
+          border-radius: 100%
+          height: 36px
+          width: 36px
+          min-height: 36px
+          min-width: 36px
+          max-height: 36px
+          max-width: 36px
+          font-size: 24px
+          text-align: center
+          .icon-play
+            margin-left: 2px
+          .icon-pencil
+            font-size: 1rem
+        .ps-media-header
           display: flex
-          flex-direction: column
-          justify-content: center
           align-items: center
-          .ps-project-detail-circle
-            border-radius: 100%
-            width: 75px
-            height: 75px
+
+          .ps-project-item-card-title
+            flex-grow: 1
+            font-size: 1.2rem
+            overflow: hidden
+            white-space: nowrap
+            text-overflow: ellipsis
+            margin-right: 8px
+
+          .ps-activity-name-input-container
+            flex-grow: 1
+            margin-right: 8px
+
+            .ps-task-input
+              height: 36px
+              font-size: 0.9rem
+              background-color: rgba(0,0,0,0.3)
+              border-radius: 4px
+              border: unset !important
+              color: $paper !important
+
+        .ps-project-detail-container
+          display: flex
+          flex-direction: row
+          justify-content: space-around
+          align-items: center
+          .ps-project-detail
             display: flex
+            flex-direction: column
             justify-content: center
             align-items: center
-            border: 3px solid rgba(0, 0, 0, 0.5)
-            .ps-total-hours-text
+            .ps-project-detail-circle
+              border-radius: 100%
+              width: 75px
+              height: 75px
+              display: flex
+              justify-content: center
+              align-items: center
+              border: 3px solid rgba(0, 0, 0, 0.5)
+              .ps-total-hours-text
+                font-weight: 500
+                font-size: 1rem
+            .ps-project-detail-subtitle
+              padding-top: 8px
               font-weight: 500
-              font-size: 1rem
-          .ps-project-detail-subtitle
-            padding-top: 8px
-            font-weight: 500
 
 .ps-divider-line
   margin: 0rem 1.5rem 1rem 1.5rem !important

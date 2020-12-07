@@ -8,43 +8,46 @@
                   'ps-back-green': project.colorPalette == 7}" class="ps-project-item-container" (click)="goToProjectDashboard()">
   <div class="card ps-project-item-card" [class.ps-has-border-radius]="hasBorderRadius">
     <div class="card-content ps-project-item-card-content">
-      <div class="media">
+      <div class="media ps-project-details-container">
         <div class="media-left">
           <figure [ngStyle]="{'background-image': project.image ? 'url(' + environment.imagesEndpoint + '/projects/' + project.image + ')' :
                               'url(assets/images/placeholder.png)'}" class="image ps-project-image-container">
           </figure>
         </div>
         <div class="ps-media-content">
-          <p class="ps-project-item-card-title" *ngIf="!activityStarted" title="{{project.name}}">{{project.name}}</p>
-          <p *ngIf="activityStarted">
-            <input #activityNameElm name="projectItemActivityNameInput" [(ngModel)]="taskName" class="input ps-task-input" (change)="nameActivity($event)"
-                   (click)="$event.stopPropagation()" placeholder="Activity Name" type="text">
-          </p>
+          <div class="ps-media-header">
+            <span class="ps-project-item-card-title" *ngIf="!activityStarted" title="{{project.name}}">{{project.name}}</span>
+            <span *ngIf="activityStarted" class="ps-activity-name-input-container">
+              <input #activityNameElm name="projectItemActivityNameInput" [(ngModel)]="taskName" class="input ps-task-input" (change)="nameActivity($event)"
+                     (click)="$event.stopPropagation()" placeholder="Activity Name" type="text">
+            </span>
+            <span>
+              <div *ngIf="!isEditable" (click)="toggleStopStart(); $event.stopPropagation()">
+                <a  class="button ps-item-card-button" [ngClass]="{'is-loading': activityButtonDisabled}">
+                  <span class="icon">
+                    <i *ngIf="activityStarted" class="icon-stop" title="Stop activity"></i>
+                    <i *ngIf="!activityStarted" class="icon-play" title="Start activity"></i>
+                  </span>
+                </a>
+              </div>
+              <div *ngIf="isEditable" (click)="showSettings()">
+                <a  class="button ps-item-card-button">
+                  <span class="icon">
+                    <i class="icon-pencil" title="Project setting"></i>
+                  </span>
+                </a>
+              </div>
+            </span>
+          </div>
           <p class="ps-owner-container" title="{{project.owner.name ? project.owner.name : project.owner.email}}">
             <span>Owned by |&nbsp;</span>
             <span class="ps-owner-name">
               <b> {{project.owner.name ? project.owner.name : project.owner.email}}</b>
             </span>
           </p>
-          <div>
-            <span class="icon-teammember"> {{project.teamMembers.length}}</span>
-          </div>
-        </div>
-        <div class="media-right">
-          <div *ngIf="!isEditable" (click)="toggleStopStart(); $event.stopPropagation()">
-            <a  class="button ps-item-card-button" [ngClass]="{'is-loading': activityButtonDisabled}">
-              <span class="icon">
-                <i *ngIf="activityStarted" class="icon-stop" title="Stop activity"></i>
-                <i *ngIf="!activityStarted" class="icon-play" title="Start activity"></i>
-              </span>
-            </a>
-          </div>
-          <div *ngIf="isEditable" (click)="showSettings()">
-            <a  class="button ps-item-card-button">
-              <span class="icon">
-                <i class="icon-pencil" title="Project setting"></i>
-              </span>
-            </a>
+          <div class="ps-project-team-members-count">
+            <span class="icon-teammember"></span>
+            {{project.teamMembers.length}}
           </div>
         </div>
       </div>
