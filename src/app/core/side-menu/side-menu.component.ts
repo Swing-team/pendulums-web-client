@@ -141,17 +141,6 @@ export class SideMenuComponent implements OnInit {
     }
   }
 
-  syncSummary() {
-    if (!this.netConnected) {
-      this.showError('Not available in offline mode' );
-    } else {
-      this.syncing = true;
-      Promise.all(this.syncService.autoSync())
-        .then(() => this.syncing = false)
-        .catch(() => this.syncing = false);
-    }
-  }
-
   showModal(componentName: string) {
     if (componentName === 'AppInfoComponent') {
       this.modalService.show({

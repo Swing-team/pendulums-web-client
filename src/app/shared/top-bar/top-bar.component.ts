@@ -7,6 +7,8 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../state/appState';
 import { environment } from 'environments/environment';
 import { Md5 } from 'ts-md5';
+import { ErrorService } from 'app/core/error/error.service';
+import { SyncService } from 'app/core/services/sync.service';
 
 @Component({
   selector: 'top-bar',
@@ -27,11 +29,14 @@ export class TopBarComponent implements OnInit, OnDestroy, DoCheck {
   differ: any;
   environment = environment;
   emailHash: string;
+  syncing = false;
 
   constructor(
     private readonly sideMenuService: SideMenuService,
     private store: Store<AppState>,
     private differs: KeyValueDiffers,
+    private errorService: ErrorService,
+    private syncService: SyncService,
   ) {
     this.status$ = store.select('status')
     this.user$ = store.select('user');
@@ -72,6 +77,23 @@ export class TopBarComponent implements OnInit, OnDestroy, DoCheck {
 
   changeIsSideMenuActiveState() {
     this.sideMenuService.changeIsSideMenuActive(!this.isSideMenuActive);
+  }
+
+  syncSummary() {
+    if (!this.status.netStatus) {
+      this.showError('Not available in offline mode' );
+    } else {
+      this.syncing = true;
+      Promise.all(this.syncService.autoSync())
+        .then(() => this.syncing = false)
+        .catch(() => this.syncing = false);
+    }
+  }
+
+  showError(error) {
+    this.errorService.show({
+      input: error
+    });
   }
 
   ngOnDestroy() {

@@ -10,12 +10,6 @@
         <p>Notifications</p>
       </a>
     </li>
-    <li title="Sync">
-      <a (click)="syncSummary()" [ngClass]="{'is-disabled': !netConnected, 'ps-sync-disable': syncing}" style="transform: rotate(0deg);">
-        <span class="icon-refresh" [ngClass]="{'ps-sync-animation': syncing}"></span>
-        <p>Sync</p>
-      </a>
-    </li>
     <li class="ps-fill-space"></li>
     <li title="{{ netConnected ? 'Sign out' : 'Cannot signout when you are offline'}}"><a [ngClass]="{'is-active': activeItemNumber === 4 , 'is-disabled': !netConnected}" (click)="signout()"><span class="icon-sign-out"></span><p>Log Out</p></a></li>
     <li title="Report bug" id="bug-report-icon">

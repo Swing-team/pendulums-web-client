@@ -44,6 +44,7 @@ $side-menu-item-size: $side-menu-size - 8px
         &.is-active
           background-color: lighten($ps-primary,10%) !important
         &.is-disabled
+          pointer-events: none
           cursor: not-allowed
           background-color: darken($white1,30%) !important
           &:hover
@@ -66,14 +67,6 @@ $side-menu-item-size: $side-menu-size - 8px
           &.icon-gift
             padding: unset
             padding-bottom: 2px
-        p
-          font-size: 16px
-          font-weight: 500
-          display: block
-          margin-left: 10px
-          color: $paper
-          @media ( min-width: calc( 1px + #{$ps-change-menu-size} ))
-            display: none
 
 .ps-notifications-container
   position: absolute
@@ -136,5 +129,3 @@ $side-menu-item-size: $side-menu-size - 8px
       -webkit-transform: rotate(360deg)  /* Chrome, Opera 15+, Safari 3.1+ */
       -ms-transform: rotate(360deg)  /* IE 9 */
       transform: rotate(360deg)  /* Firefox 16+, IE 10+, Opera */
-.ps-sync-disable
-  pointer-events: none

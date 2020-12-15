@@ -49,6 +49,19 @@
           color: $primary
           font-weight: 500
           margin-left: 5px
+      .ps-donation-btn
+        background-color: $yellow
+        width: 50px
+        height: 50px
+        border-radius: 100%
+        display: flex
+        justify-content: center
+        align-items: center
+        transition: all ease-in-out $ps-transitions
+        &:hover
+          background-color: darken($yellow, 20%)
+        span
+          font-size: 1.6rem
 
     &.ps-top-bar-item-right
       padding-right: 24px
@@ -66,19 +79,6 @@
             width: $top-bar-size - 14px
             height: $top-bar-size - 14px
             margin: unset
-      .ps-donation-btn
-        background-color: $yellow
-        width: 50px
-        height: 50px
-        border-radius: 100%
-        display: flex
-        justify-content: center
-        align-items: center
-        transition: all ease-in-out $ps-transitions
-        &:hover
-          background-color: darken($yellow, 20%)
-        span
-          font-size: 1.6rem
     @media (max-width: #{$ps-change-menu-size})
       &.ps-top-bar-item-left
         display: none
