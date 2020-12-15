@@ -5,6 +5,8 @@ import { User } from '../state/user/user.model';
 import { Status } from '../state/status/status.model';
 import { Store } from '@ngrx/store';
 import { AppState } from '../state/appState';
+import { environment } from 'environments/environment';
+import { Md5 } from 'ts-md5';
 
 @Component({
   selector: 'top-bar',
@@ -23,7 +25,9 @@ export class TopBarComponent implements OnInit, OnDestroy, DoCheck {
   isSideMenuActive: boolean;
   subscriptions: Subscription[] = [];
   differ: any;
-  
+  environment = environment;
+  emailHash: string;
+
   constructor(
     private readonly sideMenuService: SideMenuService,
     private store: Store<AppState>,
@@ -37,14 +41,19 @@ export class TopBarComponent implements OnInit, OnDestroy, DoCheck {
 
   ngOnInit() {
     this.subscriptions.push(this.status$.subscribe((status) => this.status = status));
-    this.subscriptions.push(this.user$.subscribe((user) => this.user = user));
+    this.subscriptions.push(this.user$.subscribe((user) => {
+      this.user = user;
+      if (this.user.email) {
+        this.emailHash = Md5.hashStr(this.user.email).toString();
+      }
+    }));
 
     this.subscriptions.push(
       this.sideMenuService.getIsSideMenuActiveAsObservable().subscribe((isSideMenuActive) => {
         this.isSideMenuActive = isSideMenuActive;
       })
     );
-    
+
     if (this.user.pendingInvitations.length > 0 || this.status.updateNeeded) {
       this.hasNotification = true;
     }

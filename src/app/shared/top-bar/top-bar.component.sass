@@ -15,7 +15,7 @@
   .ps-top-bar-item
     display: flex
     align-items: center
-    
+
     &.ps-burger-menu
       display: none
       padding-left: 8px
@@ -34,7 +34,7 @@
         top: 10px
         right: 8px
         text-align: center
-    
+
     &.ps-top-bar-item-left
       padding-left: 24px
       justify-self: flex-start
@@ -49,10 +49,23 @@
           color: $primary
           font-weight: 500
           margin-left: 5px
-    
+
     &.ps-top-bar-item-right
       padding-right: 24px
       justify-self: flex-end
+      .ps-user-image-container
+        width: $top-bar-size - 14px
+        height: $top-bar-size - 14px
+        margin-left: 8px
+        .ps-user-image
+          margin: auto
+          width: $top-bar-size - 14px
+          height: $top-bar-size - 14px
+          border-radius: 100%
+          @media (max-width: $ps-change-menu-size)
+            width: $top-bar-size - 14px
+            height: $top-bar-size - 14px
+            margin: unset
       .ps-donation-btn
         background-color: $yellow
         width: 50px

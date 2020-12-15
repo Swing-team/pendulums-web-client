@@ -3,17 +3,25 @@
     <span [ngClass]="{'ps-burger-menu-badge': hasNotification}"></span>
     <span class="icon-menu ps-burger-menu-icon"></span>
   </div>
-  
+
   <div class="ps-top-bar-item ps-top-bar-item-left">
     <div class="ps-logo-container" alignLeft>
       <img class="ps-top-bar-logo" src="../../assets/images/logo-blue.png">
       <span class="ps-top-bar-logo-name">{{title}}</span>
     </div>
   </div>
-  
+
   <div class="ps-top-bar-item ps-top-bar-item-right">
     <a *ngIf="showDonationButton" target="_blank" title="Donate to us" href="https://pendulums.io/donation.html" class="ps-donation-btn">
       <span class="icon-gift"></span>
+    </a>
+    <a class="ps-user-image-container">
+      <img *ngIf="user.profileImage" class="ps-user-image"
+           src="{{user.profileImage? environment.imagesEndpoint + '/profile/' + user.profileImage :
+                    'assets/images/placeholder.png'}}" >
+      <svg *ngIf="!user.profileImage" class="ps-user-image" width="36" height="36" [identiconHash]="emailHash">
+        Your browser does not support SVG
+      </svg>
     </a>
     <ng-content select="[alignRight]"></ng-content>
   </div>

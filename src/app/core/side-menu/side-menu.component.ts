@@ -4,7 +4,6 @@ import {
 }                                        from '@angular/core';
 import { User }                          from '../../shared/state/user/user.model';
 import { environment }                    from '../../../environments/environment';
-import { Md5 }                           from 'ts-md5/dist/md5';
 import { Router, NavigationStart }                        from '@angular/router';
 import { ErrorService }                  from '../error/error.service';
 import { ModalService }                  from '../modal/modal.service';
@@ -41,7 +40,6 @@ export class SideMenuComponent implements OnInit {
                }
 
   ngOnInit() {
-    this.emailHash = Md5.hashStr(this.user.email);
     this.pendulumNotification = false;
 
     // initial active item in side menu by router
