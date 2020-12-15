@@ -19,7 +19,8 @@
         [barChartData]="barChartData"
         [areaChartData]="areaChartData"
         [yAxisTickFormatting]="trimYAxis"
-        (onSelectItemChanged)="ChartSelectItemChanged($event)"
+        (onSelectItemChanged)="chartSelectItemChanged($event)"
+        (onRefreshClicked)="chartSelectItemChanged()"
       ></stat-chart>
     </div>
 

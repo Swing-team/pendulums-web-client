@@ -114,7 +114,7 @@ export class ProjectDashboardComponent implements OnInit, OnDestroy {
     );
   }
 
-  ChartSelectItemChanged(event: {index: number; selectedItem: string}) {
+  chartSelectItemChanged(event?: {index: number; selectedItem: string}) {
     // TODO: make the proper response.
   }
 
