@@ -1,23 +1,24 @@
 <div class="ps-top-bar">
-  <div class="ps-top-bar-item ps-burger-menu" (click)="changeIsSideMenuActiveState();$event.stopPropagation()">
-    <span [ngClass]="{'ps-burger-menu-badge': hasNotification}"></span>
-    <span class="icon-menu ps-burger-menu-icon"></span>
-  </div>
-
   <div class="ps-top-bar-item ps-top-bar-item-left">
-    <a *ngIf="showDonationButton" target="_blank" title="Donate to us" href="https://pendulums.io/donation.html" class="ps-donation-btn">
+    <a target="_blank" title="Donate to us" href="https://pendulums.io/donation.html" class="ps-donation-btn">
       <span class="icon-gift"></span>
     </a>
     <a (click)="syncSummary()" [ngClass]="{'is-disabled': !status.netStatus, 'ps-sync-disable': syncing}" style="transform: rotate(0deg);">
       <span class="icon-refresh" [ngClass]="{'ps-sync-animation': syncing}"></span>
     </a>
-    <div class="ps-logo-container" alignLeft>
-      <img class="ps-top-bar-logo" src="../../assets/images/logo-blue.png">
-      <span class="ps-top-bar-logo-name">{{title}}</span>
-    </div>
+  </div>
+
+  <div class="ps-top-bar-item ps-top-bar-item-center">
+    <a [routerLink]="['dashboard']"><span class="icon-dashboard"></span><p>Dashboard</p></a>
+    <a [routerLink]="['projects']"><span class="icon-projects"></span><p>Projects</p></a>
+    <a [routerLink]="['notes']"><span class="icon-sticky-note-o"></span><p>Notes</p></a>
   </div>
 
   <div class="ps-top-bar-item ps-top-bar-item-right">
+    <a #notifications>
+      <span class="icon-bell"></span>
+      <span class="ps-notification-count" *ngIf="user.pendingInvitations.length + notificationNumber > 0">{{user.pendingInvitations.length + notificationNumber}}</span>
+    </a>
     <a class="ps-user-image-container">
       <img *ngIf="user.profileImage" class="ps-user-image"
            src="{{user.profileImage? environment.imagesEndpoint + '/profile/' + user.profileImage :

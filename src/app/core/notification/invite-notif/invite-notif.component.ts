@@ -1,10 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../../../shared/state/appState';
-import { UserActions } from '../../../../shared/state/user/user.actions';
-import { ProjectsActions } from '../../../../shared/state/project/projects.actions';
+import { AppState } from '../../../shared/state/appState';
+import { UserActions } from '../../../shared/state/user/user.actions';
+import { ProjectsActions } from '../../../shared/state/project/projects.actions';
 import { NotificationService } from '../notification.service';
-import { Project } from '../../../../shared/state/project/project.model';
+import { Project } from '../../../shared/state/project/project.model';
 import { ErrorService } from 'app/core/error/error.service';
 
 @Component({

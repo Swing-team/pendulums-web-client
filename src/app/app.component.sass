@@ -11,44 +11,8 @@
 .ps-main-content
   padding-top: 0
   padding-bottom: $toolbar-size !important
-  &.ps-main-signed-in-content-with-side
-    @media (min-width: 1024px)
-     padding-left: $side-menu-size !important
-    @media (max-width: $ps-mobile)
-     padding-left: 0px
-
-.ps-side-menu
-  position: fixed
-  left: -200px;
-  height: calc( 100vh - #{$toolbar-size} - #{$top-bar-size} )
-  top: $top-bar-size
-  z-index: 10
-  transition: 0.5s
-  @media (min-width: 1024px)
-    left: 0
-
-.ps-menu-opened-background
-  position: fixed
-  top: 0
-  left: 0
-  width: 100%
-  height: 100%
-  z-index: 9
-  background-color: rgba(0, 0, 0, 0.8)
-
-
-.ps-guster-handler
-  width: 32px
-  height: 100%
-  z-index: 8
-  position: fixed
-  top: 0
-  left: 0
-.ps-side-menu-show
-  left: 0
-  z-index: 10
-  width: 200px
-
+  @media (max-width: $ps-mobile)
+    padding-left: 0px
 
 .offline-indicator
   background-color: $red

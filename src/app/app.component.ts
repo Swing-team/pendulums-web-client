@@ -1,8 +1,4 @@
-import { debounceTime } from 'rxjs/operators';
-import {
-  Component, ElementRef, OnInit, ViewChild,
-  ViewContainerRef
-}                                                 from '@angular/core';
+import { Component, OnInit, ViewContainerRef }    from '@angular/core';
 import { Router }                                 from '@angular/router';
 import { Observable }                             from 'rxjs';
 import { Store }                                  from '@ngrx/store';
@@ -23,7 +19,6 @@ import { ModalService }                           from './core/modal/modal.servi
 import { Theme }                                  from './shared/state/theme/theme.model';
 import { Activity }                               from './shared/state/current-activity/current-activity.model';
 import { Project }                                from './shared/state/project/project.model';
-import { SideMenuService } from './core/services/side-menu.service';
 
 @Component({
   selector: 'app-root',
@@ -38,12 +33,8 @@ export class AppComponent implements OnInit {
   public selectedProject: Observable<string>;
   public currentActivity: Observable<Activity>;
   private previousLoginStatus = null;
-  sideMenuIsActive = false;
   netConnected: boolean;
-  notifNum = 0;
-
-  @ViewChild('sideMenu', { read: ElementRef }) sideMenu: ElementRef;
-  @ViewChild('menuIcon', { read: ElementRef }) menuIcon: ElementRef;
+  notificationNumber = 0;
 
   constructor(
     private authService: AuthenticationService,
@@ -58,7 +49,6 @@ export class AppComponent implements OnInit {
     private appService: AppService,
     private unSyncedActivityActions: UnSyncedActivityActions,
     private appStateSelectors: AppStateSelectors,
-    private sideMenuService: SideMenuService,
     // needed for dynamically loaded components
     public viewContainerRef: ViewContainerRef,
     private modalService: ModalService
@@ -76,10 +66,6 @@ export class AppComponent implements OnInit {
     // to initialize webSocket connection
     const responseResults = this.syncService.init();
 
-    this.sideMenuService.getIsSideMenuActiveAsObservable().subscribe((isSideMenuActive) => {
-      this.sideMenuIsActive = isSideMenuActive;
-    });
-
     // handle Theme
     this.theme.subscribe((theme) => {
       if (theme.isLightTheme) {
@@ -92,7 +78,7 @@ export class AppComponent implements OnInit {
     this.appService.getAppVersion().then((version) => {
       this.store.dispatch(this.statusActions.updateStatus({updateNeeded: version > VERSION}));
       if (version > VERSION) {
-        this.notifNum += 1;
+        this.notificationNumber += 1;
       }
     });
     // to handle 403 interceptor by isLogin that has been handle in signOut and authInterceptor
@@ -139,39 +125,13 @@ export class AppComponent implements OnInit {
 
   signOut() {
     this.authService.signOut()
-      .then(() => {
-        if (window.innerWidth <= 1024) {
-          this.sideMenuService.changeIsSideMenuActive(false);
-        }
-      })
+      .then(() => {})
       .catch((error) => {
         if (error.status === 503) {
           // Not sure about this code below. please check!
           console.log('You have reached the authentication limits, please try in a few minutes!');
         }
       });
-  }
-
-  clickedOutSideOfMenu(event) {
-    if (!this.sideMenu.nativeElement.contains(event.target)) {
-      if (this.menuIcon) {
-        if (!event.target.contains(this.menuIcon)) {
-          this.sideMenuService.changeIsSideMenuActive(false);
-        }
-        this.menuIcon = null;
-      } else {
-        this.sideMenuService.changeIsSideMenuActive(false);
-      }
-    }
-  }
-
-  showSideMenu(event) {
-    this.menuIcon = event.target;
-    this.sideMenuService.changeIsSideMenuActive(!this.sideMenuIsActive);
-  }
-
-  closeMenu() {
-    this.sideMenuService.changeIsSideMenuActive(false);
   }
 }
 

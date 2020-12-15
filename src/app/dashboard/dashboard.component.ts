@@ -5,7 +5,7 @@ import { DatabaseService }              from '../core/services/database/database
 import { Store }                        from '@ngrx/store';
 import { AppState }                     from '../shared/state/appState';
 import { ModalService }                 from '../core/modal/modal.service';
-import { AppInfoComponent }             from '../core/side-menu/app-info/app-info.component';
+import { AppInfoComponent }             from '../core/app-info/app-info.component';
 import { RouterChangeListenerService }  from '../core/services/router-change-listener.service';
 import { VERSION }                      from 'environments/version';
 import { User }                         from 'app/shared/state/user/user.model';

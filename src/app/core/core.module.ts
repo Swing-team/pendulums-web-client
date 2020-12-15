@@ -18,11 +18,10 @@ import { ModalService }                 from './modal/modal.service';
 
 import { ToolbarComponent }             from './toolbar/toolbar.component';
 import { SharedModule }                 from '../shared/shared.module';
-import { SideMenuComponent }            from './side-menu/side-menu.component';
 import { ModalComponent }               from './modal/modal.component';
-import { NotificationComponent }        from './side-menu/notification/notification.component';
-import { NotificationService }          from './side-menu/notification/notification.service';
-import { AppInfoComponent }             from './side-menu/app-info/app-info.component';
+import { NotificationComponent }        from './notification/notification.component';
+import { NotificationService }          from './notification/notification.service';
+import { AppInfoComponent }             from './app-info/app-info.component';
 import { ImgCropperComponent }          from '../profile-setting/image-cropper/image-cropper.component';
 import { ImageCropperModule }           from 'ngx-img-cropper';
 import { ErrorComponent }               from './error/error.component';
@@ -42,14 +41,14 @@ import { AppStateSelectors }            from '../shared/state/app-state.selector
 import { ProjectsSelectors }            from '../shared/state/project/projects.selectors';
 import { NotesSelectors }               from '../shared/state/note/notes.selectors';
 import { RouterChangeListenerService }  from './services/router-change-listener.service';
-import { InviteNotifComponent }         from './side-menu/notification/invite-notif/invite-notif.component';
+import { InviteNotifComponent }         from './notification/invite-notif/invite-notif.component';
 import { NativeNotificationService }    from './services/native-notification.service';
 import { ActivityService }              from './services/activity.service';
 import { DeleteAccountComponent }       from 'app/profile-setting/delete-account/delete-account.component';
 import { SocketService }                from './services/socket.service';
 import { environment } from '../../environments/environment';
-import { SideMenuService } from './services/side-menu.service';
 import { NoteService } from './services/notes.service';
+import { TopBarComponent } from './top-bar/top-bar.component';
 
 @NgModule({
   imports:      [
@@ -60,18 +59,18 @@ import { NoteService } from './services/notes.service';
   ],
   declarations: [
     ToolbarComponent,
-    SideMenuComponent,
     ErrorComponent,
     ModalComponent,
     NotificationComponent,
     ImgCropperComponent,
     AppInfoComponent,
     InviteNotifComponent,
-    DeleteAccountComponent
+    DeleteAccountComponent,
+    TopBarComponent,
   ],
   exports:      [
     ToolbarComponent,
-    SideMenuComponent
+    TopBarComponent,
   ],
   providers:    [
     RouterModule,
@@ -104,7 +103,6 @@ import { NoteService } from './services/notes.service';
     RouterChangeListenerService,
     NativeNotificationService,
     ActivityService,
-    SideMenuService,
     NoteService,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],

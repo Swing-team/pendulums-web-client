@@ -1,14 +1,13 @@
-import { Component, Input, OnInit, OnDestroy, DoCheck, KeyValueDiffers } from '@angular/core';
-import { SideMenuService } from 'app/core/services/side-menu.service';
+import { Component, OnInit, OnDestroy, DoCheck, KeyValueDiffers } from '@angular/core';
 import { Subscription, Observable } from 'rxjs';
-import { User } from '../state/user/user.model';
-import { Status } from '../state/status/status.model';
 import { Store } from '@ngrx/store';
-import { AppState } from '../state/appState';
 import { environment } from 'environments/environment';
 import { Md5 } from 'ts-md5';
 import { ErrorService } from 'app/core/error/error.service';
 import { SyncService } from 'app/core/services/sync.service';
+import { User } from 'app/shared/state/user/user.model';
+import { Status } from 'app/shared/state/status/status.model';
+import { AppState } from 'app/shared/state/appState';
 
 @Component({
   selector: 'top-bar',
@@ -16,15 +15,12 @@ import { SyncService } from 'app/core/services/sync.service';
   styleUrls: ['./top-bar.component.sass'],
 })
 export class TopBarComponent implements OnInit, OnDestroy, DoCheck {
-  @Input() title: string;
-  @Input() showDonationButton: boolean = true;
-
   user$: Observable<User>;
   user: User;
   status$: Observable<Status>
   status: Status;
+  notificationNumber: number;
   hasNotification: boolean;
-  isSideMenuActive: boolean;
   subscriptions: Subscription[] = [];
   differ: any;
   environment = environment;
@@ -32,7 +28,6 @@ export class TopBarComponent implements OnInit, OnDestroy, DoCheck {
   syncing = false;
 
   constructor(
-    private readonly sideMenuService: SideMenuService,
     private store: Store<AppState>,
     private differs: KeyValueDiffers,
     private errorService: ErrorService,
@@ -53,12 +48,6 @@ export class TopBarComponent implements OnInit, OnDestroy, DoCheck {
       }
     }));
 
-    this.subscriptions.push(
-      this.sideMenuService.getIsSideMenuActiveAsObservable().subscribe((isSideMenuActive) => {
-        this.isSideMenuActive = isSideMenuActive;
-      })
-    );
-
     if (this.user.pendingInvitations.length > 0 || this.status.updateNeeded) {
       this.hasNotification = true;
     }
@@ -73,10 +62,6 @@ export class TopBarComponent implements OnInit, OnDestroy, DoCheck {
         this.hasNotification = false;
       }
     }
-  }
-
-  changeIsSideMenuActiveState() {
-    this.sideMenuService.changeIsSideMenuActive(!this.isSideMenuActive);
   }
 
   syncSummary() {
@@ -99,5 +84,4 @@ export class TopBarComponent implements OnInit, OnDestroy, DoCheck {
   ngOnDestroy() {
     this.subscriptions.forEach(s => s.unsubscribe());
   }
-
 }

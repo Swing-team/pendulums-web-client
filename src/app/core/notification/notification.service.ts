@@ -1,8 +1,8 @@
 import { Injectable }       from '@angular/core';
 import { HttpClient }       from '@angular/common/http';
-import { Project }          from '../../../shared/state/project/project.model';
-import { SocketService }      from '../../services/socket.service';
-import { environment }      from '../../../../environments/environment';
+import { Project }          from '../../shared/state/project/project.model';
+import { SocketService }      from '../services/socket.service';
+import { environment }      from '../../../environments/environment';
 
 
 @Injectable()

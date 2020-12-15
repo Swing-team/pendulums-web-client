@@ -10,7 +10,6 @@ import { SwingCalendarComponent }  from './swing-calendar/swing-calendar.compone
 import { SwingTagInputComponent }  from './swing-tag-input/swing-tag-input.component';
 import { TabComponent } from './tab/tab.component';
 import { SafeHtmlPipe } from '../shared/pipes/sanitizeHtmlPipe.pipe';
-import { TopBarComponent } from './top-bar/top-bar.component';
 import { ProjectItemComponent } from './project-item/project-item.component';
 import { ActivityItemComponent } from './activity-item/activity-item.component';
 import { NoteItemComponent } from './note-item/note-item.component';
@@ -23,7 +22,6 @@ import { NoteItemComponent } from './note-item/note-item.component';
     SwingSelectComponent,
     SwingCalendarComponent,
     SwingTagInputComponent,
-    TopBarComponent,
     TabComponent,
     ProjectItemComponent,
     ActivityItemComponent,
@@ -39,7 +37,6 @@ import { NoteItemComponent } from './note-item/note-item.component';
     SwingSelectComponent,
     SwingSwitchComponent,
     SwingTagInputComponent,
-    TopBarComponent,
     TabComponent,
     ProjectItemComponent,
     ActivityItemComponent,

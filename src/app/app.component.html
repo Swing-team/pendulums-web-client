@@ -1,10 +1,6 @@
-<div class="ps-guster-handler" (swiperight)="showSideMenu($event)" (swipeleft)="closeMenu()"></div>
-<div *ngIf="sideMenuIsActive" class="ps-menu-opened-background" (swipeleft)="closeMenu()" (click)="closeMenu()"></div>
-<side-menu #sideMenu *ngIf="(user | async).id" [user]="user | async" [netConnected]="netConnected" [notifNum]="notifNum" (onSignoutClicked)="signOut()" (clickedToCloseMenu)="closeMenu()"
-           class="ps-side-menu" [ngClass]="{'ps-side-menu-show': sideMenuIsActive}" (clickedOutsideOfMenu)="clickedOutSideOfMenu($event)"
-           (swipeleft)="closeMenu()"></side-menu>
+<top-bar></top-bar>
 
-<div class="ps-main-content has-text-centered" [ngClass]="{'ps-main-signed-in-content-with-side': (user | async).id, 'ps-main-signed-in-content-without-side': !sideMenuIsActive}">
+<div class="ps-main-content has-text-centered">
   <div *ngIf="!netConnected" class="offline-indicator has-text-centered">
     There is no internet connection!
   </div>

@@ -225,10 +225,6 @@ export class ToolbarComponent implements OnInit, OnDestroy  {
     });
   }
 
-  showSideMenu(event) {
-    this.onMenuItemClicked.emit(event);
-  }
-
   nameActivity($event) {
     this.taskName = this.taskName.trim();
     this.stopStartActivityService.nameActivity(this.taskName, this.selectedProject);
