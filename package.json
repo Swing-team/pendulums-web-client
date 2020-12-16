@@ -45,7 +45,6 @@
     "dexie": "^1.5.1",
     "electron": "^6.0.7",
     "fs-extra": "^7.0.0",
-    "hammerjs": "^2.0.8",
     "jdenticon": "^1.8.0",
     "json2csv": "^4.3.2",
     "lodash": "4.17.10",

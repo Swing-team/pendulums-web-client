@@ -3,7 +3,6 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
 import { ElectronAppModule } from './app/app.electron.module';
 import { environment } from './environments/environment';
-import 'hammerjs';
 
 if (environment.production) {
   enableProdMode();
