@@ -1,32 +1,82 @@
 <div class="ps-top-bar">
-  <div class="ps-top-bar-item ps-top-bar-item-left">
-    <a target="_blank" title="Donate to us" href="https://pendulums.io/donation.html" class="ps-donation-btn">
+  <div class="ps-top-bar-item ps-top-bar-item-left is-hidden-mobile">
+    <a target="_blank" title="Donate to us" href="https://pendulums.io/donation.html" class="ps-donation-btn ps-top-bar-icon mr-2">
       <span class="icon-gift"></span>
     </a>
-    <a (click)="syncSummary()" [ngClass]="{'is-disabled': !status.netStatus, 'ps-sync-disable': syncing}" style="transform: rotate(0deg);">
-      <span class="icon-refresh" [ngClass]="{'ps-sync-animation': syncing}"></span>
+    <a (click)="syncSummary()" [class.is-disabled]="!status.netStatus" style="transform: rotate(0deg);" class="ps-top-bar-icon">
+      <span class="icon-refresh" [class.ps-sync-animation]="syncing"></span>
     </a>
   </div>
 
   <div class="ps-top-bar-item ps-top-bar-item-center">
-    <a [routerLink]="['dashboard']"><span class="icon-dashboard"></span><p>Dashboard</p></a>
-    <a [routerLink]="['projects']"><span class="icon-projects"></span><p>Projects</p></a>
-    <a [routerLink]="['notes']"><span class="icon-sticky-note-o"></span><p>Notes</p></a>
+    <a [routerLink]="['dashboard']" class="ps-top-bar-text mr-2" routerLinkActive="ps-page-active">
+      <span class="icon-dashboard ps-top-bar-icon is-hidden-tablet"></span>
+      <p class="is-hidden-mobile">Dashboard</p>
+    </a>
+    <a [routerLink]="['projects']" class="ps-top-bar-text mr-2" routerLinkActive="ps-page-active">
+      <span class="icon-projects ps-top-bar-icon is-hidden-tablet"></span>
+      <p class="is-hidden-mobile">Projects</p>
+    </a>
+    <a [routerLink]="['notes']" class="ps-top-bar-text" routerLinkActive="ps-page-active">
+      <span class="icon-sticky-note-o ps-top-bar-icon is-hidden-tablet"></span>
+      <p class="is-hidden-mobile">Notes</p>
+    </a>
   </div>
 
   <div class="ps-top-bar-item ps-top-bar-item-right">
-    <a #notifications>
-      <span class="icon-bell"></span>
-      <span class="ps-notification-count" *ngIf="user.pendingInvitations.length + notificationNumber > 0">{{user.pendingInvitations.length + notificationNumber}}</span>
-    </a>
-    <a class="ps-user-image-container">
-      <img *ngIf="user.profileImage" class="ps-user-image"
-           src="{{user.profileImage? environment.imagesEndpoint + '/profile/' + user.profileImage :
-                    'assets/images/placeholder.png'}}" >
-      <svg *ngIf="!user.profileImage" class="ps-user-image" width="36" height="36" [identiconHash]="emailHash">
-        Your browser does not support SVG
-      </svg>
-    </a>
+    <div class="dropdown is-right ml-2" (click)="toggleNotificationDropDown()" [class.is-active]="isNotificationDropDownOpen">
+      <div class="dropdown-trigger ps-dropdown-trigger">
+        <a class="ps-top-bar-icon">
+          <span class="icon-bell" id="notificationDropDownTrigger"></span>
+          <span class="ps-notification-count" *ngIf="user.pendingInvitations.length + notificationNumber > 0">{{user.pendingInvitations.length + notificationNumber}}</span>
+        </a>
+      </div>
+      <div class="dropdown-menu notification-dropdown" id="notification-dropdown" role="menu">
+        <div class="dropdown-content">
+          <notification [user]="user"></notification>
+        </div>
+      </div>
+    </div>
+
+
+
+    <div class="dropdown is-right ml-2" (click)="toggleProfileDropDown()" [class.is-active]="isProfileDropDownOpen">
+      <div class="dropdown-trigger ps-dropdown-trigger">
+        <a class="ps-user-image-container" aria-haspopup="true" aria-controls="dropdown-menu">
+          <img *ngIf="user.profileImage" class="ps-user-image" id="profileDropDownTrigger"
+                [src]="environment.imagesEndpoint + '/profile/' + user.profileImage" >
+          <svg *ngIf="!user.profileImage" class="ps-user-image" width="48" height="48"
+               [identiconHash]="emailHash" id="profileDropDownTrigger">
+            Your browser does not support SVG
+          </svg>
+        </a>
+      </div>
+      <div class="dropdown-menu" id="dropdown-menu" role="menu">
+        <div class="dropdown-content">
+          <a routerLink="profile" routerLinkActive="is-active" class="dropdown-item">
+            Profile and Settings
+          </a>
+          <hr class="dropdown-divider is-hidden-tablet">
+          <a (click)="syncSummary()" [class.is-disabled]="!status.netStatus" class="dropdown-item is-hidden-tablet">
+            Sync Offline Data
+          </a>
+          <hr class="dropdown-divider">
+          <a target="_blank" href="https://pendulums.io/donation.html" class="dropdown-item">
+            Donate to Us
+          </a>
+          <a class="dropdown-item" (click)="showAppInfo()">
+            New Features
+          </a>
+          <a class="dropdown-item" href="https://github.com/Swing-team/pendulums-web-client/issues" target="_blank">
+            Report a Bug
+          </a>
+          <hr class="dropdown-divider">
+          <a class="dropdown-item" (click)="signout()">
+            Sign Out
+          </a>
+        </div>
+      </div>
+    </div>
     <ng-content select="[alignRight]"></ng-content>
   </div>
 </div>

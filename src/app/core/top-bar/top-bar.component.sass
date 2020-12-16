@@ -12,45 +12,90 @@
   left: 0
   height: $top-bar-size
   z-index: 11
+  box-shadow: 0 3px 10px #666666
+
   .ps-top-bar-item
     display: flex
     align-items: center
 
+    .ps-top-bar-icon
+      font-size: 22px
+      width: $top-bar-size - 24px
+      height: $top-bar-size - 24px
+      border-radius: 100%
+      display: flex
+      justify-content: center
+      align-items: center
+      transition: all ease-in-out $ps-transitions
+
+      &:hover
+        background-color: #ededed
+
+      &.ps-donation-btn
+        background-color: $yellow
+
+        &:hover
+          background-color: darken($yellow, 20%)
+
+    .ps-top-bar-text
+      font-size: 16px
+      font-weight: bold
+      padding-left: 8px
+      padding-right: 8px
+
+      &.ps-page-active
+        border-bottom: 3px solid $ps-primary
+
     &.ps-top-bar-item-left
       padding-left: 24px
       justify-self: flex-start
-      .ps-donation-btn
-        background-color: $yellow
-        width: $top-bar-size - 16px
-        height: $top-bar-size - 16px
-        border-radius: 100%
-        display: flex
-        justify-content: center
-        align-items: center
-        transition: all ease-in-out $ps-transitions
-        &:hover
-          background-color: darken($yellow, 20%)
-        span
-          font-size: 1.6rem
+
+      .ps-sync-animation
+        -webkit-animation: spin 1s linear infinite /* Chrome, Opera 15+, Safari 5+ */
+        animation: spin 1s linear infinite  /* Chrome, Firefox 16+, IE 10+, Opera */
+        @keyframes spin
+          0%
+            -webkit-transform: rotate(0deg)  /* Chrome, Opera 15+, Safari 3.1+ */
+            -ms-transform: rotate(0deg)  /* IE 9 */
+            transform: rotate(0deg)  /* Firefox 16+, IE 10+, Opera */
+          100%
+            -webkit-transform: rotate(360deg)  /* Chrome, Opera 15+, Safari 3.1+ */
+            -ms-transform: rotate(360deg)  /* IE 9 */
+            transform: rotate(360deg)  /* Firefox 16+, IE 10+, Opera */
+        @-webkit-keyframes spin
+          0%
+            -webkit-transform: rotate(0deg)  /* Chrome, Opera 15+, Safari 3.1+ */
+            -ms-transform: rotate(0deg)  /* IE 9 */
+            transform: rotate(0deg)  /* Firefox 16+, IE 10+, Opera */
+          100%
+            -webkit-transform: rotate(360deg)  /* Chrome, Opera 15+, Safari 3.1+ */
+            -ms-transform: rotate(360deg)  /* IE 9 */
+            transform: rotate(360deg)  /* Firefox 16+, IE 10+, Opera */
+
+    &.ps-top-bar-item-center
+      @media (max-width: 768px)
+        margin-left: 12px
 
     &.ps-top-bar-item-right
       padding-right: 24px
       justify-self: flex-end
+
+      @media (max-width: 768px)
+        padding-right: 12px
+
+      .ps-dropdown-trigger
+        width: $top-bar-size - 24px
+        height: $top-bar-size - 24px
+
       .ps-user-image-container
-        width: $top-bar-size - 16px
-        height: $top-bar-size - 16px
-        margin-left: 8px
+        width: $top-bar-size - 24px
+        height: $top-bar-size - 24px
+
         .ps-user-image
           margin: auto
-          width: $top-bar-size - 16px
-          height: $top-bar-size - 16px
+          width: $top-bar-size - 24px
+          height: $top-bar-size - 24px
           border-radius: 100%
-          @media (max-width: $ps-change-menu-size)
-            width: $top-bar-size - 16px
-            height: $top-bar-size - 16px
-            margin: unset
-    @media (max-width: #{$ps-change-menu-size})
-      &.ps-top-bar-item-left
-        display: none
-      &.ps-burger-menu
-        display: flex
+
+      .notification-dropdown
+        width: 280px

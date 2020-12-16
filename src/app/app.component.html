@@ -1,4 +1,4 @@
-<top-bar></top-bar>
+<top-bar *ngIf="(user | async).id" (onSignoutClicked)="signOut()"></top-bar>
 
 <div class="ps-main-content has-text-centered">
   <div *ngIf="!netConnected" class="offline-indicator has-text-centered">

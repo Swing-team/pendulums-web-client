@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, DoCheck, KeyValueDiffers } from '@angular/core';
+import { Component, OnInit, OnDestroy, Output, EventEmitter, HostListener } from '@angular/core';
 import { Subscription, Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { environment } from 'environments/environment';
@@ -8,13 +8,16 @@ import { SyncService } from 'app/core/services/sync.service';
 import { User } from 'app/shared/state/user/user.model';
 import { Status } from 'app/shared/state/status/status.model';
 import { AppState } from 'app/shared/state/appState';
+import { AppInfoComponent } from '../app-info/app-info.component';
+import { ModalService } from '../modal/modal.service';
 
 @Component({
   selector: 'top-bar',
   templateUrl: './top-bar.component.html',
   styleUrls: ['./top-bar.component.sass'],
 })
-export class TopBarComponent implements OnInit, OnDestroy, DoCheck {
+export class TopBarComponent implements OnInit, OnDestroy {
+  @Output() onSignoutClicked = new EventEmitter();
   user$: Observable<User>;
   user: User;
   status$: Observable<Status>
@@ -22,20 +25,20 @@ export class TopBarComponent implements OnInit, OnDestroy, DoCheck {
   notificationNumber: number;
   hasNotification: boolean;
   subscriptions: Subscription[] = [];
-  differ: any;
   environment = environment;
   emailHash: string;
   syncing = false;
+  isProfileDropDownOpen = false;
+  isNotificationDropDownOpen = false;
 
   constructor(
     private store: Store<AppState>,
-    private differs: KeyValueDiffers,
     private errorService: ErrorService,
     private syncService: SyncService,
+    private modalService: ModalService,
   ) {
-    this.status$ = store.select('status')
-    this.user$ = store.select('user');
-    this.differ = this.differs.find({}).create();
+    this.status$ = this.store.select('status')
+    this.user$ = this.store.select('user');
   }
 
 
@@ -54,19 +57,19 @@ export class TopBarComponent implements OnInit, OnDestroy, DoCheck {
   }
 
   ngDoCheck() {
-    const change = this.differ.diff(this.user.pendingInvitations);
-    if (change) {
-      if (this.user.pendingInvitations.length > 0 || this.status.updateNeeded) {
-        this.hasNotification = true;
-      } else {
-        this.hasNotification = false;
-      }
-    }
+    // const change = this.differ.diff(this.user.pendingInvitations);
+    // if (change) {
+    //   if (this.user.pendingInvitations.length > 0 || this.status.updateNeeded) {
+    //     this.hasNotification = true;
+    //   } else {
+    //     this.hasNotification = false;
+    //   }
+    // }
   }
 
   syncSummary() {
     if (!this.status.netStatus) {
-      this.showError('Not available in offline mode' );
+      this.showError('You cannot sync your data when you are offline' );
     } else {
       this.syncing = true;
       Promise.all(this.syncService.autoSync())
@@ -75,10 +78,43 @@ export class TopBarComponent implements OnInit, OnDestroy, DoCheck {
     }
   }
 
+  toggleProfileDropDown() {
+    this.isProfileDropDownOpen = !this.isProfileDropDownOpen;
+  }
+
+  toggleNotificationDropDown() {
+    this.isNotificationDropDownOpen = !this.isNotificationDropDownOpen;
+  }
+
+  showAppInfo() {
+    this.modalService.show({
+      component: AppInfoComponent,
+      inputs: {}
+    });
+  }
+
+  signout() {
+    if (this.status.netStatus) {
+      this.onSignoutClicked.emit();
+    } else {
+      this.showError('You cannot sign out from your account when you are offline' );
+    }
+  }
+
   showError(error) {
     this.errorService.show({
       input: error
     });
+  }
+
+  @HostListener('document:click', ['$event'])
+  clickOutOfDropDown(event) {
+    if (this.isProfileDropDownOpen && (event.target.id !== 'profileDropDownTrigger')) {
+      this.isProfileDropDownOpen = false;
+    }
+    if (this.isNotificationDropDownOpen && (event.target.id !== 'notificationDropDownTrigger')) {
+      this.isNotificationDropDownOpen = false;
+    }
   }
 
   ngOnDestroy() {
