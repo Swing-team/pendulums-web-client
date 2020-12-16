@@ -1,5 +1,4 @@
-import { Component, OnInit, Output,
-         OnDestroy }                    from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription ,  Observable }   from 'rxjs';
 import { DatabaseService }              from '../core/services/database/database.service';
 import { Store }                        from '@ngrx/store';
@@ -16,9 +15,10 @@ import { RecentActivityWithProject } from 'app/widgets/recent-activities/model/r
 import { Note } from 'app/shared/state/note/note.model';
 import { AppStateSelectors } from 'app/shared/state/app-state.selectors';
 import { Activity } from 'app/shared/state/current-activity/current-activity.model';
-import { UserStatsService } from './user-stats.service';
+import { DashboardService } from './dashboard.service';
 import * as moment from 'moment';
 import { ActivityService } from 'app/core/services/activity.service';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'dashboard',
@@ -26,8 +26,7 @@ import { ActivityService } from 'app/core/services/activity.service';
   styleUrls: ['./dashboard.component.sass']
 })
 export class DashboardComponent implements OnInit, OnDestroy {
-  @Output() serverMessage: any;
-
+  serverMessage: any = null;
   user$: Observable<User>;
   user: User;
   status$: Observable<Status>;
@@ -52,8 +51,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
     private appStateSelectors: AppStateSelectors,
     // this service needed to handle router changes so don't remove it
     private routerChangeListenerService: RouterChangeListenerService,
-    private userStatsService: UserStatsService,
+    private dashboardService: DashboardService,
     private activityService: ActivityService,
+    private cookieService: CookieService,
   ) {
 
     this.user$ = this.store.select('user');
@@ -101,6 +101,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.prepareStats({ index: 0 });
     this.prepareRecentActivities();
     this.prepareRecentNotes();
+    this.getServerMessage()
   }
 
   async prepareRecentActivities() {
@@ -166,7 +167,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.previouslyChartFetchedFrom = from;
       this.previouslyChartFetchedTo = to;
     }
-    const res = await this.userStatsService.getUserStats(this.previouslyChartFetchedFrom, this.previouslyChartFetchedTo);
+    const res = await this.dashboardService.getUserStats(this.previouslyChartFetchedFrom, this.previouslyChartFetchedTo);
 
     if (res && res.result) {
       this.areaChartData = [{
@@ -211,16 +212,28 @@ export class DashboardComponent implements OnInit, OnDestroy {
     return result;
   }
 
-  ngOnDestroy() {
-    this.subscriptions.forEach((s) => s.unsubscribe());
+  getServerMessage(): Promise<any> {
+    return this.dashboardService.getServerMessage()
+      .then(serverMessage => {
+        this.serverMessage = (serverMessage && (this.cookieService.get('serverMessageId') !== serverMessage.id))
+          ? serverMessage : null;
+      });
   }
 
+  dismiss() {
+    this.cookieService.set( 'serverMessageId', this.serverMessage.id );
+    this.serverMessage = null;
+  }
 
   showAppInfoModal() {
     this.modalService.show({
       component: AppInfoComponent,
       inputs: {}
     });
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach((s) => s.unsubscribe());
   }
 }
 

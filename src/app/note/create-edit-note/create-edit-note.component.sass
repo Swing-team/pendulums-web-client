@@ -26,17 +26,17 @@
   @media (max-width: 480px)
     font-size: 20px
 
-.ps-project-create-color-picker-container
+.ps-note-create-color-picker-container
   display: inline-flex
   margin-left: 10px
   margin-right: -21px
   margin-top: 0px
-  .ps-project-create-color-picker-title
+  .ps-note-create-color-picker-title
     align-self: center
     font-size: 16px
-  .ps-project-create-palette-container
+  .ps-note-create-palette-container
     position: relative
-    .ps-project-create-color
+    .ps-note-create-color
       margin: 5px
       margin-top: 6px
       .button
@@ -46,42 +46,42 @@
         width: 24px !important
         padding: 0 !important
         transition: all ease-in-out $ps-transitions
-        &.ps-project-create-palette-item-back-salmon
+        &.ps-note-create-palette-item-back-salmon
           background: $salmon
           &:hover
             background-color: $salmon-light !important
-        &.ps-project-create-palette-item-back-white1
+        &.ps-note-create-palette-item-back-white1
           background: $white1
           &:hover
             background-color: darken($white1, 5) !important
-        &.ps-project-create-palette-item-back-blue
+        &.ps-note-create-palette-item-back-blue
           background: $ps-card-blue
           border: 1px solid $paper !important
           &:hover
             background-color: $ps-card-blue-light !important
-        &.ps-project-create-palette-item-back-black
+        &.ps-note-create-palette-item-back-black
           background: $black
           border: 1px solid $paper !important
           &:hover
             background-color: $black-light !important
-        &.ps-project-create-palette-item-back-yellow
+        &.ps-note-create-palette-item-back-yellow
           background: $yellow
           &:hover
             background-color: $yellow-light !important
-        &.ps-project-create-palette-item-back-pink
+        &.ps-note-create-palette-item-back-pink
           background: $ps-card-pink
           &:hover
             background-color: $ps-card-pink-light !important
-        &.ps-project-create-palette-item-back-red
+        &.ps-note-create-palette-item-back-red
           background: $ps-card-red
           border: 1px solid $paper !important
           &:hover
             background-color: $ps-card-red-light !important
-        &.ps-project-create-palette-item-back-green
+        &.ps-note-create-palette-item-back-green
           background: $ps-card-green
           &:hover
             background-color: $ps-card-green-light !important
-    .ps-project-create-palette
+    .ps-note-create-palette
       position: absolute
       top: -50px
       right: 7px
@@ -93,44 +93,45 @@
       border-radius: $radius
       @media (max-width: 480px)
          right: -40px
-      .ps-project-create-palette-colors-section
+      .ps-note-create-palette-colors-section
         display: inline-flex
-        .ps-project-create-palette-item
+        .ps-note-create-palette-item
           margin: 5px
           .button
             border-radius: 100%
-            height: 30px !important
-            width: 30px !important
+            height: 30px
+            width: 30px
+            padding: 0
             transition: all ease-in-out $ps-transitions
-            &.ps-project-create-palette-item-back-salmon
+            &.ps-note-create-palette-item-back-salmon
               background: $salmon
               &:hover
                 background-color: $salmon-light !important
-            &.ps-project-create-palette-item-back-white1
+            &.ps-note-create-palette-item-back-white1
               background: $white1
               &:hover
                 background-color: darken($white1, 5) !important
-            &.ps-project-create-palette-item-back-blue
+            &.ps-note-create-palette-item-back-blue
               background: $ps-card-blue
               &:hover
                 background-color: $ps-card-blue-light !important
-            &.ps-project-create-palette-item-back-black
+            &.ps-note-create-palette-item-back-black
               background: $black
               &:hover
                 background-color: $black-light !important
-            &.ps-project-create-palette-item-back-yellow
+            &.ps-note-create-palette-item-back-yellow
               background: $yellow
               &:hover
                 background-color: $yellow-light !important
-            &.ps-project-create-palette-item-back-pink
+            &.ps-note-create-palette-item-back-pink
               background: $ps-card-pink
               &:hover
                 background-color: $ps-card-pink-light !important
-            &.ps-project-create-palette-item-back-red
+            &.ps-note-create-palette-item-back-red
               background: $ps-card-red
               &:hover
                 background-color: $ps-card-red-light !important
-            &.ps-project-create-palette-item-back-green
+            &.ps-note-create-palette-item-back-green
               background: $ps-card-green
               &:hover
                 background-color: $ps-card-green-light !important
@@ -142,21 +143,21 @@
   .button
     border-radius: 0 0 $radius $radius
 
-.ps-project-create-palette-item-back-salmon
+.ps-note-create-palette-item-back-salmon
   background: $salmon
   color: rgba(0, 0, 0, 0.7) !important
   .icon-palette-1, .icon-ellipsis-vert
     &:hover
       color: lighten(#4a4a4a, 10)
 
-.ps-project-create-palette-item-back-white1
+.ps-note-create-palette-item-back-white1
   background: $white1
   color: rgba(0, 0, 0, 0.7) !important
   .icon-palette-1, .icon-ellipsis-vert
     &:hover
       color: lighten(#4a4a4a, 10)
 
-.ps-project-create-palette-item-back-blue
+.ps-note-create-palette-item-back-blue
   background: $ps-card-blue
   color: rgba(255, 255, 255, 0.7) !important
   .select::after
@@ -177,7 +178,7 @@
   .ps-bg-input
     border: none
     color: $paper !important
-.ps-project-create-palette-item-back-black
+.ps-note-create-palette-item-back-black
   background: $black
   color: rgba(255, 255, 255, 0.7) !important
   .select::after
@@ -198,20 +199,20 @@
   .ps-bg-input
     border: none
     color: $paper !important
-.ps-project-create-palette-item-back-yellow
+.ps-note-create-palette-item-back-yellow
   background: $yellow
   color: rgba(0, 0, 0, 0.7) !important
   .icon-palette-1, .icon-ellipsis-vert
     &:hover
       color: lighten(#4a4a4a, 10)
-.ps-project-create-palette-item-back-pink
+.ps-note-create-palette-item-back-pink
   background: $ps-card-pink
   color: rgba(0, 0, 0, 0.7) !important
   .icon-palette-1, .icon-ellipsis-vert
     &:hover
       color: lighten(#4a4a4a, 10)
 
-.ps-project-create-palette-item-back-red
+.ps-note-create-palette-item-back-red
   background: $ps-card-red
   color: rgba(255, 255, 255, 0.7) !important
   .select::after
@@ -234,7 +235,7 @@
     color: $paper !important
 
 
-.ps-project-create-palette-item-back-green
+.ps-note-create-palette-item-back-green
   background: $ps-card-green
   color: rgba(0, 0, 0, 0.7) !important
   .icon-palette-1, .icon-ellipsis-vert
@@ -309,7 +310,7 @@ select
 .icon-ellipsis-vert
   font-size: 22px !important
   transition: color ease-in-out $ps-transitions
-.ttt
+.drop-down-padding
   padding-top: 13px
 .columns:last-child
   margin-bottom: 0 !important

@@ -12,3 +12,38 @@
   @media (min-width: 770px)
     padding-left: 20px
     padding-right: 20px
+
+.ps-server-message
+  border: 1px solid $black
+  background-color: $white
+  margin: 3px auto 0 auto
+  border-radius: 6px
+  text-align: left
+  -webkit-box-shadow: 0 2px 3px rgba(51, 51, 51, 0.1), 0 0 0 1px rgba(51, 51, 51, 0.1)
+  box-shadow: 0 2px 3px rgba(51, 51, 51, 0.1), 0 0 0 1px rgba(51, 51, 51, 0.1)
+  margin-bottom: 19px
+
+  .ps-server-message-box
+    display: inline-block
+    width: 100%
+    text-align: right
+
+  .ps-header-delete-button
+    border-radius: 100%
+    background-color: transparent
+    color: #999
+
+    &:hover
+      background: $white !important
+      border-color: transparent !important
+      color: #999
+
+    @media (max-width: 480px)
+      margin-top: -10px
+      margin-right: -10px
+
+    .ps-icon-cancel
+      font-size: 1.3rem
+
+    .ps-no-background
+      background-color: unset

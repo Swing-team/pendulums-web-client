@@ -1,16 +1,3 @@
-<div *ngIf="serverMessage && serverMessageId !== serverMessage.id" class="columns is-mobile is-centered" [@fadeOut]>
-    <div class="column is-half-desktop ps-donation" *ngIf="serverMessage">
-      <div class="donation-box">
-        <button class="button is-small is-danger ps-header-delete-button"
-            (click)="dismiss()" title="Dismiss">
-          <span class="icon is-small">
-          <i class="icon-cancel ps-icon-cancel ps-no-background"></i>
-          </span>
-        </button>
-      </div>
-      <div *ngIf="serverMessage" [innerHTML]="serverMessage.content | safeHtml">{{serverMessage.content}}</div>
-    </div>
-</div>
 <div class="columns is-mobile is-centered">
     <div class="column is-half-desktop ps-no-padding">
         <swing-select [width]="'240px'"

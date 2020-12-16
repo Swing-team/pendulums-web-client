@@ -15,7 +15,10 @@ import { ActivityItemComponent } from './activity-item/activity-item.component';
 import { NoteItemComponent } from './note-item/note-item.component';
 
 @NgModule({
-  imports:      [ CommonModule ],
+  imports:      [
+    CommonModule,
+    FormsModule,
+  ],
   declarations: [
     IdenticonHashDirective,
     SwingSwitchComponent,

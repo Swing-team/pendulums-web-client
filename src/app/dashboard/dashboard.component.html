@@ -1,3 +1,17 @@
+<div *ngIf="serverMessage" class="columns is-mobile is-centered" [@fadeOut]>
+  <div class="column is-half-desktop ps-server-message">
+    <div class="ps-server-message-box">
+      <button class="button is-small is-danger ps-header-delete-button"
+          (click)="dismiss()" title="Dismiss">
+        <span class="icon is-small">
+        <i class="icon-cancel ps-icon-cancel ps-no-background"></i>
+        </span>
+      </button>
+    </div>
+    <div [innerHTML]="serverMessage.content | safeHtml">{{serverMessage.content}}</div>
+  </div>
+</div>
+
 <div class="container ps-dashboard-padding">
   <div class="columns is-multiline">
     <div class="column is-6-widescreen is-6-desktop is-6-tablet">

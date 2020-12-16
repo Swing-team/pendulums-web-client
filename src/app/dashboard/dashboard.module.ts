@@ -3,7 +3,7 @@ import { AppRoutingModule }                   from '../app-routing.module';
 import { SharedModule }                       from '../shared/shared.module';
 import { DashboardComponent }                 from './dashboard.component';
 import { WidgetsModule }                      from 'app/widgets/widgets.module';
-import { UserStatsService } from './user-stats.service';
+import { DashboardService } from './dashboard.service';
 
 @NgModule({
   imports: [
@@ -15,7 +15,7 @@ import { UserStatsService } from './user-stats.service';
     DashboardComponent,
   ],
   providers: [
-    UserStatsService,
+    DashboardService,
   ],
 })
 export class DashboardModule { }

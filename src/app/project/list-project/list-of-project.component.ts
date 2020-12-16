@@ -1,7 +1,6 @@
 import { Component, Input, OnChanges }                from '@angular/core';
 import { Observable }                                 from 'rxjs';
 import { CreateProjectComponent }                     from '../create-project/create-project.component';
-import { CookieService }                              from 'ngx-cookie-service';
 import { trigger, style, transition, animate }  from '@angular/animations';
 import { AppState } from 'app/shared/state/appState';
 import { Store } from '@ngrx/store';
@@ -29,11 +28,9 @@ import { ErrorService } from 'app/core/error/error.service';
 export class ListOfProjectComponent implements OnChanges {
   @Input() projects: Project[];
   @Input() sortBy: string;
-  @Input() serverMessage: any;
   @Input() user: Observable<User>;
   @Input() status: Status;
   @Input() currentActivity: Observable<Activity>;
-  serverMessageId: string;
   sortOptions = [
     {name: 'Sort by date (ascending)', value: '+date'},
     {name: 'Sort by date (descending)', value: '-date'},
@@ -47,20 +44,13 @@ export class ListOfProjectComponent implements OnChanges {
   constructor (
     private modalService: ModalService,
     private errorService: ErrorService,
-    private cookieService: CookieService,
     private store: Store<AppState>,
     private projectsActions: ProjectsActions) {
 
   }
 
   ngOnChanges() {
-    this.serverMessageId = this.cookieService.get('serverMessageId');
     this.sortByItemIndex = this.sortOptions.findIndex(sortOption => sortOption.value === this.sortBy);
-  }
-
-  dismiss() {
-    this.serverMessageId = this.serverMessage.id;
-    this.cookieService.set( 'serverMessageId', this.serverMessageId );
   }
 
   openCreateProjectModal() {
