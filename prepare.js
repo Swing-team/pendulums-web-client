@@ -30,12 +30,13 @@ export const localConfig: AppConfig = {
   imagesEndpoint: 'http://localhost:1337/images',
 
   // ngrx runtime check
-  ngrxRuntimeCheck: { 
-    strictActionImmutability: false,
+  ngrxRuntimeCheck: {
+    strictStateSerializability: true,
     strictActionSerializability: true,
-    strictActionWithinNgZone: true,
     strictStateImmutability: true,
-    strictStateSerializability: true, 
+    strictActionImmutability: false,
+    strictActionWithinNgZone: true,
+    strictActionTypeUniqueness: true,
   },
 };
 

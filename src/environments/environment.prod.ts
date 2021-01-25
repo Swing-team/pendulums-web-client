@@ -12,11 +12,12 @@ export const environment: AppConfig = {
   imagesEndpoint: 'https://app.pendulums.io/api/images',
 
   // ngrx runtime check
-  ngrxRuntimeCheck: { 
-    strictActionImmutability: false,
+  ngrxRuntimeCheck: {
+    strictStateSerializability: false,
     strictActionSerializability: false,
-    strictActionWithinNgZone: false,
     strictStateImmutability: false,
-    strictStateSerializability: false, 
+    strictActionImmutability: false,
+    strictActionWithinNgZone: false,
+    strictActionTypeUniqueness: false,
   },
 };
