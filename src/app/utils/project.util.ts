@@ -1,6 +1,7 @@
-import { User } from 'app/shared/state/user/user.model';
+import { Project } from 'app/shared/state/project/project.model';
+import { TeamMember } from 'app/shared/state/team-member/team-member.model';
 
-export const userRoleInProject = (project, userId) => {
+export const userRoleInProject = (project: Project, userId: string) => {
   let role = 'team member';
   if (project.owner.id === userId) {
     role = 'owner';
@@ -14,8 +15,8 @@ export const userRoleInProject = (project, userId) => {
   return role;
 };
 
-export const userInProject = (project, userId) => {
-  let user: User;
+export const userInProject = (project: Project, userId: string) => {
+  let user: TeamMember;
   project.teamMembers.map(projectUser => {
     if (projectUser.id === userId) {
       user = projectUser;

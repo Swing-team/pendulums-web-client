@@ -1,5 +1,5 @@
-import { Component, Input, OnChanges }                from '@angular/core';
-import { Observable }                                 from 'rxjs';
+import { Component, OnDestroy, OnInit }                from '@angular/core';
+import { Observable, Subscription }                                 from 'rxjs';
 import { CreateProjectComponent }                     from '../create-project/create-project.component';
 import { trigger, style, transition, animate }  from '@angular/animations';
 import { AppState } from 'app/shared/state/appState';
@@ -11,11 +11,12 @@ import { Status } from 'app/shared/state/status/status.model';
 import { Activity } from 'app/shared/state/current-activity/current-activity.model';
 import { ModalService } from 'app/core/modal/modal.service';
 import { ErrorService } from 'app/core/error/error.service';
+import { AppStateSelectors } from 'app/shared/state/app-state.selectors';
 
 @Component({
-  selector: 'list-of-project',
-  templateUrl: './list-of-project.component.html',
-  styleUrls: ['./list-of-project.component.sass'],
+  selector: 'projects',
+  templateUrl: './projects.component.html',
+  styleUrls: ['./projects.component.sass'],
   animations: [
     trigger('fadeOut', [
       transition(':leave', [
@@ -25,12 +26,12 @@ import { ErrorService } from 'app/core/error/error.service';
   ],
 })
 
-export class ListOfProjectComponent implements OnChanges {
-  @Input() projects: Project[];
-  @Input() sortBy: string;
-  @Input() user: Observable<User>;
-  @Input() status: Status;
-  @Input() currentActivity: Observable<Activity>;
+export class ProjectsComponent implements OnInit, OnDestroy {
+  projects: Project[];
+  sortBy: string;
+  user: User;
+  status: Status;
+  currentActivity: Observable<Activity>;
   sortOptions = [
     {name: 'Sort by date (ascending)', value: '+date'},
     {name: 'Sort by date (descending)', value: '-date'},
@@ -40,17 +41,25 @@ export class ListOfProjectComponent implements OnChanges {
     {name: 'Sort by recent activity (descending)', value: '-activity'}
   ]
   sortByItemIndex: number;
+  subscriptions: Subscription[] = [];
 
   constructor (
     private modalService: ModalService,
     private errorService: ErrorService,
     private store: Store<AppState>,
-    private projectsActions: ProjectsActions) {
+    private projectsActions: ProjectsActions,
+    private readonly appStateSelectors: AppStateSelectors,
+  ) { }
 
-  }
-
-  ngOnChanges() {
-    this.sortByItemIndex = this.sortOptions.findIndex(sortOption => sortOption.value === this.sortBy);
+  ngOnInit() {
+    this.currentActivity = this.store.select('currentActivity');
+    this.subscriptions.push(this.store.select('user').subscribe(u => this.user = u));
+    this.subscriptions.push(this.store.select('status').subscribe(s => this.status = s));
+    this.subscriptions.push(this.store.select(this.appStateSelectors.getProjectsArray).subscribe(p => this.projects = p));
+    this.subscriptions.push(this.store.select(this.appStateSelectors.getProjectsSortBy).subscribe(s => {
+      this.sortBy = s;
+      this.sortByItemIndex = this.sortOptions.findIndex(sortOption => sortOption.value === this.sortBy);
+    }));
   }
 
   openCreateProjectModal() {
@@ -78,5 +87,9 @@ export class ListOfProjectComponent implements OnChanges {
 
   sort(event) {
     this.store.dispatch(this.projectsActions.updateProjectsSortBy(event.selectedItem.value));
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach(s => s.unsubscribe());
   }
 }

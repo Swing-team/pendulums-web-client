@@ -12,7 +12,7 @@ import { AuthGuardService }             from './core/services/router-guards/auth
 import { AnonymousGuardService }        from './core/services/router-guards/anonymous-guard.service';
 import { ModalRouterGuardService }      from './core/services/router-guards/modal-router-guard.service';
 import { NotFoundComponent }            from './not-found/not-found.component';
-import { ProjectComponent }             from './project/project.component';
+import { ProjectsComponent }             from './project/projects/projects.component';
 import { ProjectDashboardComponent }    from './project/project-dashboard/project-dashboard.component';
 
 const appRoutes: Routes = [
@@ -51,7 +51,7 @@ const appRoutes: Routes = [
     path: 'projects',
     canActivate: [AuthGuardService],
     canDeactivate: [ModalRouterGuardService],
-    component: ProjectComponent
+    component: ProjectsComponent
   },
   {
     path: 'projects/:projectId',

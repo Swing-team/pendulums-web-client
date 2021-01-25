@@ -1,17 +1,15 @@
-import {ComponentFactoryResolver, Injectable, ViewContainerRef, ApplicationRef, OnInit} from '@angular/core';
+import {ComponentFactoryResolver, Injectable, ViewContainerRef, ApplicationRef} from '@angular/core';
 import { ErrorComponent } from './error.component';
 
 @Injectable()
-export class ErrorService implements OnInit {
+export class ErrorService {
   private errorComponentRef;
   private rootViewContainerRef: ViewContainerRef;
 
   constructor(
     private componentFactoryResolver: ComponentFactoryResolver,
     private applicationRef: ApplicationRef
-  ) { }
-
-  ngOnInit() {
+  ) {
     // get root viewContainerRef
     this.rootViewContainerRef = this.applicationRef.components[0].instance.viewContainerRef;
   }

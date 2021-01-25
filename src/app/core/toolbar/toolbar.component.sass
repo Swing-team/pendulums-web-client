@@ -6,6 +6,16 @@
   align-items: center
   padding-left: 16px
   padding-right: 16px
+  border-radius: 50px
+  max-width: 720px
+  overflow: hidden
+  box-shadow: 0 3px 10px #666666
+  margin-left: auto
+  margin-right: auto
+
+  @media (max-width: $ps-mobile)
+    max-width: 100%
+
   .ps-toolbar-right-item
     background-color: $powderBlue
     color: $ps-primary
@@ -121,3 +131,4 @@
     opacity: .5
   100%
     opacity: 1
+

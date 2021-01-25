@@ -9,6 +9,7 @@ import { Activity } from 'app/shared/state/current-activity/current-activity.mod
 import { Project } from 'app/shared/state/project/project.model';
 import { User } from 'app/shared/state/user/user.model';
 import { environment } from 'environments/environment';
+import { TeamMember } from '../state/team-member/team-member.model';
 
 @Component({
   selector: 'activity-item',
@@ -37,7 +38,7 @@ export class ActivityItemComponent implements OnInit {
   to: string;
   duration: string;
   deleteConfirmation = false;
-  activityUser: User;
+  activityUser: TeamMember;
   environment = environment;
 
   constructor (private viewContainerRef: ViewContainerRef) {}
