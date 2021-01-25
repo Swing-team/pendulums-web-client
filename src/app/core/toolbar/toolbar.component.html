@@ -9,10 +9,10 @@
     </div>
   </div>
   <div class="text-right has-text-right" class="ps-toolbar-right-item">
-    <div *ngIf="!currentActivityCopy.startedAt" class="ps-toolbar-select-container">
-      <select class="ps-toolbar-select">
+    <div *ngIf="!currentActivityCopy.startedAt" class="select ps-toolbar-select-container">
+      <select class="ps-toolbar-select" [(ngModel)]="selectedProject" [compareWith]="projectCompareFunction" (ngModelChange)="projectSelected($event)">
         <ng-container *ngFor="let project of projects">
-          <option [value]="project.id">{{project.name}}</option>
+          <option [ngValue]="project">{{project.name}}</option>
         </ng-container>
       </select>
     </div>

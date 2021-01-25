@@ -55,10 +55,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
     private activityService: ActivityService,
     private cookieService: CookieService,
   ) {
-
     this.user$ = this.store.select('user');
     this.status$ = this.store.select('status');
-    this.projects$ = this.store.select(this.appStateSelectors.getProjectsArray);
+    this.projects$ = this.store.select(this.appStateSelectors.getProjectsArrayWithCustomSort, '-activity');
     this.notes$ = this.store.select(this.appStateSelectors.getActiveNotesSortedBy, { sortBy: '-updateDate' });
     this.currentActivity$ = this.store.select('currentActivity');
     this.hasSeenInfoModal = false;
@@ -105,32 +104,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   async prepareRecentActivities() {
+    // TODO: Mohammad 01-25-2021: out of sync
     const activities = await this.activityService.getUserRecentActivities();
     this.recentActivitiesWithProject = activities.map(a => { return { activity: a, project: this.recentProjects[0] } });
   }
 
   prepareRecentProjects() {
-    this.subscriptions.push(
-      this.projects$.subscribe((projects) => {
-        this.recentProjects = projects.sort((p1, p2) => {
-          const a1 = p1.activities.find(a => a.user === this.user.id);
-          const a2 = p2.activities.find(a => a.user === this.user.id);
-          if (!a1) {
-            return 1;
-          }
-          if (!a2) {
-            return -1;
-          }
-          if (!a1.stoppedAt) {
-            return -1;
-          }
-          if (!a2.stoppedAt) {
-            return 1;
-          }
-          return a1.stoppedAt >= a2.stoppedAt ? -1 : 1;
-        });
-      }),
-    );
+    this.subscriptions.push(this.projects$.subscribe((projects) => this.recentProjects = projects));
   }
 
   prepareRecentNotes() {

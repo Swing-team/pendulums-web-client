@@ -27,12 +27,12 @@ export class ToolbarComponent implements OnInit, OnDestroy  {
   currentActivityCopy: Activity;
   showTimeDuration = false;
   stopStartButtonDisabled = false;
-  selectedProjectIndex: any;
   hasNotification = false;
-  timeDuration: string;
-  private selectedProject: Project;
-  private taskName: string;
+  timeDuration: string = '0 sec';
+  selectedProject: Project; // the actual project object instance we are working with
+  taskName: string;
   private activityStarted = false;
+  private intervalInstance: any = null;
   private subscriptions: Array<Subscription> = [];
 
   constructor (private store: Store<AppState>,
@@ -46,66 +46,84 @@ export class ToolbarComponent implements OnInit, OnDestroy  {
   ngOnInit() {
     this.subscriptions.push(this.projects$.subscribe((projects) => {
       this.projects = projects;
+      this.projects.forEach((project) => {
+        if (project.id === this.selectedProject.id) {
+          // update selected project instance
+          this.selectedProject = project;
+        }
+      });
     }));
-
-
-    this.selectedProjectIndex = 0;
 
     if (this.projects.length > 0) {
       this.selectedProject = this.projects[0];
       this.taskName = this.projects[0].recentActivityName;
     }
 
-    if (this.currentActivity) {
-      this.subscriptions.push(this.currentActivity.subscribe(currentActivity => {
-        this.currentActivityCopy = currentActivity;
+    this.subscriptions.push(this.currentActivity.subscribe(currentActivity => {
+      this.currentActivityCopy = currentActivity;
 
-        // this part of code is to handel situation that we have slow connection and activityName is editing
-        const activityNameElm = document.getElementById('activityNameElm');
-        if (activityNameElm && document.activeElement === activityNameElm) {
-          // do nothing
-        } else {
-          if (currentActivity.name) {
-            this.taskName = currentActivity.name;
-          }
+      // this part of code is to handle situation that we have slow connection and activityName is editing
+      const activityNameElm = document.getElementById('activityNameElm');
+      if (activityNameElm && document.activeElement === activityNameElm) {
+        // do nothing
+      } else {
+        if (currentActivity.name) {
+          this.taskName = currentActivity.name;
         }
+      }
 
-        this.projects.map((project, index) => {
-          if (project.id === currentActivity.project) {
-            this.selectedProject = project;
-            this.selectedProjectIndex = index;
-          }
-        });
+      // to make sure the correct project is selected, selectedProjectInput is not reliable here,
+      // maybe the user has started this activity from another device so selectedProjectInput won't work here.
+      // TODO: Mohammad 01-25-2021: try the above case, also maybe it's better to only do this when we start an activity not on all updates
+      this.projects.forEach((project) => {
+        if (project.id === currentActivity.project) {
+          this.selectedProject = project;
+        }
+      });
 
-        if (this.currentActivityCopy.startedAt) {
+      if (this.currentActivityCopy.startedAt) {
+        if (!this.intervalInstance) {
           this.activityStarted = true;
           let startedAt;
           let now;
           let duration;
-          setInterval(() => {
+          this.intervalInstance = setInterval(() => {
             if (this.currentActivityCopy.startedAt) {
               startedAt = Number(this.currentActivityCopy.startedAt);
               now = Date.now();
               duration = now - startedAt;
               this.timeDuration = this.getTime(duration);
             } else {
-              this.timeDuration = '0';
+              this.timeDuration = '0 sec';
             }
           }, 1000);
-        } else {
-          this.activityStarted = false;
         }
-      }));
-    }
+      } else {
+        this.activityStarted = false;
+        this.timeDuration = '0 sec';
+        if (this.intervalInstance) {
+          this.clearInterval();
+        }
+      }
+    }));
+
     this.subscriptions.push(this.selectedProjectInput.subscribe(selectedProjectInput => {
-      this.findSelectedProject(selectedProjectInput);
+      if (selectedProjectInput !== this.selectedProject.id) {
+        this.findSelectedProject(selectedProjectInput);
+      }
     }));
   }
 
+  private clearInterval() {
+    if (this.intervalInstance) {
+      clearInterval(this.intervalInstance);
+      this.intervalInstance = null;
+    }
+  }
+
   ngOnDestroy() {
-    this.subscriptions.map((subscribe) => {
-      subscribe.unsubscribe()
-    });
+    this.subscriptions.forEach((subscribe) => subscribe.unsubscribe());
+    this.clearInterval();
   }
 
   getTime (duration) {
@@ -140,30 +158,26 @@ export class ToolbarComponent implements OnInit, OnDestroy  {
 
     result = tempHours + ':' + tempMinutes + ':' + tempSeconds;
 
-
-
     if (minutes === 0 && hours === 0) {
       result = seconds + ' sec';
     }
     return result;
   };
 
-  projectSelected(event) {
-    this.store.dispatch(this.projectsActions.updateSelectedProject(event.selectedItem.id));
+  projectSelected(project: Project) {
+    this.store.dispatch(this.projectsActions.updateSelectedProject(project.id));
   }
 
-  findSelectedProject(selectedProjectInput) {
+  findSelectedProject(selectedProjectInput: string) {
     if (selectedProjectInput) {
-      this.projects.map((project, index) => {
+      this.projects.forEach((project) => {
         if (project.id === selectedProjectInput) {
           this.selectedProject = project;
-          this.selectedProjectIndex = [index];
           this.taskName = this.selectedProject.recentActivityName;
         }
       });
     } else {
       this.selectedProject = null;
-      this.selectedProjectIndex = null;
       this.taskName = '';
     }
   }
@@ -231,6 +245,10 @@ export class ToolbarComponent implements OnInit, OnDestroy  {
     // just for blur out the input
     const target = $event.target;
     target.blur();
+  }
+
+  projectCompareFunction(p1: Project, p2: Project) {
+    return p1 && p2 && (p1.id === p2.id);
   }
 
   showError(error) {

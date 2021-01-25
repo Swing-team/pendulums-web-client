@@ -1,8 +1,7 @@
-import { createSelector }             from '@ngrx/store';
-import { values }                     from 'lodash';
-import { Injectable }                 from '@angular/core';
-import { Project }                    from './project.model';
-import { Projects }                   from './projects.model';
+import { values } from 'lodash';
+import { Injectable } from '@angular/core';
+import { Project } from './project.model';
+import { Projects } from './projects.model';
 import { User } from '../user/user.model';
 
 /**
@@ -20,9 +19,11 @@ export class ProjectsSelectors {
   getSelectedProject = (state: Projects) => state.selectedProject;
   getSortBy = (state: Projects) => state.sortBy;
   // tslint:disable-next-line: member-ordering
-  getAllArray = (projects: Projects, user: User) => {
+  getAllArray = (projects: Projects, user: User) => this.getAllArrayWithCustomSort(projects, user, projects.sortBy);
+  // tslint:disable-next-line: member-ordering
+  getAllArrayWithCustomSort = (projects: Projects, user: User, sortBy: string) => {
     return values<Project>(projects.entities).sort((p1, p2) => {
-      switch (projects.sortBy) {
+      switch (sortBy) {
         case '+date': {
           return p1.id > p2.id ? 1 : -1;
         }

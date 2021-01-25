@@ -38,7 +38,7 @@ export class StopStartActivityService {
     });
   }
 
-  startActivity(activity: Activity, project: Project): Promise<any> {
+  startActivity(activity: Activity, project: Project): Promise<void> {
     // first of all we set user id of activity from state because electron app doesn't have this id so this service do it by itself
     activity.user = this.user.id;
     return new Promise((resolve, reject) => {

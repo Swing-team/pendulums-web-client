@@ -188,12 +188,12 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
     this.activityService.delete(activity.project, activity.id).then(() => {
       this.projectActivities[index1].activities.splice(index2, 1);
       this.calculateTotalDurationPerDay();
-      const Removed = this.tempArray .filter(function(el) {
+      const removed = this.tempArray.filter(function(el) {
         return el.id !== activity.id ;
       });
       // Now re-render chart component
       this.ChartComponent.getStatAndPrepareData();
-      this.tempArray = Removed;
+      this.tempArray = removed;
       this.deleteButtonDisabled = false;
       this.showError('The activity was deleted successfully');
     })
@@ -289,10 +289,10 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
         responseActivity: (params) => {
           // Maybe by editing an activity date's change so we should delete previous activity and push
           // new activity to tempArray and sort it again
-          const Removed = this.tempArray .filter(function(el) {
+          const removed = this.tempArray.filter(function(el) {
             return el.id !== activity.id ;
           });
-          this.tempArray = Removed;
+          this.tempArray = removed;
           this.updateActivities(params);
         }
       },
