@@ -18,10 +18,7 @@ import { EditorModule } from 'pendulums-editor/tinymce-angular-component';
     NoteComponent,
     CreateEditNoteComponent,
   ],
-  providers: [ ],
-  entryComponents: [
-    CreateEditNoteComponent,
-  ]
+  providers: [ ]
 })
 
 export class NoteModule { }

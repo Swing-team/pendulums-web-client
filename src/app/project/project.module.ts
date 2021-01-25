@@ -31,10 +31,6 @@ import { WidgetsModule } from 'app/widgets/widgets.module';
   ],
   providers: [
     ProjectService,
-  ],
-  entryComponents: [
-    ProjectSettingsModalComponent,
-    CreateProjectComponent,
-  ],
+  ]
 })
 export class ProjectModule { }

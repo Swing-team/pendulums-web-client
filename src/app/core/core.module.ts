@@ -105,13 +105,6 @@ import { TopBarComponent } from './top-bar/top-bar.component';
     ActivityService,
     NoteService,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-  ],
-  entryComponents: [
-    ModalComponent,
-    ErrorComponent,
-    ImgCropperComponent,
-    AppInfoComponent,
-    DeleteAccountComponent
   ]
 })
 export class CoreModule {

@@ -3,7 +3,7 @@
   "compilerOptions": {
     "downlevelIteration": true,
     "importHelpers": true,
-    "module": "ESNext",
+    "module": "es2020",
     "outDir": "./dist/out-tsc",
     "baseUrl": "src",
     "sourceMap": true,

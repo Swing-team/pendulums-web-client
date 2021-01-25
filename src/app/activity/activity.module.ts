@@ -22,8 +22,5 @@ import { WidgetsModule } from 'app/widgets/widgets.module';
     AddManuallyActivityComponent,
   ],
   providers: [],
-  entryComponents: [
-    AddManuallyActivityComponent,
-  ],
 })
 export class ActivityModule { }
