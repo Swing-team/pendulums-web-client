@@ -32,6 +32,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   status$: Observable<Status>;
   projects$: Observable<Project[]>;
   currentActivity$: Observable<Activity>;
+  currentActivity: Activity;
   projectsId: Object = {};
   notes$: Observable<Note[]>;
   recentNotes: Note[] = [];
@@ -100,11 +101,29 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.prepareStats({ index: 0 });
     this.prepareRecentActivities();
     this.prepareRecentNotes();
-    this.getServerMessage()
+    this.getServerMessage();
+    this.subscribeToCurrentActivity();
+  }
+
+  subscribeToCurrentActivity() {
+    this.subscriptions.push(this.currentActivity$.subscribe(a => {
+      if (a.startedAt === null) {
+        this.currentActivity = null;
+        if ((this.recentProjects.length > 0) && (this.recentActivitiesWithProject.length > 0)) {
+          this.recentActivitiesWithProject[0].activity = this.recentProjects[0].activities[0];
+          this.recentActivitiesWithProject = [...this.recentActivitiesWithProject];
+        }
+      } else if (this.currentActivity === null) {
+        this.recentActivitiesWithProject = [{ activity: a, project: this.recentProjects[0] }, ...this.recentActivitiesWithProject];
+        this.currentActivity = a;
+      } else {
+        this.recentActivitiesWithProject[0].activity = a;
+        this.recentActivitiesWithProject = [...this.recentActivitiesWithProject];
+      }
+    }));
   }
 
   async prepareRecentActivities() {
-    // TODO: Mohammad 01-25-2021: out of sync
     const activities = await this.activityService.getUserRecentActivities();
     this.recentActivitiesWithProject = activities.map(a => { return { activity: a, project: this.recentProjects[0] } });
   }

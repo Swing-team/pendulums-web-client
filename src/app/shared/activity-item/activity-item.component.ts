@@ -1,6 +1,6 @@
 import {
   Component, EventEmitter,
-  Input, OnInit, Output, ViewContainerRef
+  Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewContainerRef
 } from '@angular/core';
 import { trigger, style, transition, animate }  from '@angular/animations';
 import { userInProject }                        from 'app/utils/project.util';
@@ -27,7 +27,7 @@ import { TeamMember } from '../state/team-member/team-member.model';
   templateUrl: './activity-item.component.html',
   styleUrls: ['./activity-item.component.sass']
 })
-export class ActivityItemComponent implements OnInit {
+export class ActivityItemComponent implements OnInit, OnDestroy, OnChanges {
   @Input() activity: Activity;
   @Input() project: Project;
   @Input() currentUser: User;
@@ -37,33 +37,38 @@ export class ActivityItemComponent implements OnInit {
   from: string;
   to: string;
   duration: string;
-  deleteConfirmation = false;
+  showDeleteConfirmation = false;
   activityUser: TeamMember;
   environment = environment;
+  activityTimeInterval: any;
 
   constructor (private viewContainerRef: ViewContainerRef) {}
 
   ngOnInit() {
     if (this.activity.stoppedAt) {
-      this.initial();
+      this.initialize();
     } else {
       const fromDate = new Date(Number(this.activity.startedAt));
       this.from = fromDate.getHours() + ':' + fromDate.getMinutes();
       this.to = '...';
-      setInterval(() => {
-        let startedAt;
-        let now;
-        let duration;
-        startedAt = Number(this.activity.startedAt);
-        now = Date.now();
-        duration = now - startedAt;
+      this.activityTimeInterval = setInterval(() => {
+        let startedAt = Number(this.activity.startedAt);
+        let now = Date.now();
+        let duration = now - startedAt;
         this.duration = this.calculateActivityDuration(duration);
       }, 1000);
     }
     this.activityUser = userInProject(this.project, this.activity.user);
   }
 
-  initial() {
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.activity && changes.activity.currentValue.stoppedAt && this.activityTimeInterval) {
+      clearInterval(this.activityTimeInterval);
+      this.initialize();
+    }
+  }
+
+  private initialize() {
     const fromDate = new Date(Number(this.activity.startedAt));
     this.from = ('0' + fromDate.getHours()).slice(-2)   + ':' + ('0' + fromDate.getMinutes()).slice(-2);
     const toDate = new Date(Number(this.activity.stoppedAt));
@@ -73,8 +78,7 @@ export class ActivityItemComponent implements OnInit {
   }
 
   delete() {
-    this.deleteConfirmation = true;
-    console.log('delete Confirmed:', this.deleteConfirmation);
+    this.showDeleteConfirmation = true;
   }
 
   confirmDelete() {
@@ -85,7 +89,7 @@ export class ActivityItemComponent implements OnInit {
 
   cancelDelete() {
     if (!this.deleteButtonDisabled) {
-      this.deleteConfirmation = false;
+      this.showDeleteConfirmation = false;
     }
   }
 
@@ -120,8 +124,13 @@ export class ActivityItemComponent implements OnInit {
       result = seconds + ' sec';
     }
     return result;
-  };
+  }
 
+  ngOnDestroy(): void {
+    if (this.activityTimeInterval) {
+      clearInterval(this.activityTimeInterval);
+    }
+  }
 }
 
 

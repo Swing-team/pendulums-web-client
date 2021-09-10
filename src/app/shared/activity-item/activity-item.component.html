@@ -23,12 +23,12 @@
     <p class="ps-activity-item-text has-text-left"><i class="icon-stopwatch"></i> from {{from}} to {{to}} / {{duration}}</p>
   </div>
   <ng-container *ngIf="activity.stoppedAt">
-  <div class="ps-activity-item-button is-pulled-right" *ngIf="!deleteConfirmation">
+  <div class="ps-activity-item-button is-pulled-right" *ngIf="!showDeleteConfirmation">
     <i class="icon-pencil" (click)="openEditManuallyModal()" title="Edit Activity"></i>
     <i class="icon-trash" (click)="delete()" title="Delete Activity"></i>
   </div>
   </ng-container>
-  <div class="ps-activity-item-button is-pulled-right" *ngIf="deleteConfirmation" [@slideInOut]>
+  <div class="ps-activity-item-button is-pulled-right" *ngIf="showDeleteConfirmation" [@slideInOut]>
     <a  *ngIf="!deleteButtonDisabled" class="button ps-activity-item-button-confirmation" (click)="cancelDelete()" title="Cancel Delete">
       <span class="icon">
         <i class="icon-cancel" [ngClass]="{'has-text-danger': !deleteButtonDisabled}"></i>
