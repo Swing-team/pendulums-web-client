@@ -1,14 +1,14 @@
 <div class="ps-button-gap">
   <div class="columns ps-add-manually-row">
     <div class="column">
-      <div>Activity title: </div>
+      <div>Activity title</div>
       <input class="ps-add-manually-input ps-add-manually-title-input" [(ngModel)]="activityModel.name" placeholder="Activity Name" type="text">
     </div>
   </div>
 
   <div class="columns ps-add-manually-row">
     <div class="column is-4">
-      <div>From:</div>
+      <div>From</div>
       <input class="ps-add-manually-input" [ngClass]="{'ps-add-manually-input-error': fromTimeError}"
             [(ngModel)]="fromTime" (change)="updateFromTime()" type="time">
       <p class="ps-add-manually-date-error" *ngIf="fromTimeError">{{timeError}}</p>
@@ -32,7 +32,7 @@
 
   <div class="columns ps-add-manually-row">
     <div class="column is-4">
-      <div>To:</div>
+      <div>To</div>
       <input class="ps-add-manually-input" [ngClass]="{'ps-add-manually-input-error': toTimeError}"
             [(ngModel)]="toTime" (change)="updateToTime()" type="time">
       <p class="ps-add-manually-date-error" *ngIf="toTimeError">{{timeError}}</p>
