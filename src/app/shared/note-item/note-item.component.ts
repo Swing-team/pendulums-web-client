@@ -40,7 +40,7 @@ export class NoteItemComponent implements OnInit {
 
   editModal() {
     const color = [
-      '#e5e5e5', '#ff9166', '#0a9bb3', '#333333', '#ffd470', '#ff99cc', '#d54552', '#3ccc7c'
+      '#efefef', '#ff9166', '#0a9bb3', '#333333', '#ffd470', '#ff99cc', '#d54552', '#3ccc7c'
     ][this.note.colorPalette]
 
     this.modalService.show({

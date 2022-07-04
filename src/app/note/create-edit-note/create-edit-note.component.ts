@@ -60,7 +60,7 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy, AfterViewInit
       dropdown.classList.toggle('is-active');
     });
     const color = [
-      '#e5e5e5', '#ff9166', '#0a9bb3', '#333333', '#ffd470', '#ff99cc', '#d54552', '#3ccc7c'
+      '#efefef', '#ff9166', '#0a9bb3', '#333333', '#ffd470', '#ff99cc', '#d54552', '#3ccc7c'
     ][this.note.colorPalette]
 
     this.modalService.applyStyleDynamically({
@@ -155,7 +155,7 @@ export class CreateEditNoteComponent implements OnInit, OnDestroy, AfterViewInit
     this.note.colorPalette = colorIndex;
     this.showPaletteBoolean = false;
     const [bgColor, className] = [
-      ['#e5e5e5', 'back-white1'],
+      ['#efefef', 'back-white1'],
       ['#ff9166', 'back-salmon'],
       ['#0a9bb3', 'back-blue'],
       ['#333333', 'back-black'],
