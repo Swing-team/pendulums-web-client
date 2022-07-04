@@ -1,0 +1,108 @@
+@import '../../../sass/variables'
+
+.ps-recent-activities-container
+  background-color: $white1
+  border-radius: $radius
+  height: $ps-widget-size
+  display: flex
+  flex-direction: column
+  padding: 10px
+  .ps-no-recent-activities
+    font-weight: bold
+    color: $primary
+    font-size: 18px
+    display: flex
+    align-items: center
+    justify-content: center
+    height: 100%
+  .ps-recent-activity
+    width: 100%
+    flex-grow: 1
+  .ps-recent-activity-divider
+    margin: 5px 0
+    background-color: $black
+    opacity: 0.2
+  .ps-recent-activity-footer
+    display: flex
+    justify-content: space-between
+    align-items: center
+    padding: 16px
+    height: 64px
+    width: 100%
+    .ps-icon-back
+      cursor: pointer
+      margin-left: 60px
+    .ps-icon-next
+      cursor: pointer
+      margin-right: 60px
+
+.ps-activity-item
+  width: 100%
+  margin-top: 5px
+  .ps-activity-content
+    display: flex
+    align-items: center
+    .ps-activity-item-inner-text
+      flex-grow: 1
+    .ps-item-actions
+      position: relative
+      width: 64px
+
+.ps-activity-item-name
+  text-align: center
+  margin-bottom: 0.5rem
+  @media (max-width: $ps-mobile)
+    font-size: 0.9rem
+
+.ps-activity-item-text
+  font-size: 0.9rem
+  color:  gray
+  @media (max-width: $ps-mobile)
+    font-size: 0.8rem
+
+.ps-activity-project-name
+  white-space: nowrap
+  text-overflow: ellipsis
+  display: inline-block
+  vertical-align: super
+  line-height: 24px
+
+.ps-activity-project-image
+  width: 24px
+  height: 24px
+  border: 1px solid $ink
+  border-radius: 4px
+
+.ps-activity-item-button
+  overflow: hidden
+  position: absolute
+  right: 0
+  bottom: -10px
+  i
+    cursor: pointer
+    transition: all ease-in-out $ps-transitions
+  .icon-pencil
+    font-size: 1rem
+    color: $ps-primary
+    &:hover
+      color: lighten($ps-primary, 20)
+  .icon-trash
+    font-size: 1rem
+    color: $pink
+    &:hover
+      color: lighten($pink, 10)
+  .icon-cancel
+    &:hover
+      color: lighten($red, 20) !important
+  .icon-check
+    &:hover
+      color: lighten($success, 20) !important
+
+.ps-activity-item-button-confirmation
+  border: none
+  font-size: 1.4rem
+  background-color: transparent
+  padding: 1rem 0.5rem 0 0.5rem !important
+
+.ps-recent-activities
+  flex-grow: 1

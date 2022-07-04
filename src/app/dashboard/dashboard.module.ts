@@ -4,6 +4,7 @@ import { SharedModule }                       from '../shared/shared.module';
 import { DashboardComponent }                 from './dashboard.component';
 import { WidgetsModule }                      from 'app/widgets/widgets.module';
 import { DashboardService } from './dashboard.service';
+import { RecentActivitiesComponent } from './recent-activities/recent-activities.component';
 
 @NgModule({
   imports: [
@@ -13,6 +14,7 @@ import { DashboardService } from './dashboard.service';
   ],
   declarations: [
     DashboardComponent,
+    RecentActivitiesComponent,
   ],
   providers: [
     DashboardService,

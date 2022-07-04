@@ -32,12 +32,8 @@
         (onRefreshClicked)="prepareStats()"
       ></stat-chart>
     </div>
-    <div class="column is-6-widescreen is-6-desktop is-6-tablet" *ngIf="recentActivitiesWithProject.length > 0">
-      <recent-activities
-        [recentActivitiesWithProject]="recentActivitiesWithProject"
-        [currentUser]="user$ | async"
-        [showFooterPagination]="true"
-      ></recent-activities>
+    <div class="column is-6-widescreen is-6-desktop is-6-tablet">
+      <recent-activities (recentActivitiesChanged)="prepareStats()"></recent-activities>
     </div>
     <div class="column is-6-widescreen is-6-desktop is-6-tablet">
       <recent-notes

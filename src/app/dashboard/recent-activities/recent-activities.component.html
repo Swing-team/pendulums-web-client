@@ -1,0 +1,69 @@
+<div class="ps-recent-activities-container">
+  <div class="ps-recent-activities">
+    <div class="ps-recent-activity" *ngFor='let item of recentActivitiesWithMeta | slice: page * 3 : (page * 3) + 3; let i = index'>
+      <div class="ps-activity-item">
+        <p class="ps-activity-item-name" dir="auto">{{item.activity.name}}</p>
+        <div class="ps-activity-content">
+          <div class="ps-activity-item-inner-text">
+            <div class="has-text-left" *ngIf="item.project">
+              <img class="ps-activity-project-image"
+                    src="{{item.project.image ? environment.imagesEndpoint + '/projects/' + item.project.image :
+                          'assets/images/placeholder.png'}}">
+              <span class="ps-activity-item-text ps-activity-project-name">
+                <p>{{item.project.name}}</p>
+              </span>
+            </div>
+            <div *ngIf="!item.project" class="has-text-left">
+              <img class="ps-activity-project-image" src='assets/images/placeholder.png'>
+              <span class="ps-activity-item-text ps-activity-project-name">
+                <p>a left project</p>
+              </span>
+            </div>
+            <p class="ps-activity-item-text has-text-left"><i class="icon-stopwatch"></i>
+              {{item.activity.startedAt | date: 'MMM dd'}} from {{item.humanReadableFrom}} to {{item.humanReadableTo}} / {{item.humanReadableDuration}}
+            </p>
+          </div>
+          <div class="ps-item-actions">
+            <div class="ps-activity-item-button" *ngIf="(deleteConfirmationIndex !== i) && item.activity.stoppedAt">
+              <a  class="button ps-activity-item-button-confirmation" (click)="openEditActivity(item)" title="Edit Activity">
+                <span class="icon">
+                  <i class="icon-pencil"></i>
+                </span>
+              </a>
+              <a  class="button ps-activity-item-button-confirmation" (click)="deleteItem(i)" title="Delete Activity">
+                <span class="icon">
+                  <i class="icon-trash"></i>
+                </span>
+              </a>
+            </div>
+            <div class="ps-activity-item-button" *ngIf="deleteConfirmationIndex === i" [@slideInOut]>
+              <a  *ngIf="!deleteButtonDisabled" class="button ps-activity-item-button-confirmation" (click)="cancelDelete()" title="Cancel Delete">
+                <span class="icon">
+                  <i class="icon-cancel" [ngClass]="{'has-text-danger': !deleteButtonDisabled}"></i>
+                </span>
+              </a>
+              <a  class="button ps-activity-item-button-confirmation" [ngClass]="{'is-loading': deleteButtonDisabled}"
+                  (click)="confirmDelete(item.activity)" title="Confirm Delete">
+                <span class="icon">
+                  <i class="icon-check" [ngClass]="{'has-text-success': !deleteButtonDisabled}"></i>
+                </span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr class="ps-recent-activity-divider">
+    </div>
+
+    <p *ngIf="recentActivitiesWithMeta.length === 0" class="ps-no-recent-activities">There is no recent activity</p>
+  </div>
+
+  <div class="ps-recent-activity-footer">
+    <span class="ps-icon-back" (click)="prevPage()">
+      <i *ngIf="page > 0" class="icon-back"></i>
+    </span>
+    <span class="ps-icon-next" (click)="nextPage()">
+      <i *ngIf="(page + 1) < (recentActivitiesWithMeta.length / 3)" class="icon-arrow-right"></i>
+    </span>
+  </div>
+</div>

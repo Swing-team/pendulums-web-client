@@ -11,13 +11,11 @@ import { User }                         from 'app/shared/state/user/user.model';
 import { Project }                      from 'app/shared/state/project/project.model';
 import { Status }                       from 'app/shared/state/status/status.model';
 import { AreaChartInterface } from 'app/models/charts-model/area-chart-model';
-import { RecentActivityWithProject } from 'app/widgets/recent-activities/model/recent-activities-with-project.model';
 import { Note } from 'app/shared/state/note/note.model';
 import { AppStateSelectors } from 'app/shared/state/app-state.selectors';
 import { Activity } from 'app/shared/state/current-activity/current-activity.model';
 import { DashboardService } from './dashboard.service';
 import * as moment from 'moment';
-import { ActivityService } from 'app/core/services/activity.service';
 import { CookieService } from 'ngx-cookie-service';
 
 @Component({
@@ -32,12 +30,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
   status$: Observable<Status>;
   projects$: Observable<Project[]>;
   currentActivity$: Observable<Activity>;
-  currentActivity: Activity;
   projectsId: Object = {};
   notes$: Observable<Note[]>;
   recentNotes: Note[] = [];
   recentProjects: Project[];
-  recentActivitiesWithProject: RecentActivityWithProject[] = [];
   subscriptions: Subscription[] = [];
   hasSeenInfoModal: boolean;
   selectItems: string[] = ['last week', 'last month', 'last 3 months', 'last year'];
@@ -53,7 +49,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     // this service needed to handle router changes so don't remove it
     private routerChangeListenerService: RouterChangeListenerService,
     private dashboardService: DashboardService,
-    private activityService: ActivityService,
     private cookieService: CookieService,
   ) {
     this.user$ = this.store.select('user');
@@ -99,33 +94,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     this.prepareRecentProjects();
     this.prepareStats({ index: 0 });
-    this.prepareRecentActivities();
     this.prepareRecentNotes();
     this.getServerMessage();
-    this.subscribeToCurrentActivity();
-  }
-
-  subscribeToCurrentActivity() {
-    this.subscriptions.push(this.currentActivity$.subscribe(a => {
-      if (a.startedAt === null) {
-        this.currentActivity = null;
-        if ((this.recentProjects.length > 0) && (this.recentActivitiesWithProject.length > 0)) {
-          this.recentActivitiesWithProject[0].activity = this.recentProjects[0].activities[0];
-          this.recentActivitiesWithProject = [...this.recentActivitiesWithProject];
-        }
-      } else if (this.currentActivity === null) {
-        this.recentActivitiesWithProject = [{ activity: a, project: this.recentProjects[0] }, ...this.recentActivitiesWithProject];
-        this.currentActivity = a;
-      } else {
-        this.recentActivitiesWithProject[0].activity = a;
-        this.recentActivitiesWithProject = [...this.recentActivitiesWithProject];
-      }
-    }));
-  }
-
-  async prepareRecentActivities() {
-    const activities = await this.activityService.getUserRecentActivities();
-    this.recentActivitiesWithProject = activities.map(a => { return { activity: a, project: this.recentProjects[0] } });
   }
 
   prepareRecentProjects() {

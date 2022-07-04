@@ -21,7 +21,6 @@ import { ActivityService } from 'app/core/services/activity.service';
 import { ModalService } from 'app/core/modal/modal.service';
 import { ErrorService } from 'app/core/error/error.service';
 import { PageLoaderService } from 'app/core/services/page-loader.service';
-import { RecentActivityWithProject } from 'app/widgets/recent-activities/model/recent-activities-with-project.model';
 import * as moment from 'moment';
 
 type ActivityWithIsActive = Activity & {isActive?: boolean};
@@ -49,7 +48,6 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
   // we need copy of currentActivity to show it in list of activities if it is belong to current project
   currentActivityCopy: ActivityWithIsActive;
   currentActivities: Array<ActivityWithIsActive> = [];
-  currentActivitiesWithProject: RecentActivityWithProject[] = [];
   userAccess = false;
   selectedUsers = [];
   selectedItemIndex = [];
@@ -148,15 +146,6 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
           }
           this.currentActivityCopy = null;
         }
-        this.currentActivitiesWithProject = [];
-        this.currentActivities.forEach(currentActivity => {
-          this.currentActivitiesWithProject.push(
-            {
-              activity: currentActivity,
-              project: this.project,
-            }
-          );
-        });
       }));
     };
 

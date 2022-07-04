@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Project } from 'app/shared/state/project/project.model';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Subscription, Observable } from 'rxjs';
@@ -11,7 +11,6 @@ import { ActivityService } from 'app/core/services/activity.service';
 import { Activity } from 'app/shared/state/current-activity/current-activity.model';
 import { BarChartInterface } from 'app/widgets/stat-chart/charts-models/bar-chart.model';
 import { AreaChartInterface } from 'app/models/charts-model/area-chart-model';
-import { RecentActivityWithProject } from 'app/widgets/recent-activities/model/recent-activities-with-project.model';
 import { Note } from 'app/shared/state/note/note.model';
 import { AppStateSelectors } from 'app/shared/state/app-state.selectors';
 import { Notes } from 'app/shared/state/note/notes.model';
@@ -38,7 +37,6 @@ export class ProjectDashboardComponent implements OnInit, OnDestroy {
   statChartSelectedItems: string[];
   barChartData: BarChartInterface[] = [];
   areaChartData: AreaChartInterface[] = [];
-  recentActivitiesWithProject: RecentActivityWithProject[] = [];
   recentNotes: Note[];
 
   constructor(

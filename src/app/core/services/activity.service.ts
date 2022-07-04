@@ -3,6 +3,7 @@ import { HttpClient, HttpParams }     from '@angular/common/http';
 import { Activity }                   from '../../shared/state/current-activity/current-activity.model';
 import { SocketService }                from './socket.service';
 import { environment }                from '../../../environments/environment';
+import { Project } from 'app/shared/state/project/project.model';
 
 @Injectable()
 export class ActivityService {
@@ -114,7 +115,7 @@ export class ActivityService {
       .catch(this.handleError);
   }
 
-  getUserRecentActivities(): Promise<Activity[]> {
+  getUserRecentActivities(): Promise<{activity: Activity, project: Project}[]> {
     return this.http
       .get(environment.apiEndpoint + '/user/activities', environment.httpOptions)
       .toPromise()
