@@ -49,7 +49,7 @@
     "jdenticon": "^1.8.0",
     "json2csv": "^4.3.2",
     "lodash": "4.17.10",
-    "moment": "^2.22.1",
+    "moment": "^2.29.4",
     "ng2-img-cropper": "^0.9.0",
     "ng2-nvd3": "github:PlugaruT/ng2-nvd3",
     "ngx-cookie-service": "^2.1.0",
