@@ -139,12 +139,11 @@ const createWindow = () => {
         center: true,
         minWidth: 770,
         minHeight: 630,
-        webPreferences: { nodeIntegration: true }
+        webPreferences: { nodeIntegration: true, preload: path.join(__dirname, 'preload.js') }
     });
 
-
     win.loadURL(url.format({
-        pathname: path.join(__dirname, '../app/index.html'),
+        pathname: path.join(__dirname, '../../app/index.html'),
         protocol: 'file:',
         slashes: true
     }));

@@ -1,60 +1,70 @@
-import { Injectable }                 from '@angular/core';
-import { StopStartActivityService }   from '../core/services/stop-start-activity.service';
-import { Store }                      from '@ngrx/store';
-import { AppState }                   from '../shared/state/appState';
-import { AppStateSelectors }          from '../shared/state/app-state.selectors';
-import { ProjectsActions }            from '../shared/state/project/projects.actions';
-const { ipcRenderer } = (<any>window).require('electron');
+import { Injectable } from "@angular/core";
+import { StopStartActivityService } from "../core/services/stop-start-activity.service";
+import { Store } from "@ngrx/store";
+import { AppState } from "../shared/state/appState";
+import { AppStateSelectors } from "../shared/state/app-state.selectors";
+import {
+  RenameActivityDto,
+  StartActivityDto,
+  StopActivityDto,
+} from "../../../electron-app/src/electron-bridge.interface";
+import { IElectronBridge } from "../../../electron-app/src/electron-bridge.interface";
+declare global {
+  interface Window {
+    electronBridge: IElectronBridge;
+  }
+}
 
 @Injectable()
 export class ElectronService {
   constructor(
     private stopStartActivityService: StopStartActivityService,
     private store: Store<AppState>,
-    private appStateSelectors: AppStateSelectors,
-    private projectsActions: ProjectsActions
+    private appStateSelectors: AppStateSelectors
   ) {
-    ipcRenderer.on('win-start-or-stop', (event, message) => {
-      if (message.activity) {
-        this.stopStartActivityService.startActivity(message.activity, message.project).then(() => {
-        })
-      } else {
-        this.stopStartActivityService.stopActivity(message.project).then(() => {
-        })
-      }
+
+    window.electronBridge.onStartActivity((message: StartActivityDto) => {
+      this.stopStartActivityService
+        .startActivity(message.activity, message.project)
+        .then(() => {});
     });
 
-    ipcRenderer.on('win-rename-activity', (event, message) => {
-      if (message) {
-        this.stopStartActivityService.nameActivity(message.taskName, message.project)
-      }
+    window.electronBridge.onStopActivity((message: StopActivityDto) => {
+      this.stopStartActivityService
+        .stopActivity(message.project)
+        .then(() => {});
     });
 
-    ipcRenderer.on('win-project-selected', (event, message) => {
-      if (message) {
-        this.store.dispatch(this.projectsActions.updateSelectedProject(message));
-      }
+    window.electronBridge.onRenameActivity((message: RenameActivityDto) => {
+      this.stopStartActivityService.nameActivity(
+        message.taskName,
+        message.project
+      );
     });
 
-    store.select(appStateSelectors.getProjectsArray).subscribe((projects) => {
-      ipcRenderer.send('win-projects-ready', projects);
+    this.store
+      .select(appStateSelectors.getProjectsArray)
+      .subscribe((projects) => {
+        window.electronBridge.projectsReady(projects);
+      });
+
+    this.store
+      .select(appStateSelectors.getSelectedProject)
+      .subscribe((selectedProject) => {
+        window.electronBridge.selectedProjectReady(selectedProject);
+      });
+
+    this.store.select("currentActivity").subscribe((currentActivity) => {
+      window.electronBridge.currencyActivityReady(currentActivity);
     });
 
-    store.select(appStateSelectors.getSelectedProject).subscribe((selectedProject) => {
-      ipcRenderer.send('win-selected-project-ready', selectedProject);
+    this.store.select("user").subscribe((user) => {
+      window.electronBridge.userReady(user);
     });
 
-    store.select('currentActivity').subscribe((currentActivity) => {
-      ipcRenderer.send('win-currentActivity-ready', currentActivity);
-    });
-
-    store.select('user').subscribe((user) => {
-      ipcRenderer.send('win-user-ready', user);
-    });
-
-    store.select('status').subscribe((status) => {
+    this.store.select("status").subscribe((status) => {
       if (status.updateNeeded) {
-        ipcRenderer.send('update-available');
+        window.electronBridge.updateAvailable();
       }
     });
   }
