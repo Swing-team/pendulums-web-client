@@ -1,0 +1,22 @@
+gift
+refresh
+bell
+grid-alt
+columns
+note
+x
+time-five
+pencil
+trash-alt
+check
+chevron-right
+chevron-left
+plus
+play
+stop
+group
+palette (bxs solid)
+sort-down
+left-arrow-alt
+info-circle
+dots-vertical-rounded

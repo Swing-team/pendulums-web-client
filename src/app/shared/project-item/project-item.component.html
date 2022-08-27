@@ -25,15 +25,15 @@
               <div *ngIf="!isEditable" (click)="toggleStopStart(); $event.stopPropagation()">
                 <a  class="button ps-item-card-button" [ngClass]="{'is-loading': activityButtonDisabled}">
                   <span class="icon">
-                    <i *ngIf="activityStarted" class="icon-stop" title="Stop activity"></i>
-                    <i *ngIf="!activityStarted" class="icon-play" title="Start activity"></i>
+                    <i *ngIf="activityStarted" class="bx bx-md bx-square" title="Stop activity"></i>
+                    <i *ngIf="!activityStarted" class="bx bx-md bx-right-arrow" title="Start activity"></i>
                   </span>
                 </a>
               </div>
               <div *ngIf="isEditable" (click)="showSettings()">
                 <a  class="button ps-item-card-button">
                   <span class="icon">
-                    <i class="icon-pencil" title="Project setting"></i>
+                    <i class="bx bx-sm bx-pencil" title="Project setting"></i>
                   </span>
                 </a>
               </div>
@@ -46,7 +46,7 @@
             </span>
           </p>
           <div class="ps-project-team-members-count">
-            <span class="icon-teammember"></span>
+            <span class="bx bx-sm bx-group"></span>
             {{project.teamMembers.length}}
           </div>
         </div>

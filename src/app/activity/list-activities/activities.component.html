@@ -1,7 +1,7 @@
 <div *ngIf="project" class="container ps-activities-container ps-activities-padding">
   <div class="ps-header-container">
-    <div class="ps-activity-top-button ps-project-header-button icon-back" (click)="goBack()" title="Back"></div>
-    <div class="ps-activity-top-button ps-project-header-button icon-plus" (click)="openAddManuallyModal()" title="Add new activity"></div>
+    <div class="ps-activity-top-button ps-project-header-button bx bx-left-arrow-alt" (click)="goBack()" title="Back"></div>
+    <div class="ps-activity-top-button ps-project-header-button bx bx-plus" (click)="openAddManuallyModal()" title="Add new activity"></div>
   </div>
 
   <div class="columns is-multiline ps-details-container">
@@ -40,7 +40,7 @@
             (click)="importActivities()">
             <input class="ps-import-upload" id="uploadInput" type="file" accept="application/json"
               (change)="fileUpload($event)" />
-            <span class="icon-import ps-import-icon"></span>
+            <span class="bx bx-import ps-import-icon"></span>
             <span>Import (Json)</span>
           </button>
 
@@ -49,7 +49,7 @@
             <div class="dropdown-trigger">
               <button class="button" [ngClass]="{'is-loading': isExporting, 'is-light': isExporting}" aria-haspopup="true"
                 attr.aria-controls="dropdownMenu">
-                <span class="icon-export ps-export-icon"></span>
+                <span class="bx bx-export ps-export-icon"></span>
                 <span>Export</span>
               </button>
             </div>

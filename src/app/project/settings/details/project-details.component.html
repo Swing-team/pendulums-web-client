@@ -8,7 +8,7 @@
             <figure [ngStyle]="{'background-image': previewImage ? 'url(' + previewImage + ')' : 'url(\'assets/images/placeholder.png\')'}"
                     (click)="projectImageElem.click()" class="ps-image-resize">
             </figure>
-            <span (click)="projectImageElem.click()" class="icon-pencil ps-pencil-image-change" ></span>
+            <span (click)="projectImageElem.click()" class="bx bx-pencil ps-pencil-image-change" ></span>
           </div>
         </div>
         <div style="display: none;">
@@ -24,7 +24,7 @@
           <p class="ps-project-details-color-picker-title"> Project color: </p>
           <div class="ps-project-details-palette-container">
             <div class="ps-project-details-color" title="click to change color">
-                <i class="button icon-palette-1 is-fullwidth"
+                <i class="button bx bxs-palette is-fullwidth"
                 id="id2" (click)="togglePalette()"
                     [ngClass]="{'ps-project-details-palette-item-back-white1': clonedProject.colorPalette == 0,
                                 'ps-project-details-palette-item-back-salmon': clonedProject.colorPalette == 1,
@@ -101,7 +101,7 @@
           <p class="ps-project-details-color-picker-title"> Project color: </p>
           <div class="ps-project-details-palette-container">
             <div class="ps-project-details-color">
-                <i class="button icon-palette-1 is-fullwidth" disabled
+                <i class="button bx bxs-palette is-fullwidth" disabled
                 id="id2"
                     [ngClass]="{'ps-project-details-palette-item-back-white1': clonedProject.colorPalette == 0,
                                 'ps-project-details-palette-item-back-salmon': clonedProject.colorPalette == 1,

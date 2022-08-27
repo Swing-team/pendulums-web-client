@@ -21,17 +21,17 @@
         </div>
         <div class="column">
           <span *ngIf="!deleteConfirmation">
-            <i class="icon-trash" (click)="deleteNote()" title="Delete Note"></i>
+            <i class="bx bx-trash-alt" (click)="deleteNote()" title="Delete Note"></i>
           </span>
           <div class="ps-note-item-button is-pulled-right" *ngIf="deleteConfirmation">
             <a  *ngIf="!deleteButtonDisabled" class="button ps-note-item-button-confirmation" (click)="cancelDelete()" title="Cancel Delete">
               <span class="icon">
-                <i class="icon-cancel" [ngClass]="{'has-text-danger': !deleteButtonDisabled}"></i>
+                <i class="bx bx-x" [ngClass]="{'has-text-danger': !deleteButtonDisabled}"></i>
               </span>
             </a>
             <a  class="button ps-note-item-button-confirmation" [ngClass]="{'is-loading': deleteButtonDisabled}" (click)="confirmDelete()" title="Confirm Delete">
               <span class="icon">
-                <i class="icon-check" [ngClass]="{'has-text-success': !deleteButtonDisabled}"></i>
+                <i class="bx bx-check" [ngClass]="{'has-text-success': !deleteButtonDisabled}"></i>
               </span>
             </a>
           </div>
