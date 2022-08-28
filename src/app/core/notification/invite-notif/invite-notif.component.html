@@ -5,14 +5,14 @@
     <button class="level-item button is-small is-outlined ps-notification-button-accept" (click)="accept(project.id)"
             [ngClass]="{'is-loading': acceptDisabledIndex === true, 'is-success': acceptDisabledIndex === false}" [disabled]="denyDisabledIndex">
       <span class="icon">
-        <i class="icon-check"></i>
+        <i class="bx bx-check"></i>
         </span>
       <span>Accept</span>
     </button>
     <button class="level-item button is-small is-outlined ps-notification-button-deny" (click)="deny(project.id)"
         [ngClass]="{'is-loading': denyDisabledIndex === true, 'is-danger': denyDisabledIndex === false}" [disabled]="acceptDisabledIndex">
       <span class="icon">
-        <i class="icon-cancel"></i>
+        <i class="bx bx-x"></i>
         </span>
       <span>Deny</span>
     </button>

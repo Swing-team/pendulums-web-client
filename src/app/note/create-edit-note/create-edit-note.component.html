@@ -32,7 +32,7 @@
                   Saved {{noteModel.updatedAt}}
                 </div>
                 <div class="icon is-pulled-left">
-                    <i [ngClass]="loadingBtn ? 'is-loading' : 'icon-check' " class="button ps-act-item-button-confirmation"></i>
+                    <i [ngClass]="loadingBtn ? 'is-loading' : 'bx bx-check' " class="button ps-act-item-button-confirmation"></i>
                 </div>
               </div>
             </div>
@@ -119,7 +119,7 @@
       <div class="ps-note-create-color-picker-container">
           <div class="ps-note-create-palette-container">
             <div class="ps-note-create-color" title="pick a color">
-              <i class="icon-palette-1 pointer" id="id2" [(ngModel)]="note.colorPalette" name="colorPalette" ngDefaultControl (click)="togglePalette()"></i>
+              <i class="bx bxs-palette pointer" id="id2" [(ngModel)]="note.colorPalette" name="colorPalette" ngDefaultControl (click)="togglePalette()"></i>
             </div>
             <div #noteCreatePalette [ngStyle]="{'display': showPaletteBoolean ? 'block' : 'none'}" class="ps-note-create-palette">
               <div class="ps-note-create-palette-colors-section">
@@ -145,7 +145,7 @@
           <div class="dropdown">
               <div class="dropdown-trigger">
                 <div class="drop-down-padding" aria-haspopup="true" aria-controls="dropdown-menu">
-                  <i class="icon-ellipsis-vert"></i>
+                  <i class="bx bx-dots-vertical-rounded"></i>
                 </div>
               </div>
               <div class="dropdown-menu is-up" id="dropdown-menu" role="menu">

@@ -23,8 +23,8 @@
     <div (click)="toggleStopStart()" class="ps-toolbar-play">
       <a  class="button ps-toolbar-button" [ngClass]="{'is-loading': stopStartButtonDisabled}">
         <span class="icon">
-          <i *ngIf="currentActivityCopy.startedAt" class="icon-stop" title="Stop activity"></i>
-          <i *ngIf="!currentActivityCopy.startedAt" class="icon-play" title="Start activity"></i>
+          <i *ngIf="currentActivityCopy.startedAt" class="bx bx-md bx-square" title="Stop activity"></i>
+          <i *ngIf="!currentActivityCopy.startedAt" class="bx bx-md bx-right-arrow" title="Start activity"></i>
         </span>
       </a>
     </div>

@@ -1,7 +1,11 @@
 <div class="container ps-note-padding">
   <div class="ps-project-name-container">
     <div class="ps-note-header-button">
-      <div class="ps-activity-top-button icon-back" (click)="goBack()" title="Back"></div>
+      <a  class="button ps-activity-top-button" (click)="goBack()">
+        <span class="icon">
+          <i class="bx bx-left-arrow-alt" title="Back"></i>
+        </span>
+      </a>
     </div>
     <div class="ps-note-header-title">
       <app-tab
@@ -10,7 +14,13 @@
       >
       </app-tab>
     </div>
-    <div class="ps-note-header-button"><div [ngClass]="!selectedTab ? 'ps-activity-top-button icon-plus' : '' " class="ps-tab test2" (click)="openCreateNoteModal()" title="Add new note"></div></div>
+    <div class="ps-tab">
+      <a class="button ps-activity-top-button" *ngIf="!selectedTab" (click)="openCreateNoteModal()" title="Add new note">
+        <span class="icon">
+          <i class="bx bx-plus"></i>
+        </span>
+      </a>
+    </div>
   </div>
   <div class="columns is-mobile is-centered">
       <div class="column is-half-desktop ps-no-padding">
@@ -23,13 +33,15 @@
             [hideArrow]="true"
             class="ps-sort"></swing-select>
           <span class="ps-sort-icon">
-            <i class="icon-sort-alt-down"></i>
+            <i class="bx bx-sort-down"></i>
           </span>
       </div>
   </div>
   <div *ngIf="actives.length === 0 && !selectedTab" class="columns is-multiline">
     <div class="column is-3-widescreen is-4-desktop is-4-tablet is-6-mobile">
-      <div class="has-primary-text ps-project-create" (click)="openCreateNoteModal()">+ Add note</div>
+      <div class="has-primary-text ps-project-create">
+        <a (click)="openCreateNoteModal()"><i class="bx bx-plus"></i>Add note</a>
+      </div>
     </div>
   </div>
   <div *ngIf="!selectedTab" class="columns is-multiline">

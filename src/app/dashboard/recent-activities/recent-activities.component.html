@@ -19,7 +19,7 @@
                 <p>a left project</p>
               </span>
             </div>
-            <p class="ps-activity-item-text has-text-left"><i class="icon-stopwatch"></i>
+            <p class="ps-activity-item-text has-text-left"><i class="bx bx-time-five"></i>
               {{item.activity.startedAt | date: 'MMM dd'}} from {{item.humanReadableFrom}} to {{item.humanReadableTo}} / {{item.humanReadableDuration}}
             </p>
           </div>
@@ -27,25 +27,25 @@
             <div class="ps-activity-item-button" *ngIf="(deleteConfirmationIndex !== i) && item.activity.stoppedAt">
               <a  class="button ps-activity-item-button-confirmation" (click)="openEditActivity(item)" title="Edit Activity">
                 <span class="icon">
-                  <i class="icon-pencil"></i>
+                  <i class="bx bx-sm bx-pencil"></i>
                 </span>
               </a>
               <a  class="button ps-activity-item-button-confirmation" (click)="deleteItem(i)" title="Delete Activity">
                 <span class="icon">
-                  <i class="icon-trash"></i>
+                  <i class="bx bx-sm bx-trash-alt"></i>
                 </span>
               </a>
             </div>
             <div class="ps-activity-item-button" *ngIf="deleteConfirmationIndex === i" [@slideInOut]>
               <a  *ngIf="!deleteButtonDisabled" class="button ps-activity-item-button-confirmation" (click)="cancelDelete()" title="Cancel Delete">
                 <span class="icon">
-                  <i class="icon-cancel" [ngClass]="{'has-text-danger': !deleteButtonDisabled}"></i>
+                  <i class="bx bx-sm bx-x" [ngClass]="{'has-text-danger': !deleteButtonDisabled}"></i>
                 </span>
               </a>
               <a  class="button ps-activity-item-button-confirmation" [ngClass]="{'is-loading': deleteButtonDisabled}"
                   (click)="confirmDelete(item.activity)" title="Confirm Delete">
                 <span class="icon">
-                  <i class="icon-check" [ngClass]="{'has-text-success': !deleteButtonDisabled}"></i>
+                  <i class="bx bx-sm bx-check" [ngClass]="{'has-text-success': !deleteButtonDisabled}"></i>
                 </span>
               </a>
             </div>
@@ -60,10 +60,10 @@
 
   <div class="ps-recent-activity-footer">
     <span class="ps-icon-back" (click)="prevPage()">
-      <i *ngIf="page > 0" class="icon-back"></i>
+      <i *ngIf="page > 0" class="bx bx-chevron-left"></i>
     </span>
     <span class="ps-icon-next" (click)="nextPage()">
-      <i *ngIf="(page + 1) < (recentActivitiesWithMeta.length / 3)" class="icon-arrow-right"></i>
+      <i *ngIf="(page + 1) < (recentActivitiesWithMeta.length / 3)" class="bx bx-chevron-right"></i>
     </span>
   </div>
 </div>

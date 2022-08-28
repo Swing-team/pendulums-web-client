@@ -20,23 +20,23 @@
         <p>Done by: &nbsp; someone who has left this project</p>
       </span>
     </div>
-    <p class="ps-activity-item-text has-text-left"><i class="icon-stopwatch"></i> from {{from}} to {{to}} / {{duration}}</p>
+    <p class="ps-activity-item-text has-text-left"><i class="bx bx-time-five"></i> from {{from}} to {{to}} / {{duration}}</p>
   </div>
   <ng-container *ngIf="activity.stoppedAt">
   <div class="ps-activity-item-button is-pulled-right" *ngIf="!showDeleteConfirmation">
-    <i class="icon-pencil" (click)="openEditManuallyModal()" title="Edit Activity"></i>
-    <i class="icon-trash" (click)="delete()" title="Delete Activity"></i>
+    <i class="bx bx-pencil" (click)="openEditManuallyModal()" title="Edit Activity"></i>
+    <i class="bx bx-trash-alt" (click)="delete()" title="Delete Activity"></i>
   </div>
   </ng-container>
   <div class="ps-activity-item-button is-pulled-right" *ngIf="showDeleteConfirmation" [@slideInOut]>
     <a  *ngIf="!deleteButtonDisabled" class="button ps-activity-item-button-confirmation" (click)="cancelDelete()" title="Cancel Delete">
       <span class="icon">
-        <i class="icon-cancel" [ngClass]="{'has-text-danger': !deleteButtonDisabled}"></i>
+        <i class="bx bx-x" [ngClass]="{'has-text-danger': !deleteButtonDisabled}"></i>
       </span>
     </a>
     <a  class="button ps-activity-item-button-confirmation" [ngClass]="{'is-loading': deleteButtonDisabled}" (click)="confirmDelete()" title="Confirm Delete">
       <span class="icon">
-        <i class="icon-check" [ngClass]="{'has-text-success': !deleteButtonDisabled}"></i>
+        <i class="bx bx-check" [ngClass]="{'has-text-success': !deleteButtonDisabled}"></i>
       </span>
     </a>
   </div>

@@ -1,24 +1,24 @@
 <div class="ps-top-bar">
   <div class="ps-top-bar-item ps-top-bar-item-left is-hidden-mobile">
     <a target="_blank" title="Donate to us" href="https://pendulums.io/donation.html" class="ps-donation-btn ps-top-bar-icon mr-2">
-      <span class="icon-gift"></span>
+      <span class="bx bx-gift"></span>
     </a>
     <a (click)="syncSummary()" [class.is-disabled]="!status.netStatus" style="transform: rotate(0deg);" class="ps-top-bar-icon">
-      <span class="icon-refresh" [class.ps-sync-animation]="syncing"></span>
+      <span class="bx bx-sm bx-refresh" [class.ps-sync-animation]="syncing"></span>
     </a>
   </div>
 
   <div class="ps-top-bar-item ps-top-bar-item-center">
     <a [routerLink]="['dashboard']" class="ps-top-bar-text mr-2" routerLinkActive="ps-page-active">
-      <span class="icon-dashboard ps-top-bar-icon is-hidden-tablet"></span>
+      <span class="bx bx-tachometer ps-top-bar-icon is-hidden-tablet"></span>
       <p class="is-hidden-mobile">Dashboard</p>
     </a>
     <a [routerLink]="['projects']" class="ps-top-bar-text mr-2" routerLinkActive="ps-page-active">
-      <span class="icon-projects ps-top-bar-icon is-hidden-tablet"></span>
+      <span class="bx bx-grid-alt ps-top-bar-icon is-hidden-tablet"></span>
       <p class="is-hidden-mobile">Projects</p>
     </a>
     <a [routerLink]="['notes']" class="ps-top-bar-text" routerLinkActive="ps-page-active">
-      <span class="icon-sticky-note-o ps-top-bar-icon is-hidden-tablet"></span>
+      <span class="bx bx-note ps-top-bar-icon is-hidden-tablet"></span>
       <p class="is-hidden-mobile">Notes</p>
     </a>
   </div>
@@ -27,7 +27,7 @@
     <div class="dropdown is-right ml-2" (click)="toggleNotificationDropDown()" [class.is-active]="isNotificationDropDownOpen">
       <div class="dropdown-trigger ps-dropdown-trigger">
         <a class="ps-top-bar-icon">
-          <span class="icon-bell" id="notificationDropDownTrigger"></span>
+          <span class="bx bx-bell" id="notificationDropDownTrigger"></span>
           <span class="ps-notification-count" *ngIf="user.pendingInvitations.length + notificationNumber > 0">{{user.pendingInvitations.length + notificationNumber}}</span>
         </a>
       </div>

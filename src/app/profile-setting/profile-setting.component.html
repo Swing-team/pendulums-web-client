@@ -13,30 +13,30 @@
                 width="36" height="36" [identiconHash]="emailHash">
             Your browser does not support SVG
           </svg>
-          <span class="icon-pencil ps-pencil-image-change" (click)="openImageModal()"></span>
+          <span class="bx bx-sm bx-pencil ps-pencil-image-change" (click)="openImageModal()"></span>
         </div>
         <div class="ps-reserve-space"></div>
         <div>
-          <div *ngIf="!userNameEdited" title="Edit name">
-            {{userEdit.name? userEdit.name : "No name"}}
-            <span class="ps-edit-profile-button icon-user-edit" (click)="toggleView()"></span>
+          <div class="is-size-3" *ngIf="!userNameEdited" title="Edit name">
+            <span>{{userEdit.name? userEdit.name : "No name"}}</span>
+            <span class="ps-edit-profile-button bx bx-sm bx-pencil" (click)="toggleView()"></span>
           </div>
           <div *ngIf="userNameEdited">
             <input [(ngModel)]="userEdit.name" class="input ps-user-name"
                    placeholder="no name" type="text">
             <a  *ngIf="!editButtonDisabled" class="button ps-edit-profile-parent-btn" (click)="toggleView()">
               <span class="icon">
-                <i class="ps-edit-profile-button icon-cancel" [ngClass]="{'has-text-danger': !editButtonDisabled}"></i>
+                <i class="ps-edit-profile-button bx bx-sm bx-x" [ngClass]="{'has-text-danger': !editButtonDisabled}"></i>
               </span>
             </a>
             <a  class="button ps-edit-profile-parent-btn" [ngClass]="{'is-loading': editButtonDisabled}" (click)="saveProfile()">
               <span class="icon">
-                <i class="ps-edit-profile-button icon-check" [ngClass]="{'has-text-success': !editButtonDisabled}"></i>
+                <i class="ps-edit-profile-button bx bx-sm bx-check" [ngClass]="{'has-text-success': !editButtonDisabled}"></i>
               </span>
             </a>
           </div>
         </div>
-        <div>{{userEdit.email}}</div>
+        <div class="is-size-4">{{userEdit.email}}</div>
         <div class="ps-reserve-space"></div>
       </div>
     </div>

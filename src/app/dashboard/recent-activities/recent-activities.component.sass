@@ -57,6 +57,9 @@
 .ps-activity-item-text
   font-size: 0.9rem
   color:  gray
+  i
+    font-size: 1.2rem
+    vertical-align: middle
   @media (max-width: $ps-mobile)
     font-size: 0.8rem
 
@@ -81,20 +84,20 @@
   i
     cursor: pointer
     transition: all ease-in-out $ps-transitions
-  .icon-pencil
+  .bx-pencil
     font-size: 1rem
     color: $ps-primary
     &:hover
       color: lighten($ps-primary, 20)
-  .icon-trash
+  .bx-trash-alt
     font-size: 1rem
     color: $pink
     &:hover
       color: lighten($pink, 10)
-  .icon-cancel
+  .bx-x
     &:hover
       color: lighten($red, 20) !important
-  .icon-check
+  .bx-check
     &:hover
       color: lighten($success, 20) !important
 

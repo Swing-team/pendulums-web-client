@@ -20,13 +20,13 @@
             <a class="button ps-confirm-button" *ngIf="deleteConfirmation" (click)="cancelDelete()" title="Cancel"
                [ngClass]="{'is-loading': deleteButtonDisabled, 'is-danger': !deleteButtonDisabled}">
               <span class="icon">
-                <i class="icon-cancel"></i>
+                <i class="bx bx-x"></i>
               </span>
             </a>
             <a class="button ps-confirm-button" *ngIf="deleteConfirmation && !deleteButtonDisabled" (click)="confirmFinalDelete()"
                [ngClass]="{'is-success': !deleteButtonDisabled}" title="Confirm">
               <span class="icon">
-                <i class="icon-check"></i>
+                <i class="bx bx-check"></i>
               </span>
             </a>
           </div>
@@ -45,13 +45,13 @@
           <a class="button ps-confirm-button" *ngIf="leaveConfirmation" (click)="cancelLeave()" title="Cancel"
              [ngClass]="{'is-loading': leaveButtonDisabled, 'is-danger': !leaveButtonDisabled}">
             <span class="icon">
-              <i class="icon-cancel"></i>
+              <i class="bx bx-x"></i>
             </span>
           </a>
           <a class="button ps-confirm-button" *ngIf="leaveConfirmation && !leaveButtonDisabled" (click)="leaveProject()"
               [ngClass]="{'is-success': !leaveButtonDisabled}" title="Confirm">
             <span class="icon">
-              <i class="icon-check"></i>
+              <i class="bx bx-check"></i>
             </span>
           </a>
         </div>
@@ -68,13 +68,13 @@
       <a class="button ps-confirm-button" (click)="cancelLeave()" title="Cancel"
         [ngClass]="{'is-loading': leaveButtonDisabled, 'is-danger': !leaveButtonDisabled}">
         <span class="icon">
-          <i class="icon-cancel"></i>
+          <i class="bx bx-x"></i>
         </span>
       </a>
       <a class="button ps-confirm-button" *ngIf="!leaveButtonDisabled" (click)="leaveProject()"
         [ngClass]="{'is-success': !leaveButtonDisabled}" title="Confirm">
         <span class="icon">
-          <i class="icon-check"></i>
+          <i class="bx bx-check"></i>
         </span>
       </a>
     </div>
